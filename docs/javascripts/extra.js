@@ -124,6 +124,31 @@ window.addEventListener("scroll", _onScrollForToc, { passive: true });
 window.addEventListener("load", updateTocActive);
 window.addEventListener("hashchange", updateTocActive);
 
+// MutationObserver — definitively win the race against Material's own
+// active-state observer. Every time Material rewrites a TOC link's
+// class attribute, this fires and re-applies our correct active state.
+// Without this, Material's intersection observer keeps stamping the
+// wrong link as active on every threshold crossing.
+let _mutationGuard = false;
+function _watchTocMutations() {
+  const panel = document.querySelector(".md-sidebar--secondary");
+  if (!panel) return;
+  const obs = new MutationObserver(function () {
+    if (_mutationGuard) return;       // ignore mutations caused by our own writes
+    _mutationGuard = true;
+    updateTocActive();
+    // Release the guard on the next frame so our writes settle before
+    // we re-arm.
+    requestAnimationFrame(function () { _mutationGuard = false; });
+  });
+  obs.observe(panel, {
+    subtree: true,
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+}
+window.addEventListener("load", _watchTocMutations);
+
 // ─────────────────────────────────────────────────────────────────────
 // Sidebar scroll preservation
 //
