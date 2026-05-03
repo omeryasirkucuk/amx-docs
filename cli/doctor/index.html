@@ -529,18 +529,38 @@ looks wrong.</p>
   <code>config.yml</code> is <code>0o600</code>.</li>
 </ul>
 <h2 id="sample-output">Sample output<a class="headerlink" href="#sample-output" title="Permanent link">&para;</a></h2>
+<p><code>doctor</code> streams each check as it runs — one <code>[Stage]</code> line per phase, the same live
+progress format <code>/run</code> uses — so a stalled probe (typically the LLM ping) is obvious
+instead of looking like a hang. The final line summarises pass/fail counts and points at
+the first remediation:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ amx doctor
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>✓ amx binary           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>✓ python runtime       3.12.2 (/Users/jane/.venvs/amx/bin/python)
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>✓ config schema        v2 (matches binary expectation)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>✓ ~/.amx permissions   0o700, config.yml 0o600
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>✓ DB profile           local_pg (postgresql 14.10)  — connection OK in 42ms
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>✗ DB profile           snow_prod (snowflake)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  → Missing driver. Install with:
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        pip install amx-cli
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>✓ History store        local mode, 247 runs persisted
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[Binary]   scanning PATH for amx ......................  ok (0.0 s)
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[Python]   detecting interpreter ......................  ok (0.0 s)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>           3.12.2 (/Users/jane/.venvs/amx/bin/python)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>           v2 (matches binary expectation)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>           0o700, config.yml 0o600
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>[Drivers]  importing backend drivers .................   in progress
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>           postgresql ................................   ok
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>           snowflake .................................   fail (missing)
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>[DB]       testing active profile local_pg ...........   in progress
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>           connect ...................................   ok (42 ms)
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>           handshake .................................   ok (postgresql 14.10)
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>           api key in keychain .......................   ok
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>           models endpoint ...........................   ok (218 ms)
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>[History]  inspecting local store .....................  ok (0.0 s)
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>           local mode, 247 runs persisted
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>✗ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>  Failed: backend driver — snow_prod (snowflake): missing
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>  → pip install amx-cli
 </span></code></pre></div>
+<p>Under <code>--skip-network</code> the <code>[LLM]</code> stage is replaced by a single
+<code>[LLM]      skipped (--skip-network) ..................   skipped</code> line and the timer
+typically falls under 0.3 s. A clean run finishes with <code>✓ /doctor finished</code> and exits
+with code <code>0</code>; any ✗ check exits with <code>1</code> so it slots cleanly into CI smoke tests.</p>
 <h2 id="interpreting-failures">Interpreting failures<a class="headerlink" href="#interpreting-failures" title="Permanent link">&para;</a></h2>
 <p>Each ✗ comes with a one-line remediation:</p>
 <table>

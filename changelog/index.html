@@ -395,6 +395,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0120-doctor-streams-staged-progress-like-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.0 — /doctor streams staged progress like /run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0120-shared-run-history-store-for-team-collaboration" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -534,6 +545,16 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0120-doctor-streams-staged-progress-like-run">0.12.0 — <code>/doctor</code> streams staged progress like <code>/run</code><a class="headerlink" href="#0120-doctor-streams-staged-progress-like-run" title="Permanent link">&para;</a></h3>
+<p><code>amx doctor</code> (and the in-session <code>/doctor</code>) now print one <code>[Stage]</code> line per phase as
+the check runs — <code>[Binary]</code>, <code>[Python]</code>, <code>[Schema]</code>, <code>[FS]</code>, <code>[Drivers]</code>, <code>[DB]</code>,
+<code>[LLM]</code>, <code>[History]</code> — using the same live progress format <code>/run</code> uses. A stalled probe
+(typically the LLM models-endpoint ping) is now visible as <code>in progress</code> for much longer
+than its peers instead of looking like a hang, and the closing
+<code>✓ /doctor finished in Xs. N passed, M failed.</code> summary mirrors <code>/run</code>'s footer with the
+first remediation inline. Exit codes are unchanged (<code>0</code> clean, <code>1</code> if any ✗); under
+<code>--skip-network</code> the <code>[LLM]</code> stage collapses to a single <code>skipped</code> line. See
+<a href="../cli/doctor/"><code>amx doctor</code></a> for the full sample output.</p>
 <h3 id="0120-shared-run-history-store-for-team-collaboration">0.12.0 — shared run-history store for team collaboration<a class="headerlink" href="#0120-shared-run-history-store-for-team-collaboration" title="Permanent link">&para;</a></h3>
 <p>AMX has always kept its run history in a single SQLite file at <code>~/.amx/history.db</code> — fine
 for one engineer, invisible to teammates. 0.12.0 introduces an <strong>optional shared mode</strong>:
