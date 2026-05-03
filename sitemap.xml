@@ -1,211 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/</loc>
+         <loc>https://amxcli.com/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/changelog/</loc>
+         <loc>https://amxcli.com/changelog/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/contributing/</loc>
+         <loc>https://amxcli.com/contributing/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/security/</loc>
+         <loc>https://amxcli.com/security/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/api/</loc>
+         <loc>https://amxcli.com/api/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/api/reference/</loc>
+         <loc>https://amxcli.com/api/reference/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/</loc>
+         <loc>https://amxcli.com/backends/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/bigquery/</loc>
+         <loc>https://amxcli.com/backends/bigquery/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/clickhouse/</loc>
+         <loc>https://amxcli.com/backends/clickhouse/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/databricks/</loc>
+         <loc>https://amxcli.com/backends/databricks/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/duckdb/</loc>
+         <loc>https://amxcli.com/backends/duckdb/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/mssql/</loc>
+         <loc>https://amxcli.com/backends/mssql/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/mysql/</loc>
+         <loc>https://amxcli.com/backends/mysql/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/oracle/</loc>
+         <loc>https://amxcli.com/backends/oracle/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/postgresql/</loc>
+         <loc>https://amxcli.com/backends/postgresql/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/redshift/</loc>
+         <loc>https://amxcli.com/backends/redshift/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/backends/snowflake/</loc>
+         <loc>https://amxcli.com/backends/snowflake/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/ask-and-search/</loc>
+         <loc>https://amxcli.com/cli/ask-and-search/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/doctor/</loc>
+         <loc>https://amxcli.com/cli/doctor/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/flags/</loc>
+         <loc>https://amxcli.com/cli/flags/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/history/</loc>
+         <loc>https://amxcli.com/cli/history/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/overview/</loc>
+         <loc>https://amxcli.com/cli/overview/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/run-and-apply/</loc>
+         <loc>https://amxcli.com/cli/run-and-apply/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/cli/setup/</loc>
+         <loc>https://amxcli.com/cli/setup/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/collaboration/safety-guards/</loc>
+         <loc>https://amxcli.com/collaboration/safety-guards/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/collaboration/shared-history-store/</loc>
+         <loc>https://amxcli.com/collaboration/shared-history-store/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/collaboration/team-setup/</loc>
+         <loc>https://amxcli.com/collaboration/team-setup/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/concepts/agents/</loc>
+         <loc>https://amxcli.com/concepts/agents/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/concepts/architecture/</loc>
+         <loc>https://amxcli.com/concepts/architecture/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/concepts/human-in-the-loop/</loc>
+         <loc>https://amxcli.com/concepts/human-in-the-loop/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/concepts/universal-metadata/</loc>
+         <loc>https://amxcli.com/concepts/universal-metadata/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/configuration/config-yml/</loc>
+         <loc>https://amxcli.com/configuration/config-yml/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/configuration/env-vars/</loc>
+         <loc>https://amxcli.com/configuration/env-vars/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/configuration/profiling-modes/</loc>
+         <loc>https://amxcli.com/configuration/profiling-modes/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/configuration/tls-and-proxies/</loc>
+         <loc>https://amxcli.com/configuration/tls-and-proxies/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/data-sources/codebase/</loc>
+         <loc>https://amxcli.com/data-sources/codebase/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/data-sources/documents/</loc>
+         <loc>https://amxcli.com/data-sources/documents/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/data-sources/search-catalog/</loc>
+         <loc>https://amxcli.com/data-sources/search-catalog/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/getting-started/first-run/</loc>
+         <loc>https://amxcli.com/getting-started/first-run/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/getting-started/installation/</loc>
+         <loc>https://amxcli.com/getting-started/installation/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/getting-started/quickstart/</loc>
+         <loc>https://amxcli.com/getting-started/quickstart/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/guides/batch-large-schema/</loc>
+         <loc>https://amxcli.com/guides/batch-large-schema/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/guides/sap-discovery-walkthrough/</loc>
+         <loc>https://amxcli.com/guides/sap-discovery-walkthrough/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/</loc>
+         <loc>https://amxcli.com/llm-providers/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/anthropic/</loc>
+         <loc>https://amxcli.com/llm-providers/anthropic/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/batch-mode/</loc>
+         <loc>https://amxcli.com/llm-providers/batch-mode/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/gemini/</loc>
+         <loc>https://amxcli.com/llm-providers/gemini/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/ollama-local/</loc>
+         <loc>https://amxcli.com/llm-providers/ollama-local/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/llm-providers/openai/</loc>
+         <loc>https://amxcli.com/llm-providers/openai/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/troubleshooting/common-errors/</loc>
+         <loc>https://amxcli.com/troubleshooting/common-errors/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/troubleshooting/doctor/</loc>
+         <loc>https://amxcli.com/troubleshooting/doctor/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
     <url>
-         <loc>https://omeryasirkucuk.github.io/amx-docs/troubleshooting/faq/</loc>
+         <loc>https://amxcli.com/troubleshooting/faq/</loc>
          <lastmod>2026-05-03</lastmod>
     </url>
 </urlset>
