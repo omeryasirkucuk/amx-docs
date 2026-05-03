@@ -665,7 +665,7 @@ with <code>unity_catalog_required</code> rather than emitting a SQL that would s
 <ol>
 <li><code>&gt; /connect</code> — reports the cluster runtime version (e.g. <code>14.3.x-photon</code>) and round-trip latency. Latency over ~1.5 s usually means the warehouse is cold-starting; subsequent calls drop to ~200–400 ms.</li>
 <li><code>&gt; /db inspect</code> — confirms catalog / schema counts and flags any Hive-metastore schemas as read-only.</li>
-<li><code>&gt; amx doctor</code> — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as <code>Access token rejected by /api/2.0/clusters/list</code>).</li>
+<li><code>&gt; /doctor</code> — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as <code>Access token rejected by /api/2.0/clusters/list</code>).</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

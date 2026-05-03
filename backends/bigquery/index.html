@@ -687,7 +687,7 @@ profiling on tables that would scan more than your <code>max_bytes_billed</code>
 <ol>
 <li><code>&gt; /connect</code> — reports the active project and the resolved ADC source. If the line reads <code>ADC: none</code> you have neither user creds nor a key file; re-run <code>gcloud auth application-default login</code> or set <code>credentials_path:</code>.</li>
 <li><code>&gt; /db inspect</code> — shows the configured <code>max_bytes_billed</code> ceiling so you know the safety net is in place before the first <code>/run</code>.</li>
-<li><code>&gt; amx doctor</code> — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).</li>
+<li><code>&gt; /doctor</code> — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

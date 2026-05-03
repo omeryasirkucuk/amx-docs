@@ -609,8 +609,8 @@ own ingress):</p>
 <p>For development only, set <code>REQUESTS_CA_BUNDLE=""</code> and <code>SSL_CERT_FILE=""</code> to skip
 verification. Don't ship that to production.</p>
 <h2 id="verifying-the-connection">Verifying the connection<a class="headerlink" href="#verifying-the-connection" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>doctor<span class="w">                       </span><span class="c1"># full check including TLS</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network<span class="w">        </span><span class="c1"># offline check (skip everything network)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;<span class="w"> </span>/doctor<span class="w">                       </span><span class="c1"># full check including TLS</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;<span class="w"> </span>/doctor<span class="w"> </span>--skip-network<span class="w">        </span><span class="c1"># offline check (skip everything network)</span>
 </span></code></pre></div>
 <p>For a one-off connection test against the active DB profile:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>amx

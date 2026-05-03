@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#diagnostics-with-amx-doctor" class="md-skip">
+        <a href="#diagnostics-with-doctor" class="md-skip">
           Skip to content
         </a>
       
@@ -574,68 +574,74 @@
 
 
 
-<h1 id="diagnostics-with-amx-doctor">Diagnostics with <code>amx doctor</code><a class="headerlink" href="#diagnostics-with-amx-doctor" title="Permanent link">&para;</a></h1>
-<p><code>amx doctor</code> is the first thing to run when something looks wrong. It runs from any shell
-— including a broken AMX state — and reports actionable problems with your install,
-config, and connectivity.</p>
-<p>For the full reference see <a href="../../cli/doctor/"><code>amx doctor</code></a>. This page is task-oriented:
+<h1 id="diagnostics-with-doctor">Diagnostics with <code>/doctor</code><a class="headerlink" href="#diagnostics-with-doctor" title="Permanent link">&para;</a></h1>
+<p><code>/doctor</code> is the first thing to run when something looks wrong. Open AMX, type
+<code>/doctor</code>, and it streams an actionable check per phase covering install, config,
+and connectivity.</p>
+<p>For the full reference see <a href="../../cli/doctor/"><code>/doctor</code></a>. This page is task-oriented:
 "I see X — what does doctor tell me?"</p>
 <h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>doctor<span class="w">                       </span><span class="c1"># full check, hits the network</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network<span class="w">        </span><span class="c1"># offline quick check</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx
 </span></code></pre></div>
-<p>Inside an AMX session: <code>/doctor</code>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /doctor                       # full check, hits the network
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&gt; /doctor --skip-network        # offline quick check
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>&gt; /doctor --debug               # verbose, every probe traced
+</span></code></pre></div>
+<p>If the REPL itself won't start, the same diagnostic also runs as a shell command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>doctor
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network
+</span></code></pre></div>
 <h2 id="what-each-line-means">What each line means<a class="headerlink" href="#what-each-line-means" title="Permanent link">&para;</a></h2>
 <p><code>doctor</code> streams the same <code>[Stage]</code> progress lines that <code>/run</code> uses, so each check is
 visible as it happens — a stalled probe (usually <code>[LLM]</code>) shows up as <code>in progress</code> for
 much longer than the others rather than looking like a hang.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[Binary]   scanning PATH for amx ......................  ok (0.0 s)
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[Binary]   scanning PATH for amx ......................  ok (0.0 s)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
 </span></code></pre></div>
 <p>The path of the <code>amx</code> you're running, plus version. <strong>A second indented line under
 <code>[Binary]</code> means a second <code>amx</code> on PATH</strong> — pick one and uninstall the others.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[Python]   detecting interpreter ......................  ok (0.0 s)
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>           3.12.2 (/Users/jane/.venvs/amx/bin/python)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[Python]   detecting interpreter ......................  ok (0.0 s)
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>           3.12.2 (/Users/jane/.venvs/amx/bin/python)
 </span></code></pre></div>
 <p>Python version + path. Warns on &lt; 3.10.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>           v2 (matches binary expectation)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>           v2 (matches binary expectation)
 </span></code></pre></div>
 <p>The schema version of <code>~/.amx/config.yml</code> vs what this binary expects. <code>Config schema too
 new</code> means the binary is older than the config — upgrade. <code>Config schema too old</code> means
 the opposite — AMX migrates on next save.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>           0o700, config.yml 0o600
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>           0o700, config.yml 0o600
 </span></code></pre></div>
 <p>Confirms the directory and config file modes are correct. Wrong modes warn — fix with
 <code>chmod</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>[Drivers]  importing backend drivers .................   in progress
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>           postgresql ................................   ok
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>           snowflake .................................   fail (missing)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[Drivers]  importing backend drivers .................   in progress
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           postgresql ................................   ok
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>           snowflake .................................   fail (missing)
 </span></code></pre></div>
 <p>One indented line per backend referenced in <code>config.yml</code>. Active profile is selected but
 the driver isn't installed → run <code>pip install amx-cli</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>[DB]       testing active profile local_pg ...........   in progress
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>           connect ...................................   ok (42 ms)
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>           handshake .................................   ok (postgresql 14.10)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>[DB]       testing active profile local_pg ...........   in progress
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>           connect ...................................   ok (42 ms)
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>           handshake .................................   ok (postgresql 14.10)
 </span></code></pre></div>
 <p>Real connection test against the <strong>active</strong> DB profile (not all profiles). For Databricks,
 walks through saved profile → CA bundle from environment → <code>tls_no_verify</code> to find the
 first working path; each attempt prints its own indented line.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>           api key in keychain .......................   ok
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>           models endpoint ...........................   ok (218 ms)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>           api key in keychain .......................   ok
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>           models endpoint ...........................   ok (218 ms)
 </span></code></pre></div>
 <p>Confirms the API key is present and the provider's models endpoint responds. Replaced by
 <code>[LLM]      skipped (--skip-network) ..................   skipped</code> under <code>--skip-network</code>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>[History]  inspecting local store .....................  ok (0.0 s)
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>           local mode, 247 runs persisted
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>[History]  inspecting local store .....................  ok (0.0 s)
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>           local mode, 247 runs persisted
 </span></code></pre></div>
 <p>Local SQLite is healthy. If shared mode is enabled, an extra indented line also reports
 outbox depth (<code>pending_shared_writes: 0</code>).</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>✓ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>  Failed: backend driver — snow_prod (snowflake): missing
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  → pip install amx-cli
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>✓ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>  Failed: backend driver — snow_prod (snowflake): missing
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  → pip install amx-cli
 </span></code></pre></div>
 <p>Final summary mirrors <code>/run</code>'s footer: total elapsed time, pass/fail counts, and the first
 remediation hint inline. <code>✓</code> means everything passed (exit <code>0</code>); <code>✗</code> means at least one
@@ -645,7 +651,7 @@ check failed (exit <code>1</code>) so CI can react.</p>
 <p>Use a venv consistently. <code>which -a amx</code> shows you every binary; uninstall the ones you
 don't want with <code>pip uninstall amx</code> from the offending Python.</p>
 <h3 id="config-schema-too-new"><code>Config schema too new</code><a class="headerlink" href="#config-schema-too-new" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <h3 id="missing-driver"><code>Missing driver</code><a class="headerlink" href="#missing-driver" title="Permanent link">&para;</a></h3>
 <p>Run the exact <code>pip install amx-cli</code> from doctor's output.</p>
@@ -657,7 +663,7 @@ don't want with <code>pip uninstall amx</code> from the offending Python.</p>
 <p>API key is wrong or rotated. Re-run <code>/add-llm-profile</code> for that profile and re-enter the
 key.</p>
 <h3 id="llm-models-endpoint-timeout"><code>LLM models endpoint timeout</code><a class="headerlink" href="#llm-models-endpoint-timeout" title="Permanent link">&para;</a></h3>
-<p>Network egress problem. Check proxy / firewall. Run <code>amx doctor --skip-network</code> to
+<p>Network egress problem. Check proxy / firewall. Run <code>/doctor --skip-network</code> to
 confirm everything else is fine — if it does, the LLM endpoint is the only problem.</p>
 <h3 id="cannot-read-amxconfigyml"><code>Cannot read ~/.amx/config.yml</code><a class="headerlink" href="#cannot-read-amxconfigyml" title="Permanent link">&para;</a></h3>
 <p>File mode wrong, or you previously ran AMX as a different user. <code>chmod 0600
@@ -667,16 +673,16 @@ confirm everything else is fine — if it does, the LLM endpoint is the only pro
 writes — when the backend is back, run <code>/db history-store</code> → <strong>Flush pending</strong>.</p>
 <h2 id="when-doctor-isnt-enough">When doctor isn't enough<a class="headerlink" href="#when-doctor-isnt-enough" title="Permanent link">&para;</a></h2>
 <p>Doctor only tests the <strong>active</strong> DB and LLM profile. To diagnose all profiles individually:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/db inspect prod_pg
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>/db inspect snow_prod
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>/db inspect databricks-prod
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>/db inspect prod_pg
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>/db inspect snow_prod
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>/db inspect databricks-prod
 </span></code></pre></div>
 <p><code>/db inspect</code> reports the backend, capabilities, connection test, visible schemas, and
 table counts — without running any LLM agents.</p>
 <p>For LLM profiles:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>/llm-profiles            # see all
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>/use-llm &lt;name&gt;          # switch
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>amx doctor               # test the new active one
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>/llm-profiles            # see all
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>/use-llm &lt;name&gt;          # switch
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>&gt; /doctor               # test the new active one
 </span></code></pre></div>
 <h2 id="what-doctor-doesnt-do">What doctor doesn't do<a class="headerlink" href="#what-doctor-doesnt-do" title="Permanent link">&para;</a></h2>
 <ul>

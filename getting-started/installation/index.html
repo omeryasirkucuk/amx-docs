@@ -523,11 +523,11 @@ RAG / search / codebase machinery, and every supported database driver.</p>
 <p>See <a href="../../contributing/">Contributing</a> for the full development workflow.</p>
 <h2 id="verify-the-install">Verify the install<a class="headerlink" href="#verify-the-install" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>--version
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>doctor
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt;<span class="w"> </span>/doctor
 </span></code></pre></div>
-<p><code>amx doctor</code> reports every <code>amx</code> binary on <code>PATH</code> (catches the version-skew bug class), the
+<p><code>/doctor</code> reports every <code>amx</code> binary on <code>PATH</code> (catches the version-skew bug class), the
 Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use <code>amx doctor --skip-network</code> for an
+a broken state — no interactive session required. Use <code>/doctor --skip-network</code> for an
 offline quick check.</p>
 <h2 id="where-amx-writes-files">Where AMX writes files<a class="headerlink" href="#where-amx-writes-files" title="Permanent link">&para;</a></h2>
 <table>

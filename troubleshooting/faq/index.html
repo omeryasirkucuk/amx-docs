@@ -756,7 +756,7 @@
 <p>That's the only command. The install includes the CLI, the multi-agent runtime, every
 LLM SDK, and every supported database driver.</p>
 <h3 id="multiple-amx-binaries-on-path">Multiple <code>amx</code> binaries on PATH<a class="headerlink" href="#multiple-amx-binaries-on-path" title="Permanent link">&para;</a></h3>
-<p><code>amx doctor</code> reports every <code>amx</code> it finds. Usually this means one is in your global pip
+<p><code>/doctor</code> reports every <code>amx</code> it finds. Usually this means one is in your global pip
 install and another is in a project venv. Pick one and uninstall the other, or use a
 venv consistently.</p>
 <h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
@@ -780,7 +780,7 @@ falls back to inline secrets).</p>
 <h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
 <h3 id="run-failed-with-llm-unreachable"><code>/run</code> failed with "LLM unreachable"<a class="headerlink" href="#run-failed-with-llm-unreachable" title="Permanent link">&para;</a></h3>
 <p><code>/analyze /run</code> tests the active LLM before profiling any asset and stops if the
-model/profile is unreachable or deactivated. Run <code>amx doctor</code> — it'll tell you whether
+model/profile is unreachable or deactivated. Run <code>/doctor</code> — it'll tell you whether
 the API key is invalid, the endpoint is unreachable, or the model is deactivated.</p>
 <h3 id="run-returned-0-visible-characters-and-used-all-output-tokens"><code>/run</code> returned 0 visible characters and used all output tokens<a class="headerlink" href="#run-returned-0-visible-characters-and-used-all-output-tokens" title="Permanent link">&para;</a></h3>
 <p>This is the reasoning-route token-budget exhaustion message. The model burned the whole

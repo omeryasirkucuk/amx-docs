@@ -676,7 +676,9 @@ the most useful patterns.</p>
 </ul>
 <h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
 <h3 id="1-override-the-config-dir-for-an-isolated-run">1. Override the config dir for an isolated run<a class="headerlink" href="#1-override-the-config-dir-for-an-isolated-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span>/tmp/amx-test<span class="w"> </span>amx<span class="w"> </span>/setup
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span>/tmp/amx-test<span class="w"> </span>amx
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># inside the REPL:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># &gt; /setup</span>
 </span></code></pre></div>
 <p>The wizard creates <code>/tmp/amx-test/config.yml</code> instead of touching <code>~/.amx</code>. Useful for:
 running AMX inside a sandbox; trying a clean config without losing your daily one;
@@ -685,7 +687,7 @@ running CI tests that mustn't pollute the dev machine.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DB_PASSWORD</span><span class="s2">&quot;</span><span class="w">           </span><span class="c1"># CI secret</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPENAI_API_KEY</span><span class="s2">&quot;</span><span class="w">         </span><span class="c1"># CI secret</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>amx<span class="w"> </span>/run<span class="w"> </span>sales<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>sales<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
 </span></code></pre></div>
 <p>With these env vars set, the YAML can ship <code>password: ""</code> and <code>api_key: ""</code> (no secrets
 on disk); AMX picks the values up from env at session start.</p>
@@ -693,11 +695,13 @@ on disk); AMX picks the values up from env at session start.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_BASE</span><span class="o">=</span><span class="s2">&quot;https://my-azure-openai.openai.azure.com/&quot;</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$AZURE_OPENAI_KEY</span><span class="s2">&quot;</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>amx<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt;<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
 </span></code></pre></div>
 <p>The OpenAI provider transparently switches to Azure routing.</p>
 <h3 id="4-verbose-logging-without-changing-the-yaml">4. Verbose logging without changing the YAML<a class="headerlink" href="#4-verbose-logging-without-changing-the-yaml" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span>amx<span class="w"> </span>/run<span class="w"> </span>sales.customer
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span>amx
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># inside the REPL:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># &gt; /run sales.customer</span>
 </span></code></pre></div>
 <p>Equivalent to passing <code>--debug</code> to every command in the session.</p>
 <h2 id="variable-reference">Variable reference<a class="headerlink" href="#variable-reference" title="Permanent link">&para;</a></h2>
@@ -916,7 +920,7 @@ default.</p>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_PASSWORD</span><span class="s2">&quot;</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_OPENAI_KEY</span><span class="s2">&quot;</span>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>amx<span class="w"> </span>/run<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
 </span></code></pre></div>
 <h3 id="one-off-scratch-profile-in-a-temp-dir">One-off scratch profile in a temp dir<a class="headerlink" href="#one-off-scratch-profile-in-a-temp-dir" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="w"> </span>amx
@@ -929,12 +933,12 @@ default.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.corp:8080<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">REQUESTS_CA_BUNDLE</span><span class="o">=</span>/etc/ssl/corp-bundle.pem<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>amx<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&gt;<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
 </span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /config show --include-env</code> — pretty-prints the resolved values, marking which came from env (<code>&lt;- env: OPENAI_API_KEY</code>).</li>
-<li><code>&gt; amx doctor</code> — verifies the env-derived secrets actually authenticate.</li>
+<li><code>&gt; /doctor</code> — verifies the env-derived secrets actually authenticate.</li>
 <li><code>&gt; /db connect</code> — runs a real round-trip with the resolved credentials.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

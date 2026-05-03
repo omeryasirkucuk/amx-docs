@@ -667,7 +667,7 @@ and the port is <code>8443</code>.</p>
 <ol>
 <li><code>&gt; /connect</code> — server version + latency. ClickHouse usually returns under ~100 ms; sustained higher values often mean the load balancer is in a different region from the client.</li>
 <li><code>&gt; /db inspect</code> — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.</li>
-<li><code>&gt; amx doctor</code> — driver loaded, profile reachable, write-back grants confirmed.</li>
+<li><code>&gt; /doctor</code> — driver loaded, profile reachable, write-back grants confirmed.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

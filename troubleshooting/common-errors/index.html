@@ -827,7 +827,7 @@ running. AMX refuses to load it rather than risk silently mangling.</p>
 <h2 id="connection-errors">Connection errors<a class="headerlink" href="#connection-errors" title="Permanent link">&para;</a></h2>
 <h3 id="psycopg2operationalerror-could-not-connect-to-server"><code>psycopg2.OperationalError: could not connect to server</code><a class="headerlink" href="#psycopg2operationalerror-could-not-connect-to-server" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Postgres unreachable. Wrong host / port / firewall / not running.</p>
-<p><strong>Fix:</strong> <code>amx doctor</code> confirms the active profile is the one you think it is. Verify with
+<p><strong>Fix:</strong> <code>/doctor</code> confirms the active profile is the one you think it is. Verify with
 <code>psql -h &lt;host&gt; -p &lt;port&gt; -U &lt;user&gt; -d &lt;database&gt;</code> directly.</p>
 <h3 id="snowflakeconnectorerrorsoperationalerror-250001-could-not-connect-to-snowflake-backend"><code>snowflake.connector.errors.OperationalError: 250001 — Could not connect to Snowflake backend</code><a class="headerlink" href="#snowflakeconnectorerrorsoperationalerror-250001-could-not-connect-to-snowflake-backend" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Wrong account locator, wrong region in the account, or network egress blocked.</p>
@@ -855,7 +855,7 @@ the dataset.</p>
 <h3 id="llm-not-reachable-refusing-to-start-run"><code>LLM not reachable — refusing to start /run</code><a class="headerlink" href="#llm-not-reachable-refusing-to-start-run" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> <code>/analyze /run</code> tests the active LLM <strong>before</strong> profiling any asset. The pre-flight
 failed.</p>
-<p><strong>Fix:</strong> Run <code>amx doctor</code>. Usually it's an invalid API key or a deactivated model.</p>
+<p><strong>Fix:</strong> Run <code>/doctor</code>. Usually it's an invalid API key or a deactivated model.</p>
 <h3 id="model-returned-0-visible-characters-and-used-all-900-output-tokens"><code>Model returned 0 visible characters and used all 900 output tokens</code><a class="headerlink" href="#model-returned-0-visible-characters-and-used-all-900-output-tokens" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Reasoning model burned its output budget on internal thinking.</p>
 <p><strong>Fix:</strong> AMX auto-raises <code>max_tokens</code> to 16384 for recognised reasoning routes. If your
@@ -925,12 +925,16 @@ Local writes still succeeded.</p>
 <p><strong>Fix:</strong> When the backend is back, <code>/db</code> → <code>/history-store</code> → <strong>Flush pending</strong> replays
 the outbox.</p>
 <h2 id="when-you-cant-tell-whats-wrong">When you can't tell what's wrong<a class="headerlink" href="#when-you-cant-tell-whats-wrong" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network<span class="w">            </span><span class="c1"># offline check</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">AMX_LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w"> </span>amx<span class="w"> </span>doctor<span class="w">       </span><span class="c1"># verbose</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>tail<span class="w"> </span>-f<span class="w"> </span>~/.amx/logs/amx.log<span class="w">          </span><span class="c1"># live log</span>
+<p>Inside the AMX REPL:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /doctor --skip-network             # offline check
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt; /doctor --debug                    # verbose, every probe traced
+</span></code></pre></div>
+<p>Outside the REPL:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>tail<span class="w"> </span>-f<span class="w"> </span>~/.amx/logs/amx.log<span class="w">          </span><span class="c1"># live log</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">AMX_LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w"> </span>amx<span class="w">              </span><span class="c1"># restart AMX with verbose logging</span>
 </span></code></pre></div>
 <p>Then file an issue at <a href="https://github.com/omeryasirkucuk/amx/issues">https://github.com/omeryasirkucuk/amx/issues</a> with the relevant
-log excerpts (redact secrets) and the output of <code>amx --version</code> plus <code>amx doctor</code>.</p>
+log excerpts (redact secrets) and the output of <code>amx --version</code> plus <code>/doctor</code>.</p>
 
 
 
