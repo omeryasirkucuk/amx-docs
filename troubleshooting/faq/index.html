@@ -775,7 +775,7 @@
 <p>The most-asked questions, in roughly the order new users hit them.</p>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
 <h3 id="how-do-i-install-amx">How do I install AMX?<a class="headerlink" href="#how-do-i-install-amx" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <p>That's the only command. The install includes the CLI, the multi-agent runtime, every
 LLM SDK, and every supported database driver.</p>
@@ -791,7 +791,7 @@ Linux without a keychain, secrets fall back to <code>~/.amx/config.yml</code> it
 <code>0o600</code>.</p>
 <h3 id="configschematoonewerror"><code>ConfigSchemaTooNewError</code><a class="headerlink" href="#configschematoonewerror" title="Permanent link">&para;</a></h3>
 <p>Your AMX binary is older than the config schema in <code>~/.amx/config.yml</code>. Upgrade:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <p>If you need to downgrade (e.g. team-wide pin), AMX refuses to load the newer config rather
 than mangling it. Either roll back the schema by hand (delete the keys from the newer

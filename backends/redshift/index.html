@@ -590,7 +590,7 @@ walks through registering a profile (with or without IAM auth), picking a profil
 that fits the cluster, and applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx</code>). The <code>redshift_connector</code> and <code>sqlalchemy-redshift</code> drivers are included by default.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>redshift_connector</code> and <code>sqlalchemy-redshift</code> drivers are included by default.</li>
 <li>A Redshift cluster (Provisioned) or workgroup (Serverless), reachable from the machine running AMX.</li>
 <li>A user (or IAM principal mapped to a Redshift user) with <code>USAGE</code> on the target schema, <code>SELECT</code> on its tables, and <code>COMMENT</code> on the objects you intend to write back to. <code>pg_user</code> style ownership transfers are not required — just <code>COMMENT</code> privileges.</li>
 <li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>

@@ -591,7 +591,7 @@ a profile, deciding between <strong>service name</strong> (modern) and <strong>S
 applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx</code>). The <code>oracledb</code> driver (modern replacement for <code>cx_Oracle</code>) is included by default. AMX uses <strong>thin mode</strong> by default — no Oracle Instant Client install required.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>oracledb</code> driver (modern replacement for <code>cx_Oracle</code>) is included by default. AMX uses <strong>thin mode</strong> by default — no Oracle Instant Client install required.</li>
 <li>An Oracle 12c+ database reachable from the machine running AMX.</li>
 <li>A user with <code>CREATE SESSION</code> and read access to the catalog views (<code>SELECT_CATALOG_ROLE</code> or explicit grants on <code>ALL_TABLES</code>, <code>ALL_TAB_COLUMNS</code>, etc.) and <code>COMMENT ANY TABLE</code> on the schemas you intend to write back to. Read-only is enough for everything except <code>/apply</code>.</li>
 <li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>

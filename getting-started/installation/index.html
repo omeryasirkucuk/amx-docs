@@ -533,7 +533,7 @@
 <p>AMX focuses on metadata inference, not bulk data loading. Populate schemas and tables with
 your own ETL process, then point AMX at that database.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <p>That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
 RAG / search / codebase machinery, and every supported database driver.</p>
@@ -583,7 +583,7 @@ offline quick check.</p>
 <p>Secrets are stored in the OS keychain (macOS Keychain, Windows Credential Manager, Linux
 Secret Service) when available; the YAML stores a reference rather than the secret itself.</p>
 <h2 id="upgrading">Upgrading<a class="headerlink" href="#upgrading" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <p>AMX uses semantic versioning. <code>0.x</code> is best-effort but breaking changes are flagged in the
 <a href="../../changelog/">changelog</a> under <code>BREAKING CHANGE</code>. Hard guarantees on the public Python

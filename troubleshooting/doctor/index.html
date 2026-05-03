@@ -633,7 +633,7 @@ walks through saved profile → CA bundle from environment → <code>tls_no_veri
 first working path.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>✗ DB profile           snow_prod (snowflake)
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  → Missing driver. Install with:
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        pip install amx
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        pip install amx-cli
 </span></code></pre></div>
 <p>Active profile is selected but the driver isn't installed. Run the printed command.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
@@ -648,10 +648,10 @@ first working path.</p>
 <p>Use a venv consistently. <code>which -a amx</code> shows you every binary; uninstall the ones you
 don't want with <code>pip uninstall amx</code> from the offending Python.</p>
 <h3 id="config-schema-too-new"><code>Config schema too new</code><a class="headerlink" href="#config-schema-too-new" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <h3 id="missing-driver"><code>Missing driver</code><a class="headerlink" href="#missing-driver" title="Permanent link">&para;</a></h3>
-<p>Run the exact <code>pip install amx</code> from doctor's output.</p>
+<p>Run the exact <code>pip install amx-cli</code> from doctor's output.</p>
 <h3 id="certificate_verify_failed"><code>CERTIFICATE_VERIFY_FAILED</code><a class="headerlink" href="#certificate_verify_failed" title="Permanent link">&para;</a></h3>
 <p>Backend (usually Databricks) doesn't trust the corporate CA. Set
 <code>tls_trusted_ca_file</code> on the profile, or set <code>AMX_DATABRICKS_TRUSTED_CA_FILE</code>. See

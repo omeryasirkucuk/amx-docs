@@ -601,7 +601,7 @@ picking the right role and warehouse, choosing a profiling mode that won't surpr
 billing, and applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx</code>). The <code>snowflake-connector-python</code> driver is included by default — no extras required.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>snowflake-connector-python</code> driver is included by default — no extras required.</li>
 <li>A Snowflake account with reachable network policy (typical: AMX runs from a workstation or CI runner; whitelist that egress IP).</li>
 <li>A role that can <code>USAGE</code> on the database, <code>USAGE</code> on every target schema, <code>SELECT</code> on the target tables/views, and <code>MODIFY</code> on the schema if you intend to write back comments.</li>
 <li>A warehouse the role can <code>USE</code>. Even tiny X-Small warehouses are enough for <code>metadata</code> and <code>sampled</code> profiling.</li>

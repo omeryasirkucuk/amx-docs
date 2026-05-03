@@ -540,76 +540,76 @@ diverges in profiling syntax or write-back SQL.</p>
 <tr>
 <td><a href="postgresql/">PostgreSQL</a></td>
 <td><code>postgresql</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>COMMENT ON …</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="snowflake/">Snowflake</a></td>
 <td><code>snowflake</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td>Snowflake <code>COMMENT</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="databricks/">Databricks</a></td>
 <td><code>databricks</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>COMMENT ON COLUMN</code> (Unity Catalog)</td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="bigquery/">BigQuery</a></td>
 <td><code>bigquery</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>ALTER … SET OPTIONS</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="mysql/">MySQL / MariaDB</a></td>
 <td><code>mysql</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>ALTER TABLE … COMMENT</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="oracle/">Oracle</a></td>
 <td><code>oracle</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>COMMENT ON COLUMN</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="mssql/">SQL Server</a></td>
 <td><code>mssql</code></td>
-<td><code>pip install amx</code> (+ ODBC Driver 18)</td>
+<td><code>pip install amx-cli</code> (+ ODBC Driver 18)</td>
 <td><code>sp_addextendedproperty</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="redshift/">Redshift</a></td>
 <td><code>redshift</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>COMMENT ON …</code></td>
 <td>✓</td>
 </tr>
 <tr>
 <td><a href="clickhouse/">ClickHouse</a></td>
 <td><code>clickhouse</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>ALTER TABLE … MODIFY COMMENT</code></td>
 <td>✗ (no row-level <code>UPDATE</code>)</td>
 </tr>
 <tr>
 <td><a href="duckdb/">DuckDB</a></td>
 <td><code>duckdb</code></td>
-<td><code>pip install amx</code></td>
+<td><code>pip install amx-cli</code></td>
 <td><code>COMMENT ON COLUMN</code></td>
 <td>✗ (single-writer file)</td>
 </tr>
 </tbody>
 </table>
-<p><code>pip install amx</code> pulls every supported driver — there are no separate extras to manage.</p>
+<p><code>pip install amx-cli</code> pulls every supported driver — there are no separate extras to manage.</p>
 <h2 id="distinctive-object-types-per-backend">Distinctive object types per backend<a class="headerlink" href="#distinctive-object-types-per-backend" title="Permanent link">&para;</a></h2>
 <p>Beyond tables and views, each adapter exposes the object types that are first-class on
 its backend. These are listable via <code>/metadata</code> (and counted by <code>/db inspect</code>); the

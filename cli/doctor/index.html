@@ -562,7 +562,7 @@ looks wrong.</p>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>✗ DB profile           snow_prod (snowflake)
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  → Missing driver. Install with:
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        pip install amx
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>        pip install amx-cli
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>✓ History store        local mode, 247 runs persisted
 </span></code></pre></div>
 <h2 id="interpreting-failures">Interpreting failures<a class="headerlink" href="#interpreting-failures" title="Permanent link">&para;</a></h2>
@@ -581,11 +581,11 @@ looks wrong.</p>
 </tr>
 <tr>
 <td><code>Missing driver</code></td>
-<td>Run the printed <code>pip install amx</code></td>
+<td>Run the printed <code>pip install amx-cli</code></td>
 </tr>
 <tr>
 <td><code>Config schema too new</code></td>
-<td>Upgrade with <code>pip install --upgrade amx</code></td>
+<td>Upgrade with <code>pip install --upgrade amx-cli</code></td>
 </tr>
 <tr>
 <td><code>CERTIFICATE_VERIFY_FAILED</code> (Databricks)</td>
@@ -608,7 +608,7 @@ looks wrong.</p>
 <h2 id="when-to-run-it">When to run it<a class="headerlink" href="#when-to-run-it" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Right after install.</strong> Confirms you have everything the wizard needs.</li>
-<li><strong>After <code>pip install --upgrade amx</code>.</strong> Catches schema bumps and missing extras.</li>
+<li><strong>After <code>pip install --upgrade amx-cli</code>.</strong> Catches schema bumps and missing extras.</li>
 <li><strong>When a <code>/run</code> fails for no obvious reason.</strong> Doctor will tell you whether the LLM is
   reachable, whether the DB is reachable, and whether either changed since the last run.</li>
 <li><strong>In CI.</strong> Run <code>amx doctor --skip-network</code> as a smoke test to confirm the installed
