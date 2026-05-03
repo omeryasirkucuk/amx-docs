@@ -9,6 +9,10 @@
       </svg>
       <span>omeryasirkucuk/amx</span>
     </a>
+    {% if config.extra.version %}
+    <span class="amx-footer__sep">·</span>
+    <a href="{{ '/changelog/' | url }}" class="amx-footer__version" title="Release notes">v{{ config.extra.version }}</a>
+    {% endif %}
     <span class="amx-footer__sep">·</span>
     <a href="{{ '/security/' | url }}">Privacy</a>
     <span class="amx-footer__sep">·</span>
