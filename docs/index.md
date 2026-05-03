@@ -21,6 +21,10 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 **AMX's angle.** Database **+** documentation **+** codebase **+** human review, run together. Drafts in batches with confidence scores, written back as the SQL your warehouse already speaks. Whole-warehouse first-pass in **minutes**, not weeks.
 </div>
 
+<div class="amx-why__ask" markdown>
+**Then `/ask` it.** Open a session and chat with the catalog you just built: *"what joins to `customer`?"*, *"any columns missing descriptions?"*, *"what does `x_legacy_status` mean?"*, *"which tables haven't been touched in 90 days?"*. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.
+</div>
+
 </div>
 
 ![AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)](assets/cli-hero.png){ .amx-hero-img }

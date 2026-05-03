@@ -915,8 +915,14 @@ body, .md-typeset {
   gap: 16px;
   margin: 28px 0;
 }
+.md-typeset .amx-why__ask {
+  /* Span the full row beneath pain + angle, giving /ask its own beat
+     in the narrative arc (problem → angle → outcome). */
+  grid-column: 1 / -1;
+}
 .md-typeset .amx-why__pain,
-.md-typeset .amx-why__angle {
+.md-typeset .amx-why__angle,
+.md-typeset .amx-why__ask {
   border-radius: 10px;
   padding: 20px 22px;
   font-size: 14px;
@@ -949,14 +955,48 @@ body, .md-typeset {
   color: var(--accent);
   letter-spacing: 0.02em;
 }
+
+/* Third box — /ask, emerald accent (third distinct color for the
+   third narrative beat: problem → angle → outcome).
+   Spans the full row beneath the first two via grid-column: 1 / -1. */
+.md-typeset .amx-why__ask {
+  background: rgba(16, 185, 129, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-left: 4px solid #10B981;
+}
+.md-typeset .amx-why__ask strong:first-child {
+  color: #10B981;
+  letter-spacing: 0.02em;
+}
+.md-typeset .amx-why__ask em {
+  font-style: normal;
+  color: var(--text);
+  background: var(--bg-elevated);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__ask {
+  background: rgba(52, 211, 153, 0.08);
+  border-color: rgba(52, 211, 153, 0.25);
+  border-left-color: #34D399;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__ask strong:first-child {
+  color: #34D399;
+}
+
 .md-typeset .amx-why__pain p,
-.md-typeset .amx-why__angle p {
+.md-typeset .amx-why__angle p,
+.md-typeset .amx-why__ask p {
   margin: 0;
 }
 @media (max-width: 768px) {
   .md-typeset .amx-why { grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
   .md-typeset .amx-why__pain,
-  .md-typeset .amx-why__angle { padding: 16px 18px; font-size: 13px; }
+  .md-typeset .amx-why__angle,
+  .md-typeset .amx-why__ask { padding: 16px 18px; font-size: 13px; }
 }
 
 /* ───────────── Hero flow diagram on the home page (above H1) ─────── */
