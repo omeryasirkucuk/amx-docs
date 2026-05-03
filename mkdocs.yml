@@ -18,8 +18,12 @@ theme:
   logo: assets/amx-logo.png
   favicon: assets/favicon.png
   features:
-    - navigation.instant
-    - navigation.instant.progress
+    # navigation.instant intercepts in-page anchor clicks and runs its
+    # own window.scrollTo, which bypasses CSS scroll-margin/padding —
+    # the cause of the "click X, get section above X" bug. Disabled.
+    # Cross-page nav reverts to plain reloads (~50ms slower, no SPA feel)
+    # but in-page anchor jumps now use the browser's native scroll which
+    # honors scroll-padding-top.
     - navigation.tracking
     - navigation.sections
     - navigation.indexes
