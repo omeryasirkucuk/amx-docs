@@ -1087,6 +1087,20 @@ body, .md-typeset {
   vertical-align: -2px;
 }
 
+/* Version badge in the footer — monospaced so it visually pairs with the
+   `amx-cli` install command users have in their head. */
+.amx-footer__version {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  letter-spacing: 0.01em;
+}
+.amx-footer__version:hover {
+  border-color: var(--accent);
+}
+
 /* Hide Material's default footer chrome */
 .md-footer { background: transparent; }
 .md-footer-meta { display: none; }
