@@ -335,31 +335,34 @@ body, .md-typeset {
    driven by the existing __drawer checkbox in <body>. */
 
 @media (max-width: 1024px) {
-  /* Drawer container: fixed, full-height overlay, hidden by default */
+  /* Drawer container: fixed, full-height overlay, hidden by default.
+     `!important` is used here to override Material's stock mobile drawer
+     defaults (`width: 12.1rem`, `left: -12.1rem`, `transform: translateX(0)`),
+     which would otherwise leave the drawer only partially visible because
+     they assume a 12.1rem-wide drawer that uses `left: -12.1rem` to hide and
+     `transform: translateX(12.1rem)` to show. We use a simpler model:
+     fixed at left: 0, width 280px, slide via translateX. */
   .md-sidebar--primary {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    max-width: 85vw;
-    height: 100vh;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    height: 100vh !important;
     z-index: 5;
     border-right: 1px solid var(--border);
-    transform: translateX(-100%);
+    transform: translateX(-100%) !important;
     transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
     background: var(--bg-sidebar);
     overflow-y: auto;
   }
 
-  /* When __drawer is checked (hamburger tapped), slide in */
+  /* OPEN STATE — drawer slides in. Same selector chain Material uses,
+     plus a higher-specificity body[…] variant and a :has() fallback. */
   [data-md-toggle="drawer"]:checked ~ .md-container .md-sidebar--primary,
-  [data-md-toggle="drawer"]:checked ~ .md-overlay + .md-container .md-sidebar--primary {
-    transform: translateX(0);
-  }
-  /* Fallback selector — Material puts the input as a sibling of body chrome */
   body:has(#__drawer:checked) .md-sidebar--primary {
-    transform: translateX(0);
+    transform: translateX(0) !important;
   }
 
   /* Backdrop overlay when drawer is open */
