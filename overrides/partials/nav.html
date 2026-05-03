@@ -1,0 +1,63 @@
+{#-
+  AMX custom left-sidebar nav per spec:
+    [search box]
+    [active page pill]
+    [grouped categories: GROUP HEADER + child links with › chevron]
+    [collapse « handle]
+-#}
+{% import "partials/nav-item.html" as item with context %}
+{% set class = "md-nav md-nav--primary amx-sidebar__nav" %}
+{% if "toc.integrate" in features %}
+  {% set class = class ~ " md-nav--integrated" %}
+{% endif %}
+
+<nav class="{{ class }}" aria-label="{{ lang.t('nav') }}" data-md-level="0">
+
+  {# Mobile drawer label (hidden on desktop, used by Material's drawer toggle) #}
+  <label class="md-nav__title" for="__drawer">
+    <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}"
+       title="{{ config.site_name | e }}"
+       class="md-nav__button md-logo"
+       aria-label="{{ config.site_name }}"
+       data-md-component="logo">
+      {% include "partials/logo.html" %}
+    </a>
+    {{ config.site_name }}
+  </label>
+
+  {# 1) Search box at the top of the sidebar (label triggers Material's search dialog) #}
+  <label class="amx-sidebar__search" for="__search">
+    <svg class="amx-sidebar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"/>
+      <path d="m21 21-4.35-4.35"/>
+    </svg>
+    <span class="amx-sidebar__search-text">Search documentation</span>
+    <kbd class="amx-sidebar__search-kbd">⌘K</kbd>
+  </label>
+
+  {# 2) Active page indicator pill — current section #}
+  <a class="amx-sidebar__current"
+     href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+    </svg>
+    AMX Documentation
+  </a>
+
+  {# 3) The grouped category list — Material's nav rendered with sections #}
+  <ul class="md-nav__list" data-md-scrollfix>
+    {% for nav_item in nav.items %}
+      {% set path = "__nav_" ~ loop.index %}
+      {{ item.render(nav_item, path, 1) }}
+    {% endfor %}
+  </ul>
+
+  {# 4) Collapse handle at bottom #}
+  <button class="amx-sidebar__collapse" aria-label="Collapse sidebar" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="11 17 6 12 11 7"/>
+      <polyline points="18 17 13 12 18 7"/>
+    </svg>
+  </button>
+</nav>

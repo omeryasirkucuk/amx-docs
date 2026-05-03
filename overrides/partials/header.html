@@ -1,5 +1,7 @@
-{# Custom AMX header — replaces Material's default partial.
-   Layout: [logo] [site title] [primary nav]    [search] [theme toggle] [Help▾] [Version▾] [Lang▾] [CTA] #}
+{# Spec header: ONE slim row.
+   [logo] [primary nav]                       [theme toggle icon]
+   No dropdowns. No CTA. No language picker. The real navigation is
+   in the left sidebar. #}
 {% set site_url = config.site_url | default(nav.homepage.url, true) | url %}
 
 <header class="md-header md-header--shadow" data-md-component="header">
@@ -7,7 +9,7 @@
 
     {# Mobile drawer toggle #}
     <label class="md-header__button md-icon" for="__drawer">
-      {% include ".icons/material/menu" ~ ".svg" %}
+      {% include ".icons/material/menu.svg" %}
     </label>
 
     {# Logo #}
@@ -28,7 +30,7 @@
       </div>
     </div>
 
-    {# Primary horizontal nav (mirrors top-level nav items, desktop only) #}
+    {# Primary horizontal nav (desktop only) #}
     <nav class="amx-nav" aria-label="Primary">
       {% for item in nav %}
         {% set is_active = item.active %}
@@ -40,60 +42,13 @@
       {% endfor %}
     </nav>
 
-    {# Search #}
-    {% if "search" in config["plugins"] %}
-      <label class="md-header__button md-icon" for="__search">
-        {% include ".icons/material/magnify.svg" %}
-      </label>
-      {% include "partials/search.html" %}
-    {% endif %}
-
-    {# Right cluster: dropdowns, CTA (no theme toggle — light mode only per spec) #}
+    {# Spacer pushes the toggle to the right #}
     <div class="amx-headright">
-
-      {# Help dropdown #}
-      <div class="amx-dropdown">
-        <button class="amx-dropdown__btn" type="button">
-          Help
-          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
-        </button>
-        <div class="amx-dropdown__menu">
-          <a href="{{ '/troubleshooting/faq/' | url }}">FAQ</a>
-          <a href="{{ '/troubleshooting/doctor/' | url }}">Diagnostics (<code>doctor</code>)</a>
-          <a href="{{ '/troubleshooting/common-errors/' | url }}">Common errors</a>
-          <a href="https://github.com/omeryasirkucuk/amx/issues" target="_blank" rel="noopener">GitHub issues</a>
-        </div>
-      </div>
-
-      {# Version dropdown #}
-      <div class="amx-dropdown">
-        <button class="amx-dropdown__btn" type="button">
-          v0.12
-          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
-        </button>
-        <div class="amx-dropdown__menu">
-          <a href="{{ site_url }}">latest (v0.12.x)</a>
-          <a href="https://github.com/omeryasirkucuk/amx/releases" target="_blank" rel="noopener">All releases</a>
-          <a href="{{ '/changelog/' | url }}">Changelog</a>
-        </div>
-      </div>
-
-      {# Language dropdown #}
-      <div class="amx-dropdown">
-        <button class="amx-dropdown__btn" type="button">
-          EN
-          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
-        </button>
-        <div class="amx-dropdown__menu">
-          <a href="#">English (US)</a>
-        </div>
-      </div>
-
-      {# Primary CTA #}
-      <a href="{{ '/getting-started/installation/' | url }}" class="amx-cta">Install AMX</a>
-
+      {% if config.theme.palette %}
+        {% if not config.theme.palette is mapping %}
+          {% include "partials/palette.html" %}
+        {% endif %}
+      {% endif %}
     </div>
   </nav>
-
-  {# Spec: exactly ONE header row. No tabs strip below. #}
 </header>

@@ -8,31 +8,15 @@
   {% endif %}
 {% endblock %}
 
-{# Add an "amx-home" class to <body> on the home page so CSS can hide the
-   right TOC and adjust layout. #}
-{% block extrahead %}
-  {{ super() }}
-  {% if page and page.is_homepage %}
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        document.body.classList.add('amx-home');
-      });
-    </script>
-  {% endif %}
-{% endblock %}
-
-{# Inject breadcrumb + last-updated above content, "Was this page helpful?"
-   at the end. Both skip the home page. #}
+{# Inject the breadcrumb + last-updated row above the page H1
+   on every non-home page. No feedback widget — spec forbids it. #}
 {% block content %}
   {% include "partials/breadcrumb.html" %}
   {{ super() }}
-  {% if page and not page.is_homepage %}
-    {% include "partials/feedback.html" %}
-  {% endif %}
 {% endblock %}
 
-{# Replace Material's footer + add the floating Ask AI widget. #}
+{# Replace Material's footer with our thin centered single-line footer.
+   No floating widget — spec forbids it. #}
 {% block footer %}
   {% include "partials/footer.html" %}
-  {% include "partials/ask-widget.html" %}
 {% endblock %}

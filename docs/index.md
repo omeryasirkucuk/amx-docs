@@ -1,7 +1,5 @@
 ---
 title: AMX documentation
-hide:
-  - navigation
 ---
 
 <div class="amx-pageintro">

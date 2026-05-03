@@ -1,25 +1,28 @@
 /* =========================================================================
-   AMX docs — built to STRICT spec.
-   Light mode only. White background. Single accent color.
-   Exactly one header bar. Centered 960px content. Sticky right TOC ≥1280px.
-   4-column card grid on desktop. No gradients except the floating Ask AI.
+   AMX docs — built to STRICT three-column spec.
+   - Header: ONE slim row (logo + nav + theme toggle icon only)
+   - Left sidebar: 280px, populated (search + active pill + groups + collapse)
+   - Center content: 720px max
+   - Right TOC: 220px, sticky, ≥1280px only, anchors only
+   - No floating widgets, no feedback widget, no header dropdowns/CTA
    ========================================================================= */
 
 :root {
-  --bg:            #FFFFFF;
-  --text:          #1B1F23;
-  --text-muted:    #5C6370;
-  --border:        #E5E7EB;
-  --bg-hover:      #FAFAFA;
-  --accent:        #2563EB;
-  --accent-dark:   #1D4ED8;
-  --accent-soft:   #EFF4FF;
+  --bg:           #FFFFFF;
+  --bg-sidebar:   #FFFFFF;
+  --bg-hover:     #F5F5F5;
+  --text:         #1B1F23;
+  --text-muted:   #5C6370;
+  --text-faint:   #8B919A;
+  --border:       #E5E7EB;
+  --accent:       #2563EB;
+  --accent-dark:  #1D4ED8;
+  --accent-soft:  #EFF4FF;
 
-  --font-text:     "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-mono:     "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-text:    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
-/* Override Material's CSS variables */
 [data-md-color-scheme="default"] {
   --md-default-bg-color:         var(--bg);
   --md-default-fg-color:         var(--text);
@@ -34,9 +37,18 @@
   --md-code-fg-color:            var(--text);
 }
 
-/* ───────────── Base ───────────── */
+/* Force the body and main background to white even if the system asks
+   for dark — design is light-only per spec. */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: var(--bg) !important;
+  --md-default-fg-color: var(--text) !important;
+  --md-typeset-color: var(--text) !important;
+  --md-typeset-a-color: var(--accent) !important;
+}
 
 html, body { background: var(--bg); }
+
+/* ───────────── Base typography ───────────── */
 
 body, .md-typeset {
   font-family: var(--font-text);
@@ -45,14 +57,12 @@ body, .md-typeset {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
-
 .md-typeset p,
 .md-typeset li {
   color: var(--text);
   font-size: 16px;
   line-height: 1.6;
 }
-
 .md-typeset a {
   color: var(--accent);
   text-decoration: none;
@@ -77,9 +87,7 @@ body, .md-typeset {
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--text);
-  margin: 64px 0 24px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
+  margin: 56px 0 24px;
 }
 .md-typeset h2:first-of-type { margin-top: 32px; }
 .md-typeset h3 {
@@ -94,10 +102,8 @@ body, .md-typeset {
   color: var(--text);
   margin: 24px 0 8px;
 }
-
-/* Hover-only header anchor link */
 .md-typeset .headerlink {
-  color: var(--text-muted) !important;
+  color: var(--text-faint) !important;
   opacity: 0;
   margin-left: 8px;
   transition: opacity 150ms ease;
@@ -106,35 +112,34 @@ body, .md-typeset {
 .md-typeset h3:hover .headerlink,
 .md-typeset h4:hover .headerlink { opacity: 1; }
 
-/* ───────────── Header (the ONLY nav row) ───────────── */
+/* ───────────── Header — one slim row, ~56px ───────────── */
 
 .md-header {
   background: var(--bg);
   color: var(--text);
   border-bottom: 1px solid var(--border);
   box-shadow: none;
-  height: 60px;
+  height: 56px;
   position: sticky;
 }
 .md-header__inner {
-  height: 60px;
-  padding: 0 32px;
+  height: 56px;
+  padding: 0 24px;
   max-width: none;
   display: flex;
   align-items: center;
 }
 .md-header__title {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   color: var(--text);
-  margin-left: 8px;
+  margin-left: 4px;
   flex-shrink: 0;
 }
 .md-header__button.md-logo { padding: 6px; }
 .md-header__button.md-logo img,
-.md-header__button.md-logo svg { height: 32px; width: 32px; }
+.md-header__button.md-logo svg { height: 28px; width: 28px; }
 
-/* Inline primary nav */
 .amx-nav {
   display: flex;
   align-items: center;
@@ -154,165 +159,314 @@ body, .md-typeset {
 .amx-nav a.active { color: var(--accent); }
 @media (max-width: 1024px) { .amx-nav { display: none; } }
 
-/* Right cluster of header */
 .amx-headright {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   margin-left: auto;
 }
 
-.amx-dropdown { position: relative; }
-.amx-dropdown__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
+/* Theme toggle — strip Material's button styling so it's just the icon */
+.amx-headright .md-header__button {
   background: transparent;
   border: none;
-  font: inherit;
-  font-size: 13px;
-  font-weight: 500;
+  padding: 8px;
   color: var(--text-muted);
-  cursor: pointer;
-  padding: 6px 0;
-  transition: color 150ms ease;
-}
-.amx-dropdown__btn:hover { color: var(--accent); }
-.amx-dropdown__btn .chevron { width: 10px; height: 10px; opacity: 0.7; }
-.amx-dropdown__menu {
-  position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
-  min-width: 200px;
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-  padding: 6px;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(-4px);
-  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms;
-  z-index: 50;
-}
-.amx-dropdown:hover .amx-dropdown__menu,
-.amx-dropdown:focus-within .amx-dropdown__menu {
-  opacity: 1; visibility: visible; transform: translateY(0);
-}
-.amx-dropdown__menu a {
-  display: block;
-  padding: 8px 12px;
-  font-size: 13px;
-  color: var(--text);
-  text-decoration: none;
-  border-radius: 4px;
-}
-.amx-dropdown__menu a:hover {
-  background: var(--bg-hover);
-  color: var(--accent);
-}
-
-.amx-cta {
-  display: inline-flex;
-  align-items: center;
-  height: 36px;
-  padding: 0 16px;
-  background: var(--accent);
-  color: #FFFFFF !important;
-  font-size: 13px;
-  font-weight: 600;
   border-radius: 6px;
-  text-decoration: none !important;
-  transition: background 150ms ease;
-  border: none;
+  transition: color 150ms ease, background 150ms ease;
 }
-.amx-cta:hover { background: var(--accent-dark); }
+.amx-headright .md-header__button:hover {
+  color: var(--accent);
+  background: var(--bg-hover);
+}
+.amx-headright .md-header__button svg { width: 18px; height: 18px; }
 
-/* Hide Material's internal search trigger button if duplicate */
-.md-header__option { padding: 0; }
+/* Hide Material's header search trigger and source repo button — search lives in sidebar */
+.md-header__option { display: none; }
+.md-header__source { display: none; }
+.md-header form[name="search"] { display: none; }
+[for="__search"].md-icon.md-header__button { display: none; }
 
-/* ───────────── Main content layout ───────────── */
+/* ───────────── Three-column grid layout ───────────── */
 
-.md-grid { max-width: 1280px; margin: 0 auto; }
+.md-grid { max-width: none; margin: 0 auto; }
 .md-main { background: var(--bg); }
-.md-main__inner { margin: 0 auto; }
+.md-main__inner {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 280px 1fr 220px;
+  max-width: none;
+}
+@media (max-width: 1280px) {
+  .md-main__inner { grid-template-columns: 280px 1fr; }
+}
+@media (max-width: 1024px) {
+  .md-main__inner { grid-template-columns: 1fr; }
+}
+
+/* ───────────── Center content column — 720px max, padding 32px ───────────── */
+
 .md-content {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0;
+  max-width: none;
+  margin: 0;
+  background: var(--bg);
 }
 .md-content__inner {
+  max-width: 720px;
+  margin: 0 auto;
   padding: 32px 32px 64px;
-  margin: 0;
-  max-width: 960px;
 }
 .md-content__inner::before { display: none; }
-
-/* Hide the "Edit this page" pencil */
 .md-content__button { display: none !important; }
 
 /* ───────────── Left sidebar ───────────── */
 
 .md-sidebar--primary {
-  background: var(--bg);
-  width: 12.1rem;
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  width: 280px;
+  padding: 0;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+  overflow: hidden;
 }
-.md-sidebar--primary .md-sidebar__scrollwrap { background: var(--bg); }
-.md-nav__title {
-  color: var(--text-muted);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 24px 12px 8px;
-  background: var(--bg);
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  background: var(--bg-sidebar);
+  margin: 0;
+  height: 100%;
+  overflow-y: auto;
 }
-.md-nav__link {
+.md-sidebar--primary .md-sidebar__inner {
+  padding: 0;
   font-size: 14px;
-  color: var(--text);
-  padding: 6px 12px;
-  border-radius: 6px;
-  transition: background 150ms ease, color 150ms ease;
 }
-.md-nav__link:hover {
+
+/* Hide the mobile drawer label on desktop */
+.md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] {
+  display: none;
+}
+@media (max-width: 1024px) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] { display: flex; }
+}
+
+.amx-sidebar__nav {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Search box (label-styled to look like an input) */
+.amx-sidebar__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 16px 8px;
+  padding: 0 12px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.amx-sidebar__search:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+.amx-sidebar__search-icon {
+  width: 14px; height: 14px;
+  color: var(--text-faint);
+  flex-shrink: 0;
+}
+.amx-sidebar__search-text {
+  flex: 1;
+  font-size: 13px;
+  color: var(--text-faint);
+}
+.amx-sidebar__search-kbd {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
+
+/* Active page indicator pill */
+.amx-sidebar__current {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 16px 16px;
+  padding: 0 12px;
+  height: 36px;
+  border-radius: 6px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: background 150ms ease;
+}
+.amx-sidebar__current:hover { background: #DBE7FF; }
+.amx-sidebar__current svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+/* Nav list — wraps the categorized groups */
+.amx-sidebar__nav .md-nav__list {
+  flex: 1;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+.amx-sidebar__nav .md-nav__item { padding: 0; margin: 0; }
+
+/* Top-level items rendered as section groups (uppercase headers) */
+.amx-sidebar__nav > .md-nav__list > .md-nav__item--section {
+  margin-top: 24px;
+}
+.amx-sidebar__nav > .md-nav__list > .md-nav__item--section:first-child {
+  margin-top: 0;
+}
+
+/* Hide the outer collapse-toggle label — duplicate of the nested section title.
+   The nested .md-nav__title is what we style as the group header. */
+.amx-sidebar__nav > .md-nav__list > .md-nav__item--section > label.md-nav__link {
+  display: none;
+}
+
+/* Also hide the active "Home" page entry — already represented by the
+   "AMX Documentation" pill above. */
+.amx-sidebar__nav > .md-nav__list > .md-nav__item:not(.md-nav__item--section):first-child {
+  display: none;
+}
+.amx-sidebar__nav .md-nav__title {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 8px 28px;
+  background: transparent;
+  border: none;
+  margin: 0;
+  text-shadow: none;
+}
+.amx-sidebar__nav .md-nav__title[for] { cursor: pointer; }
+
+/* Child links — flex layout for chevron on the right */
+.amx-sidebar__nav .md-nav .md-nav__list .md-nav__link,
+.amx-sidebar__nav > .md-nav__list > .md-nav__item:not(.md-nav__item--section) > .md-nav__link {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 28px;
+  margin: 0;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  text-decoration: none;
+  position: relative;
+  transition: background 100ms ease, color 100ms ease;
+}
+.amx-sidebar__nav .md-nav .md-nav__list .md-nav__link::after,
+.amx-sidebar__nav > .md-nav__list > .md-nav__item:not(.md-nav__item--section) > .md-nav__link::after {
+  content: "›";
+  margin-left: auto;
+  color: var(--text-faint);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+}
+.amx-sidebar__nav .md-nav .md-nav__list .md-nav__link:hover,
+.amx-sidebar__nav > .md-nav__list > .md-nav__item:not(.md-nav__item--section) > .md-nav__link:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+.amx-sidebar__nav .md-nav__link--active,
+.amx-sidebar__nav .md-nav__item--active > .md-nav__link {
+  background: var(--accent-soft) !important;
+  color: var(--accent) !important;
+  font-weight: 500;
+}
+
+/* Hide the recursive nav inside section items if it's collapsing controls */
+.amx-sidebar__nav .md-nav__icon { display: none; }
+.amx-sidebar__nav .md-nav--secondary { display: none; }
+.amx-sidebar__nav input[name^="__nav_"] { display: none; }
+
+/* Nested nav inside a section — flatten visually */
+.amx-sidebar__nav .md-nav__item--section > .md-nav {
+  position: static;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  height: auto;
+}
+.amx-sidebar__nav .md-nav__item--section > .md-nav > .md-nav__title {
+  display: none;
+}
+
+/* Collapse handle at bottom */
+.amx-sidebar__collapse {
+  margin: 16px 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease;
+  align-self: flex-start;
+}
+.amx-sidebar__collapse:hover {
   background: var(--bg-hover);
   color: var(--accent);
+  border-color: var(--accent);
 }
-.md-nav__link--active,
-.md-nav__item--active > .md-nav__link {
-  background: transparent;
-  color: var(--accent) !important;
-  font-weight: 600;
-}
+.amx-sidebar__collapse svg { width: 14px; height: 14px; }
 
-/* ───────────── Right TOC ("On this page") — sticky ≥1280px, 200px wide ───────────── */
+/* ───────────── Right TOC — 220px, sticky, ≥1280px only ───────────── */
 
-@media (min-width: 1280px) {
+@media (min-width: 1281px) {
   .md-sidebar--secondary {
     display: block;
-    width: 200px;
-    padding: 32px 0 32px 24px;
+    width: 220px;
+    padding: 32px 16px 32px 24px;
     position: sticky;
     top: 80px;
     align-self: start;
+    background: var(--bg);
   }
 }
-@media (max-width: 1279px) {
-  .md-sidebar--secondary { display: none; }
+@media (max-width: 1280px) {
+  .md-sidebar--secondary { display: none !important; }
 }
 
 .md-sidebar--secondary .md-sidebar__scrollwrap { background: var(--bg); }
 .md-sidebar--secondary .md-nav__title {
-  color: var(--text-muted);
+  color: var(--text-faint);
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 0 0 12px 12px;
   border-bottom: none;
   background: transparent;
+  display: block;
 }
-.md-sidebar--secondary .md-nav__list { padding-left: 0; }
+.md-sidebar--secondary .md-nav__list { padding-left: 0; list-style: none; margin: 0; }
 .md-sidebar--secondary .md-nav__item { padding: 0; }
 .md-sidebar--secondary .md-nav__link {
   font-size: 13px;
@@ -322,7 +476,11 @@ body, .md-typeset {
   border-left: 2px solid transparent;
   border-radius: 0;
   font-weight: 400;
+  display: block;
+  height: auto;
+  text-decoration: none;
 }
+.md-sidebar--secondary .md-nav__link::after { content: none; }
 .md-sidebar--secondary .md-nav__link:hover {
   background: transparent;
   color: var(--accent);
@@ -333,18 +491,6 @@ body, .md-typeset {
   font-weight: 500;
   background: transparent;
 }
-
-/* ───────────── Search ───────────── */
-
-.md-search__form {
-  background: var(--bg-hover);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  height: 36px;
-}
-.md-search__form:hover { border-color: var(--accent); }
-.md-search__input { font-size: 13px; padding-left: 36px; color: var(--text); }
-.md-search__icon[for="__search"] { left: 10px; opacity: 0.6; }
 
 /* ───────────── Buttons in body ───────────── */
 
@@ -445,8 +591,6 @@ body, .md-typeset {
 .md-typeset .admonition-title::before,
 .md-typeset summary::before {
   background-color: var(--accent) !important;
-  -webkit-mask-position: center !important;
-  mask-position: center !important;
 }
 .md-typeset .admonition > p,
 .md-typeset details > p {
@@ -454,23 +598,18 @@ body, .md-typeset {
   padding: 0 0 12px;
 }
 
-/* ───────────── Card grid — STRICT 4-column on desktop ───────────── */
+/* ───────────── Card grid — 2 columns on desktop ───────────── */
 
-.md-typeset .grid.cards {
-  margin: 24px 0;
-}
+.md-typeset .grid.cards { margin: 24px 0; }
 .md-typeset .grid.cards > ul {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
   list-style: none;
   padding: 0;
   margin: 0;
 }
-@media (max-width: 1024px) {
-  .md-typeset .grid.cards > ul { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .md-typeset .grid.cards > ul { grid-template-columns: 1fr; }
 }
 
@@ -485,7 +624,6 @@ body, .md-typeset {
 }
 .md-typeset .grid.cards > ul > li:hover {
   background: var(--bg-hover);
-  border-color: var(--border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transform: none;
 }
@@ -503,10 +641,6 @@ body, .md-typeset {
   color: inherit !important;
   text-decoration: none !important;
 }
-.md-typeset .grid.cards > ul > li > p:first-child a:hover,
-.md-typeset .grid.cards > ul > li > h3 a:hover {
-  text-decoration: none !important;
-}
 .md-typeset .grid.cards > ul > li > p {
   margin: 0;
   color: var(--text-muted);
@@ -514,8 +648,6 @@ body, .md-typeset {
   line-height: 1.55;
 }
 .md-typeset .grid.cards > ul > li > p:not(:first-child) { margin-top: 8px; }
-/* Hide auto-generated arrow links */
-.md-typeset .grid.cards > ul > li > p:has(a:only-child[href*=":"]):last-child { display: none; }
 
 /* ───────────── Page intro: breadcrumb + last-updated ───────────── */
 
@@ -524,7 +656,7 @@ body, .md-typeset {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  font-size: 13px;
   color: var(--text-muted);
   margin: 0;
 }
@@ -534,71 +666,23 @@ body, .md-typeset {
 }
 .amx-breadcrumb a:hover { color: var(--accent); }
 .amx-breadcrumb__sep { opacity: 0.5; }
+.amx-breadcrumb__home {
+  display: inline-flex; align-items: center;
+}
+.amx-breadcrumb__home svg { width: 14px; height: 14px; }
 .amx-pagemeta {
   font-size: 13px;
-  color: var(--text-muted);
-  opacity: 0.8;
+  color: var(--text-faint);
   margin: 4px 0 24px;
 }
 
-/* ───────────── Feedback widget ───────────── */
-
-.amx-feedback {
-  margin: 64px 0 0;
-  padding: 20px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--bg);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.amx-feedback__title {
-  font-weight: 600;
-  font-size: 14px;
-  color: var(--text);
-  margin: 0;
-}
-.amx-feedback__buttons { display: flex; gap: 8px; }
-.amx-feedback__btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  font-size: 13px;
-  font-weight: 500;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  color: var(--text);
-  cursor: pointer;
-  transition: all 150ms ease;
-  text-decoration: none;
-}
-.amx-feedback__btn:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-.amx-feedback__btn svg { width: 14px; height: 14px; }
-.amx-feedback__sub {
-  width: 100%;
-  margin: 12px 0 0;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-  font-size: 12px;
-  color: var(--text-muted);
-}
-.amx-feedback__sub a { color: var(--accent); text-decoration: none; }
-.amx-feedback__sub a:hover { text-decoration: underline; }
-
-/* ───────────── Footer (thin centered single row) ───────────── */
+/* ───────────── Footer ───────────── */
 
 .amx-footer {
   background: var(--bg);
   padding: 32px 24px;
   text-align: center;
+  border-top: 1px solid var(--border);
 }
 .amx-footer__line {
   font-size: 13px;
@@ -619,36 +703,6 @@ body, .md-typeset {
 .md-footer__title { display: none; }
 .md-footer-nav { display: none !important; }
 
-/* ───────────── Floating Ask AI widget — the only allowed gradient ───────────── */
-
-.amx-ask {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 100;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 48px;
-  padding: 0 16px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 50%, #F97316 100%);
-  color: #FFFFFF !important;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none !important;
-  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.32);
-  transition: transform 150ms ease, box-shadow 150ms ease;
-  border: none;
-  cursor: pointer;
-}
-.amx-ask:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(139, 92, 246, 0.4);
-  color: #FFFFFF !important;
-}
-.amx-ask svg { width: 16px; height: 16px; }
-
 /* ───────────── Misc ───────────── */
 
 .md-typeset hr { border: none; height: 1px; background: var(--border); margin: 32px 0; }
@@ -660,21 +714,10 @@ body, .md-typeset {
   color: var(--text);
 }
 
-/* Force light mode (prevent OS-level scheme overrides) */
-[data-md-color-scheme="slate"] {
-  --md-default-bg-color: var(--bg) !important;
-  --md-default-fg-color: var(--text) !important;
-}
-
-/* ───────────── Responsive tweaks ───────────── */
+/* ───────────── Responsive ───────────── */
 
 @media (max-width: 768px) {
   .md-typeset h1 { font-size: 28px; }
-  .md-typeset h2 { font-size: 20px; margin-top: 48px; }
-  .amx-cta { padding: 0 12px; font-size: 12px; height: 32px; }
-  .amx-headright { gap: 12px; }
-  .amx-dropdown { display: none; }
-  .amx-ask span { display: none; }
-  .amx-ask { padding: 0; width: 48px; justify-content: center; }
+  .md-typeset h2 { font-size: 20px; margin-top: 40px; }
   .md-content__inner { padding: 24px 20px 48px; }
 }
