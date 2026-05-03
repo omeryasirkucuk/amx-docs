@@ -288,51 +288,11 @@ body, .md-typeset {
   .amx-sidebar__nav > label.md-nav__title[for="__drawer"] { display: flex; }
 }
 
-/* Search box (label-styled to look like an input) */
-.amx-sidebar__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 16px 16px 8px;
-  padding: 0 12px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  cursor: pointer;
-  transition: border-color 150ms ease, background 150ms ease;
-  flex-shrink: 0;
-}
-.amx-sidebar__search:hover {
-  border-color: var(--accent);
-  background: var(--bg-hover);
-}
-.amx-sidebar__search-icon {
-  width: 14px; height: 14px;
-  color: var(--text-faint);
-  flex-shrink: 0;
-}
-.amx-sidebar__search-text {
-  flex: 1;
-  font-size: 13px;
-  color: var(--text-faint);
-}
-.amx-sidebar__search-kbd {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text-faint);
-  background: var(--bg-hover);
-  border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 1px 5px;
-  flex-shrink: 0;
-}
-
-/* Active page indicator pill */
+/* Active page indicator pill — first element in the sidebar */
 .amx-sidebar__current {
   display: flex;
   align-items: center;
-  margin: 4px 16px 16px;
+  margin: 16px 16px;
   padding: 0 12px;
   min-height: 36px;
   border-radius: 6px;
@@ -424,29 +384,6 @@ body, .md-typeset {
   text-decoration: none;
 }
 
-/* Collapse handle at bottom */
-.amx-sidebar__collapse {
-  margin: 0 16px 16px;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text-muted);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 150ms ease;
-  align-self: flex-start;
-  flex-shrink: 0;
-}
-.amx-sidebar__collapse:hover {
-  background: var(--bg-hover);
-  color: var(--accent);
-  border-color: var(--accent);
-}
-.amx-sidebar__collapse svg { width: 14px; height: 14px; }
 
 /* ───────────── Right TOC — 220px, sticky, ≥1280px only ───────────── */
 

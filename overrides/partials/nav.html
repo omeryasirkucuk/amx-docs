@@ -6,10 +6,8 @@
   sub-pages. They never duplicate each other.
 
   Layout:
-    [search box]
     [active page pill — the current page; not repeated in the list]
     [grouped sub-pages — all OTHER pages in this section]
-    [collapse «]
 
   - Sections with nested sub-sections (e.g. Reference) render each
     sub-section as a group header with its children indented below.
@@ -51,22 +49,12 @@
     {{ config.site_name }}
   </label>
 
-  {# 3. Search box (label triggers Material's search dialog) #}
-  <label class="amx-sidebar__search" for="__search">
-    <svg class="amx-sidebar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <circle cx="11" cy="11" r="7"/>
-      <path d="m21 21-4.35-4.35"/>
-    </svg>
-    <span class="amx-sidebar__search-text">Search docs</span>
-    <kbd class="amx-sidebar__search-kbd">⌘K</kbd>
-  </label>
-
-  {# 4. Active page indicator pill — current page only #}
+  {# 3. Active page indicator pill — current page only #}
   <a class="amx-sidebar__current" href="{{ page.url | url }}" aria-current="page">
     <span class="amx-sidebar__current-text">{{ page.title }}</span>
   </a>
 
-  {# 5. Grouped sub-pages list. The current page is excluded everywhere. #}
+  {# 4. Grouped sub-pages list. The current page is excluded everywhere. #}
   <div class="amx-sidebar__groups">
     {% if has_sub_sections %}
 
@@ -134,13 +122,6 @@
     {% endif %}
   </div>
 
-  {# 6. Collapse handle at bottom #}
-  <button class="amx-sidebar__collapse" aria-label="Collapse sidebar" type="button">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <polyline points="11 17 6 12 11 7"/>
-      <polyline points="18 17 13 12 18 7"/>
-    </svg>
-  </button>
 </nav>
 
 {% endif %}
