@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block htmltitle %}
-  {% if page and page.title %}
-    <title>{{ page.title | striptags }}</title>
+  {% if page and page.is_homepage %}
+    <title>AMX — Agentic Metadata Extractor</title>
   {% else %}
-    <title>{{ config.site_name }}</title>
+    {{ super() }}
   {% endif %}
 {% endblock %}
 

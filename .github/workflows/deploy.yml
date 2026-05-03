@@ -49,4 +49,5 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy to gh-pages on this repo
-        run: mkdocs gh-deploy --force --message "ci: deploy ${{ github.sha }}"
+        run: |
+          mkdocs gh-deploy --force --message "ci deploy ${{ github.sha }}"
