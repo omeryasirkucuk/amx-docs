@@ -8,7 +8,7 @@ is reachable.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - An OpenAI API key with access to at least one chat-completion model (`gpt-4o`, `gpt-4o-mini`, `o3-mini`, etc.). Get one at [platform.openai.com](https://platform.openai.com/api-keys).
 - A funded OpenAI account or enough free credit. AMX surfaces 429 / quota errors clearly but it cannot mint credits for you.
 - An active database profile (or follow [Quick start](../getting-started/quickstart.md) first).

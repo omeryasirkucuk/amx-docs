@@ -10,7 +10,7 @@ The example uses an SAP-style schema (`sap_s6p`) with two tables: `t001` (compan
 and `vbak` (sales document headers). Both ship without column comments.
 
 ```bash
-pip install amx
+pip install amx-cli
 amx
 ```
 

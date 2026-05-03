@@ -7,7 +7,7 @@ The most-asked questions, in roughly the order new users hit them.
 ### How do I install AMX?
 
 ```bash
-pip install amx
+pip install amx-cli
 ```
 
 That's the only command. The install includes the CLI, the multi-agent runtime, every
@@ -33,7 +33,7 @@ Linux without a keychain, secrets fall back to `~/.amx/config.yml` itself with m
 Your AMX binary is older than the config schema in `~/.amx/config.yml`. Upgrade:
 
 ```bash
-pip install --upgrade amx
+pip install --upgrade amx-cli
 ```
 
 If you need to downgrade (e.g. team-wide pin), AMX refuses to load the newer config rather

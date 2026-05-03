@@ -8,7 +8,7 @@ that fits the cluster, and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `redshift_connector` and `sqlalchemy-redshift` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `redshift_connector` and `sqlalchemy-redshift` drivers are included by default.
 - A Redshift cluster (Provisioned) or workgroup (Serverless), reachable from the machine running AMX.
 - A user (or IAM principal mapped to a Redshift user) with `USAGE` on the target schema, `SELECT` on its tables, and `COMMENT` on the objects you intend to write back to. `pg_user` style ownership transfers are not required — just `COMMENT` privileges.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).

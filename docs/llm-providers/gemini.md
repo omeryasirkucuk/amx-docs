@@ -9,7 +9,7 @@ is reachable.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - A Google AI Studio API key. Get one at [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey).
 - A funded Google Cloud account (for Vertex AI quota beyond the free Gemini API tier) OR enough free-tier requests for prototyping.
 - An active database profile (or follow [Quick start](../getting-started/quickstart.md) first).

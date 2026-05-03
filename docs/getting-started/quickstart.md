@@ -6,7 +6,7 @@ one database and one LLM, with a generated description ready to write back to th
 ## 1. Install
 
 ```bash
-pip install amx
+pip install amx-cli
 ```
 
 ## 2. Open the interactive session

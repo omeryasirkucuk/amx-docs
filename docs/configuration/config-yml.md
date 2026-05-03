@@ -8,7 +8,7 @@ performs on the file under the hood.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - A text editor and basic YAML familiarity.
 
 ## Where the file lives
@@ -247,7 +247,7 @@ history_store_schema: AMX
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `ConfigSchemaTooNewError: file is schema_version 8, this AMX is at 7` | YAML written by a newer AMX version | Upgrade AMX (`pip install -U amx`) or downgrade the file |
+| `ConfigSchemaTooNewError: file is schema_version 8, this AMX is at 7` | YAML written by a newer AMX version | Upgrade AMX (`pip install -U amx-cli`) or downgrade the file |
 | Secrets visible in plain text | `keyring://` resolution failed (no OS keychain available) | Either install a keychain backend (`secretstorage` on Linux) or accept plaintext + `chmod 600 ~/.amx/config.yml` |
 | `unknown field 'foo' in profile 'bar'` | Hand-edit added a typo | Run `> /config validate` to surface the offending key |
 | Edits don't take effect | AMX caches at start; `/config reload` not run | `> /config reload` (or restart AMX) |

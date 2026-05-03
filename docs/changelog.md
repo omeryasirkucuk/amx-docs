@@ -73,7 +73,7 @@ don't match anything print `Unknown command: /asl. Type /help.` like every other
 
 ## Following along
 
-- `pip install --upgrade amx` to update.
+- `pip install --upgrade amx-cli` to update.
 - The full changelog is in the [AMX repo CHANGELOG](https://github.com/omeryasirkucuk/amx/blob/main/CHANGELOG.md).
 - Subscribe to [GitHub Releases](https://github.com/omeryasirkucuk/amx/releases) for tag
   notifications.

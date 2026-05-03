@@ -14,7 +14,7 @@ review before anything lands in the live database.
 
 !!! tip
     AMX supports 10 database backends and 7 LLM providers. The fastest way to evaluate
-    is `pip install amx`, then run `amx` and walk through the `/setup`
+    is `pip install amx-cli`, then run `amx` and walk through the `/setup`
     wizard. Five minutes from install to your first reviewed description.
 
 ## Try AMX

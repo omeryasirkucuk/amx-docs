@@ -8,7 +8,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `databricks-sql-connector` driver is included by default.
+- AMX installed (`pip install amx-cli`). The `databricks-sql-connector` driver is included by default.
 - A Databricks workspace with Unity Catalog enabled. (Hive-metastore-only workspaces are listable but cannot accept comment write-back via the SQL connector.)
 - A running SQL warehouse — Serverless or Pro both work. Note its **HTTP path** (visible under "Connection details" on the warehouse page).
 - A personal access token (PAT) for the workspace user — User Settings → Developer → Access tokens. Service-principal tokens work too.

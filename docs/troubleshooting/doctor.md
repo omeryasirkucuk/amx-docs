@@ -57,7 +57,7 @@ first working path.
 ```text
 ✗ DB profile           snow_prod (snowflake)
   → Missing driver. Install with:
-        pip install amx
+        pip install amx-cli
 ```
 
 Active profile is selected but the driver isn't installed. Run the printed command.
@@ -85,12 +85,12 @@ don't want with `pip uninstall amx` from the offending Python.
 ### `Config schema too new`
 
 ```bash
-pip install --upgrade amx
+pip install --upgrade amx-cli
 ```
 
 ### `Missing driver`
 
-Run the exact `pip install amx` from doctor's output.
+Run the exact `pip install amx-cli` from doctor's output.
 
 ### `CERTIFICATE_VERIFY_FAILED`
 

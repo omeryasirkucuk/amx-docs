@@ -9,7 +9,7 @@ without an unbounded byte scan.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `google-cloud-bigquery` and `sqlalchemy-bigquery` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `google-cloud-bigquery` and `sqlalchemy-bigquery` drivers are included by default.
 - A GCP project with the BigQuery API enabled.
 - One of:
     - **ADC (recommended for laptops / GKE / Cloud Run)** — `gcloud auth application-default login` already run, OR a workload-identity binding in place.

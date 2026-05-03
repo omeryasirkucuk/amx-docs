@@ -7,7 +7,7 @@ shortcuts that make day-to-day use fast.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - A terminal that supports ANSI colors (any modern terminal is fine).
 
 ## Step-by-step

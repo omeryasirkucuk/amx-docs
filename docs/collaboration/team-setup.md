@@ -9,7 +9,7 @@ team members, and verifying everyone sees the same history.
 
 ## Prerequisites
 
-- AMX installed on every team member's machine (`pip install amx`).
+- AMX installed on every team member's machine (`pip install amx-cli`).
 - A database where the audit table can live. PostgreSQL is the recommended host
   (it supports the row-level UPDATE the audit table needs); MySQL, SQL Server,
   Snowflake, BigQuery, Databricks, and Redshift also work. ClickHouse and DuckDB do

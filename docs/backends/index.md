@@ -20,18 +20,18 @@ Use this short decision tree before you reach for any specific page:
 
 | Backend | Config (`backend`) | Install | Comment write-back | Shared history store |
 |---|---|---|---|---|
-| [PostgreSQL](postgresql.md) | `postgresql` | `pip install amx` | `COMMENT ON …` | ✓ |
-| [Snowflake](snowflake.md) | `snowflake` | `pip install amx` | Snowflake `COMMENT` | ✓ |
-| [Databricks](databricks.md) | `databricks` | `pip install amx` | `COMMENT ON COLUMN` (Unity Catalog) | ✓ |
-| [BigQuery](bigquery.md) | `bigquery` | `pip install amx` | `ALTER … SET OPTIONS` | ✓ |
-| [MySQL / MariaDB](mysql.md) | `mysql` | `pip install amx` | `ALTER TABLE … COMMENT` | ✓ |
-| [Oracle](oracle.md) | `oracle` | `pip install amx` | `COMMENT ON COLUMN` | ✓ |
-| [SQL Server](mssql.md) | `mssql` | `pip install amx` (+ ODBC Driver 18) | `sp_addextendedproperty` | ✓ |
-| [Redshift](redshift.md) | `redshift` | `pip install amx` | `COMMENT ON …` | ✓ |
-| [ClickHouse](clickhouse.md) | `clickhouse` | `pip install amx` | `ALTER TABLE … MODIFY COMMENT` | ✗ (no row-level `UPDATE`) |
-| [DuckDB](duckdb.md) | `duckdb` | `pip install amx` | `COMMENT ON COLUMN` | ✗ (single-writer file) |
+| [PostgreSQL](postgresql.md) | `postgresql` | `pip install amx-cli` | `COMMENT ON …` | ✓ |
+| [Snowflake](snowflake.md) | `snowflake` | `pip install amx-cli` | Snowflake `COMMENT` | ✓ |
+| [Databricks](databricks.md) | `databricks` | `pip install amx-cli` | `COMMENT ON COLUMN` (Unity Catalog) | ✓ |
+| [BigQuery](bigquery.md) | `bigquery` | `pip install amx-cli` | `ALTER … SET OPTIONS` | ✓ |
+| [MySQL / MariaDB](mysql.md) | `mysql` | `pip install amx-cli` | `ALTER TABLE … COMMENT` | ✓ |
+| [Oracle](oracle.md) | `oracle` | `pip install amx-cli` | `COMMENT ON COLUMN` | ✓ |
+| [SQL Server](mssql.md) | `mssql` | `pip install amx-cli` (+ ODBC Driver 18) | `sp_addextendedproperty` | ✓ |
+| [Redshift](redshift.md) | `redshift` | `pip install amx-cli` | `COMMENT ON …` | ✓ |
+| [ClickHouse](clickhouse.md) | `clickhouse` | `pip install amx-cli` | `ALTER TABLE … MODIFY COMMENT` | ✗ (no row-level `UPDATE`) |
+| [DuckDB](duckdb.md) | `duckdb` | `pip install amx-cli` | `COMMENT ON COLUMN` | ✗ (single-writer file) |
 
-`pip install amx` pulls every supported driver — there are no separate extras to manage.
+`pip install amx-cli` pulls every supported driver — there are no separate extras to manage.
 
 ## Distinctive object types per backend
 

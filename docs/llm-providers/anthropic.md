@@ -9,7 +9,7 @@ the profile is reachable.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - An Anthropic API key. Get one at [console.anthropic.com](https://console.anthropic.com/settings/keys).
 - A funded Anthropic account or enough free credit. AMX surfaces 429 / quota errors clearly but it cannot mint credits for you.
 - An active database profile (or follow [Quick start](../getting-started/quickstart.md) first).

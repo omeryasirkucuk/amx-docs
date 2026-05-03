@@ -15,7 +15,7 @@ your own ETL process, then point AMX at that database.
 ## Install
 
 ```bash
-pip install amx
+pip install amx-cli
 ```
 
 That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
@@ -61,7 +61,7 @@ Secret Service) when available; the YAML stores a reference rather than the secr
 ## Upgrading
 
 ```bash
-pip install --upgrade amx
+pip install --upgrade amx-cli
 ```
 
 AMX uses semantic versioning. `0.x` is best-effort but breaking changes are flagged in the

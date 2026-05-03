@@ -8,7 +8,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `psycopg[binary]` driver is included by default — no extra extras required.
+- AMX installed (`pip install amx-cli`). The `psycopg[binary]` driver is included by default — no extra extras required.
 - A PostgreSQL 12+ server reachable from the machine running AMX.
 - A database role with `CONNECT` on the database, `USAGE` on every target schema, `SELECT` on every target table, and `COMMENT` on the objects you intend to write back to. Read-only is enough for everything except `/apply`.
 - An active LLM profile (or skip ahead and add one with `/add-llm-profile`).

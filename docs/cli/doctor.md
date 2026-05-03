@@ -49,7 +49,7 @@ $ amx doctor
 ✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
 ✗ DB profile           snow_prod (snowflake)
   → Missing driver. Install with:
-        pip install amx
+        pip install amx-cli
 ✓ History store        local mode, 247 runs persisted
 ```
 
@@ -60,8 +60,8 @@ Each ✗ comes with a one-line remediation:
 | Symptom | Hint |
 |---|---|
 | Multiple `amx` binaries on PATH | Use a venv consistently; remove the older install |
-| `Missing driver` | Run the printed `pip install amx` |
-| `Config schema too new` | Upgrade with `pip install --upgrade amx` |
+| `Missing driver` | Run the printed `pip install amx-cli` |
+| `Config schema too new` | Upgrade with `pip install --upgrade amx-cli` |
 | `CERTIFICATE_VERIFY_FAILED` (Databricks) | Set a Trusted CA file in the profile or `AMX_DATABRICKS_TRUSTED_CA_FILE` |
 | `LLM models endpoint 401` | API key is wrong or rotated; re-run `/add-llm-profile` |
 | `LLM models endpoint timeout` | Check egress proxy / firewall; retry with `--skip-network` to confirm everything else is fine |
@@ -70,7 +70,7 @@ Each ✗ comes with a one-line remediation:
 ## When to run it
 
 - **Right after install.** Confirms you have everything the wizard needs.
-- **After `pip install --upgrade amx`.** Catches schema bumps and missing extras.
+- **After `pip install --upgrade amx-cli`.** Catches schema bumps and missing extras.
 - **When a `/run` fails for no obvious reason.** Doctor will tell you whether the LLM is
   reachable, whether the DB is reachable, and whether either changed since the last run.
 - **In CI.** Run `amx doctor --skip-network` as a smoke test to confirm the installed

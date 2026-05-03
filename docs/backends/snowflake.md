@@ -8,7 +8,7 @@ billing, and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `snowflake-connector-python` driver is included by default — no extras required.
+- AMX installed (`pip install amx-cli`). The `snowflake-connector-python` driver is included by default — no extras required.
 - A Snowflake account with reachable network policy (typical: AMX runs from a workstation or CI runner; whitelist that egress IP).
 - A role that can `USAGE` on the database, `USAGE` on every target schema, `SELECT` on the target tables/views, and `MODIFY` on the schema if you intend to write back comments.
 - A warehouse the role can `USE`. Even tiny X-Small warehouses are enough for `metadata` and `sampled` profiling.

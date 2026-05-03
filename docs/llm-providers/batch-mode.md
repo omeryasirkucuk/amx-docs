@@ -8,7 +8,7 @@ checking provider dashboards for in-flight status, and reviewing the results.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`).
+- AMX installed (`pip install amx-cli`).
 - An active LLM profile on a provider that supports batch — currently **OpenAI** and **Anthropic**.
 - An active database profile.
 - A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.

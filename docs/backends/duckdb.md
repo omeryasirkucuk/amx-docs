@@ -8,7 +8,7 @@ writes reviewed descriptions back as `COMMENT ON COLUMN` / `COMMENT ON TABLE` st
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `duckdb` driver is included by default.
+- AMX installed (`pip install amx-cli`). The `duckdb` driver is included by default.
 - Either:
     - A `.duckdb` file you own (created by another DuckDB session or downloaded), OR
     - The `:memory:` choice, which spins up an ephemeral instance you populate inline (good for one-off sample sets).

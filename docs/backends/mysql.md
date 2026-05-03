@@ -8,7 +8,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `pymysql` and `cryptography` (for `caching_sha2_password`) drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `pymysql` and `cryptography` (for `caching_sha2_password`) drivers are included by default.
 - A MySQL 8.0+ or MariaDB 10.5+ server reachable from the machine running AMX.
 - A user with `SELECT` on every target schema (`information_schema` access is implicit) and `ALTER` on the schemas you intend to write back to. `PROCESS` is helpful for `SHOW FULL PROCESSLIST` diagnostics but not required.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).

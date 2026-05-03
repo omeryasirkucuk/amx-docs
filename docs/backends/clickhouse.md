@@ -8,7 +8,7 @@ and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx`). The `clickhouse-connect` and `clickhouse-sqlalchemy` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `clickhouse-connect` and `clickhouse-sqlalchemy` drivers are included by default.
 - A ClickHouse 22.8+ server reachable from the machine running AMX.
 - A user with `SELECT` on the target databases (`information_schema` access is implicit) and `ALTER` on the tables you intend to write back to. ClickHouse comments are part of the table DDL, so write-back requires `ALTER`.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).

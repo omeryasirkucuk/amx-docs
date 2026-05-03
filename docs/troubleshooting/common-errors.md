@@ -20,7 +20,7 @@ pip install --upgrade --force-reinstall amx
 **Cause:** `~/.amx/config.yml` was written by a newer AMX than the one currently
 running. AMX refuses to load it rather than risk silently mangling.
 
-**Fix:** `pip install --upgrade amx`.
+**Fix:** `pip install --upgrade amx-cli`.
 
 ### `ConfigSchemaTooOldError`
 

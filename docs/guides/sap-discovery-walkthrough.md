@@ -21,7 +21,7 @@ We have:
 ## Setup
 
 ```bash
-pip install amx
+pip install amx-cli
 amx
 /setup
 ```
