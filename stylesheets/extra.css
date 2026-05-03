@@ -170,13 +170,14 @@ body, .md-typeset {
 }
 .md-header__inner {
   height: 56px;
-  /* Match the page content's max-width + padding so the right-side
-     GitHub button + theme toggle line up vertically with the right
-     TOC ("On this page") column instead of floating off to the far
-     edge of the viewport. */
-  max-width: 1480px;
-  margin: 0 auto;
-  padding: 0 32px;
+  /* Match .md-main__inner geometry so the right-side cluster aligns
+     with the right TOC column below. !important here because the
+     element also carries the .md-grid class — and our own
+     `.md-grid { max-width: none }` rule appears later in this file,
+     winning the cascade by source order without it. */
+  max-width: 1480px !important;
+  margin: 0 auto !important;
+  padding: 0 32px !important;
   display: flex;
   align-items: center;
 }
