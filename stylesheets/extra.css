@@ -763,6 +763,71 @@ body, .md-typeset {
 }
 .md-typeset .grid.cards > ul > li > p:not(:first-child) { margin-top: 8px; }
 
+/* ───────────── About page — avatar + screenshot ───────────── */
+
+.amx-about-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 32px;
+  align-items: start;
+  margin: 8px 0 32px;
+}
+.md-typeset .amx-about-card h2 {
+  margin-top: 0 !important;
+}
+.amx-about-avatar {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 3px solid var(--accent-soft);
+  background: var(--bg-elevated);
+  display: block;
+}
+@media (max-width: 768px) {
+  .amx-about-card {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    text-align: left;
+  }
+  .amx-about-avatar { width: 140px; height: 140px; margin: 0; }
+}
+
+/* About page screenshot — clickable preview, framed like the cli-hero */
+.md-typeset a:has(.amx-about-screenshot) {
+  display: block;
+  text-decoration: none;
+}
+.md-typeset .amx-about-screenshot {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 16px 0 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.md-typeset a:hover .amx-about-screenshot {
+  border-color: var(--accent);
+}
+
+/* ───────────── Hero flow diagram on the home page (above H1) ─────── */
+
+.md-typeset .amx-flow-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 4px auto 28px;
+  background: transparent;
+  /* No border/shadow — it's an ambient explainer, not a card */
+}
+@media (max-width: 768px) {
+  .md-typeset .amx-flow-img {
+    margin: 0 auto 16px;
+  }
+}
+
 /* ───────────── Hero CLI screenshot on the home page ───────────── */
 
 .md-typeset .amx-hero-img {

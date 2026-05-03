@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+        <meta name="description" content="AI-powered CLI that documents undocumented database schemas — pulls evidence from the database, your documentation, and your codebase, drafts column descriptions with confidence scores, then walks you through a human review before writing back.">
       
       
         <meta name="author" content="Omer Yasir Kucuk">
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#amx-documentation" class="md-skip">
+        <a href="#amx-agentic-metadata-extractor" class="md-skip">
           Skip to content
         </a>
       
@@ -370,6 +370,8 @@
          >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="contributing/"
          >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="about/"
+         >About the maintainer</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="security/"
          >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="changelog/"
@@ -488,12 +490,10 @@
 
 
 
-<h1 id="amx-documentation">AMX documentation<a class="headerlink" href="#amx-documentation" title="Permanent link">&para;</a></h1>
-<p>AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data
-analysts, data engineers, and data catalog owners working with undocumented database
-schemas. AMX walks your database, reads your documentation and codebase, then drafts a
-complete description for every table and column, with confidence scores and a human
-review before anything lands in the live database.</p>
+<p><img alt="AMX components flow: Databases, Documents, and Codebase feed into AMX (Profile, RAG, and Code agents), which produces reviewed metadata accessible via Ask Metadata" class="amx-flow-img" src="assets/amx-flow.png" /></p>
+<h1 id="amx-agentic-metadata-extractor">AMX — Agentic Metadata Extractor<a class="headerlink" href="#amx-agentic-metadata-extractor" title="Permanent link">&para;</a></h1>
+<p>AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data analysts, data engineers, and data catalog owners working with undocumented database schemas.</p>
+<p>AMX walks your database, reads your documentation and codebase, then drafts a complete description for every table and column, with confidence scores and a human review before anything lands in the live database.</p>
 <p><img alt="AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)" class="amx-hero-img" src="assets/cli-hero.png" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
@@ -640,6 +640,10 @@ wizard. Five minutes from install to your first reviewed description.</p>
 <li>
 <p><a href="contributing/"><strong>Contributing</strong></a></p>
 <p>Development setup, branching, commit format, release process.</p>
+</li>
+<li>
+<p><a href="about/"><strong>About the maintainer</strong></a></p>
+<p>Omer Yasir Kucuk — the engineer behind AMX.</p>
 </li>
 <li>
 <p><a href="security/"><strong>Security</strong></a></p>
