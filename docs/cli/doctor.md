@@ -39,19 +39,41 @@ You can also run it inside an AMX session as `/doctor`.
 
 ## Sample output
 
+`doctor` streams each check as it runs — one `[Stage]` line per phase, the same live
+progress format `/run` uses — so a stalled probe (typically the LLM ping) is obvious
+instead of looking like a hang. The final line summarises pass/fail counts and points at
+the first remediation:
+
 ```text
 $ amx doctor
-✓ amx binary           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
-✓ python runtime       3.12.2 (/Users/jane/.venvs/amx/bin/python)
-✓ config schema        v2 (matches binary expectation)
-✓ ~/.amx permissions   0o700, config.yml 0o600
-✓ DB profile           local_pg (postgresql 14.10)  — connection OK in 42ms
-✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
-✗ DB profile           snow_prod (snowflake)
-  → Missing driver. Install with:
-        pip install amx-cli
-✓ History store        local mode, 247 runs persisted
+[Binary]   scanning PATH for amx ......................  ok (0.0 s)
+           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
+[Python]   detecting interpreter ......................  ok (0.0 s)
+           3.12.2 (/Users/jane/.venvs/amx/bin/python)
+[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
+           v2 (matches binary expectation)
+[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
+           0o700, config.yml 0o600
+[Drivers]  importing backend drivers .................   in progress
+           postgresql ................................   ok
+           snowflake .................................   fail (missing)
+[DB]       testing active profile local_pg ...........   in progress
+           connect ...................................   ok (42 ms)
+           handshake .................................   ok (postgresql 14.10)
+[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
+           api key in keychain .......................   ok
+           models endpoint ...........................   ok (218 ms)
+[History]  inspecting local store .....................  ok (0.0 s)
+           local mode, 247 runs persisted
+✗ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
+  Failed: backend driver — snow_prod (snowflake): missing
+  → pip install amx-cli
 ```
+
+Under `--skip-network` the `[LLM]` stage is replaced by a single
+`[LLM]      skipped (--skip-network) ..................   skipped` line and the timer
+typically falls under 0.3 s. A clean run finishes with `✓ /doctor finished` and exits
+with code `0`; any ✗ check exits with `1` so it slots cleanly into CI smoke tests.
 
 ## Interpreting failures
 
