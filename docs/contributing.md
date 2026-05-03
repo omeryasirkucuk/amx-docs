@@ -137,7 +137,9 @@ pip install -r requirements.txt
 mkdocs serve
 ```
 
-The site is served at <http://127.0.0.1:8000/amx/>.
+`mkdocs serve` prints the local URL it bound to (default `http://127.0.0.1:8000/`).
+Open that link in your browser. The published site lives at
+<https://amxcli.com>.
 
 ## Security
 

@@ -763,52 +763,200 @@ body, .md-typeset {
 }
 .md-typeset .grid.cards > ul > li > p:not(:first-child) { margin-top: 8px; }
 
-/* ───────────── About page — avatar + screenshot ───────────── */
+/* ───────────── About page — modeled on omeryasirkucuk.github.io ───────── */
 
-.amx-about-card {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 32px;
-  align-items: start;
-  margin: 8px 0 32px;
+/* Local color tokens for the hero card so we don't fight the rest of the
+   theme (these match the personal site's --bg, --accent, --green). */
+.amx-hero {
+  --hero-accent: #3b82f6;
+  --hero-grad-end: #8b5cf6;
+  --hero-green: #22c55e;
+  --hero-green-soft: rgba(34, 197, 94, 0.10);
+  --hero-green-border: rgba(34, 197, 94, 0.20);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 700px;
+  margin: 32px 0 56px;
 }
-.md-typeset .amx-about-card h2 {
-  margin-top: 0 !important;
-}
-.amx-about-avatar {
-  width: 200px;
-  height: 200px;
+
+/* Profile photo — circular, dark-ring shadow */
+.amx-hero__photo {
+  width: 160px;
+  height: 160px;
   border-radius: 50%;
-  border: 3px solid var(--accent-soft);
-  background: var(--bg-elevated);
-  display: block;
+  object-fit: cover;
+  border: 4px solid var(--border);
+  margin-bottom: 28px;
+  box-shadow:
+    0 0 0 4px var(--bg),
+    0 0 0 5px rgba(59, 130, 246, 0.30);
+}
+
+/* Green role pill */
+.amx-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--hero-green-soft);
+  border: 1px solid var(--hero-green-border);
+  border-radius: 100px;
+  font-size: 13px;
+  color: var(--hero-green);
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+.amx-hero__badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--hero-green);
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Name with gradient on the surname */
+.md-typeset h1.amx-hero__name {
+  font-size: clamp(2.5rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.amx-hero__name-grad {
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+/* CTA buttons — primary filled blue, secondary outline */
+.amx-hero__actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 32px 0 0;
+}
+.md-typeset .amx-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: background 150ms ease, border-color 150ms ease, transform 80ms ease;
+  border: 1px solid transparent;
+  line-height: 1;
+}
+.md-typeset .amx-btn:active { transform: scale(0.98); }
+.md-typeset .amx-btn--primary {
+  background: var(--hero-accent);
+  color: #fff !important;
+  border-color: var(--hero-accent);
+}
+.md-typeset .amx-btn--primary:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff !important;
+}
+.md-typeset .amx-btn--secondary {
+  background: transparent;
+  color: var(--text) !important;
+  border-color: var(--border);
+}
+.md-typeset .amx-btn--secondary:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-hover);
+}
+
+/* Social icons row */
+.amx-hero__socials {
+  display: flex;
+  gap: 18px;
+  margin-top: 40px;
+  align-items: center;
+}
+.amx-hero__socials a {
+  color: var(--text-muted) !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  transition: color 150ms ease, transform 80ms ease;
+}
+.amx-hero__socials a:hover {
+  color: var(--text) !important;
+}
+.amx-hero__socials a:active { transform: scale(0.92); }
+
+/* Mobile tightening */
+@media (max-width: 768px) {
+  .amx-hero { margin: 16px 0 32px; }
+  .amx-hero__photo { width: 128px; height: 128px; margin-bottom: 20px; }
+  .amx-hero__badge { font-size: 12px; padding: 5px 12px; margin-bottom: 20px; }
+  .md-typeset h1.amx-hero__name { font-size: 2.2rem; }
+  .amx-hero__actions { gap: 10px; margin-top: 24px; }
+  .md-typeset .amx-btn { padding: 10px 18px; font-size: 13px; }
+  .amx-hero__socials { gap: 14px; margin-top: 28px; }
+}
+
+/* ───────────── Why AMX — pain vs angle, two-column callout ──────────── */
+/* Sits between the intro paragraphs and the CLI hero on the home page.
+   Left column is the pain point (amber accent — drawing attention),
+   right column is AMX's response (cyan accent — on-brand). */
+
+.md-typeset .amx-why {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 28px 0;
+}
+.md-typeset .amx-why__pain,
+.md-typeset .amx-why__angle {
+  border-radius: 10px;
+  padding: 20px 22px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.md-typeset .amx-why__pain {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-left: 4px solid #F59E0B;
+}
+.md-typeset .amx-why__pain strong:first-child {
+  color: #F59E0B;
+  letter-spacing: 0.02em;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__pain {
+  background: rgba(251, 191, 36, 0.08);
+  border-color: rgba(251, 191, 36, 0.25);
+  border-left-color: #FBBF24;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__pain strong:first-child {
+  color: #FBBF24;
+}
+
+.md-typeset .amx-why__angle {
+  background: var(--accent-soft);
+  border: 1px solid rgba(120, 241, 242, 0.25);
+  border-left: 4px solid var(--accent);
+}
+.md-typeset .amx-why__angle strong:first-child {
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.md-typeset .amx-why__pain p,
+.md-typeset .amx-why__angle p {
+  margin: 0;
 }
 @media (max-width: 768px) {
-  .amx-about-card {
-    grid-template-columns: 1fr;
-    gap: 16px;
-    text-align: left;
-  }
-  .amx-about-avatar { width: 140px; height: 140px; margin: 0; }
-}
-
-/* About page screenshot — clickable preview, framed like the cli-hero */
-.md-typeset a:has(.amx-about-screenshot) {
-  display: block;
-  text-decoration: none;
-}
-.md-typeset .amx-about-screenshot {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  margin: 16px 0 8px;
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  transition: border-color 150ms ease, transform 150ms ease;
-}
-.md-typeset a:hover .amx-about-screenshot {
-  border-color: var(--accent);
+  .md-typeset .amx-why { grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
+  .md-typeset .amx-why__pain,
+  .md-typeset .amx-why__angle { padding: 16px 18px; font-size: 13px; }
 }
 
 /* ───────────── Hero flow diagram on the home page (above H1) ─────── */
@@ -886,6 +1034,18 @@ body, .md-typeset {
 }
 .amx-footer__line a:hover { color: var(--accent); }
 .amx-footer__sep { margin: 0 8px; opacity: 0.6; }
+
+/* GitHub repo link in the footer — icon + repo path, slightly emphasised */
+.amx-footer__github {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.amx-footer__github svg {
+  flex-shrink: 0;
+  vertical-align: -2px;
+}
 
 /* Hide Material's default footer chrome */
 .md-footer { background: transparent; }
