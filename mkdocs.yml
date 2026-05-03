@@ -176,5 +176,6 @@ nav:
           - Python API: api/index.md
           - API Reference: api/reference.md
           - Contributing: contributing.md
+          - About the maintainer: about.md
           - Security: security.md
           - Changelog: changelog.md

@@ -1,14 +1,15 @@
 ---
-title: AMX documentation
+title: AMX — Agentic Metadata Extractor
+description: AI-powered CLI that documents undocumented database schemas — pulls evidence from the database, your documentation, and your codebase, drafts column descriptions with confidence scores, then walks you through a human review before writing back.
 ---
 
-# AMX documentation
+![AMX components flow: Databases, Documents, and Codebase feed into AMX (Profile, RAG, and Code agents), which produces reviewed metadata accessible via Ask Metadata](assets/amx-flow.png){ .amx-flow-img }
 
-AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data
-analysts, data engineers, and data catalog owners working with undocumented database
-schemas. AMX walks your database, reads your documentation and codebase, then drafts a
-complete description for every table and column, with confidence scores and a human
-review before anything lands in the live database.
+# AMX — Agentic Metadata Extractor
+
+AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data analysts, data engineers, and data catalog owners working with undocumented database schemas.
+
+AMX walks your database, reads your documentation and codebase, then drafts a complete description for every table and column, with confidence scores and a human review before anything lands in the live database.
 
 ![AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)](assets/cli-hero.png){ .amx-hero-img }
 
@@ -162,6 +163,10 @@ review before anything lands in the live database.
 -   [**Contributing**](contributing.md)
 
     Development setup, branching, commit format, release process.
+
+-   [**About the maintainer**](about.md)
+
+    Omer Yasir Kucuk — the engineer behind AMX.
 
 -   [**Security**](security.md)
 
