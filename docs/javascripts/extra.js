@@ -22,6 +22,17 @@ function setPageSlug() {
 
 const ANCHOR_OFFSET_PX = 80; // header (56px) + breathing room (24px)
 
+function scrollToAnchor(id, behavior) {
+  const target = document.getElementById(id);
+  if (!target) return false;
+  const y = target.getBoundingClientRect().top + window.scrollY - ANCHOR_OFFSET_PX;
+  window.scrollTo({ top: y, behavior: behavior || "smooth" });
+  return true;
+}
+
+// Capture-phase click handler — fires before Material's instant-nav
+// listener, calls preventDefault + stopImmediatePropagation so Material
+// can't run its own scrollTo on the same click.
 document.addEventListener(
   "click",
   function (e) {
@@ -30,34 +41,36 @@ document.addEventListener(
     const href = link.getAttribute("href");
     if (!href || href === "#") return;
     const id = decodeURIComponent(href.slice(1));
-    const target = document.getElementById(id);
-    if (!target) return;
+    if (!document.getElementById(id)) return;
 
     e.preventDefault();
-    e.stopPropagation();
+    e.stopImmediatePropagation();
 
-    const y = target.getBoundingClientRect().top + window.scrollY - ANCHOR_OFFSET_PX;
-    window.scrollTo({ top: y, behavior: "smooth" });
-
-    // Reflect the anchor in the URL so back/forward + share-link work.
+    scrollToAnchor(id, "smooth");
     if (window.history && window.history.pushState) {
       window.history.pushState(null, "", href);
     }
   },
-  true // capture phase — fires before Material's listener
+  true
 );
 
-// On initial load with #fragment in URL, also re-apply the offset.
+// hashchange fallback — if for any reason Material's scroll still won
+// (e.g. an event bubbled up before our handler ran), this fires after
+// and re-applies the correct offset. Negligible jank: a single
+// 0-distance scrollTo when our handler already did the right thing,
+// or a corrective scrollTo when it didn't.
+window.addEventListener("hashchange", function () {
+  if (!location.hash) return;
+  const id = decodeURIComponent(location.hash.slice(1));
+  // Defer so any in-flight smooth-scroll has a chance to settle.
+  setTimeout(function () { scrollToAnchor(id, "auto"); }, 50);
+});
+
+// Initial-load deep-link with #fragment
 window.addEventListener("load", function () {
   if (!location.hash) return;
   const id = decodeURIComponent(location.hash.slice(1));
-  const target = document.getElementById(id);
-  if (!target) return;
-  // Wait for fonts/images so the heading's final position is settled.
-  setTimeout(function () {
-    const y = target.getBoundingClientRect().top + window.scrollY - ANCHOR_OFFSET_PX;
-    window.scrollTo({ top: y, behavior: "auto" });
-  }, 100);
+  setTimeout(function () { scrollToAnchor(id, "auto"); }, 100);
 });
 
 // ─────────────────────────────────────────────────────────────────────
