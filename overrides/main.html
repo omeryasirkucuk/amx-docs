@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block htmltitle %}
-  {% if page and page.is_homepage %}
-    <title>{{ config.site_name }} documentation</title>
+  {% if page and page.title %}
+    <title>{{ page.title | striptags }}</title>
   {% else %}
-    {{ super() }}
+    <title>{{ config.site_name }}</title>
   {% endif %}
 {% endblock %}
 

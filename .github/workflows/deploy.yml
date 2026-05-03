@@ -5,8 +5,17 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# GITHUB_TOKEN needs write access to push the built site to gh-pages.
 permissions:
-  contents: read
+  contents: write
+
+# Forward-compat: opt into Node.js 24 for actions that haven't published a
+# Node 24 release yet (silences the Sept 2025 deprecation warning, makes
+# the workflow survive past September 2026 when Node 20 is removed from
+# runners). Older actions that still ship Node 20 binaries continue to run
+# under Node 24 with this flag set.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 concurrency:
   group: deploy-docs
@@ -16,8 +25,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout amx-docs
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Full history — mkdocs gh-deploy commits onto an existing branch.
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -28,16 +40,13 @@ jobs:
       - name: Install build deps
         run: pip install -r requirements.txt
 
-      - name: Build site
+      - name: Build site (strict — fails on broken links)
         run: mkdocs build --strict
 
-      - name: Deploy to amx repo gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          deploy_key: ${{ secrets.AMX_PAGES_DEPLOY_KEY }}
-          external_repository: omeryasirkucuk/amx
-          publish_branch: gh-pages
-          publish_dir: ./site
-          commit_message: "docs: deploy ${{ github.sha }}"
-          user_name: "github-actions[bot]"
-          user_email: "github-actions[bot]@users.noreply.github.com"
+      - name: Configure git for deploy
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy to gh-pages on this repo
+        run: mkdocs gh-deploy --force --message "ci: deploy ${{ github.sha }}"
