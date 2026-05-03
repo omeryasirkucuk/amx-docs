@@ -1,8 +1,14 @@
 {# Spec header: ONE slim row.
    [logo] [primary nav]                       [theme toggle icon]
    No dropdowns. No CTA. No language picker. The real navigation is
-   in the left sidebar. #}
-{% set site_url = config.site_url | default(nav.homepage.url, true) | url %}
+   in the left sidebar.
+
+   The logo links to nav.homepage.url (a relative URL like "../" or
+   "../../"), NOT config.site_url (an absolute URL). Material's
+   navigation.instant handles relative same-site URLs reliably; with
+   absolute URLs the JS sometimes treats the click as external and
+   bails, so the click silently does nothing on some pages. #}
+{% set home_url = config.extra.homepage | d(nav.homepage.url, true) | url %}
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
@@ -13,7 +19,7 @@
     </label>
 
     {# Logo #}
-    <a href="{{ site_url }}" title="{{ config.site_name | e }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}">
+    <a href="{{ home_url }}" title="{{ config.site_name | e }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}">
       {% if config.theme.logo %}
         <img src="{{ config.theme.logo | url }}" alt="logo">
       {% else %}
