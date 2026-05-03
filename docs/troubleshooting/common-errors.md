@@ -4,12 +4,16 @@ The error messages you're most likely to see, with the cause and fix for each.
 
 ## Install errors
 
-### `MissingDriverError: No module named 'psycopg2'` (or any other driver)
+### `ImportError: No module named 'psycopg2'` (or any other driver)
 
-**Cause:** A DB backend was selected without its optional driver.
+**Cause:** A database driver isn't importable. This usually means a broken or partial
+install.
 
-**Fix:** Run the printed `pip install amx[<extra>]`. AMX raises `MissingDriverError` (a
-subclass of `ImportError`) with the exact command.
+**Fix:** Reinstall AMX:
+
+```bash
+pip install --upgrade --force-reinstall amx
+```
 
 ### `ConfigSchemaTooNewError: config schema v2 newer than this AMX (expects v1)`
 

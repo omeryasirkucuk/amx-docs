@@ -1,11 +1,5 @@
 # ClickHouse
 
-## Install
-
-```bash
-pip install "amx[clickhouse]"
-```
-
 Drivers: `clickhouse-connect`, `clickhouse-sqlalchemy`.
 
 ## Connection fields

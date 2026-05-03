@@ -1,11 +1,5 @@
 # Snowflake
 
-## Install
-
-```bash
-pip install "amx[snowflake]"
-```
-
 Drivers: `snowflake-connector-python`, `snowflake-sqlalchemy`.
 
 ## Connection fields
@@ -49,9 +43,9 @@ db_profiles:
 - Native Snowflake type system mapped to the universal type model — `VARIANT`, `ARRAY`,
   `OBJECT` flagged as semi-structured.
 
-## Cost guardrails
+## Warehouse load
 
-Snowflake bills per warehouse-second. AMX is profiled-aware:
+AMX is profiling-aware:
 
 - `metadata` mode skips per-column data reads entirely — recommended for large warehouses
   in dev / sandbox.

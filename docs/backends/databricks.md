@@ -3,12 +3,6 @@
 AMX targets Databricks **Unity Catalog SQL warehouses**. Hive-metastore-only workspaces are
 supported but won't expose volumes, lineage, or some of the richer object types.
 
-## Install
-
-```bash
-pip install "amx[databricks]"
-```
-
 Drivers: `databricks-sql-connector` (used for the connection health check) and
 `databricks-sqlalchemy` (used for metadata inspection and runtime SQLAlchemy flows).
 

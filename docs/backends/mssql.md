@@ -1,11 +1,5 @@
 # SQL Server
 
-## Install
-
-```bash
-pip install "amx[mssql]"
-```
-
 Driver: `pyodbc`. Requires **ODBC Driver 18 for SQL Server** at the OS level — see Microsoft's
 [install guide](https://learn.microsoft.com/sql/connect/odbc/download-odbc-driver-for-sql-server).
 

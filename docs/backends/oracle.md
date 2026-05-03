@@ -1,11 +1,5 @@
 # Oracle
 
-## Install
-
-```bash
-pip install "amx[oracle]"
-```
-
 Driver: `oracledb` (the modern replacement for `cx_Oracle`). No client library install
 required for thin mode.
 

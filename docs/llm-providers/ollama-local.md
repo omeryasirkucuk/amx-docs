@@ -72,12 +72,6 @@ Smaller models (≤ 13B) tend to invent foreign-key relationships and produce ve
 low-confidence output. They work for evaluation but aren't suitable for production
 metadata.
 
-## Cost
-
-Local LLMs cost nothing per token, but they cost wall-clock and electricity. AMX's
-`/usage` shows token totals but no dollar cost (`—`) for local profiles since pricing is
-unknown.
-
 ## Logprobs
 
 - **Ollama native** does not return logprobs. AMX falls back to whole-response confidence
@@ -93,12 +87,8 @@ For fully-offline AMX, also configure local embeddings:
 /embeddings Local
 ```
 
-This uses sentence-transformers from the `local-embeddings` extra. Run `/search rebuild`
-after switching to re-embed the catalog.
-
-```bash
-pip install "amx[local-embeddings]"
-```
+This uses local sentence-transformers. Run `/search rebuild` after switching to
+re-embed the catalog.
 
 ## Known gotchas
 

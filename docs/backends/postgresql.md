@@ -3,12 +3,6 @@
 PostgreSQL is the reference adapter. Every other backend is normalised against the same
 shape, so most AMX features were validated against Postgres first.
 
-## Install
-
-```bash
-pip install "amx[postgresql]"
-```
-
 Driver: [`psycopg2-binary`](https://www.psycopg.org/).
 
 ## Connection fields

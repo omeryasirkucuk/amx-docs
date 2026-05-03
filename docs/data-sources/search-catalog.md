@@ -83,7 +83,7 @@ Settings are stored per DB profile.
 /embeddings              # show current
 /embeddings MiniLM       # default, offline (no extra install)
 /embeddings OpenAI-compatible openai/text-embedding-3-small
-/embeddings Local        # local sentence-transformers (requires amx[local-embeddings])
+/embeddings Local        # local sentence-transformers
 ```
 
 Run `/search rebuild` after switching — the catalog needs to be re-embedded so the new

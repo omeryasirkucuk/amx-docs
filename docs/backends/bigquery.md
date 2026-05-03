@@ -1,11 +1,5 @@
 # BigQuery
 
-## Install
-
-```bash
-pip install "amx[bigquery]"
-```
-
 Drivers: `sqlalchemy-bigquery`, `google-cloud-bigquery`.
 
 ## Connection fields

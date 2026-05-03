@@ -1,8 +1,8 @@
 # Guide: batching a large schema
 
 For schemas with hundreds or thousands of columns, synchronous `/run` ties up your
-terminal and your LLM rate-limit budget. Batch mode trades latency (24-hour SLA) for cost
-(~50% reduction) and gets out of your way while it runs.
+terminal and your LLM rate-limit budget. Batch mode submits the run asynchronously,
+returns control to you immediately, and stitches results back when the provider finishes.
 
 ## When this is the right shape
 
@@ -21,7 +21,7 @@ Use synchronous chat when:
 ## Submitting the batch
 
 ```text
-/use-llm openai_main           # an OpenAI profile
+/use-llm openai_main
 /run sap_s6p --batch
 ```
 
@@ -42,8 +42,8 @@ results come back.
 
 ## Polling for completion
 
-You can leave it alone — the next time AMX starts, it polls open batch jobs and pulls
-completed results into the local store automatically. To force a poll without restarting:
+The next time AMX starts, it polls open batch jobs and pulls completed results into the
+local store automatically. To force a poll without restarting:
 
 ```text
 /history poll-batch <run_id>
@@ -54,16 +54,14 @@ on the next `/run` (or you can open it directly via `/history review <run_id>`).
 
 ## OpenAI Batch specifics
 
-- 24-hour SLA, usually completes in 1–6 hours.
-- ~50% of synchronous pricing.
+- 24-hour SLA, usually completes in 1-6 hours.
 - Returns logprobs so confidence calibration is identical to synchronous chat.
 - Per-job token cap; AMX splits very wide schemas across multiple jobs and tracks them as
   a single AMX run.
 
 ## Anthropic Batch specifics
 
-- 24-hour SLA, usually completes in 1–6 hours.
-- ~50% of synchronous pricing.
+- 24-hour SLA, usually completes in 1-6 hours.
 - **Does NOT return token logprobs.** Confidence falls back to model-declared bands. The
   orchestrator marks these as `confidence: model_declared` so you can tell them apart in
   the review wizard.
@@ -75,15 +73,15 @@ on the next `/run` (or you can open it directly via `/history review <run_id>`).
 A common pattern for very large schemas:
 
 1. **Inventory first.** `/db profiling metadata; /run sap_s6p --batch` — overnight,
-   minimum cost. Get a description for every table that has a useful name.
+   minimum impact on the warehouse. Get a description for every table that has a useful
+   name.
 2. **Targeted high-quality.** Switch to `/db profiling sampled` and `/use-llm openai_main`
    (full-size model). `/run sap_s6p.<critical_tables> --batch` — overnight again, this
    time with proper profiling and the better model.
 3. **Manual cleanup.** Synchronous `/run sap_s6p.<one_table>` for the dozen tables that
    ended up with low-confidence output, with you watching the wizard.
 
-This pattern minimises cost while still ending up with high-quality descriptions on the
-tables that matter.
+This pattern lets you cover a huge schema while keeping high-stakes review work focused.
 
 ## During the batch window
 
@@ -106,19 +104,3 @@ What you can't do:
 When the batch is complete, the review wizard works exactly as for synchronous runs.
 Logprob calibration is identical for OpenAI Batch; for Anthropic Batch, expect the
 confidence bands to be more conservative (model-declared rather than logprob-derived).
-
-Bulk-accept high-confidence rows and walk the medium / low ones manually. The save-back
-to history happens automatically as you go.
-
-## Cost reporting
-
-`/usage [window]` reports actual token consumption from `~/.amx/history.db`, including
-batch jobs. Compare a Batch run vs an equivalent synchronous run to confirm the saving:
-
-```text
-/usage 30d
-```
-
-In practice, OpenAI Batch + `gpt-4o-mini` runs around $1-3 per thousand columns of
-metadata. Synchronous `gpt-4o` runs $20-40 per thousand columns. Pick the right tool for
-the job.

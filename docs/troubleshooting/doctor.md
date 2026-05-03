@@ -57,7 +57,7 @@ first working path.
 ```text
 ✗ DB profile           snow_prod (snowflake)
   → Missing driver. Install with:
-        pip install "amx[snowflake]"
+        pip install amx
 ```
 
 Active profile is selected but the driver isn't installed. Run the printed command.
@@ -90,7 +90,7 @@ pip install --upgrade amx
 
 ### `Missing driver`
 
-Run the exact `pip install amx[<extra>]` from doctor's output.
+Run the exact `pip install amx` from doctor's output.
 
 ### `CERTIFICATE_VERIFY_FAILED`
 

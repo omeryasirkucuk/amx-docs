@@ -178,8 +178,8 @@ sequenceDiagram
   Shared mode is a dual-write addition, not a replacement.
 - **Provider-agnostic LLMs.** Switch providers per profile. No Anthropic-only or
   OpenAI-only paths in the agent code.
-- **Cost is visible.** `/usage` shows token totals and approximate cost; `/llm-batch-size`
-  and `/n-alternatives` are explicit knobs you can tune down.
+- **Token usage is visible.** `/usage` shows token totals; `/llm-batch-size` and
+  `/n-alternatives` are explicit knobs you can tune down.
 
 ## Reading further
 

@@ -1,7 +1,8 @@
 # `/history` and `/usage`
 
 Every `/run`, `/run-apply`, `/ask`, and `/apply` lands in the local SQLite store at
-`~/.amx/history.db`. `/history` is the read interface; `/usage` is its cost-summary cousin.
+`~/.amx/history.db`. `/history` is the read interface; `/usage` summarises token counts
+over a window.
 
 ## What's persisted
 
@@ -101,12 +102,9 @@ Export to JSON for downstream analysis:
 /usage all
 ```
 
-Reads from `~/.amx/history.db` only — **no network calls**. Pricing is built in for OpenAI /
-Anthropic / Gemini / DeepSeek; unknown models show `—` for cost.
-
-The summary is per-LLM-profile and per-model so you can see, for example, that
-`openai_main` (gpt-4o) cost $4.20 across 12 runs while `gemini_lite` (gemini-1.5-flash) ran
-8 times for $0.30.
+Reads from `~/.amx/history.db` only — **no network calls**. The summary breaks down
+prompt and completion tokens per LLM profile and per model, so you can see which models
+your team uses most.
 
 ## Where it lives on disk
 

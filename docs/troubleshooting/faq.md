@@ -4,23 +4,14 @@ The most-asked questions, in roughly the order new users hit them.
 
 ## Installation
 
-### Why does `pip install amx` no longer install database drivers?
-
-In 0.12.0, database drivers moved out of the default install into optional extras. This
-trims the default install by ~50MB+ and keeps users who only target one or two backends
-from carrying the rest.
-
-Pick what you need:
+### How do I install AMX?
 
 ```bash
-pip install "amx[postgresql,snowflake]"
-pip install "amx[all]"          # everything, matches old behaviour
+pip install amx
 ```
 
-### `MissingDriverError: No module named 'psycopg2'`
-
-You picked a backend whose driver isn't installed. AMX raises `MissingDriverError` (a
-subclass of `ImportError`) with the exact `pip install amx[<extra>]` hint. Run that.
+That's the only command. The install includes the CLI, the multi-agent runtime, every
+LLM SDK, and every supported database driver.
 
 ### Multiple `amx` binaries on PATH
 
@@ -87,8 +78,8 @@ parses truncated JSON** — the run halts. Either:
 
 ### `/run` is slow on a wide schema
 
-Switch profiling to `sampled` or `metadata`. Use `/run --batch` for overnight runs with
-~50% cost reduction. See [Batch mode](../llm-providers/batch-mode.md) and [Profiling
+Switch profiling to `sampled` or `metadata`. Use `/run --batch` for overnight async runs.
+See [Batch mode](../llm-providers/batch-mode.md) and [Profiling
 modes](../configuration/profiling-modes.md).
 
 ### Why is the suggestion confidence lower than I expected?
@@ -159,34 +150,6 @@ Yes, but you'll lose run history, the search catalog, and all session memory. Th
 
 In v0.12, **reads still come from local SQLite**. Cross-machine read views are slated
 for a follow-up minor. Until then, query the shared backend directly with SQL.
-
-## Cost
-
-### How much does AMX cost?
-
-LLM cost depends on the model and the size of the schema. Roughly:
-
-- `gpt-4o-mini` synchronous: ~$5-10 per 1000 columns of metadata.
-- `gpt-4o-mini` Batch: ~$2-5 per 1000 columns.
-- `gpt-4o` synchronous: ~$30-50 per 1000 columns.
-- `claude-3-5-sonnet` synchronous: ~$25-40 per 1000 columns.
-- Local LLM: $0 in tokens (electricity + wall clock).
-
-Database / warehouse cost depends on backend and profiling mode. Snowflake / Databricks /
-BigQuery against `full` mode on a wide table can be the dominant cost; `sampled` /
-`metadata` modes are much cheaper.
-
-`/usage [window]` reports actual token cost.
-
-### Why is my cost different from those estimates?
-
-Schema characteristics matter a lot:
-
-- Wide tables (100+ columns) are cheaper per-column because the per-call overhead is
-  amortised.
-- Tables with rich existing comments are cheaper because the prompts are shorter.
-- High-quality docs and code make per-column suggestions terser (and cheaper) because
-  the LLM has more grounding.
 
 ## Where to ask more
 

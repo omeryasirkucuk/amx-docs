@@ -41,22 +41,20 @@ Switch the active profile with `/use-llm <name>`. List profiles with `/llm-profi
 - [Ollama / OpenAI-compatible local endpoints](ollama-local.md)
 - [Batch mode](batch-mode.md) — OpenAI Batch + Anthropic Message Batches
 
-## Cost controls
+## Tuning knobs
 
-AMX exposes the cost knobs explicitly so you don't have to guess what's happening:
+AMX exposes the behavior knobs explicitly so you don't have to guess what's happening:
 
-- `/usage [window]` — token + approximate cost summary read from `~/.amx/history.db`
-  (no network calls).
+- `/usage [window]` — token usage summary read from `~/.amx/history.db` (no network
+  calls).
 - `/llm-batch-size N` — columns per Profile-Agent LLM call. Larger = fewer round trips.
-- `/n-alternatives 1..5` — alternatives per column. Default 3, drop to 1 for cheap runs.
+- `/n-alternatives 1..5` — alternatives per column. Default 3, drop to 1 for tighter
+  runs.
 - `/prompt-detail minimal|standard|detailed|full` — preset prompt budget. Run without
   args to see the comparison table.
-- `/temperature 0.0..2.0` — lower = less variance = cheaper retries. Default `0.2`.
+- `/temperature 0.0..2.0` — lower = less output variance. Default `0.2`.
 - `/run --batch` — when supported, route the run through the provider's Batch API for
-  ~50% cost reduction at the price of latency.
-
-Pricing is built in for OpenAI / Anthropic / Gemini / DeepSeek so `/usage` shows real
-dollar amounts. Unknown models show `—` for cost.
+  asynchronous overnight processing.
 
 ## Reasoning models
 

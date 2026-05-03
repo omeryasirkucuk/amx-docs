@@ -102,7 +102,7 @@ Document embeddings use the same provider as the search catalog:
 /embeddings              # show current
 /embeddings MiniLM       # default, offline
 /embeddings OpenAI-compatible openai/text-embedding-3-small
-/embeddings Local         # local sentence-transformers (requires amx[local-embeddings])
+/embeddings Local         # local sentence-transformers
 ```
 
 Run `/search rebuild` after switching to re-embed both catalog and document chunks.

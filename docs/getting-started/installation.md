@@ -1,7 +1,6 @@
 # Installation
 
-AMX is a Python package distributed on PyPI. The default install is lean — pick the database
-backends you actually use as optional extras.
+AMX is a Python package distributed on PyPI.
 
 ## Prerequisites
 
@@ -13,51 +12,14 @@ backends you actually use as optional extras.
 AMX focuses on metadata inference, not bulk data loading. Populate schemas and tables with
 your own ETL process, then point AMX at that database.
 
-## Install from PyPI
+## Install
 
-The default install includes the CLI, the multi-agent runtime, all LLM SDKs, and the
-RAG / search / codebase machinery. **Database drivers are opt-in extras** so the default
-install stays under ~30 MB instead of ~100 MB.
+```bash
+pip install amx
+```
 
-=== "Single backend"
-
-    ```bash
-    pip install "amx[postgresql]"
-    ```
-
-=== "Multiple backends"
-
-    ```bash
-    pip install "amx[postgresql,snowflake,bigquery]"
-    ```
-
-=== "Everything"
-
-    ```bash
-    pip install "amx[all]"
-    ```
-
-If you forget the extra and try to use a backend without its driver, AMX raises
-`MissingDriverError` (a subclass of `ImportError`) with the exact `pip install amx[<extra>]`
-hint — no opaque `ModuleNotFoundError`.
-
-### Available extras
-
-| Extra | Drivers pulled in | Use when |
-|---|---|---|
-| `postgresql` | psycopg2 | Postgres-compatible engines (Postgres, Aurora) |
-| `snowflake` | snowflake-sqlalchemy, snowflake-connector-python | Snowflake |
-| `databricks` | databricks-sqlalchemy, databricks-sql-connector | Databricks Unity Catalog SQL warehouse |
-| `bigquery` | sqlalchemy-bigquery, google-cloud-bigquery | Google BigQuery |
-| `mysql` | pymysql, cryptography | MySQL / MariaDB |
-| `oracle` | oracledb | Oracle |
-| `mssql` | pyodbc | SQL Server (also requires the **ODBC Driver 18** at the OS level) |
-| `redshift` | redshift_connector, sqlalchemy-redshift | Amazon Redshift |
-| `clickhouse` | clickhouse-connect, clickhouse-sqlalchemy | ClickHouse |
-| `duckdb` | duckdb-engine, duckdb | Local DuckDB files / `:memory:` |
-| `code-intel` | sqlglot | Richer SQL parsing in `/code` scans |
-| `local-embeddings` | sentence-transformers | Local embeddings (`/embeddings Local`) |
-| `all` | every driver above | Combined |
+That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
+RAG / search / codebase machinery, and every supported database driver.
 
 ## Install from source
 
@@ -66,12 +28,11 @@ For development or to track a feature branch:
 ```bash
 git clone https://github.com/omeryasirkucuk/amx.git
 cd amx
-pip install -e ".[dev,code-intel,postgresql]"
+pip install -e .
 pre-commit install
 ```
 
-The `dev` extra adds pytest, ruff, mypy, and pre-commit. See [Contributing](../contributing.md)
-for the full development workflow.
+See [Contributing](../contributing.md) for the full development workflow.
 
 ## Verify the install
 
@@ -81,9 +42,9 @@ amx doctor
 ```
 
 `amx doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
-Python runtime, the config schema version, optional backend deps, and active DB + LLM
-reachability. It runs from a broken state — no interactive session required. Use
-`amx doctor --skip-network` for an offline quick check.
+Python runtime, the config schema version, and active DB + LLM reachability. It runs from
+a broken state — no interactive session required. Use `amx doctor --skip-network` for an
+offline quick check.
 
 ## Where AMX writes files
 

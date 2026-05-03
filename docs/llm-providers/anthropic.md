@@ -44,8 +44,8 @@ This is one reason `/run` defaults to synchronous chat — Batch is opt-in via `
 
 ## Batch API
 
-Anthropic Message Batches is supported — see [Batch mode](batch-mode.md). 24-hour SLA,
-~50% cost. The lack of logprobs in batch responses means confidence is less precise; the
+Anthropic Message Batches is supported — see [Batch mode](batch-mode.md). 24-hour SLA.
+The lack of logprobs in batch responses means confidence is less precise; the
 orchestrator falls back to model-declared bands.
 
 ## Known gotchas

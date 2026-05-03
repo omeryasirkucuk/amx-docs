@@ -1,11 +1,5 @@
 # MySQL / MariaDB
 
-## Install
-
-```bash
-pip install "amx[mysql]"
-```
-
 Drivers: `pymysql`, `cryptography` (for `caching_sha2_password`).
 
 ## Connection fields

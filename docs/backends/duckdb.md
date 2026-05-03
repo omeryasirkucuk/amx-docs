@@ -3,12 +3,6 @@
 DuckDB is supported as a single-file analytics engine and as `:memory:` for ephemeral use.
 It's the easiest backend to try AMX against — no server to set up, no credentials.
 
-## Install
-
-```bash
-pip install "amx[duckdb]"
-```
-
 Drivers: `duckdb`, `duckdb-engine`.
 
 ## Connection fields

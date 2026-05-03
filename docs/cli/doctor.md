@@ -27,9 +27,8 @@ You can also run it inside an AMX session as `/doctor`.
 - **Config schema version.** Reads `~/.amx/config.yml` and reports the schema version.
   Warns if it's older than the binary expects (suggesting an upgrade) or newer (raises
   `ConfigSchemaTooNewError` — downgrade or upgrade AMX).
-- **Optional backend deps.** For each DB profile, checks whether the required extra
-  (`amx[postgresql]`, `amx[snowflake]`, …) is installed. Missing extras print the exact
-  `pip install` command to fix.
+- **Backend driver availability.** For each DB profile, checks whether the required
+  database driver is importable. Missing drivers print a remediation hint.
 - **Active DB profile reachability.** Performs a real connection test (no LLM call). For
   Databricks, walks through saved profile → CA bundle from environment → `tls_no_verify`
   to find the first working path.
@@ -50,7 +49,7 @@ $ amx doctor
 ✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
 ✗ DB profile           snow_prod (snowflake)
   → Missing driver. Install with:
-        pip install "amx[snowflake]"
+        pip install amx
 ✓ History store        local mode, 247 runs persisted
 ```
 
@@ -61,7 +60,7 @@ Each ✗ comes with a one-line remediation:
 | Symptom | Hint |
 |---|---|
 | Multiple `amx` binaries on PATH | Use a venv consistently; remove the older install |
-| `Missing driver` | Run the printed `pip install amx[<extra>]` |
+| `Missing driver` | Run the printed `pip install amx` |
 | `Config schema too new` | Upgrade with `pip install --upgrade amx` |
 | `CERTIFICATE_VERIFY_FAILED` (Databricks) | Set a Trusted CA file in the profile or `AMX_DATABRICKS_TRUSTED_CA_FILE` |
 | `LLM models endpoint 401` | API key is wrong or rotated; re-run `/add-llm-profile` |

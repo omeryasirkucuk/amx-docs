@@ -124,14 +124,14 @@ Bulk-accept high-confidence rows for a wide schema, leaving the rest for manual 
 # inside the wizard, press "B" to bulk-accept above the high threshold
 ```
 
-## Cost guardrails
+## Tuning for large schemas
 
 For very large schemas, see:
 
 - [Profiling modes](../configuration/profiling-modes.md) — switch to `sampled` or `metadata`
   to skip per-column data scans.
-- [Batch mode](../llm-providers/batch-mode.md) — OpenAI / Anthropic Batch APIs for ~50%
-  cost reduction at the cost of latency.
-- `/llm-batch-size N` — more columns per LLM call = fewer round trips, lower cost.
+- [Batch mode](../llm-providers/batch-mode.md) — OpenAI / Anthropic Batch APIs for
+  asynchronous overnight runs.
+- `/llm-batch-size N` — more columns per LLM call = fewer round trips.
 - `/n-alternatives 1` — single suggestion per column, no alternatives.
 - `/prompt-detail minimal` — smallest prompt budget preset.

@@ -52,7 +52,7 @@ AMX prints which namespace it auto-selected when there's no ambiguity.
 | `/session` | `/ask` conversation session management | [Ask & search](ask-and-search.md#sessions) |
 | `/history` | Run history, comparison, review | [History](history.md) |
 | `/doctor` | Diagnostics | [Doctor](doctor.md) |
-| `/usage` | Token + cost summary | [History](history.md#usage) |
+| `/usage` | Token usage summary | [History](history.md#usage) |
 
 ## Slash command quick reference
 
@@ -185,7 +185,7 @@ See [Backends](../backends/index.md) for per-backend connection details.
 | Command | Description |
 |---|---|
 | `/doctor` (or `amx doctor` from any shell) | Diagnose installation / config / connectivity |
-| `/usage [window]` | Token + approximate-cost summary (`24h`, `7d` default, `30d`, `all`) |
+| `/usage [window]` | Token usage summary (`24h`, `7d` default, `30d`, `all`) |
 
 See [Doctor](doctor.md) and [History → Usage](history.md#usage).
 

@@ -148,7 +148,6 @@ nav:
       - DuckDB: backends/duckdb.md
   - Guides:
       - SAP Discovery: guides/sap-discovery-walkthrough.md
-      - Snowflake Cost: guides/snowflake-warehouse-cost.md
       - Batch Large Schema: guides/batch-large-schema.md
   - Reference:
       - Configuration:

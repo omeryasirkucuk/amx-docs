@@ -5,11 +5,8 @@ one database and one LLM, with a generated description ready to write back to th
 
 ## 1. Install
 
-Pick the extra that matches the database you want to point AMX at — full list under
-[Installation](installation.md).
-
 ```bash
-pip install "amx[postgresql]"
+pip install amx
 ```
 
 ## 2. Open the interactive session
@@ -101,8 +98,8 @@ Or short-circuit the review-then-apply two-step in a single command:
 ```
 
 `/history list` shows recent runs with duration and model. `/history show` dumps the full
-JSON payload (scope, metrics, tokens, results, errors). `/usage` summarises token cost over
-a window.
+JSON payload (scope, metrics, tokens, results, errors). `/usage` summarises token usage
+over a window.
 
 ## When something goes wrong
 

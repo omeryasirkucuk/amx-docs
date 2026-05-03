@@ -49,10 +49,14 @@
       {%- endif -%}
     {%- endmacro %}
 
+    {# Header shows exactly 5 top-level sections.
+       "Home" is the logo target. "Backends" lives in the sidebar (accessible
+       from any backend page or via the home card grid). #}
+    {% set header_skip = ["Home", "Backends"] %}
     <nav class="amx-nav" aria-label="Primary">
       {% set count = namespace(n=0) %}
       {% for item in nav %}
-        {% if not loop.first and count.n < 6 %}
+        {% if item.title not in header_skip and count.n < 5 %}
           {% set is_active = item.active %}
           {% set href = first_leaf_url(item) %}
           {% if href %}

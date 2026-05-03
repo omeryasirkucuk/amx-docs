@@ -23,7 +23,7 @@ review before anything lands in the live database.
 
 !!! tip
     AMX supports 10 database backends and 7 LLM providers. The fastest way to evaluate
-    is `pip install "amx[postgresql]"`, then run `amx` and walk through the `/setup`
+    is `pip install amx`, then run `amx` and walk through the `/setup`
     wizard. Five minutes from install to your first reviewed description.
 
 ## Try AMX
@@ -114,7 +114,7 @@ review before anything lands in the live database.
 
 -   [**Snowflake**](backends/snowflake.md)
 
-    Account, warehouse, role; profile-mode tuning for cost.
+    Account, warehouse, role; profiling-mode tuning per workload.
 
 -   [**Databricks**](backends/databricks.md)
 
@@ -122,7 +122,7 @@ review before anything lands in the live database.
 
 -   [**BigQuery**](backends/bigquery.md)
 
-    Project + dataset, byte-scanned cost guardrails.
+    Project + dataset, byte-scan controls for large tables.
 
 -   [**MySQL · Oracle · SQL Server · Redshift · ClickHouse · DuckDB**](backends/index.md)
 
@@ -140,7 +140,7 @@ review before anything lands in the live database.
 
 -   [**LLM providers**](llm-providers/index.md)
 
-    Setup and cost notes for each supported provider, including Batch mode.
+    Setup notes for each supported provider, including Batch mode.
 
 -   [**Data sources**](data-sources/codebase.md)
 

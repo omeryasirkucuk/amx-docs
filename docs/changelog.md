@@ -28,22 +28,6 @@ DuckDB**, bringing the supported backend count to 10. Each adapter exposes the o
 types its backend treats as first-class — not just tables and views. See
 [Backends](backends/index.md) for the full capability matrix.
 
-### 0.12.0 — database drivers as optional extras (BREAKING for installs)
-
-Database driver dependencies have moved out of `[project.dependencies]` into
-`[project.optional-dependencies]` extras. This trims the default install by ~50MB+ and
-keeps users who only target one or two backends from carrying the rest.
-
-**Migration:** existing users must reinstall with the extras they need:
-
-```bash
-pip install "amx[postgresql,snowflake]"   # multiple backends
-pip install "amx[all]"                    # everything (matches old behaviour)
-```
-
-`get_adapter()` now raises `MissingDriverError` (a subclass of `ImportError`) with the
-exact `pip install amx[<extra>]` hint when a backend is selected without its driver.
-
 ### 0.12.0 — Apache-2.0 license
 
 AMX now ships under the Apache License, Version 2.0, replacing the previous MIT licence.

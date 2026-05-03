@@ -10,7 +10,7 @@ The example uses an SAP-style schema (`sap_s6p`) with two tables: `t001` (compan
 and `vbak` (sales document headers). Both ship without column comments.
 
 ```bash
-pip install "amx[postgresql]"
+pip install amx
 amx
 ```
 
@@ -78,7 +78,7 @@ shows what was indexed.
 
 ## Run the agents
 
-Pick a single table for the first run so the wall-clock cost is small:
+Pick a single table for the first run so the wall clock stays short:
 
 ```text
 /run sap_s6p.t001
@@ -163,7 +163,7 @@ didn't pick — useful for second-guessing a decision later. To re-evaluate a pa
 - **Run against a whole schema**: `/run sap_s6p` — same flow, more columns.
 - **Use `/ask` to interrogate the catalog**: `/ask which tables in sap_s6p store dates?`
   See [Ask & Search](../cli/ask-and-search.md).
-- **Tune cost**: switch profiling to `sampled` for very large warehouses — see
+- **Reduce warehouse load**: switch profiling to `sampled` for very large warehouses — see
   [Profiling modes](../configuration/profiling-modes.md).
 - **Share with your team**: enable the [shared history store](../collaboration/shared-history-store.md)
   so teammates can see your runs.

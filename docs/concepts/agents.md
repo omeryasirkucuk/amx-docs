@@ -145,13 +145,13 @@ means logprob ≥ 0.85 → `high`, ≥ 0.6 → `medium`, otherwise `low`.
 Confidence labels are also surfaced in `/history compare` so you can see how a prompt-detail
 or model change shifts the distribution between runs.
 
-## Cost knobs
+## Tuning knobs
 
-Every behaviour above can be tuned for cost / latency:
+Every behaviour above can be tuned for throughput / latency:
 
 - `/llm-batch-size N` — how many columns the Profile Agent sends in one LLM call.
 - `/batch-context-columns off|all|N` — non-batch column names included as context per batch.
-- `/n-alternatives 1..5` — alternatives per column. Fewer = lower cost.
+- `/n-alternatives 1..5` — alternatives per column. Default 3.
 - `/prompt-detail minimal|standard|detailed|full` — preset prompt budgets.
 - `/profiling sampled|metadata` — switch DB profiling intensity.
 - `/llm-batch-size` and OpenAI / Anthropic batch endpoints (`/run --batch`) for very large

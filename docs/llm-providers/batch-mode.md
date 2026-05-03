@@ -1,18 +1,20 @@
 # Batch mode
 
 For wide schemas, AMX can route a `/run` through the provider's Batch API instead of
-synchronous chat. Batch APIs trade latency (24h SLA) for cost (~50% reduction).
+synchronous chat. Batch mode submits the entire run as one job, returns to the prompt
+immediately, and stitches results back into the local store as soon as the provider
+finishes (typically 1-6 hours, with a 24-hour SLA).
 
 ## When to use Batch
 
 - Schema has hundreds or thousands of columns.
 - The work isn't blocking — you'll review tomorrow.
-- You're cost-sensitive (e.g. covering a whole legacy SAP database).
+- You're using OpenAI or Anthropic (the two providers AMX supports for Batch).
 
 When NOT to use it:
 
 - You want results in minutes, not a day.
-- The schema is small (< 50 columns) — overhead beats savings.
+- The schema is small (< 50 columns) — overhead beats throughput.
 - You need the Search Agent loop (`/ask`) — Batch is for `/run` only.
 
 ## Supported providers
@@ -31,44 +33,73 @@ when `--batch` is passed.
 /run sap_s6p --batch
 ```
 
-AMX:
+What happens:
 
-1. Builds the per-column prompts as usual.
-2. Submits them as a single batch job to the active LLM provider.
-3. Records the batch job id and returns to the prompt — you can `/exit` and come back
-   later.
-4. On the next `/run` (or explicit `/history poll-batch <run_id>`), AMX checks job status
-   and pulls completed results into the local store.
-5. Once all batches are complete, the review wizard opens as if the run were synchronous.
+1. AMX builds the per-column prompts as it would for synchronous chat.
+2. Instead of dispatching them as chat completions, it packages them as a Batch API
+   submission.
+3. The batch job id is recorded in `~/.amx/history.db` and printed.
+4. AMX returns to the prompt — you can `/exit` and come back later.
 
-The batch job id appears in `/history list` so you can track progress without leaving
-AMX.
+```text
+/history list -n 5
+```
 
-## Confidence in batch results
+shows the batch run with status `submitted`. The duration column will be empty until
+results come back.
 
-OpenAI Batch returns logprobs — confidence calibration works exactly as for synchronous
-chat.
+## Polling for completion
 
-**Anthropic Batch does not return logprobs.** Batched results keep model-declared
-confidence labels until merged by a logprob-capable chat call. The orchestrator marks them
-as `confidence: model_declared` so you can tell them apart from logprob-calibrated ones in
-the review wizard.
+You can leave it alone — the next time AMX starts, it polls open batch jobs and pulls
+completed results into the local store automatically. To force a poll without restarting:
 
-## Cost expectations
+```text
+/history poll-batch <run_id>
+```
 
-- OpenAI Batch: ~50% of synchronous pricing.
-- Anthropic Batch: ~50% of synchronous pricing.
+When the job is complete, the run status flips to `completed` and the review wizard opens
+on the next `/run` (or you can open it directly via `/history review <run_id>`).
 
-`/usage` reports actual token consumption from `~/.amx/history.db`, including batch jobs,
-so you can confirm the saving.
+## OpenAI Batch specifics
 
-## Mixing batch and chat
+- 24-hour SLA, usually completes in 1-6 hours.
+- Returns logprobs so confidence calibration is identical to synchronous chat.
+- Per-job token cap; AMX splits very wide schemas across multiple jobs and tracks them as
+  a single AMX run.
 
-A common pattern:
+## Anthropic Batch specifics
 
-1. **Batch** the bulk of the schema (`/run sap_s6p --batch`) overnight.
-2. **Chat** for follow-up high-confidence accept-or-fix on the next morning.
-3. **Re-batch** anything still ambiguous after manual review.
+- 24-hour SLA, usually completes in 1-6 hours.
+- **Does NOT return token logprobs.** Confidence falls back to model-declared bands. The
+  orchestrator marks these as `confidence: model_declared` so you can tell them apart in
+  the review wizard.
+- Stricter input-size limits than OpenAI; AMX automatically routes oversized prompts to
+  chat instead.
+
+## During the batch window
+
+While the batch is running, you can:
+
+- Ingest new documents (`/ingest`) — they'll be in the catalog by the time the review
+  opens.
+- Scan a fresh code repo (`/code-scan`) — same.
+- Run `/ask` queries — they hit the catalog, not the LLM dispatch path.
+- Submit another batch to a different LLM profile — they run in parallel.
+
+What you can't do:
+
+- Cancel a batch from AMX (use the provider's dashboard).
+- Mix synchronous chat and batch dispatch within the same `/run` (the run picks one
+  dispatch mode at start time).
+
+## Reviewing batch results
+
+When the batch is complete, the review wizard works exactly as for synchronous runs.
+Logprob calibration is identical for OpenAI Batch; for Anthropic Batch, expect the
+confidence bands to be more conservative (model-declared rather than logprob-derived).
+
+Bulk-accept high-confidence rows and walk the medium / low ones manually. The save-back
+to history happens automatically as you go.
 
 ## Limitations
 

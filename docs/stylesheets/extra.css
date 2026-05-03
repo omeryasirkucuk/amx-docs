@@ -189,35 +189,45 @@ body, .md-typeset {
 
 /* ───────────── Three-column grid layout ───────────── */
 
-.md-grid { max-width: none; margin: 0 auto; }
+.md-grid { max-width: none; margin: 0; }
 .md-main { background: var(--bg); }
 .md-main__inner {
-  margin: 0;
   display: grid;
   grid-template-columns: 280px 1fr 220px;
-  max-width: none;
+  gap: 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 @media (max-width: 1280px) {
-  .md-main__inner { grid-template-columns: 280px 1fr; }
+  .md-main__inner { grid-template-columns: 280px 1fr; gap: 24px; }
 }
 @media (max-width: 1024px) {
-  .md-main__inner { grid-template-columns: 1fr; }
+  .md-main__inner { grid-template-columns: 1fr; gap: 0; padding: 0; }
 }
 
-/* ───────────── Center content column — 720px max, padding 32px ───────────── */
+/* ───────────── Center content column ───────────── */
 
 .md-content {
   max-width: none;
+  width: 100%;
+  min-width: 0;
   margin: 0;
   background: var(--bg);
 }
 .md-content__inner {
-  max-width: 720px;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 32px 32px 64px;
+  padding: 32px 8px 64px;
 }
 .md-content__inner::before { display: none; }
 .md-content__button { display: none !important; }
+/* H1 wraps at word boundaries only — never mid-word */
+.md-typeset h1 {
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
 
 /* ───────────── Left sidebar ───────────── */
 
@@ -429,18 +439,26 @@ body, .md-typeset {
   .md-sidebar--secondary {
     display: block;
     width: 220px;
-    padding: 32px 16px 32px 24px;
+    padding: 32px 0 32px 8px;
     position: sticky;
     top: 80px;
     align-self: start;
     background: var(--bg);
+    overflow: visible;
+    max-height: calc(100vh - 80px);
   }
 }
 @media (max-width: 1280px) {
   .md-sidebar--secondary { display: none !important; }
 }
 
-.md-sidebar--secondary .md-sidebar__scrollwrap { background: var(--bg); }
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  background: var(--bg);
+  overflow-y: auto;
+  overflow-x: visible;
+  max-height: calc(100vh - 96px);
+  padding-right: 8px;
+}
 .md-sidebar--secondary .md-nav__title {
   color: var(--text-faint);
   font-size: 12px;
@@ -452,19 +470,31 @@ body, .md-typeset {
   background: transparent;
   display: block;
 }
-.md-sidebar--secondary .md-nav__list { padding-left: 0; list-style: none; margin: 0; }
-.md-sidebar--secondary .md-nav__item { padding: 0; }
+.md-sidebar--secondary .md-nav__list {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+.md-sidebar--secondary .md-nav__item {
+  padding: 0;
+  margin: 0;
+  display: block;
+}
 .md-sidebar--secondary .md-nav__link {
-  font-size: 13px;
-  color: var(--text-muted);
+  display: block;
   padding: 6px 12px;
-  margin: 4px 0;
+  margin: 0;
   border-left: 2px solid transparent;
   border-radius: 0;
+  font-size: 13px;
   font-weight: 400;
-  display: block;
-  height: auto;
+  color: var(--text-muted);
   text-decoration: none;
+  line-height: 1.4;
+  min-height: 28px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .md-sidebar--secondary .md-nav__link::after { content: none; }
 .md-sidebar--secondary .md-nav__link:hover {

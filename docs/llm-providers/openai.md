@@ -19,10 +19,10 @@ Fields:
 
 | Use case | Model | Why |
 |---|---|---|
-| Default `/run` | `gpt-4o-mini` | Cheap, fast, supports logprobs |
+| Default `/run` | `gpt-4o-mini` | Fast, supports logprobs |
 | High-stakes `/run` | `gpt-4o` | Better at nuanced descriptions |
 | `/ask` | `gpt-4o-mini` | Search Agent rarely needs the heavyweight |
-| Cost-sensitive batch | `gpt-4o-mini` via Batch | ~50% cost vs synchronous |
+| Large overnight runs | `gpt-4o-mini` via Batch | Asynchronous, returns within 24h |
 | Reasoning-heavy domain | `o3-mini` / `gpt-5` | Auto-raised token floor (16384) |
 
 ## Reasoning routes
@@ -53,7 +53,6 @@ OpenAI Batch is supported and recommended for very large schemas — see
 [Batch mode](batch-mode.md). Batch jobs:
 
 - Run asynchronously (24h SLA).
-- Cost ~50% of synchronous calls.
 - Return logprobs (so confidence calibration still works).
 - Are tracked in `/history` like any other run.
 

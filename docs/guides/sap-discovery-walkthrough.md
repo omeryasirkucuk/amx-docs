@@ -21,7 +21,7 @@ We have:
 ## Setup
 
 ```bash
-pip install "amx[postgresql]"
+pip install amx
 amx
 /setup
 ```
@@ -83,8 +83,6 @@ In the review wizard:
 - ~20%: `medium` with one or two agents agreeing. Read each one, accept or pick alternative.
 - ~10%: `low` or split alternatives. Skip for now or write our own.
 
-Cost (per `/usage 24h`): about $4.20 in OpenAI tokens.
-
 Apply:
 
 ```text
@@ -112,15 +110,15 @@ The Search Agent uses the catalog (now richer thanks to the first pass) to answe
 top-20 inventory query gives us the next batch — high-volume tables that probably matter
 most for downstream consumers.
 
-## Second pass — wider scope, smaller LLM
+## Second pass — wider scope, lighter model
 
-We're confident in the prompts and the merge now. Switch to a cheaper model for volume:
+We're confident in the prompts and the merge now. Switch to a smaller model for volume:
 
 ```text
 /use-llm openai_mini       # gpt-4o-mini profile
 /llm-batch-size 30
 /n-alternatives 1
-/run sap_s6p --batch       # OpenAI Batch API, ~50% cost
+/run sap_s6p --batch       # async overnight via OpenAI Batch
 ```
 
 Batch jobs run overnight. Next morning:
@@ -142,9 +140,9 @@ For the remaining ~350 tables, switch to `metadata` mode:
 ```
 
 The Profile Agent now sees only schema metadata (types, constraints, comments on
-neighbours) — no per-column scans. Cost drops to a fraction of the first pass. Confidence
-will be lower, so accept rate during review is lower too. The output is good enough for
-inventory; targeted high-confidence runs against specific tables can come later.
+neighbours) — no per-column scans. Confidence will be lower, so accept rate during
+review is lower too. The output is good enough for inventory; targeted high-confidence
+runs against specific tables can come later.
 
 ## Three weeks in
 
@@ -152,14 +150,14 @@ inventory; targeted high-confidence runs against specific tables can come later.
 /usage 30d
 ```
 
-Reports total cost and token consumption. Compare against your budget.
+Reports total token consumption.
 
 ```text
 /history compare --schema sap_s6p --by llm_model --last 5 --diff
 ```
 
 Pivots the most recent five sap_s6p runs side by side, grouped by model. Shows where the
-cheaper model produced different (sometimes better, sometimes worse) descriptions.
+smaller model produced different (sometimes better, sometimes worse) descriptions.
 
 ## Lessons learned (for next time)
 

@@ -45,7 +45,7 @@ function/class span and other languages by paragraph-style splits. Languages wit
 particularly high-quality output:
 
 - Python — function and class spans
-- SQL — statement-level (with `sqlglot` from `amx[code-intel]` for richer parsing)
+- SQL — statement-level (richer parsing when `sqlglot` is installed)
 - Java / Scala / Kotlin — class span, decent
 - Go / TypeScript / JavaScript — paragraph split, decent
 - Anything else — paragraph split, weaker signal

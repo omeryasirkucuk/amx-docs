@@ -1,11 +1,12 @@
 # Profiling modes
 
 Each DB profile has a profiling mode that controls how aggressively AMX reads table data
-when profiling. The mode is the single biggest cost knob — choose it before tuning prompts.
+when profiling. The mode is the single biggest knob for warehouse load — choose it before
+tuning prompts.
 
 ## The three modes
 
-| Mode | Row count | Per-column stats | Sample values | Cost |
+| Mode | Row count | Per-column stats | Sample values | Warehouse load |
 |---|---|---|---|---|
 | `full` | exact `COUNT(*)` | null / distinct / min / max via aggregate scan | up to 5 distinct non-null per column | high |
 | `sampled` | backend table statistics | small backend-sample only | small sample via backend sampling syntax | low |
@@ -58,11 +59,11 @@ table statistics when available.
 
 Use `metadata` for:
 
-- Initial discovery on huge warehouses where you're optimising for "what tables exist?"
-  before paying for column profiling.
+- Initial discovery on huge warehouses where you want "what tables exist?" before doing
+  any column profiling.
 - CI / dev environments where the data is synthetic and column statistics aren't
   meaningful.
-- Demos against backends that bill heavily for any data scan.
+- Demos against backends where you want to avoid touching table data.
 
 ## Setting the mode
 
@@ -95,23 +96,23 @@ When `sampled` mode applies, AMX uses each backend's native sampling clause:
 When the backend doesn't support sampling, AMX falls back to a `LIMIT` plus optional
 `ORDER BY RANDOM()` so the sample isn't biased toward physical row order.
 
-## Cost intuition by backend
+## Backend behavior
 
-The actual dollar / wall-clock impact of each mode is backend-specific:
+Wall-clock impact varies per backend:
 
-- **PostgreSQL / MySQL / Oracle / MSSQL / DuckDB.** Self-hosted; cost is wall-clock and
+- **PostgreSQL / MySQL / Oracle / MSSQL / DuckDB.** Self-hosted; impact is wall-clock and
   storage I/O. `full` on a wide 50M-row table can take minutes; `sampled` runs in seconds.
-- **Snowflake.** Bills per warehouse-second. `full` against a wide table can wake up the
-  warehouse and run for tens of seconds. Switch to `sampled` or `metadata` for routine
-  work.
-- **Databricks.** Same as Snowflake — bills per cluster minute / DBU.
-- **BigQuery.** Bills per byte scanned. `full` runs `COUNT(*)` and per-column distinct
-  counts; on a partitioned table this is bounded but on a non-partitioned 1TB table it's
-  the full table. Use `sampled` or `metadata` for regular work.
-- **Redshift.** Bills per node-hour but `full` mode can lock the warehouse for other
-  workloads — the wall-clock cost matters even when the dollar cost doesn't.
-- **ClickHouse.** Bills per node-hour. `full` against a `MergeTree` table is fast but
-  reads bytes from disk; `sampled` is much cheaper.
+- **Snowflake.** `full` against a wide table can wake the warehouse and run for tens of
+  seconds. Switch to `sampled` or `metadata` for routine work.
+- **Databricks.** Same as Snowflake — `full` runs against the SQL warehouse for the
+  duration of the scan.
+- **BigQuery.** `full` runs `COUNT(*)` and per-column distinct counts; on a partitioned
+  table this is bounded but on a non-partitioned 1TB table it's the full table. Use
+  `sampled` or `metadata` for regular work.
+- **Redshift.** `full` mode can lock the warehouse for other workloads — wall-clock
+  matters here even on idle clusters.
+- **ClickHouse.** `full` against a `MergeTree` table is fast but reads bytes from disk;
+  `sampled` is much faster on large tables.
 
 ## Failure handling
 
@@ -144,7 +145,6 @@ weren't computed). The LLM works from the type and existing comment alone.
 | Production warehouse recurring | `sampled` or `metadata` |
 | BigQuery against TB-scale tables | `metadata` for discovery, `sampled` for inference |
 | Snowflake when the warehouse is asleep | `metadata` (avoids waking it) |
-| Anything where you want the strongest signal | `full`, accept the cost |
+| Anything where you want the strongest signal | `full` |
 
-Use `/usage 7d` after a few runs to see the actual cost — both LLM and warehouse — and
-adjust accordingly.
+Use `/usage 7d` after a few runs to see token consumption and adjust accordingly.

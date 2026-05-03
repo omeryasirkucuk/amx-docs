@@ -8,18 +8,18 @@ so the agents and review wizard treat them identically.
 
 | Backend | Config (`backend`) | Install | Comment write-back | Shared history store |
 |---|---|---|---|---|
-| [PostgreSQL](postgresql.md) | `postgresql` | `pip install amx[postgresql]` | `COMMENT ON …` | ✓ |
-| [Snowflake](snowflake.md) | `snowflake` | `pip install amx[snowflake]` | Snowflake `COMMENT` | ✓ |
-| [Databricks](databricks.md) | `databricks` | `pip install amx[databricks]` | `COMMENT ON COLUMN` (Unity Catalog) | ✓ |
-| [BigQuery](bigquery.md) | `bigquery` | `pip install amx[bigquery]` | `ALTER … SET OPTIONS` | ✓ |
-| [MySQL / MariaDB](mysql.md) | `mysql` | `pip install amx[mysql]` | `ALTER TABLE … COMMENT` | ✓ |
-| [Oracle](oracle.md) | `oracle` | `pip install amx[oracle]` | `COMMENT ON COLUMN` | ✓ |
-| [SQL Server](mssql.md) | `mssql` | `pip install amx[mssql]` (+ ODBC Driver 18) | `sp_addextendedproperty` | ✓ |
-| [Redshift](redshift.md) | `redshift` | `pip install amx[redshift]` | `COMMENT ON …` | ✓ |
-| [ClickHouse](clickhouse.md) | `clickhouse` | `pip install amx[clickhouse]` | `ALTER TABLE … MODIFY COMMENT` | ✗ (no `UPDATE`) |
-| [DuckDB](duckdb.md) | `duckdb` | `pip install amx[duckdb]` | `COMMENT ON COLUMN` | ✗ (local file) |
+| [PostgreSQL](postgresql.md) | `postgresql` | `pip install amx` | `COMMENT ON …` | ✓ |
+| [Snowflake](snowflake.md) | `snowflake` | `pip install amx` | Snowflake `COMMENT` | ✓ |
+| [Databricks](databricks.md) | `databricks` | `pip install amx` | `COMMENT ON COLUMN` (Unity Catalog) | ✓ |
+| [BigQuery](bigquery.md) | `bigquery` | `pip install amx` | `ALTER … SET OPTIONS` | ✓ |
+| [MySQL / MariaDB](mysql.md) | `mysql` | `pip install amx` | `ALTER TABLE … COMMENT` | ✓ |
+| [Oracle](oracle.md) | `oracle` | `pip install amx` | `COMMENT ON COLUMN` | ✓ |
+| [SQL Server](mssql.md) | `mssql` | `pip install amx` (+ ODBC Driver 18) | `sp_addextendedproperty` | ✓ |
+| [Redshift](redshift.md) | `redshift` | `pip install amx` | `COMMENT ON …` | ✓ |
+| [ClickHouse](clickhouse.md) | `clickhouse` | `pip install amx` | `ALTER TABLE … MODIFY COMMENT` | ✗ (no `UPDATE`) |
+| [DuckDB](duckdb.md) | `duckdb` | `pip install amx` | `COMMENT ON COLUMN` | ✗ (local file) |
 
-`pip install amx[all]` pulls in every driver. For most teams, picking just the engines you
+`pip install amx` pulls in every driver. For most teams, picking just the engines you
 actually use keeps the install lean.
 
 ## Distinctive object types per backend

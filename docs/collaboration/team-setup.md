@@ -73,7 +73,7 @@ analysis harder.
 A short page in your team's wiki listing:
 
 - Which DB profiles map to which environments.
-- Which LLM profile is the team's default for paid runs.
+- Which LLM profile is the team's default.
 - What the team's `/llm-thresholds` are (so confidence bands are comparable across runs).
 
 ### Run `/usage` weekly
@@ -82,8 +82,8 @@ A short page in your team's wiki listing:
 /usage 7d
 ```
 
-Token cost is the most common surprise. Knowing the weekly burn lets the team decide
-when to switch from synchronous to Batch.
+Knowing the weekly token burn helps the team decide when to switch from synchronous to
+Batch for large schemas.
 
 ### Tag big migrations with manual notes
 

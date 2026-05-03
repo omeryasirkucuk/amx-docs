@@ -1,11 +1,5 @@
 # Amazon Redshift
 
-## Install
-
-```bash
-pip install "amx[redshift]"
-```
-
 Drivers: `redshift_connector`, `sqlalchemy-redshift`.
 
 ## Connection fields
