@@ -1,193 +1,260 @@
 # `~/.amx/config.yml`
 
-AMX persists profiles and settings to `~/.amx/config.yml`. The file is part of the public
-contract: the schema is versioned, an older AMX binary refuses to load a newer config
-(`ConfigSchemaTooNewError`) rather than silently mangling it, and additive changes within a
-major version are guaranteed not to break older readers.
+AMX persists profiles and settings to `~/.amx/config.yml`. The file is part of the
+public surface — you can hand-edit it, version it, and template it with environment
+variables. This page walks through the schema (currently `schema_version: 7`), shows a
+fully-annotated example covering every supported field, and lists the operations AMX
+performs on the file under the hood.
 
-## Quick view
+## Prerequisites
+
+- AMX installed (`pip install amx`).
+- A text editor and basic YAML familiarity.
+
+## Where the file lives
 
 ```text
-/config
+$AMX_CONFIG_DIR/config.yml      # if AMX_CONFIG_DIR is set
+~/.amx/config.yml               # default
 ```
 
-shows the currently-active profiles and resolved settings. To inspect the file directly:
+`/setup` and the `/add-…-profile` wizards write to this file. Hand-edits are picked up
+on the next AMX start (or `> /config reload` from inside an active session).
+
+## Step-by-step — bootstrap a fresh config
+
+### 1. Let `/setup` write the first version
 
 ```bash
-cat ~/.amx/config.yml
+amx
+> /setup
+[1/3] Database profile (default) ...
+[2/3] LLM profile (default) ...
+[3/3] Optional document/code profiles ...
+✓ Saved to ~/.amx/config.yml
 ```
 
-The file is created with mode `0o600` and the `~/.amx/` directory with `0o700`.
+After `/setup`, the file is minimal — three sections (db, llm, optional docs) plus the
+schema version header.
 
-## File location
+### 2. Inspect what got written
 
-| Behaviour | Path |
-|---|---|
-| Default | `~/.amx/config.yml` |
-| Override | `amx --config /path/to/team.yml` |
+```text
+> /config show
+schema_version: 7
+db_profiles:
+  default:
+    backend: postgresql
+    host: db-prod.eu-west-1.rds.amazonaws.com
+    port: 5432
+    user: amx_reader
+    password: keyring://amx/default/password
+    database: analytics
+active_db_profile: default
+llm_profiles:
+  default:
+    provider: openai
+    model: gpt-4o
+    api_key: keyring://amx/default/api_key
+active_llm_profile: default
+```
 
-You can use a different file per project — useful when you maintain separate AMX configs
-for different employers or open-source workspaces.
+### 3. Hand-edit for non-wizard fields
 
-## Schema overview
-
-The current schema version is **v2** (introduced in 0.12.0).
+Some settings (e.g. `max_bytes_billed` for BigQuery, `thinking_budget_tokens` for
+Anthropic, `tls_trusted_ca_file` for Databricks) aren't asked for by the wizard.
+Add them by hand under the relevant profile.
 
 ```yaml
-schema_version: 2
-
-# DB profiles — one per database connection
 db_profiles:
-  prod_pg:
-    backend: postgresql
-    host: pg.internal.example.com
-    port: 5432
-    database: warehouse
-    user: amx_reader
-    sslmode: require
-    profiling_mode: full           # full | sampled | metadata
-    profiling_max_rows: 5_000_000
-    profiling_sample_size: 5
+  prod-bq:
+    backend: bigquery
+    project: acme-analytics-prod
+    dataset: sales_curated
+    credentials_path: ""
+    max_bytes_billed: 10737418240   # ← hand-added: 10 GB safety net
+```
 
-  snow_prod:
+### 4. Reload without restarting AMX
+
+```text
+> /config reload
+✓ Config reloaded. Active DB profile: prod-bq, active LLM profile: openai-prod.
+```
+
+## Annotated example — every supported field
+
+```yaml
+# ─────────────────────────────────────────────────────────────────────
+# Schema version. AMX migrates older files forward automatically; if this
+# is newer than the AMX binary you're running, AMX refuses to start so a
+# downgrade can't silently corrupt fields it doesn't know about.
+schema_version: 7
+
+# ─────────────────────────────────────────────────────────────────────
+# Single-DB shortcut. `db:` (without -profiles) is treated as the
+# `default` profile; everything below in db_profiles wins if both are set.
+db:
+  backend: postgresql
+  host: localhost
+  port: 5432
+  user: amx
+  password: ""
+  database: ""
+  profiling_mode: sampled         # full | sampled | metadata
+  profiling_max_rows: 1000000     # cap row count even in `full` mode
+  profiling_sample_size: 5000     # row count when `sampled`
+
+# ─────────────────────────────────────────────────────────────────────
+# Multi-DB profile registry. Each key is a profile name.
+db_profiles:
+  prod-pg:
+    backend: postgresql
+    host: db-prod.eu-west-1.rds.amazonaws.com
+    port: 5432
+    user: amx_reader
+    password: keyring://amx/prod-pg/password
+    database: analytics
+    profiling_mode: sampled
+    profiling_sample_size: 5000
+
+  prod-sf:
     backend: snowflake
     account: xy12345.eu-west-1
-    user: AMX_SVC
-    warehouse: AMX_WH
-    role: AMX_ROLE
+    user: AMX_READER
+    password: keyring://amx/prod-sf/password
     database: ANALYTICS
-    schema: PUBLIC
-    private_key_path: ~/.snowflake/amx.p8
+    warehouse: WH_AMX_XS
+    role: AMX_READER_ROLE
 
-  databricks-prod:
+  prod-dbx:
     backend: databricks
     host: adb-1234567890123456.7.azuredatabricks.net
-    http_path: /sql/1.0/warehouses/abcd1234ef567890
-    catalog: my_catalog
-    database: my_schema
-    tls_trusted_ca_file: ~/certs/internal-ca.pem
+    http_path: /sql/1.0/warehouses/abc1234567890
+    access_token: keyring://amx/prod-dbx/access_token
+    catalog: main
+    database: sales
+    tls_trusted_ca_file: ""
     tls_no_verify: false
 
-# LLM profiles — one per provider/model combination
+  prod-bq:
+    backend: bigquery
+    project: acme-analytics-prod
+    dataset: sales_curated
+    credentials_path: ""           # blank → ADC
+    max_bytes_billed: 10737418240
+
+# Single active DB (legacy).
+active_db_profile: prod-pg
+
+# Multi-DB scope (0.11.0+). When set, /run / /sync etc. operate
+# across every profile listed here.
+active_db_profiles: [prod-pg]
+
+# ─────────────────────────────────────────────────────────────────────
+# Single-LLM shortcut, parallels `db:` above.
+llm:
+  provider: openai
+  model: gpt-4o
+  api_key: ""
+  temperature: 0.2
+  n_alternatives: 3
+  column_batch_size: 10
+  logprob_high: 0.85
+  logprob_medium: 0.50
+
 llm_profiles:
-  openai_main:
+  openai-prod:
+    provider: openai
+    model: gpt-4o
+    api_key: keyring://amx/openai-prod/api_key
+    temperature: 0.2
+    n_alternatives: 3
+    column_batch_size: 10
+    logprob_high: 0.85
+    logprob_medium: 0.50
+
+  anthropic-deep:
+    provider: anthropic
+    model: claude-sonnet-4-20250514
+    api_key: keyring://amx/anthropic-deep/api_key
+    column_batch_size: 8
+    thinking_budget_tokens: 4000   # extended thinking budget per request
+
+  openai-batch:
     provider: openai
     model: gpt-4o-mini
-    temperature: 0.2                # 0.0 – 2.0; default 0.2
-    language: en
-    prompt_detail: standard         # minimal | standard | detailed | full
-    n_alternatives: 3               # 1 – 5
-    llm_batch_size: 20              # columns per Profile-Agent LLM call
-    batch_context_columns: 8        # off | all | N
-    logprob_thresholds:
-      high: 0.85
-      medium: 0.6
+    api_key: keyring://amx/openai-batch/api_key
+    column_batch_size: 20
+    batch_mode: true
+    batch_poll_interval_s: 60
+    batch_max_wait_s: 86400
 
-  anthropic_sonnet:
-    provider: anthropic
-    model: claude-3-5-sonnet-latest
-    temperature: 0.3
+active_llm_profile: openai-prod
 
-# Document profiles — one per document set
+# ─────────────────────────────────────────────────────────────────────
+# Optional: documents (RAG) and codebase (Code agent) profiles.
 doc_profiles:
-  sap_handbook:
-    paths:
-      - ~/work/sap-docs
-      - https://github.com/example/sap-docs
-      - s3://team-docs/sap/
+  default:
+    - /opt/internal-docs/data-platform/
+    - /opt/internal-docs/data-warehouse-handbook.pdf
+active_doc_profile: default
 
-# Codebase profiles — one per repository
 code_profiles:
-  etl_repo:
-    paths:
-      - ~/work/company-etl
-    include_extensions: [py, sql, java, scala]
-    exclude_globs:
-      - "**/node_modules/**"
-      - "**/.venv/**"
+  default: /Users/me/work/dbt-project
+active_code_profile: default
 
-# Active selections — what each "implicit" command targets
-active:
-  db: prod_pg
-  llm: openai_main
-  doc: sap_handbook
-  code: etl_repo
+# ─────────────────────────────────────────────────────────────────────
+# Search catalog (RAG embeddings + Chroma store).
+search:
+  embedding_model: openai/text-embedding-3-small
+  top_k: 8
+  index_store: ~/.amx/chroma
 
-# Settings
-settings:
-  write_through_config: true        # save profile switches and config mutations immediately
-  force_logprobs: true              # request logprobs even if provider capability is uncertain
-  max_tokens: 4096                  # default; reasoning models auto-raise to 16384
-
-# Shared history store (v2, optional)
-history_store_enabled: true
-history_store_profile: prod_pg
+# ─────────────────────────────────────────────────────────────────────
+# Optional: shared history store. When set, /history is read from and
+# written to a database table instead of the local file. Use to share
+# audit trails across team machines.
+history_store_enabled: false
+history_store_profile: ""        # name of a db_profile entry
 history_store_schema: AMX
 ```
 
-## Schema versioning
+## Field reference (per profile)
 
-`schema_version: 2` was introduced in 0.12.0 and adds three optional keys
-(`history_store_enabled`, `history_store_profile`, `history_store_schema`).
+| Field | Backends | Required | Notes |
+|---|---|---|---|
+| `backend` | all | yes | One of `postgresql`, `snowflake`, `databricks`, `bigquery`, `mysql`, `oracle`, `mssql`, `redshift`, `clickhouse`, `duckdb` |
+| `host` / `port` | most | yes | Validated. Port must be a number |
+| `user` / `password` | most | yes | Password resolves `keyring://` URIs to OS-keychain values |
+| `database` | most | optional (0.11+) | Leave blank to defer choice to `/run` / `/sync` |
+| `account` | snowflake | yes | The bare account identifier (no `.snowflakecomputing.com`) |
+| `warehouse` / `role` | snowflake | optional | Left blank → user defaults |
+| `http_path` / `access_token` / `catalog` / `tls_trusted_ca_file` / `tls_no_verify` | databricks | yes (`http_path`, `access_token`) | See [Databricks](../backends/databricks.md) |
+| `project` / `dataset` / `credentials_path` / `max_bytes_billed` | bigquery | yes (`project`) | Empty `credentials_path` = ADC |
+| `service_name` | oracle | optional | Preferred over `database` (=SID) for modern Oracle |
+| `driver` / `encrypt` / `trust_server_certificate` | mssql | optional | Defaults: `ODBC Driver 18 for SQL Server`, `True`, `False` |
+| `cluster_identifier` / `secure` | redshift / clickhouse | optional | Redshift IAM auth, ClickHouse HTTPS toggle |
+| `profiling_mode` / `profiling_max_rows` / `profiling_sample_size` | all | optional | See [Profiling modes](profiling-modes.md) |
 
-- Existing 0.11.x configs (no `schema_version`, or `schema_version: 1`) load unchanged.
-- A 0.11.x AMX binary trying to read a 0.12+ config sees `schema_version: 2` and raises
-  `ConfigSchemaTooNewError` with an upgrade prompt — never silently mangles the file.
-- Future schema bumps follow the same rule: additive only within a major version, always
-  bump `schema_version`, always refuse to load newer files.
+## Verify
 
-The on-disk format is part of the [public API contract](../api/index.md#on-disk-formats).
+1. `> /config show` — pretty-prints the parsed config (secrets masked).
+2. `> /config validate` — re-runs the schema validator without modifying anything; surfaces any unknown keys or type mismatches.
+3. `> amx doctor` — checks the active profile actually reaches the resolved endpoints.
 
-## Where secrets live
+## Troubleshooting
 
-Database passwords and API keys are **not stored in `config.yml`** when the OS keychain
-is available. Instead, the YAML stores a reference (`__keychain__:amx:openai_main:api_key`)
-and AMX retrieves the actual secret via [keyring](https://github.com/jaraco/keyring) at
-runtime.
+| Symptom | Cause | Fix |
+|---|---|---|
+| `ConfigSchemaTooNewError: file is schema_version 8, this AMX is at 7` | YAML written by a newer AMX version | Upgrade AMX (`pip install -U amx`) or downgrade the file |
+| Secrets visible in plain text | `keyring://` resolution failed (no OS keychain available) | Either install a keychain backend (`secretstorage` on Linux) or accept plaintext + `chmod 600 ~/.amx/config.yml` |
+| `unknown field 'foo' in profile 'bar'` | Hand-edit added a typo | Run `> /config validate` to surface the offending key |
+| Edits don't take effect | AMX caches at start; `/config reload` not run | `> /config reload` (or restart AMX) |
+| Multiple machines disagree on the audit trail | Local history is per-machine | Enable `history_store_enabled: true` — see [Shared history store](../collaboration/shared-history-store.md) |
 
-| OS | Keychain backend |
-|---|---|
-| macOS | macOS Keychain |
-| Windows | Windows Credential Manager |
-| Linux | Secret Service (libsecret) |
+## What's next
 
-When no keychain is available (e.g. headless Linux without `dbus`), AMX falls back to
-storing the secret in `config.yml` itself, with the file mode kept at `0o600`. This is
-safe enough on a single-user machine but you should configure a real keychain in any
-multi-user environment.
-
-## Editing safely
-
-`write_through_config: true` (default) means AMX saves the YAML atomically after each
-mutation. You can edit the file by hand when AMX is not running:
-
-1. Quit any running `amx` session (`Ctrl+D` or `/exit`).
-2. Edit `~/.amx/config.yml` with your editor of choice.
-3. Restart `amx`.
-
-If you edit while AMX is running, your changes are likely to be overwritten by the next
-write-through.
-
-For programmatic edits, use the public API:
-
-```python
-import amx
-
-app = amx.init()
-app.config.set_active_db("prod_pg")
-app.save_config()
-```
-
-See [Python API](../api/reference.md).
-
-## Config troubleshooting
-
-```bash
-amx doctor
-```
-
-Reports config schema version, missing optional backend deps, and unreachable profiles.
-See [doctor](../cli/doctor.md).
-
-If `config.yml` is corrupt and AMX can't start, delete or rename it and run `/setup`
-again — the file is regenerated from scratch. Local history (`history.db`) is unaffected.
+- [Environment variables](env-vars.md) — when env beats config-file edits.
+- [Profiling modes](profiling-modes.md) — `full` / `sampled` / `metadata` and what they mean per backend.
+- [TLS and proxies](tls-and-proxies.md) — when to add `tls_trusted_ca_file:` and where it gets picked up.

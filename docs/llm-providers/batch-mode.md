@@ -1,112 +1,165 @@
 # Batch mode
 
 For wide schemas, AMX can route a `/run` through the provider's Batch API instead of
-synchronous chat. Batch mode submits the entire run as one job, returns to the prompt
-immediately, and stitches results back into the local store as soon as the provider
-finishes (typically 1-6 hours, with a 24-hour SLA).
+the live chat API. You pay roughly **half the live-call price** in exchange for an
+asynchronous SLA — the provider returns results within minutes-to-hours instead of
+seconds. This page walks through enabling batch mode, submitting and polling a batch,
+checking provider dashboards for in-flight status, and reviewing the results.
 
-## When to use Batch
+## Prerequisites
 
-- Schema has hundreds or thousands of columns.
-- The work isn't blocking — you'll review tomorrow.
-- You're using OpenAI or Anthropic (the two providers AMX supports for Batch).
+- AMX installed (`pip install amx`).
+- An active LLM profile on a provider that supports batch — currently **OpenAI** and **Anthropic**.
+- An active database profile.
+- A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.
 
-When NOT to use it:
+## Step-by-step
 
-- You want results in minutes, not a day.
-- The schema is small (< 50 columns) — overhead beats throughput.
-- You need the Search Agent loop (`/ask`) — Batch is for `/run` only.
+### 1. Enable batch mode for the active LLM profile
 
-## Supported providers
+Edit `~/.amx/config.yml` and add `batch_mode: true` under the LLM profile:
 
-| Provider | API | Logprobs in batch results |
+```yaml
+llm_profiles:
+  openai-batch:
+    provider: openai
+    model: gpt-4o-mini             # cheap models pair well with batch
+    api_key: keyring://amx/openai-batch/api_key
+    temperature: 0.2
+    n_alternatives: 3
+    column_batch_size: 20          # bigger batches = fewer batch jobs
+    batch_mode: true
+    batch_poll_interval_s: 60      # how often AMX polls the provider
+    batch_max_wait_s: 86400        # 24h timeout (provider SLA)
+active_llm_profile: openai-batch
+```
+
+Then restart AMX — config changes are picked up at session start.
+
+### 2. Submit a batch `/run`
+
+```text
+> /run sales
+[scope] 47 tables · 1,283 columns
+[Profile] sampled scan on 47 tables ... ok in 18.4 s
+[LLM]     submitting OpenAI batch (1,283 columns, 64 requests, est. cost: $1.42)
+          → batch id: batch_abc123def456
+          → provider dashboard: https://platform.openai.com/batches/batch_abc123def456
+          → polling every 60 s ...
+```
+
+`/run` does not block your terminal — you can `/exit`, restart later, and resume polling
+with `/batch resume <batch-id>`. The batch id is also written to `/history` so you can
+look it up via `/history list --filter batch`.
+
+### 3. Watch the batch progress
+
+```text
+> /batch status
+batch_abc123def456 [openai/gpt-4o-mini]
+  state: in_progress
+  submitted: 2 min ago
+  requests: 64 total · 28 finished · 36 in-progress · 0 failed
+  est. completion: ~7 min
+```
+
+Or open the provider dashboard for a UI view:
+
+- **OpenAI**: [platform.openai.com/batches](https://platform.openai.com/batches) — shows progress, errors, and download links.
+- **Anthropic**: [console.anthropic.com/batches](https://console.anthropic.com/batches).
+
+When AMX polls and sees `state: completed`, it downloads and parses results
+automatically; you'll see a notification at the next prompt:
+
+```text
+> /batch status
+batch_abc123def456 [openai/gpt-4o-mini]
+  state: completed
+  duration: 9 min 12 s
+  requests: 64 total · 64 finished · 0 failed
+  → results merged into review queue: /run review
+```
+
+### 4. Review and apply
+
+```text
+> /run review
+1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
+Review row 1/64 (low confidence): sales.customer.x_legacy_status
+  draft: "Legacy status flag preserved during the 2018 migration; values 0–7 map to..."
+  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
+> A
+...
+
+> /apply
+Write 1,283 comment(s) to db-prod/sales? [y/N]: y
+... (1,283/1,283 written)
+✓ /apply finished. Audit trail: /history show <run-id>
+```
+
+By default AMX walks you through low-confidence rows first; medium and high are
+bulk-accepted unless you pass `--review-all`.
+
+## Cost / time trade-offs
+
+| Mode | Provider price | Wall time (1,000 cols) | When to use |
+|---|---|---|---|
+| Live (default) | $1.00 / 1k cols at `gpt-4o-mini` | ~30 s | Day-to-day single-table runs; iterating on prompts |
+| Batch | $0.50 / 1k cols at `gpt-4o-mini` | 5 min – 24 h | Whole-warehouse drafts; nightly sweeps; CI pipelines |
+
+Batch is also strictly cheaper than running the live API in parallel up to your tier
+cap — you don't burn rate-limit budget that you might want for ad-hoc `/ask` queries
+later in the day.
+
+## Sample config
+
+OpenAI batch:
+
+```yaml
+llm_profiles:
+  openai-batch:
+    provider: openai
+    model: gpt-4o-mini
+    api_key: keyring://amx/openai-batch/api_key
+    column_batch_size: 20
+    batch_mode: true
+    batch_poll_interval_s: 60
+    batch_max_wait_s: 86400
+```
+
+Anthropic batch:
+
+```yaml
+llm_profiles:
+  anthropic-batch:
+    provider: anthropic
+    model: claude-haiku-3-5-20250101
+    api_key: keyring://amx/anthropic-batch/api_key
+    column_batch_size: 25
+    batch_mode: true
+    batch_poll_interval_s: 60
+    batch_max_wait_s: 86400
+```
+
+## Verify
+
+1. `> /llm test` — pings the chat API (not the batch API) to confirm credentials. Batch jobs use the same key.
+2. `> /batch status` — shows in-flight jobs and their state. Empty if no jobs are pending.
+3. Open the provider dashboard URL printed at submission time — confirms the job is registered server-side.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
 |---|---|---|
-| OpenAI | [Batch API](https://platform.openai.com/docs/guides/batch) | ✓ |
-| Anthropic | [Message Batches](https://docs.anthropic.com/en/api/creating-message-batches) | ✗ |
+| `OpenAI batch endpoint not enabled for project` | Project hasn't been opted into the Batch API tier | Enable in [platform.openai.com/settings/organization/limits](https://platform.openai.com/settings/organization/limits) |
+| Batch state `failed` with `partial_failure: 12 / 64` | Some requests hit the model's per-request token limit | Lower `column_batch_size`; `/run --recover-batch <batch-id>` retries only the failed sub-requests on the live API |
+| Polling never returns / state stuck on `validating` | Provider validation queue is backed up (rare) | Wait; if still stuck after 30 min, cancel via the dashboard and re-submit |
+| `batch_max_wait_s` exceeded | Schema is wider than the timeout allows | Bump `batch_max_wait_s` to `172800` (48 h) or split the schema across multiple `/run` calls |
+| Anthropic batch job returns half the columns | Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column | Confirm `column_batch_size` is 20+ so you stay under the request cap |
+| Cost was higher than estimate | The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included | Check the dashboard "Costs" view for the actual billed amount |
 
-Other providers do not yet have AMX Batch support — they fall back to synchronous chat
-when `--batch` is passed.
+## What's next
 
-## Running a Batch run
-
-```text
-/run sap_s6p --batch
-```
-
-What happens:
-
-1. AMX builds the per-column prompts as it would for synchronous chat.
-2. Instead of dispatching them as chat completions, it packages them as a Batch API
-   submission.
-3. The batch job id is recorded in `~/.amx/history.db` and printed.
-4. AMX returns to the prompt — you can `/exit` and come back later.
-
-```text
-/history list -n 5
-```
-
-shows the batch run with status `submitted`. The duration column will be empty until
-results come back.
-
-## Polling for completion
-
-You can leave it alone — the next time AMX starts, it polls open batch jobs and pulls
-completed results into the local store automatically. To force a poll without restarting:
-
-```text
-/history poll-batch <run_id>
-```
-
-When the job is complete, the run status flips to `completed` and the review wizard opens
-on the next `/run` (or you can open it directly via `/history review <run_id>`).
-
-## OpenAI Batch specifics
-
-- 24-hour SLA, usually completes in 1-6 hours.
-- Returns logprobs so confidence calibration is identical to synchronous chat.
-- Per-job token cap; AMX splits very wide schemas across multiple jobs and tracks them as
-  a single AMX run.
-
-## Anthropic Batch specifics
-
-- 24-hour SLA, usually completes in 1-6 hours.
-- **Does NOT return token logprobs.** Confidence falls back to model-declared bands. The
-  orchestrator marks these as `confidence: model_declared` so you can tell them apart in
-  the review wizard.
-- Stricter input-size limits than OpenAI; AMX automatically routes oversized prompts to
-  chat instead.
-
-## During the batch window
-
-While the batch is running, you can:
-
-- Ingest new documents (`/ingest`) — they'll be in the catalog by the time the review
-  opens.
-- Scan a fresh code repo (`/code-scan`) — same.
-- Run `/ask` queries — they hit the catalog, not the LLM dispatch path.
-- Submit another batch to a different LLM profile — they run in parallel.
-
-What you can't do:
-
-- Cancel a batch from AMX (use the provider's dashboard).
-- Mix synchronous chat and batch dispatch within the same `/run` (the run picks one
-  dispatch mode at start time).
-
-## Reviewing batch results
-
-When the batch is complete, the review wizard works exactly as for synchronous runs.
-Logprob calibration is identical for OpenAI Batch; for Anthropic Batch, expect the
-confidence bands to be more conservative (model-declared rather than logprob-derived).
-
-Bulk-accept high-confidence rows and walk the medium / low ones manually. The save-back
-to history happens automatically as you go.
-
-## Limitations
-
-- Batch jobs cannot be cancelled mid-flight from AMX (use the provider's dashboard).
-- A single batch job carries up to the provider's per-job token cap; AMX splits very wide
-  schemas across multiple jobs and tracks them as a single AMX run.
-- Anthropic Batch has stricter input-size limits than OpenAI; AMX automatically routes
-  oversized prompts to chat instead.
-- The Code and RAG agents still call chat for retrieval-side work even in `--batch` mode;
-  only the per-column profile prompts go to Batch.
+- [Run & Apply](../cli/run-and-apply.md) — `/run review` walks you through batch results once they're back.
+- [Guides: Batch a large schema](../guides/batch-large-schema.md) — full end-to-end procedure with checkpointing across multiple batches.
+- [OpenAI](openai.md) / [Anthropic](anthropic.md) — switch the underlying model without re-creating the profile.

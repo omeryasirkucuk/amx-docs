@@ -1,122 +1,173 @@
 # Team setup
 
-A recommended workflow for onboarding a team to AMX with [shared history store](shared-history-store.md)
-enabled.
+When more than one person uses AMX against the same warehouse, you want to share two
+things: which descriptions have already been drafted (so people don't repeat work) and
+the audit trail of who applied which description when. The mechanism for both is the
+**shared history store** — an AMX-managed audit table inside one of your existing
+databases. This page walks through enabling it from the lead's machine, onboarding
+team members, and verifying everyone sees the same history.
 
-## 0. Pick a shared backend
+## Prerequisites
 
-Most teams already have a Postgres, Snowflake, Databricks, BigQuery, MySQL, Oracle, MSSQL,
-or Redshift instance the team can write to. Use that. Don't stand up a new database for
-AMX.
+- AMX installed on every team member's machine (`pip install amx`).
+- A database where the audit table can live. PostgreSQL is the recommended host
+  (it supports the row-level UPDATE the audit table needs); MySQL, SQL Server,
+  Snowflake, BigQuery, Databricks, and Redshift also work. ClickHouse and DuckDB do
+  not — see [Shared history store](shared-history-store.md) for the reason.
+- Each team member has their own active LLM profile (cost is per-user; it's fine to
+  share a service-account API key, but cleaner to issue one key per user).
+- Network connectivity from every team member to the host database.
 
-The shared backend should:
+## Step-by-step
 
-- Be reachable from every engineer's workstation (or at least every machine that will run
-  AMX).
-- Have permissions to `CREATE SCHEMA` and the four AMX tables. A read-write service
-  account is fine.
-- Be **separate from your production data warehouse** if possible — AMX's writes are
-  small but they do go to the same engine.
+### 1. (Lead) Pick the host backend
 
-## 1. One person enables shared mode
+```text
+[lead]> /db-profiles
+default        prod-pg          dev-snowflake
 
-The first engineer to enable shared mode is the bootstrapper. They:
+[lead]> /history-store
+History store currently: disabled (per-user local file at ~/.amx/history.db).
 
-1. Add a DB profile pointing at the shared backend (`/add-db-profile shared_backend`).
-2. Open the picker: `/db` → `/history-store`.
-3. Pick **Enable**, choose `shared_backend`, accept the default schema (`AMX`) or pick
-   another.
-4. AMX bootstraps the schema and tables.
-5. Pick **Migrate from local** to copy their existing local history rows up. This is
-   idempotent — safe to re-run.
+To enable shared history, pick a DB profile that will host the audit table.
+Recommended: pick a 'sandbox' / 'metadata' database that all team members can reach.
 
-After enabling, every subsequent run on this machine is dual-written.
+  [1] default       (postgresql) localhost/postgres
+  [2] prod-pg       (postgresql) db-prod.eu-west-1.rds.amazonaws.com/analytics
+  [3] dev-snowflake (snowflake)  xy12345.eu-west-1/DEV
+> 2
 
-## 2. Hand the schema/profile name to the team
+Schema name for the audit table (default: AMX): AMX
+✓ Will create AMX.amx_history_runs / amx_history_results in db-prod...analytics
+```
 
-Send teammates a snippet they can drop into their `config.yml`:
+The lead picks once; everyone else points at the same backend by name.
+
+### 2. (Lead) Create the audit tables
+
+```text
+[lead]> /history-store enable
+About to create:
+  CREATE SCHEMA IF NOT EXISTS AMX;
+  CREATE TABLE AMX.amx_history_runs (...) ;
+  CREATE TABLE AMX.amx_history_results (...) ;
+  CREATE INDEX ix_amx_history_results_run_id ON AMX.amx_history_results(run_id) ;
+  CREATE INDEX ix_amx_history_results_target ON AMX.amx_history_results(target_qname) ;
+
+Proceed? [y/N]: y
+
+✓ History store enabled. Future /run / /apply will write to AMX.amx_history_*.
+```
+
+The lead's `~/.amx/config.yml` now has:
 
 ```yaml
 history_store_enabled: true
-history_store_profile: shared_backend
+history_store_profile: prod-pg
 history_store_schema: AMX
 ```
 
-Or have them re-run `/setup` and add the same shared backend as a DB profile, then
-`/db` → `/history-store` → **Enable** without bootstrap (they'll see the existing schema
-and skip the DDL).
+### 3. (Team member) Reuse the lead's history store
 
-## 3. (Optional) Verify with `Status`
-
-```text
-/db
-/history-store
-1   # Status
-```
-
-Status shows:
-
-- Shared mode state (on / off).
-- Which profile and schema.
-- The local `pending_shared_writes` outbox depth — should be `0` on a healthy install.
-
-## 4. Recommended team conventions
-
-### Use stable LLM and DB profile names
-
-If everyone names their DB profile `prod_pg` for production Postgres, `/history compare`
-and aggregate analysis across machines stays meaningful. Mixed names work but make later
-analysis harder.
-
-### Write CONTRIBUTING for AMX-specific norms
-
-A short page in your team's wiki listing:
-
-- Which DB profiles map to which environments.
-- Which LLM profile is the team's default.
-- What the team's `/llm-thresholds` are (so confidence bands are comparable across runs).
-
-### Run `/usage` weekly
+Each team member adds the same DB profile to their own AMX (read-only credentials are
+fine — the audit table needs `INSERT` and `UPDATE` on the AMX schema only) and points
+their config at it:
 
 ```text
-/usage 7d
+[member]> /add-db-profile
+> postgresql
+Database host (e.g. db.example.com): db-prod.eu-west-1.rds.amazonaws.com
+... (rest of wizard)
+
+[member]> /history-store
+History store currently: disabled.
+
+> /history-store enable --profile prod-pg --schema AMX
+✓ History store now points at: AMX.amx_history_* in db-prod.../analytics.
 ```
 
-Knowing the weekly token burn helps the team decide when to switch from synchronous to
-Batch for large schemas.
+The `--profile` flag re-uses the existing profile rather than running a new wizard.
 
-### Tag big migrations with manual notes
+### 4. Verify everyone sees the same history
 
-Before a big run, add a one-liner to your team's wiki: "Running AMX against the SAP
-upgrade tables, run id will start around 1340". When someone joins later and asks "what
-were these runs?", you'll have context.
+```text
+[member]> /history list
+run_id                            who              when               scope        ok    fail
+run_2026-05-03_15-44-002          alice@acme.com   2 hours ago        sales        1219  0
+run_2026-05-03_14-12-001          bob@acme.com     4 hours ago        catalog      47    0
+run_2026-05-03_11-08-001          alice@acme.com   7 hours ago        sales (1 t)  18    0
+...
+```
 
-## Failure modes to watch
+The `who` column is the OS user (or, if `AMX_USER` env is set, that override). All
+team members see all runs.
 
-| Symptom | Likely cause | Fix |
+### 5. Recommended division of work
+
+Once the history store is shared, here's the workflow that works:
+
+- **Lead** runs whole-warehouse `/run-apply --profiling-mode metadata` once a quarter to seed first-draft descriptions for every column.
+- **Domain owners** pick up specific schemas in their area and run `/run sales --review-all` to refine the descriptions interactively.
+- **Reviewers** spot-check via `/history show <run-id>` and edit via `/run review`.
+- **Anyone** can `/ask` with confidence — the catalog has been built across everyone's contributions.
+
+`/history compare` is invaluable in the multi-person case — when two people produced
+different descriptions for the same column, compare runs side-by-side:
+
+```text
+> /history compare run_2026-05-03_15-44-002 run_2026-05-03_11-08-001 --filter sales.customer
+                                  alice (2 hr ago)        bob (5 days ago)         status
+sales.customer.c_first_name      "Given name of …"        "First name of …"        diff
+sales.customer.c_last_name       "Surname of …"           "Surname of …"           same
+sales.customer.x_legacy_status   "Legacy status flag …"   (no description)         alice added
+```
+
+## Sample config
+
+Lead's config (the one that creates the tables):
+
+```yaml
+db_profiles:
+  prod-pg:
+    backend: postgresql
+    # ...
+
+history_store_enabled: true
+history_store_profile: prod-pg
+history_store_schema: AMX
+```
+
+Team member's config (after re-use):
+
+```yaml
+db_profiles:
+  prod-pg:                 # same name, same connection details, possibly different creds
+    backend: postgresql
+    # ...
+
+history_store_enabled: true
+history_store_profile: prod-pg
+history_store_schema: AMX
+```
+
+## Verify
+
+1. **Lead and member**: `> /history list` returns the same row count.
+2. **Lead and member**: `> /history show <some-run-id>` returns identical content (down to the SHA-256 of the `descriptions` blob — `/history show --hash`).
+3. **Member**: `> /db inspect` shows `AMX` as a schema with the two `amx_history_*` tables.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
 |---|---|---|
-| `pending_shared_writes` depth keeps growing | Shared backend is unreachable | Check network / VPN / credentials; then `Flush pending` |
-| One engineer's runs not visible | Their `history_store_enabled` is `false` | Walk them through `/db` → `/history-store` → Enable |
-| `ConfigSchemaTooNewError` on one machine | That AMX is older than the config | `pip install --upgrade amx` |
-| Migration didn't pick up old runs | The migrate ran before the rows were written, or filtering excluded them | Re-run **Migrate from local** — it's idempotent |
+| `/history-store enable` fails with `permission denied for schema public` (PG) or equivalent on other backends | The DB user can't `CREATE SCHEMA` | Have the DBA pre-create the schema, then run `/history-store enable --schema AMX` (skips the CREATE) |
+| Member's `/history list` is empty even after lead's run | Member's `history_store_enabled` is still `false` (config not reloaded) | `> /config reload` or restart AMX |
+| `psycopg.errors.UndefinedTable: relation "AMX.amx_history_runs" does not exist` | Schema name mismatch (lead used `amx`, member configured `AMX`) | Postgres folds unquoted identifiers to lowercase; use the same case on both sides |
+| `/history compare` shows `alice` and `bob` for the same person on different machines | `AMX_USER` not consistent with OS user | Set `AMX_USER=alice@acme.com` in shell init for predictable attribution |
+| Member can `/run` but `/apply` fails with `permission denied` on the audit insert | Member's DB role lacks `INSERT` on `AMX.amx_history_*` | Grant `INSERT, UPDATE ON AMX.amx_history_runs, AMX.amx_history_results TO <member-role>` |
 
-## Disabling shared mode
+## What's next
 
-```text
-/db
-/history-store
-2   # Disable (when shared mode is on)
-```
-
-Existing shared rows are **not deleted**. Local writes go back to local-only. Re-enable
-later without bootstrap (the schema and tables stay).
-
-## Off-boarding
-
-When an engineer leaves the team:
-
-- Their workstation's `~/.amx/` no longer pushes to shared.
-- Existing shared rows attributed to them stay (auditability).
-- The team can identify their rows via the `created_by` and `hostname` columns.
-
-There's no "purge a user" command — by design, the audit trail stays.
+- [Shared history store](shared-history-store.md) — schema details, DDL, and migration.
+- [Safety guards](safety-guards.md) — what AMX prevents in shared mode (concurrent /apply on the same row, etc.).
+- [History](../cli/history.md) — `/history list`, `/history show`, `/history compare` reference.

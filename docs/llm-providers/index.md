@@ -1,103 +1,76 @@
 # LLM providers
 
-AMX talks to LLMs through a single unified interface based on
-[LiteLLM](https://docs.litellm.ai/), with extensions for batch APIs, logprob collection,
-and reasoning-token budget management.
+AMX talks to LLMs through a single unified interface, so you can swap providers per
+profile without touching application code or prompts. This page summarises which
+providers are supported, the trade-offs between them, and where to start when picking
+the right one for your workload.
 
-## Supported providers
+## Pick a provider
 
-| Provider | Config value | Notes |
-|---|---|---|
-| OpenAI | `openai` | Direct API. Reasoning routes (`o-series`, `gpt-5`) get an auto-raised token floor. |
-| OpenRouter | `openrouter` | Use `provider/model` format like `openai/gpt-4o-mini` or `anthropic/claude-3.5-sonnet` |
-| Anthropic | `anthropic` | Direct API. Extended-thinking routes get the reasoning floor. |
-| Google Gemini | `gemini` | |
-| DeepSeek | `deepseek` | OpenAI-compatible — see notes below. |
-| Ollama | `ollama` | Local. Base URL `http://localhost:11434` (no `/v1`). |
-| OpenAI-compatible | `local` | Generic. Base URL `http://localhost:11434/v1` for vLLM / LM Studio / Ollama-OpenAI mode. |
+Use this short decision tree before reaching for any specific page:
 
-## Adding an LLM profile
+- **First-time AMX user, prototyping** → [OpenAI](openai.md) with `gpt-4o`. The most battle-tested provider; every prompt template and confidence threshold is calibrated against it first.
+- **Cost-sensitive whole-warehouse drafting** → [Batch mode](batch-mode.md) with `gpt-4o-mini` or `claude-haiku-3-5`. ~50% off the live-API rate, async SLA.
+- **Cryptic legacy schemas (transliterated names, abbreviations)** → [Anthropic](anthropic.md) with `claude-sonnet-4` or extended-thinking on a hard subset.
+- **Big context windows for very wide tables** → [Gemini](gemini.md) with `gemini-2.0-flash` and `column_batch_size: 15`.
+- **On-prem / air-gapped** → [Ollama and local](ollama-local.md). Llama-3 / Qwen / DeepSeek work; logprob calibration is per-model.
 
-```text
-amx
-/add-llm-profile openai_main
-```
+## Provider matrix
 
-Or via the wizard during `/setup`. The fields are:
+| Provider | Default model | Cost lens | Logprobs | Batch API | Key file |
+|---|---|---|---|---|---|
+| [OpenAI](openai.md) | `gpt-4o` | Mid (cheap with `mini`) | ✓ native | ✓ ([batch](batch-mode.md)) | `sk-…` |
+| [Anthropic](anthropic.md) | `claude-sonnet-4-20250514` | Mid–High | ✓ derived | ✓ ([batch](batch-mode.md)) | `sk-ant-…` |
+| [Gemini](gemini.md) | `gemini-2.0-flash` | Low | ✓ native | ✗ in AMX yet | `AIza…` |
+| OpenRouter | provider/model id | Varies (markup) | varies | ✗ | `sk-or-…` |
+| DeepSeek | `deepseek-chat` | Very low | ✓ native | ✗ | API key |
+| [Ollama / local](ollama-local.md) | `llama3` | Free (compute is yours) | varies | ✗ | optional |
 
-- **Provider** — one of the values above.
-- **Model id** — provider-specific. For OpenRouter, use the `provider/model` format.
-- **API key** — stored in the OS keychain when available; the YAML keeps a reference.
-- **Base URL** — only for `local` and self-hosted endpoints.
-- **Sampling temperature** — defaults to `0.2`, clamped to `[0.0, 2.0]`.
+`OpenRouter` and `Kimi` are routed through OpenAI-compatible HTTPS — see the wizard
+prompts; they reuse the OpenAI client under the hood.
 
-Switch the active profile with `/use-llm <name>`. List profiles with `/llm-profiles`.
+## Generation defaults that apply across all providers
 
-## Per-provider pages
+The wizard sets these once per profile (you can edit later in `~/.amx/config.yml`):
 
-- [OpenAI](openai.md) — direct + reasoning-route handling
-- [Anthropic](anthropic.md) — direct + extended thinking + Anthropic Batch
-- [Gemini](gemini.md)
-- [Ollama / OpenAI-compatible local endpoints](ollama-local.md)
-- [Batch mode](batch-mode.md) — OpenAI Batch + Anthropic Message Batches
+- `n_alternatives: 3` — how many candidate descriptions per column. The review wizard offers 1, 2, 3 keys to pick.
+- `column_batch_size: 10` — how many columns AMX packs into one prompt. Bigger = cheaper / column, smaller = higher quality on wide tables.
+- `temperature: 0.2` — deterministic by default. `0.4–0.7` for more variety in alternatives.
+- `logprob_high: 0.85` / `logprob_medium: 0.50` — confidence thresholds for the `high` / `medium` / `low` buckets. See `/logprob-thresholds`.
 
-## Tuning knobs
+Per-provider tuning notes live on each provider's page.
 
-AMX exposes the behavior knobs explicitly so you don't have to guess what's happening:
+## Costing rule of thumb
 
-- `/usage [window]` — token usage summary read from `~/.amx/history.db` (no network
-  calls).
-- `/llm-batch-size N` — columns per Profile-Agent LLM call. Larger = fewer round trips.
-- `/n-alternatives 1..5` — alternatives per column. Default 3, drop to 1 for tighter
-  runs.
-- `/prompt-detail minimal|standard|detailed|full` — preset prompt budget. Run without
-  args to see the comparison table.
-- `/temperature 0.0..2.0` — lower = less output variance. Default `0.2`.
-- `/run --batch` — when supported, route the run through the provider's Batch API for
-  asynchronous overnight processing.
+For a typical 47-table / 1,283-column schema, drafting descriptions once:
 
-## Reasoning models
+| Setup | Approximate cost |
+|---|---|
+| Live `gpt-4o-mini`, batch_size 10 | $1.00–$1.50 |
+| Live `gpt-4o`, batch_size 10 | $4.00–$6.00 |
+| Batch `gpt-4o-mini` | $0.50–$0.75 |
+| Live `claude-sonnet-4` | $5.00–$8.00 |
+| Live `gemini-2.0-flash`, batch_size 15 | $0.40–$0.80 |
+| Local `llama3` on a workstation | $0 (bring your own GPU) |
 
-Non-streamed calls to reasoning routes (kimi-k2-thinking, deepseek-reasoner,
-claude-sonnet-4 / opus-4 / 3.7-sonnet, and any o-series / gpt-5 route) used to keep the
-regular `max_tokens=4096` budget, so agents in CHAT mode (Profile, Code, RAG) routinely
-failed with `finish_reason=length` — the model burned the whole budget on internal
-thinking.
+Numbers are illustrative — actual cost depends on column-name length, sample-value
+length, and the provider's per-token rate at the time. Always run a single-table `/run`
+first and check the LLM line for `tokens in / out` before unleashing it on a warehouse.
 
-AMX now auto-raises the floor whenever a model is recognised as a reasoning route:
-default `AMX_LLM_MIN_MAX_TOKENS=16384`. This applies across providers (OpenAI direct,
-OpenRouter, Anthropic) so the same agent code works for every reasoning-capable route.
+## Setup walkthroughs
 
-For OpenRouter specifically, AMX sends `reasoning.effort` only — never `reasoning.max_tokens`
-together with it — because the OpenRouter API rejects that combination. The default
-effort drops from `medium` → `low` so token burn stays bounded; set
-`AMX_REASONING_EFFORT=high` to override.
+Each provider page follows the same template: prerequisites → `/add-llm-profile`
+walkthrough with verbatim wizard prompts → sample `~/.amx/config.yml` block → verify
+steps → troubleshooting table → what to read next.
 
-## Logprobs and confidence
+- [OpenAI](openai.md) — the default; logprob-threshold tuning.
+- [Anthropic](anthropic.md) — Claude model selection, extended thinking.
+- [Gemini](gemini.md) — model picks, safety-filter handling.
+- [Ollama and local](ollama-local.md) — on-prem / air-gapped setup.
+- [Batch mode](batch-mode.md) — async / cheap drafts via OpenAI / Anthropic batch APIs.
 
-AMX requests logprobs by default (`force_logprobs: true` in the LLM profile). The orchestrator
-uses them to calibrate confidence bands — see [Agents](../concepts/agents.md#confidence-and-logprobs).
+## What's next
 
-When provider token offsets can be reconstructed, AMX scores generated description text
-per suggestion. Otherwise it falls back to a whole-response score. OpenAI Batch returns
-logprobs; **Anthropic Batch does not**, so those batch results keep model-declared
-confidence labels until merged by a logprob-capable chat call.
-
-## Failure semantics
-
-- `/analyze /run` tests the active LLM **before** profiling any asset and stops if the
-  model/profile is unreachable or deactivated.
-- When `finish_reason=length`, AMX halts processing. Truncated JSON is **never** parsed
-  silently — the run reports the truncation and you decide whether to raise the budget.
-- Third-party LiteLLM warnings / debug lines are suppressed by default; AMX surfaces only
-  its own actionable warnings.
-
-## Provider-prefix typo normalisation
-
-AMX normalises common provider-prefix typos in model ids so a stray keystroke doesn't
-silently route to the wrong provider:
-
-- `oepnai/gpt-4o-mini` → corrected to OpenAI namespace.
-- Similar normalisations for `antropic/`, `googel/`, `gemeni/`, etc.
-
-The original typo and the corrected value are both logged.
+- [Quick start](../getting-started/quickstart.md) — five-minute install-to-first-comment walkthrough.
+- [Run & Apply](../cli/run-and-apply.md) — what happens between `/run` and `/apply`, including review-wizard keystrokes.
+- [Configuration: env vars](../configuration/env-vars.md) — provider-specific env vars (proxies, API base overrides).

@@ -1,40 +1,50 @@
 {#-
-  AMX custom left sidebar.
-
-  Renders only the CURRENT TOP-LEVEL SECTION's children, never the whole
-  nav tree. Header has the top-level sections; sidebar has the
-  sub-pages. They never duplicate each other.
+  AMX custom left sidebar — Databricks-style flat tree.
 
   Layout:
-    [active page pill — the current page; not repeated in the list]
-    [grouped sub-pages — all OTHER pages in this section]
+    [search box — opens Material's search modal]
+    [home link → AMX documentation]
+    For each top-level section (skipping Home):
+      [UPPERCASE CATEGORY LABEL]
+      [leaf link]
+      [leaf link]
+      ...
+      For sections that contain sub-sections (e.g. Reference):
+        [SECONDARY UPPERCASE LABEL — sub-section title]
+        [leaf link]
+        [leaf link]
 
-  - Sections with nested sub-sections (e.g. Reference) render each
-    sub-section as a group header with its children indented below.
-  - Sections with flat children (e.g. Get Started) render one group
-    using the section title as header.
+  No expand/collapse. Everything is always visible. Active page is shown
+  with accent text color and a faint background — no thick left border.
 -#}
 
-{# 1. Find the active top-level section. The first nav item is "Home"
-   — skip it; on the home page, hide:navigation in frontmatter
-   prevents this template from rendering at all.
-   Use namespace() so the assignment persists outside the for loop. #}
-{% set ns = namespace(active=none) %}
-{% for nav_item in nav.items %}
-  {% if nav_item.active and not loop.first %}
-    {% set ns.active = nav_item %}
-  {% endif %}
-{% endfor %}
-{% set active_section = ns.active %}
+{# Recursively render any leaf links under a node, walking through any
+   nested sections inline (we render the sub-section as its own labeled
+   group via render_group). #}
 
-{% if active_section and active_section.children %}
+{% macro render_leaves(items, depth) -%}
+  {%- for item in items -%}
+    {%- if item.is_page and item.url -%}
+      <a class="amx-sidebar__link amx-sidebar__link--depth-{{ depth }}{% if item.active %} amx-sidebar__link--active{% endif %}"
+         href="{{ item.url | url }}"
+         {% if item.active %}aria-current="page"{% endif %}>{{ item.title }}</a>
+    {%- endif -%}
+  {%- endfor -%}
+{%- endmacro %}
 
-{# 2. Inspect children to decide layout. #}
-{% set sub_ns = namespace(has=false) %}
-{% for child in active_section.children %}
-  {% if child.is_section %}{% set sub_ns.has = true %}{% endif %}
-{% endfor %}
-{% set has_sub_sections = sub_ns.has %}
+{% macro render_group(section, depth) -%}
+  {%- if section.children -%}
+    <div class="amx-sidebar__group amx-sidebar__group--depth-{{ depth }}">
+      <div class="amx-sidebar__group-title">{{ section.title }}</div>
+      {{ render_leaves(section.children, depth) }}
+      {%- for child in section.children -%}
+        {%- if child.is_section and child.children -%}
+          {{ render_group(child, depth + 1) }}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+{%- endmacro %}
 
 <nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="{{ lang.t('nav') }}" data-md-level="0">
 
@@ -49,79 +59,28 @@
     {{ config.site_name }}
   </label>
 
-  {# 3. Active page indicator pill — current page only #}
-  <a class="amx-sidebar__current" href="{{ page.url | url }}" aria-current="page">
-    <span class="amx-sidebar__current-text">{{ page.title }}</span>
+  {# Home link → docs root #}
+  <a class="amx-sidebar__home{% if page and page.is_homepage %} amx-sidebar__home--active{% endif %}"
+     href="{{ nav.homepage.url | url }}"
+     {% if page and page.is_homepage %}aria-current="page"{% endif %}>
+    {{ config.site_name }} documentation
   </a>
 
-  {# 4. Grouped sub-pages list. The current page is excluded everywhere. #}
-  <div class="amx-sidebar__groups">
-    {% if has_sub_sections %}
-
-      {# Section has nested sub-sections (e.g. Reference) — each sub-section
-         becomes its own group; standalone pages collapse into one group. #}
-      {% set ungrouped = [] %}
-      {% for child in active_section.children %}
-        {% if child.is_section and child.children %}
-          <div class="amx-sidebar__group">
-            <h3 class="amx-sidebar__group-title">{{ child.title }}</h3>
-            <ul class="amx-sidebar__list">
-              {% for leaf in child.children %}
-                {% if leaf.is_page and leaf.url and leaf.url != page.url %}
-                  <li class="amx-sidebar__row">
-                    <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
-                      <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
-                      <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
-                    </a>
-                  </li>
-                {% endif %}
-              {% endfor %}
-            </ul>
+  {# Tree #}
+  <div class="amx-sidebar__tree">
+    {%- for item in nav -%}
+      {%- if not loop.first -%}{# skip Home #}
+        {%- if item.is_section and item.children -%}
+          {{ render_group(item, 0) }}
+        {%- elif item.is_page and item.url -%}
+          {# Top-level standalone page (rare) #}
+          <div class="amx-sidebar__group amx-sidebar__group--depth-0">
+            <a class="amx-sidebar__link amx-sidebar__link--depth-0{% if item.active %} amx-sidebar__link--active{% endif %}"
+               href="{{ item.url | url }}">{{ item.title }}</a>
           </div>
-        {% elif child.is_page and child.url and child.url != page.url %}
-          {# Standalone pages — collected for an "Other" group at the end #}
-          {% set _ = ungrouped.append(child) %}
-        {% endif %}
-      {% endfor %}
-      {% if ungrouped %}
-        <div class="amx-sidebar__group">
-          <h3 class="amx-sidebar__group-title">More</h3>
-          <ul class="amx-sidebar__list">
-            {% for leaf in ungrouped %}
-              <li class="amx-sidebar__row">
-                <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
-                  <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
-                  <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </div>
-      {% endif %}
-
-    {% else %}
-
-      {# Section has only flat children (e.g. Get Started) — single group
-         with the section title as the header. #}
-      <div class="amx-sidebar__group">
-        <h3 class="amx-sidebar__group-title">{{ active_section.title }}</h3>
-        <ul class="amx-sidebar__list">
-          {% for leaf in active_section.children %}
-            {% if leaf.is_page and leaf.url and leaf.url != page.url %}
-              <li class="amx-sidebar__row">
-                <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
-                  <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
-                  <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
-                </a>
-              </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-
-    {% endif %}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
   </div>
 
 </nav>
-
-{% endif %}

@@ -1,121 +1,186 @@
 # Search catalog
 
-AMX maintains an internal `/search` catalog inside the local SQLite history database
-(`~/.amx/history.db`). It stores everything `/ask` needs to answer questions without going
-back to the database for every detail.
+AMX maintains an internal search catalog that combines three things — the database
+catalog (tables, columns, descriptions), the document RAG index (PDFs, Word, Markdown),
+and the code reference index (extracted snippets) — into a single embedding store.
+That's what `/ask` queries to answer your questions, what `/run` consults for context
+when drafting descriptions, and what `/search` exposes directly. This page walks
+through how the catalog is built, when to `/sync` vs `/rebuild`, and how to recover
+from corruption or model-mismatch errors.
 
-## What the catalog stores
+## Prerequisites
 
-- Effective metadata state per database / schema / table / column (the description that
-  would be applied if you ran `/apply` right now).
-- Generated, reviewed, manual, imported, and rejected description candidates.
-- FK and inferred relationships.
-- Normalised code-usage evidence from `/code scan`.
-- Sync / rebuild job history.
-- Per-profile `/search` settings.
+- AMX installed.
+- An active DB profile (introspected at least once — `/sync` will do it).
+- Optionally, an active doc and / or code profile.
+- An active LLM profile (used for the embedding step).
 
-The catalog **is not the database**. It's a derived view of what AMX has learned.
+## How the catalog is built
 
-## Sync behaviour
-
-The catalog stays fresh through several auto-update points:
-
-- `/analyze run` and `/run-apply` automatically persist generated alternatives and refresh
-  the catalog.
-- `/history review` mirrors accepted / custom / skipped decisions into the catalog.
-- `/metadata edit` writes a `manual` catalog description immediately.
-- `/code scan` refreshes code-usage evidence.
-- `/search rebuild` recomputes effective state and rebuilds the `amx_search` Chroma vector
-  index.
-
-Manual sync is rarely needed:
-
-```text
-/search status                           # what's in the catalog now
-/search sources                          # which evidence sources are enabled
-/search sync                             # full re-sync from DB + cached code evidence
-/search sync --schema sap_s6p            # narrow scope
-/search sync --table sap_s6p.t001
-/search rebuild                          # rebuild effective state + vector index
+```
+┌──────────────────────────────────┐
+│   /sync                          │
+├──────────────────────────────────┤
+│   1. Refresh introspection cache │   ← from DB profile
+│   2. Embed new / changed entries │   ← LLM profile (embedding model)
+│   3. Update Chroma index         │
+│   4. Reconcile with audit trail  │   ← from /history
+└──────────────────────────────────┘
+              │
+              ▼
+   ~/.amx/chroma/  ← single Chroma directory; per-collection inside
+              │
+              ▼
+       /ask, /search, /run (RAG context)
 ```
 
-Use `/search sync` mainly when:
+Three collections live inside `~/.amx/chroma/`:
 
-- An external tool (DBT, dbt-docs, an admin UI) changed comments in the database
-  underneath you.
-- You ingested a new tranche of documents and want their evidence included in `/ask`
-  results immediately.
-
-## The `amx_search` vector index
-
-Behind the catalog sits a Chroma vector index at `~/.amx/chroma/amx_search/`. Each row
-embeds:
-
-- The fully-qualified identifier (`schema.table.column`).
-- The current effective description.
-- Adjacent context (table comment, neighbouring columns).
-
-The index is what powers semantic `/ask` queries like "tables that store address data".
-Lexical / structural / live evidence still takes precedence — vector search is the
-fallback when name-matching doesn't hit.
-
-## Tuning `/search`
-
-```text
-/search config                           # show all settings for the active DB profile
-/search config max_neighbors 8           # update one
-/search context-detail rich              # control how much catalog/code/history context goes in
-```
-
-Settings are stored per DB profile.
-
-| Key | Default | Description |
+| Collection | Source | Refreshed by |
 |---|---|---|
-| `max_neighbors` | `5` | Top-K for vector retrieval |
-| `context_detail` | `standard` | Catalog/code/history context budget (`minimal` / `standard` / `rich` / `deep`) |
-| `enable_live_verify` | `true` | Run safe live DB probes for high-risk structural claims |
-| `enable_action_loop` | `true` | Allow `--actions` to suggest follow-up actions |
-| `min_score_floor` | `0.05` | Suppress low-confidence tail rows |
+| `db_catalog` | DB tables, columns, existing comments | `/sync` |
+| `documents` | RAG doc profile | `/ingest` |
+| `code_refs` | Code agent profile | `/code-scan` |
 
-## Embeddings provider
+`/ask` searches across all three and merges results.
 
-```text
-/embeddings              # show current
-/embeddings MiniLM       # default, offline (no extra install)
-/embeddings OpenAI-compatible openai/text-embedding-3-small
-/embeddings Local        # local sentence-transformers
-```
+## Step-by-step
 
-Run `/search rebuild` after switching — the catalog needs to be re-embedded so the new
-provider's vectors are used at retrieval time.
-
-## Catalog vs database — what wins
-
-When `/ask` answers a question, AMX prefers explicit/live evidence over semantic fallback:
-
-1. **Live DB probe** for table-scoped factual questions ("how many columns does ADRC have?",
-   "are all ADRC columns commented?") — these run safe metadata probes before answering.
-2. **Catalog facts** (effective metadata state, FK relationships, code references) — used
-   when the question is broad or doesn't benefit from a probe.
-3. **Vector retrieval** as an independent fallback when lexical terms don't match.
-
-Synthesised answers receive the visible grounded result set, but `/search` suppresses
-low-confidence tail rows before answering so weak vector-only matches don't dominate the
-user-facing summary.
-
-## Recovery
-
-The catalog rebuilds from the database in one command:
+### 1. Initial sync
 
 ```text
-/search rebuild
+> /search status
+Search catalog: empty (never synced)
+
+> /sync
+[1/4] Refreshing introspection cache .........  ok (47 tables, 1,283 columns)
+[2/4] Embedding 1,330 entries ................  ok (8.4 s, $0.012)
+[3/4] Updating Chroma index ..................  ok
+[4/4] Reconciling with description audit .....  ok (0 prior /apply runs)
+✓ /sync finished. Catalog ready for /ask.
 ```
 
-This re-reads DB metadata, replays cached code evidence, and re-embeds. Useful when:
+The first sync against a fresh DB takes a moment — one embedding call per table +
+column. With `text-embedding-3-small` at OpenAI's price, a 1,300-entry warehouse
+embeds for ~$0.01.
 
-- The Chroma directory is corrupted.
-- You've upgraded AMX past a schema bump and want a clean rebuild.
-- You changed embeddings and want consistent vectors across the catalog.
+### 2. Incremental sync
 
-The local SQLite history is the source of truth for run results — `/search rebuild`
-does not touch it.
+After the first sync, re-running is cheap — only entries with changed names or
+descriptions are re-embedded:
+
+```text
+> /sync
+[1/4] Refreshing introspection cache .........  ok (47 tables, 1,283 columns)
+[2/4] Embedding 12 changed entries ...........  ok (0.8 s, $0.0001)
+[3/4] Updating Chroma index ..................  ok
+[4/4] Reconciling with description audit .....  ok (3 new /apply runs since last sync)
+✓ /sync finished in 1.4 s.
+```
+
+Run `/sync` after every `/apply` so descriptions you just wrote are immediately
+searchable.
+
+### 3. Search the catalog
+
+```text
+> /search "customer addresses"
+Top-8 results across all collections:
+  0.142  [db_catalog]  sales.customer_address (table)
+  0.198  [documents]   data-glossary/address.md p.1
+  0.214  [code_refs]   models/marts/customer.sql:42
+  ...
+```
+
+The `[db_catalog]` / `[documents]` / `[code_refs]` tag tells you which collection a
+hit came from. Useful when retrieval looks off — you can immediately tell whether the
+LLM was relying on the DB or the docs.
+
+### 4. Status check
+
+```text
+> /search status
+Search catalog
+  db_catalog: 1,330 entries (last /sync 4 min ago)
+  documents:    412 chunks  (last /ingest 1 hour ago)
+  code_refs:    412 chunks  (last /code-scan 23 min ago)
+Embedding model: openai/text-embedding-3-small
+Index store: ~/.amx/chroma  (size: 18.4 MB)
+```
+
+If any of the three lines say `(never indexed)`, run the corresponding command:
+`/sync` for db_catalog, `/ingest` for documents, `/code-scan` for code_refs.
+
+### 5. Full rebuild
+
+```text
+> /search rebuild
+About to wipe ~/.amx/chroma and re-embed:
+  db_catalog: 1,330 entries
+  documents:  412 chunks
+  code_refs:  412 chunks
+  Estimated cost: $0.025
+
+Proceed? [y/N]: y
+
+[1/3] Wiping index ...................  ok
+[2/3] Re-syncing db_catalog ..........  ok (8.1 s)
+[3/3] Re-ingesting documents .........  ok (5.4 s)
+[4/3] Re-scanning code_refs ..........  ok (6.0 s)
+✓ /search rebuild finished in 19.5 s.
+```
+
+`/search rebuild` is the right move when:
+
+- You changed the embedding model in `~/.amx/config.yml` (cosine distances become
+  meaningless across models).
+- The Chroma directory got corrupted (rare but happens with abrupt power loss).
+- You moved AMX to a different config dir and want a fresh index.
+
+## When to `/sync` vs `/rebuild`
+
+| You did this | Then run |
+|---|---|
+| `/apply` (wrote descriptions back to the DB) | `/sync` |
+| Added a new column / table on the DB | `/sync` |
+| Edited `~/.amx/config.yml` to add a doc path | `/ingest` |
+| Edited the codebase | `/code-scan` |
+| Changed `embedding_model:` in YAML | `/search rebuild` |
+| `~/.amx/chroma/` got deleted / corrupted | `/search rebuild` |
+| Switched to a different DB profile | `/sync` (catalog is per-profile) |
+
+## Sample config
+
+```yaml
+search:
+  embedding_model: openai/text-embedding-3-small
+  top_k: 8
+  index_store: ~/.amx/chroma
+```
+
+For larger / more nuanced catalogs, switch to `openai/text-embedding-3-large` (about
+3× the cost, noticeably better retrieval on technical jargon) and run
+`/search rebuild`.
+
+## Verify
+
+1. `> /search status` — entry counts per collection, last-update timestamp, embedding model identity, on-disk size.
+2. `> /search "<a phrase you indexed>"` — confirms retrieval works at all.
+3. `> /ask "<a question with a known answer>"` — end-to-end test of retrieval + LLM answer.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `/search status` shows the catalog but `/ask` says "I don't know" for everything | Embedding-model mismatch (you changed model in YAML, didn't rebuild) | `> /search rebuild` |
+| Chroma error on startup: `chromadb.errors.InvalidCollectionException` | Index dir corrupted | `rm -rf ~/.amx/chroma` and `> /search rebuild` |
+| `/sync` fails with `OpenAI quota exceeded` | Free-tier embedding quota for the day exhausted | Wait, raise the quota tier, or switch to `text-embedding-3-small` (cheaper) |
+| Index dir size keeps growing forever | `/search rebuild` not run since several model swaps; orphan collections accumulate | `rm -rf ~/.amx/chroma` and `> /search rebuild` once |
+| Searches return only `db_catalog` results, never docs | Doc profile not active | `> /use-doc <name>` then re-run `/ask` |
+| `/sync` takes 10+ minutes on a small warehouse | Network round-trip to the embedding API per call | Use a batched embedding model (the OpenAI client batches automatically); confirm `OPENAI_API_BASE` isn't pointing at a slow proxy |
+
+## What's next
+
+- [Documents](documents.md) — populate the documents collection.
+- [Codebase](codebase.md) — populate the code_refs collection.
+- [Ask & Search](../cli/ask-and-search.md) — query the catalog conversationally.

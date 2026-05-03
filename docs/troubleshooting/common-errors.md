@@ -50,7 +50,7 @@ non-US accounts). Test from a different network if you suspect egress.
 
 **Fix:** Set `tls_trusted_ca_file` on the Databricks profile, or set
 `AMX_DATABRICKS_TRUSTED_CA_FILE`. See
-[Databricks → TLS notes](../backends/databricks.md#tls-notes).
+[Databricks](../backends/databricks.md) and [TLS and proxies](../configuration/tls-and-proxies.md).
 
 ### `pyodbc.Error: Data source name not found and no default driver specified`
 

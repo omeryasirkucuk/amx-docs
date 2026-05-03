@@ -111,7 +111,7 @@ supported backends.
 ### Databricks `CERTIFICATE_VERIFY_FAILED`
 
 Set a `tls_trusted_ca_file` on the Databricks DB profile, or set
-`AMX_DATABRICKS_TRUSTED_CA_FILE`. See [Databricks → TLS notes](../backends/databricks.md#tls-notes)
+`AMX_DATABRICKS_TRUSTED_CA_FILE`. See [Databricks](../backends/databricks.md)
 and [TLS and proxies](../configuration/tls-and-proxies.md).
 
 ## `/ask`

@@ -1,90 +1,172 @@
 # Snowflake
 
-Drivers: `snowflake-connector-python`, `snowflake-sqlalchemy`.
+Configure Snowflake as an AMX backend to introspect tables, views, procedures, tasks,
+stages, shares, and external tables, and write reviewed descriptions back as
+`COMMENT ON …` statements. This page walks through registering a Snowflake profile,
+picking the right role and warehouse, choosing a profiling mode that won't surprise your
+billing, and applying your first batch of generated comments.
 
-## Connection fields
+## Prerequisites
 
-| Field | Required | Notes |
-|---|---|---|
-| `account` | yes | e.g. `xy12345.eu-west-1` |
-| `user` | yes | |
-| `password` | conditional | Required for password auth |
-| `private_key_path` | conditional | For key-pair auth |
-| `private_key_passphrase` | no | If the private key is encrypted |
-| `authenticator` | no | `externalbrowser` for SSO, `oauth`, etc. |
-| `warehouse` | yes | Compute warehouse for AMX queries |
-| `role` | yes | The role used for introspection + write-back |
-| `database` | yes | |
-| `schema` | yes | Default schema; can be overridden per-run |
+- AMX installed (`pip install amx`). The `snowflake-connector-python` driver is included by default — no extras required.
+- A Snowflake account with reachable network policy (typical: AMX runs from a workstation or CI runner; whitelist that egress IP).
+- A role that can `USAGE` on the database, `USAGE` on every target schema, `SELECT` on the target tables/views, and `MODIFY` on the schema if you intend to write back comments.
+- A warehouse the role can `USE`. Even tiny X-Small warehouses are enough for `metadata` and `sampled` profiling.
+- An active LLM profile (or skip ahead and add one with `/add-llm-profile`).
 
-## Sample `config.yml`
+## Step-by-step
+
+### 1. Open the AMX REPL
+
+```bash
+amx
+```
+
+### 2. Add a database profile
+
+```text
+> /add-db-profile
+```
+
+Pick `snowflake` from the backend menu:
+
+```text
+Select database backend (engine):
+  postgresql   ...
+  snowflake    Account, warehouse, role - Snowflake COMMENT
+  databricks   ...
+  ...
+> snowflake
+```
+
+### 3. Answer the connection prompts
+
+```text
+Snowflake account identifier (e.g. xy12345.us-east-1): xy12345.eu-west-1
+Username (e.g. ANALYST): AMX_READER
+Password: ••••••••
+Database name (optional, e.g. ANALYTICS — leave blank to pick at command time):
+  ANALYTICS
+Warehouse (optional, e.g. COMPUTE_WH): WH_AMX_XS
+Role (optional, e.g. ANALYST): AMX_READER_ROLE
+```
+
+Notes on each field:
+
+- **Account identifier** — the same string you'd put in the JDBC URL (`<orgname>-<account>` or the legacy `<account>.<region>` form). No protocol, no `.snowflakecomputing.com` suffix.
+- **Username / password** — required. Password lands in the OS keychain when one is available.
+- **Database** — optional since AMX 0.11. Leave blank to be presented with the database picker at `/run` / `/sync` time.
+- **Warehouse** — optional. If you leave it blank, AMX uses the role's default warehouse; if there is no default, the first SQL call fails with `No active warehouse selected`. For predictable cost, always set a small dedicated warehouse here.
+- **Role** — optional. If you leave it blank, AMX uses the user's default role. Use the role picker `/use-db-role` later if you want to switch without re-adding the profile.
+
+!!! warning "Auth choice — password vs key-pair vs OAuth"
+    The wizard registers password auth. If your account requires key-pair auth or SSO, finish the wizard with any placeholder password and then edit `~/.amx/config.yml`:
+    
+    - **Key-pair**: replace `password:` with `private_key_path: /home/me/.snowflake/rsa_key.p8` and (if needed) `private_key_passphrase: keyring://amx/snowflake/passphrase`. The connector picks the file up automatically.
+    - **OAuth / external browser**: replace `password:` with `authenticator: externalbrowser`. AMX will pop the browser flow on the first connection.
+
+### 4. Activate and confirm
+
+```text
+> /use-db prod-sf
+✓ Active DB profile → prod-sf [snowflake] xy12345.eu-west-1/ANALYTICS · WH_AMX_XS · AMX_READER_ROLE
+
+> /connect
+Testing prod-sf... ✓ connected (server: 8.34.1, role: AMX_READER_ROLE, warehouse: WH_AMX_XS)
+```
+
+### 5. Inspect schemas and tables
+
+```text
+> /schemas
+schema       objects   tables   views
+PUBLIC       12        9        3
+SALES        18        16       2
+RAW          120       120      0
+
+> /tables SALES
+schema   name              kind    rows           comment?
+SALES    CUSTOMER          TABLE   2,450,118      no
+SALES    CUSTOMER_ADDRESS  TABLE   2,450,118      no
+SALES    INVENTORY_DAILY   TABLE   45,318,234     yes
+...
+```
+
+### 6. Pick a profiling mode that fits your warehouse cost
+
+```text
+> /db profiling-mode
+Current mode: full
+  full      — read every row to compute exact null/distinct stats
+  sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
+  metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
+
+> /db profiling-mode sampled
+✓ Active mode → sampled (5000 rows per table)
+```
+
+For warehouse-cost-sensitive workflows the rule of thumb is:
+
+- **`metadata`** — drafting descriptions across thousands of tables. Zero row scans.
+- **`sampled`** — most one-off `/run` calls. Wakes the warehouse for a few seconds.
+- **`full`** — only when you need exact distinct counts (e.g. validating a uniqueness claim before promoting a column to a key). Wakes the warehouse for as long as the scan takes.
+
+### 7. Run and apply
+
+```text
+> /run SALES.CUSTOMER
+[Profile] TABLESAMPLE BERNOULLI(5000) on SALES.CUSTOMER ... ok (1.4 s)
+[LLM]     drafting 18 column descriptions ... ok (high: 12, medium: 4, low: 2)
+
+> /apply
+Write 18 comment(s) to xy12345.eu-west-1/ANALYTICS? [y/N]: y
+
+COMMENT ON TABLE  ANALYTICS.SALES.CUSTOMER IS 'Master customer record …';
+COMMENT ON COLUMN ANALYTICS.SALES.CUSTOMER.C_CUSTOMER_SK IS 'Surrogate key …';
+... (18/18 written)
+✓ /apply finished. Audit trail: /history show <run-id>
+```
+
+## Sample config
+
+The wizard above writes this block to `~/.amx/config.yml`:
 
 ```yaml
 db_profiles:
-  snow_prod:
+  prod-sf:
     backend: snowflake
     account: xy12345.eu-west-1
-    user: AMX_SVC
-    warehouse: AMX_WH
-    role: AMX_ROLE
+    user: AMX_READER
+    password: keyring://amx/prod-sf/password
     database: ANALYTICS
-    schema: PUBLIC
-    private_key_path: ~/.snowflake/amx.p8
+    warehouse: WH_AMX_XS
+    role: AMX_READER_ROLE
     profiling_mode: sampled
+    profiling_sample_size: 5000
+active_db_profile: prod-sf
 ```
 
-## Capabilities
+For key-pair auth swap `password:` for `private_key_path:`. For SSO, set
+`authenticator: externalbrowser` and remove `password:`.
 
-- Comment write-back via Snowflake `COMMENT` statements. Supported on databases, schemas,
-  tables, views, materialized views, and columns.
-- Distinctive object types listable via `/metadata`: procedures, functions, sequences,
-  **tasks**, **stages**, **shares**, **external tables**.
-- `SAMPLE` / `SAMPLE BLOCK` used in `sampled` profiling mode.
-- Native Snowflake type system mapped to the universal type model — `VARIANT`, `ARRAY`,
-  `OBJECT` flagged as semi-structured.
+## Verify
 
-## Warehouse load
+1. `> /connect` — reports server version, active role, and active warehouse. Anything missing here is the most common reason `/run` later fails.
+2. `> /db inspect` — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".
+3. `> amx doctor` — verifies the Snowflake driver is installed, the profile is active, and the connection round-trips.
 
-AMX is profiling-aware:
+## Troubleshooting
 
-- `metadata` mode skips per-column data reads entirely — recommended for large warehouses
-  in dev / sandbox.
-- `sampled` mode uses `SAMPLE` clauses and respects `profiling_max_rows`.
-- `full` mode is the default but **falls back to `sampled` behaviour automatically when
-  table statistics report more rows than `profiling_max_rows`** so a wildly oversized
-  table doesn't accidentally start a sequential scan.
+| Symptom | Cause | Fix |
+|---|---|---|
+| `250001 (08001): Failed to connect to DB. … 404 Not Found` | The account identifier is wrong (extra suffix, missing region) | Re-run `/add-db-profile` and use the bare `<orgname>-<account>` or `<account>.<region>` form — no `.snowflakecomputing.com` |
+| `No active warehouse selected in the current session` | Profile didn't set a warehouse and the role has no default | Edit `~/.amx/config.yml`, set `warehouse: WH_AMX_XS`, restart AMX |
+| `390100 (08004): Incorrect username or password was specified.` | Password expired or MFA is required | Rotate the password OR switch to key-pair / SSO (see auth note above) |
+| `/run` is fast for the first table then suddenly slow | Warehouse auto-suspended between tables and is resuming | Use a larger warehouse OR set `profiling_mode: metadata` for the first sweep, then switch to `sampled` for the subset you want descriptions for |
+| `001003 (42000): SQL compilation error: Object 'X' does not exist or not authorized` | Role lacks `USAGE` on the schema or `SELECT` on the table | Ask the security admin to grant the missing privileges; verify with `SHOW GRANTS TO ROLE AMX_READER_ROLE` |
 
-See [Profiling modes](../configuration/profiling-modes.md) for the full breakdown.
+## What's next
 
-## Required permissions
-
-Read-only:
-
-```sql
-USE ROLE SECURITYADMIN;
-CREATE ROLE AMX_ROLE;
-GRANT USAGE ON WAREHOUSE AMX_WH TO ROLE AMX_ROLE;
-GRANT USAGE ON DATABASE ANALYTICS TO ROLE AMX_ROLE;
-GRANT USAGE ON ALL SCHEMAS IN DATABASE ANALYTICS TO ROLE AMX_ROLE;
-GRANT SELECT ON ALL TABLES IN DATABASE ANALYTICS TO ROLE AMX_ROLE;
-GRANT SELECT ON FUTURE TABLES IN DATABASE ANALYTICS TO ROLE AMX_ROLE;
-```
-
-To allow comment write-back, the role also needs `OWNERSHIP` (or `MODIFY`) on the
-relevant objects.
-
-## Auth options
-
-- **Password** — fine for evaluation, not recommended for production.
-- **Key-pair** — recommended. Generate a key, register the public half via
-  `ALTER USER … SET RSA_PUBLIC_KEY = …`, point AMX at the private key path.
-- **SSO (externalbrowser)** — interactive only; not suitable for unattended use.
-- **OAuth** — supported via the `authenticator: oauth` field plus an `OAUTH_TOKEN` env
-  var or value.
-
-## Known limitations
-
-- Snowflake row-level access policies are honoured but invisible to AMX; the Profile Agent
-  sees only what the AMX role can `SELECT`.
-- `STREAM`, `PIPE`, and `DYNAMIC TABLE` objects are not currently surfaced — they live in
-  Snowflake-specific information schema views that are not yet wired up.
+- [Profiling modes](../configuration/profiling-modes.md) — full / sampled / metadata, with cost guidance per warehouse size.
+- [Batch mode for LLM calls](../llm-providers/batch-mode.md) — pair sampled profiling with batch-mode LLM calls to drop draft cost by ~50%.
+- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes, partial-accept, and how `/apply` recovers from per-row errors.

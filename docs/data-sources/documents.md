@@ -1,129 +1,164 @@
 # Documents
 
-The RAG Agent reads your documentation — PDFs, Word docs, Markdown handbooks, Excel data
-dictionaries — and surfaces relevant passages per column. This is where institutional
-knowledge that lives in writing gets pulled into AMX's inference.
+The RAG Agent reads your documentation — PDFs, Word docs, Markdown handbooks, Excel
+data dictionaries — and feeds the relevant chunks to the LLM as evidence when drafting
+column descriptions. A column whose name is a cryptic abbreviation suddenly becomes
+documentable when the team's onboarding PDF defines what the abbreviation means. This
+page walks through registering a doc profile, ingesting files into the RAG index,
+searching the index, and recovering when results come back empty.
 
-## Adding a document profile
+## Prerequisites
+
+- AMX installed.
+- A folder, file, or list of files you want indexed (PDF / DOCX / MD / TXT / XLSX supported).
+- An active LLM profile (used for the embedding step, then for the answer step in `/ask`).
+
+## Step-by-step
+
+### 1. Register a document profile
 
 ```text
-/docs
-/add-doc-profile sap_handbook
+> /add-doc-profile
+Profile name: data-handbook
+Paths (one per line, blank to finish):
+  /Users/me/Documents/data-platform-handbook.pdf
+  /Users/me/Documents/data-warehouse-runbook.docx
+  /Users/me/internal-docs/data-glossary/
+[blank to finish]:
+✓ Registered doc profile 'data-handbook' (3 source paths)
 ```
 
-The wizard asks for:
+Folders are walked recursively for the supported extensions. Mix files and folders
+freely; AMX deduplicates internally.
 
-- **Name** — used to switch with `/use-doc <name>`.
-- **Paths** — one or more locations. Mix local directories, GitHub URLs, S3 buckets,
-  Google Drive links, and SharePoint links freely.
+### 2. Ingest the files
 
-When you add paths, AMX checks **reachability only** (e.g. `git ls-remote` for GitHub,
-bucket/prefix checks for S3, lightweight HTTP checks for Drive/SharePoint). Full file
-discovery happens on `/scan` and `/ingest`.
+```text
+> /ingest
+[1/4] Walking sources ...........................  ok (3 paths, 47 files discovered)
+[2/4] Extracting text ...........................  ok (1.4M chars across 47 files)
+[3/4] Chunking ..................................  ok (412 chunks, 800-1200 tokens each)
+[4/4] Embedding (openai/text-embedding-3-small)..  ok (412 chunks, $0.012, 6.2 s)
+✓ /ingest finished. Profile 'data-handbook' is ready for /ask and /run RAG.
+```
 
-## Supported sources
+Chunks are stored in the same Chroma store as the database catalog (see
+[Search catalog](search-catalog.md) for the full data flow). Each chunk keeps its
+source path + page number so citations resolve to the original file.
 
-| Source | Path format | Auth |
+### 3. Inspect what got chunked
+
+```text
+> /scan
+Profile: data-handbook (active)
+3 source paths · 47 files · 412 chunks · 1.2 MB embeddings
+
+Chunks by source:
+  data-platform-handbook.pdf       142 chunks (pp. 1–47)
+  data-warehouse-runbook.docx       89 chunks
+  data-glossary/                   181 chunks across 28 files
+
+Top topics (from chunk titles):
+  - "Customer Master — definition" — 12 chunks
+  - "Order lifecycle" — 18 chunks
+  - "Revenue recognition policy" — 9 chunks
+```
+
+If a topic you'd expect is missing, the file probably wasn't picked up — see "Empty
+search results" below.
+
+### 4. Search the index directly
+
+```text
+> /search-docs "what does x_legacy_status mean"
+Top-5 results (cosine distance):
+  0.184  data-platform-handbook.pdf:p.34   "Legacy status mapping"
+         "Status values 1–7 map to the v3 system's customer state machine. 1=active,
+          2=pending, 3=frozen, 4=dormant, 5=closed, 6=fraud, 7=migration-pending. The
+          mapping is preserved in marts/customer.sql for backward compat..."
+
+  0.224  data-glossary/customer.md          "Status flags"
+         "x_legacy_status (deprecated since v4) — see legacy mapping in handbook §4.2."
+
+  ...
+```
+
+`/search-docs` is the lower-level command — `/ask` runs the same retrieval and then
+asks the LLM to answer using only the retrieved chunks.
+
+### 5. Run with doc evidence
+
+```text
+> /run sales.customer
+[Profile] sampled scan on sales.customer ... ok
+[RAG]     6 of 18 columns matched documentation chunks; embedding ... ok
+[Code]    no code profile active — skipping
+[LLM]     drafting 18 column descriptions with doc evidence ... ok
+          confidence: high 17 · medium 1 · low 0
+```
+
+Compare to the same `/run` without the doc profile active — columns whose names match
+glossary entries jump straight to `high` confidence.
+
+## Empty search results — the recovery path
+
+```text
+> /search-docs "retention policy"
+No results for 'retention policy'.
+
+Possible reasons (in order of likelihood):
+  1. The phrase isn't in any indexed chunk. Try a broader query or check /scan.
+  2. The relevant file isn't indexed. /scan lists files; add the missing path with /add-doc-profile.
+  3. The chunk size is too small for the phrase to appear in one chunk. Tune /ingest --chunk-size.
+  4. Embedding-model mismatch since last /ingest. Run /ingest --rebuild.
+```
+
+For each case:
+
+- **Case 1** — re-phrase. Embeddings match concepts, not exact strings, but a very
+  abstract query still needs at least *some* lexical anchor.
+- **Case 2** — `/scan` lists every indexed file. If your retention policy lives in an
+  unincluded folder, `/add-doc-profile` extends the profile and `/ingest` picks up the
+  new files (only the new ones — incremental).
+- **Case 3** — by default chunks are 800–1200 tokens. For documents where one concept
+  spans many pages, raise `chunk_size` in YAML; for terse glossaries, lower it.
+- **Case 4** — when you change the embedding model, the existing index can't be queried
+  with the new model. `/ingest --rebuild` drops and re-embeds everything.
+
+## Sample config
+
+```yaml
+doc_profiles:
+  data-handbook:
+    paths:
+      - /Users/me/Documents/data-platform-handbook.pdf
+      - /Users/me/Documents/data-warehouse-runbook.docx
+      - /Users/me/internal-docs/data-glossary/
+    chunk_size: 1000          # tokens
+    chunk_overlap: 100        # tokens overlap between adjacent chunks
+    extensions: [".pdf", ".docx", ".md", ".txt", ".xlsx"]
+active_doc_profile: data-handbook
+```
+
+## Verify
+
+1. `> /scan` — confirms files / chunks counts and top topics.
+2. `> /search-docs "<known phrase>"` — confirms retrieval works for a phrase you definitely indexed.
+3. `> /run <table> --debug | grep RAG` — confirms the RAG agent ran and contributed evidence.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
 |---|---|---|
-| Local files / directories | `/path/to/docs` | filesystem |
-| GitHub | `https://github.com/user/repo` or `git@github.com:user/repo.git` | repo must be public, or a deploy key / SSH config in place |
-| AWS S3 | `s3://bucket/prefix` | standard AWS credential chain (env vars, profile, IAM role) |
-| Google Drive | `https://drive.google.com/...` | Public links zero-config; private files via service account or OAuth |
-| SharePoint / OneDrive | `https://...sharepoint.com/...` or `https://onedrive.live.com/...` | Public sharing links zero-config; private via Azure AD app |
+| `/ingest` skips PDFs silently | `pypdf` (or the chosen PDF lib) couldn't parse — encrypted / scanned-image PDF | OCR the PDF first, OR `/ingest --debug` to see the per-file failures |
+| `/search-docs` returns garbage on a specific phrase | Embedding model is too small for technical terms | Switch to `text-embedding-3-large` and `/ingest --rebuild` |
+| Citations point to the wrong page in a PDF | PDF has unusual page numbering (front matter unnumbered) | Cosmetic — citations use the absolute page number; cross-check against the file's TOC |
+| `/ingest` is slow on every run | Source folder is on a network mount with high stat() latency | Move sources locally or to a faster mount; AMX touches every file's mtime to decide what to re-ingest |
+| Out-of-disk after several rebuilds | Chroma index isn't garbage-collected on incremental rebuilds | `/ingest --rebuild` (drops the old index) or `rm -rf ~/.amx/chroma` and re-`/ingest` |
+| `/ask` answer doesn't use the docs even though they're indexed | Active doc profile isn't the one ingested | `> /use-doc data-handbook` then `> /ask …` |
 
-## Supported file types
+## What's next
 
-`pdf`, `docx`, `doc`, `txt`, `md`, `csv`, `xlsx`, `xls`, `html`, `htm`, `pptx`, `json`,
-`yaml`, `yml`, `rst`, `rtf`.
-
-## Cloud document access
-
-AMX always **tries the public/anonymous download first** — no credentials needed if the
-file is shared as "Anyone with the link". Credentials are only required for private files
-or folder listings.
-
-### Google Drive
-
-- **Public files** ("Anyone with the link can view"): just paste the link.
-- **Google Docs / Sheets / Slides**: public export to PDF / CSV works automatically.
-- **Private files or entire folders**: set one of:
-    - `AMX_GOOGLE_SERVICE_ACCOUNT_JSON` — path to a service account JSON. Share the
-      file/folder with that service account email.
-    - `AMX_GOOGLE_OAUTH_TOKEN_JSON` — path to a user OAuth token JSON from a prior
-      consent flow.
-
-### SharePoint / OneDrive
-
-- **Public sharing links** ("Anyone with the link"): just paste the link.
-- **Private / org-restricted files**: set:
-    - `AMX_AZURE_TENANT_ID`
-    - `AMX_AZURE_CLIENT_ID`
-    - `AMX_AZURE_CLIENT_SECRET`
-
-  Use an Azure AD app registration with Microsoft Graph permissions **Files.Read.All** and
-  **Sites.Read.All**.
-
-### S3
-
-S3 scans and ingests preserve object key prefixes in the temporary download tree, so files
-with the same basename under different prefixes remain distinct. Use the standard AWS
-credential chain — env vars (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`), the AWS
-config file (`~/.aws/credentials`), or instance role credentials.
-
-## Scanning and ingesting
-
-```text
-/scan                          # preview what AMX would ingest from the active profile
-/scan some/specific/path       # ad-hoc preview
-/ingest                        # ingest into the RAG vector store
-/ingest --refresh              # remove existing chunks for these files first, then re-upsert
-/search-docs primary key for company code   # similarity search (no LLM)
-```
-
-`/ingest --refresh` is what to use after files have moved or shrunk — it removes existing
-chunks whose stored resolved file path or original profile source path matches the files
-being ingested, then re-upserts. Without `--refresh`, stale chunks linger and can return
-in retrieval.
-
-## Standalone RAG Agent
-
-```text
-/doc-analyze sap_s6p.t001
-```
-
-Runs the RAG Agent in isolation — useful for testing prompts or producing document-only
-descriptions without paying for the full multi-agent pipeline.
-
-## Embeddings
-
-Document embeddings use the same provider as the search catalog:
-
-```text
-/embeddings              # show current
-/embeddings MiniLM       # default, offline
-/embeddings OpenAI-compatible openai/text-embedding-3-small
-/embeddings Local         # local sentence-transformers
-```
-
-Run `/search rebuild` after switching to re-embed both catalog and document chunks.
-
-## Where ingested chunks live
-
-Chunks are stored in a Chroma collection inside `~/.amx/chroma/` (separate from the
-`amx_code` and `amx_search` collections). Each chunk carries:
-
-- `source_path` (resolved local path)
-- `original_source` (the path you typed when adding the profile — useful for remote files
-  cleared after ingest)
-- `doc_profile`
-- `mime_type`
-
-## Limits
-
-- Chroma is single-node. For very large documentation sets (> 1M chunks), embedding time
-  dominates; use the `local-embeddings` extra with sentence-transformers and run
-  `/ingest` overnight.
-- `pdf` extraction quality depends on the source. Scanned PDFs without OCR yield empty
-  chunks — install OCR separately and convert before ingesting.
-- Remote-fetched files (GitHub, S3, Drive, SharePoint) are downloaded to temporary
-  directories only for the active scan/ingest operation, then removed.
+- [Codebase data source](codebase.md) — pair docs with code references for highest description quality.
+- [Search catalog](search-catalog.md) — how docs / code / catalog all sit in the same Chroma index.
+- [Ask & Search](../cli/ask-and-search.md) — `/ask` over your documents.

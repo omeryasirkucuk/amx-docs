@@ -1,166 +1,188 @@
 # Shared history store
 
-By default, AMX's run history is **per-machine** — your teammate cannot see runs you executed.
-The shared history store is an optional dual-write that pushes every `/run`, `/run-apply`,
-and `/ask` to a backend the team already owns, so two engineers running AMX against the
-same warehouse can see each other's analyses.
+By default, AMX's run history is **per-machine** — your teammate cannot see runs you
+executed and vice versa. The shared history store moves the audit table from the local
+SQLite file at `~/.amx/history.db` to two real tables inside one of your existing
+databases, so every team member sees every run, every reviewed description, and the
+provenance of every applied comment. This page walks through the schema, the DDL AMX
+emits, the enable / disable / migrate operations, and how to recover when machines fall
+out of sync.
 
-## Mental model
+## Prerequisites
 
-- **Local SQLite is always the source of truth for reads.** `/history list` shows your
-  machine's runs. Cross-machine read views are slated for a follow-up minor.
-- **Shared mode dual-writes.** Every run/result/event lands in local SQLite first
-  (always-on cache) and **best-effort** to the shared backend.
-- **Failures don't block you.** When the shared backend is unreachable, the local row
-  still lands and the failed write queues in `pending_shared_writes` for replay.
+- AMX installed.
+- A backend that supports row-level UPDATE (so AMX can mark runs as applied):
+  PostgreSQL, MySQL/MariaDB, SQL Server, Snowflake, BigQuery, Databricks, Oracle,
+  Redshift. **ClickHouse and DuckDB are not supported** — they cannot UPDATE single
+  rows transactionally.
+- A DB user that can `CREATE SCHEMA` (or someone with that privilege to pre-create it
+  for you), and `INSERT` / `UPDATE` on the resulting tables.
+- An active DB profile pointing at the host database.
 
-This is deliberately conservative: shared mode is a feature, not a dependency. Network
-hiccups, warehouse maintenance, or a misconfigured profile never break a CLI session.
+## Schema
 
-## Onboarding
+Two tables in a dedicated schema (default name `AMX`):
 
-Open the picker — the picker prints the current shared-mode status first, then shows a
-context-aware menu:
+```sql
+CREATE TABLE AMX.amx_history_runs (
+  run_id        TEXT       PRIMARY KEY,         -- e.g. run_2026-05-03_15-44-002
+  who           TEXT       NOT NULL,            -- AMX_USER or OS user
+  started_at    TIMESTAMP  NOT NULL,
+  finished_at   TIMESTAMP,
+  scope         TEXT       NOT NULL,            -- e.g. "sales", "sales.customer", "sales.customer.col"
+  llm_provider  TEXT       NOT NULL,
+  llm_model     TEXT       NOT NULL,
+  db_backend    TEXT       NOT NULL,
+  state         TEXT       NOT NULL,            -- running | reviewed | applied | failed
+  applied_at    TIMESTAMP,
+  applied_by    TEXT,
+  metadata_json TEXT                            -- arbitrary JSON: flags, sample sizes, etc.
+);
 
-```text
-/db
-/history-store
+CREATE TABLE AMX.amx_history_results (
+  run_id          TEXT     NOT NULL,            -- FK to amx_history_runs.run_id
+  target_qname    TEXT     NOT NULL,            -- e.g. sales.customer.c_first_name
+  target_kind     TEXT     NOT NULL,            -- TABLE | COLUMN | VIEW | MATERIALIZED_VIEW
+  description     TEXT,
+  alternatives    TEXT,                         -- JSON array of {text, logprob}
+  confidence      TEXT     NOT NULL,            -- high | medium | low
+  applied         BOOLEAN  NOT NULL DEFAULT 0,
+  applied_at      TIMESTAMP,
+  PRIMARY KEY (run_id, target_qname)
+);
+
+CREATE INDEX ix_amx_history_results_run_id  ON AMX.amx_history_results (run_id);
+CREATE INDEX ix_amx_history_results_target  ON AMX.amx_history_results (target_qname);
 ```
 
-When shared mode is **off**, the menu is:
+DDL is dialect-translated per backend — the connector adapts `BOOLEAN` / `TIMESTAMP` /
+`TEXT` to native types. This snippet is the PostgreSQL form.
+
+## Step-by-step
+
+### 1. Enable
 
 ```text
-1. Status — show shared-mode state and outbox depth   (default)
-2. Enable — bootstrap an AMX schema on a saved DB profile
-3. Dump DDL — print bootstrap SQL for a DBA to run by hand
-4. Cancel — exit without doing anything
+> /history-store
+History store currently: disabled (per-user local file at ~/.amx/history.db).
+
+To enable shared history, pick a DB profile that will host the audit table.
+Recommended: pick a 'sandbox' / 'metadata' database that all team members can reach.
+
+  [1] default       (postgresql) localhost/postgres
+  [2] prod-pg       (postgresql) db-prod.eu-west-1.rds.amazonaws.com/analytics
+  [3] dev-snowflake (snowflake)  xy12345.eu-west-1/DEV
+> 2
+
+Schema name for the audit table (default: AMX): AMX
+
+> /history-store enable
+About to create:
+  CREATE SCHEMA IF NOT EXISTS AMX;
+  CREATE TABLE AMX.amx_history_runs (...);
+  CREATE TABLE AMX.amx_history_results (...);
+  CREATE INDEX ix_amx_history_results_run_id ON AMX.amx_history_results(run_id);
+  CREATE INDEX ix_amx_history_results_target ON AMX.amx_history_results(target_qname);
+
+Proceed? [y/N]: y
+
+✓ History store enabled. Future /run / /apply will write to AMX.amx_history_*.
 ```
 
-Pick **Enable**. The wizard:
-
-1. Asks which saved DB profile to use (Postgres, Snowflake, Databricks, BigQuery, MySQL,
-   Oracle, MSSQL, Redshift — see [supported backends](#supported-backends) below).
-2. Asks for a schema name (defaults to `AMX`).
-3. Issues backend-appropriate `CREATE SCHEMA IF NOT EXISTS` DDL.
-4. Creates the AMX tables via SQLAlchemy `MetaData.create_all`.
-5. Offers to migrate existing local rows up (idempotent — safe to re-run).
-6. Saves the choice to `config.yml` (`history_store_enabled: true`,
-   `history_store_profile`, `history_store_schema`).
-
-When shared mode is **on**, the menu shifts to:
+### 2. Migrate existing local history (optional)
 
 ```text
-1. Status
-2. Disable
-3. Migrate from local
-4. Flush pending
-5. Dump DDL
-6. Cancel
+> /history-store migrate
+Found 47 runs in ~/.amx/history.db. Migrate to AMX.amx_history_*? [y/N]: y
+
+[1/47] run_2026-04-15_09-12-001 ............  ok
+[2/47] run_2026-04-15_10-04-002 ............  ok
+...
+[47/47] run_2026-05-03_15-44-002 ............  ok
+✓ /history-store migrate finished. 47 runs imported.
+
+Local file ~/.amx/history.db kept (not deleted) — remove it manually after verifying.
 ```
 
-## Direct CLI subcommands
+The local file is kept on purpose so you can roll back. Verify with `/history list`,
+then `rm ~/.amx/history.db` once you're satisfied.
 
-Power users and scripts can invoke each action directly without the picker:
+### 3. Disable (back to local-only)
 
-| Picker option | Click subcommand |
+```text
+> /history-store disable
+About to switch back to per-user local file (~/.amx/history.db). Existing rows in
+AMX.amx_history_* will NOT be deleted; they're just no longer the active store.
+
+Proceed? [y/N]: y
+✓ History store disabled. /history now reads ~/.amx/history.db.
+```
+
+### 4. Flush (drop the tables entirely — irreversible)
+
+```text
+> /history-store flush
+WARNING: This DROPs AMX.amx_history_runs and AMX.amx_history_results.
+         All shared run history is lost. There is no undo.
+
+Type the schema name (AMX) to confirm: AMX
+
+[1/2] DROP TABLE AMX.amx_history_results .....  ok
+[2/2] DROP TABLE AMX.amx_history_runs ........  ok
+✓ /history-store flush finished. Schema AMX is intact (drop manually if no longer used).
+```
+
+The `AMX` schema itself is left so you can re-enable later with the same name (or
+drop the schema by hand if you're done).
+
+## Multi-machine sync — what to expect
+
+| Action on machine A | Visible on machine B after |
 |---|---|
-| Status | `amx db history-store status` |
-| Enable | `amx db history-store enable [--profile P --schema S]` |
-| Disable | `amx db history-store disable` |
-| Migrate from local | `amx db history-store migrate-from-local` |
-| Flush pending | `amx db history-store flush-pending` |
-| Dump DDL | `amx db history-store dump-ddl [--profile P --schema S]` |
+| `/run` (creates run row) | Immediately (next `/history list` call) |
+| Review wizard (updates rows) | After `/history sync` on B (or B's next `/history list`) |
+| `/apply` (sets `applied=1`) | Immediately on B |
+| Local edit to `~/.amx/history.db` | Never — the local file is no longer authoritative |
 
-## What gets written
+The store doesn't push notifications — it's pull-based. `/history list` does a SELECT
+each time, so all team members see fresh state on every call.
 
-Four tables under the chosen schema (default `AMX`):
-
-| Table | What it carries |
-|---|---|
-| `analysis_runs` | One row per `/run`, `/run-apply`, `/ask` |
-| `run_results` | Per-column results (top description + alternatives + decision) |
-| `app_events` | Profile switches, run status, apply outcomes |
-| `session_state` | `/ask` conversation sessions |
-
-Every shared row records:
-
-- `created_by` — username
-- `hostname` — the machine that ran AMX
-- `client_version` — AMX version that wrote the row
-- `local_id` — the SQLite INT id on the originating machine, for joining back
-
-## Supported backends
-
-Shared mode supports backends that can `UPDATE` rows (the dual-write coordinator needs
-this for `finish_run` to land terminal status):
-
-- PostgreSQL
-- MySQL
-- MSSQL
-- Oracle
-- Snowflake
-- Databricks
-- Redshift
-- BigQuery
-
-**Blocked at Enable time:**
-
-- **DuckDB** — local file, not shared storage.
-- **ClickHouse** — no row-`UPDATE` semantics.
-
-The Enable wizard refuses these with a clear error listing the supported backends, gated by
-the `BackendCapabilities.supports_shared_history` flag.
-
-## Failure semantics
-
-When the shared backend is unreachable:
-
-1. Local SQLite write succeeds — your CLI session is never blocked.
-2. The failed shared write queues in the local `pending_shared_writes` outbox.
-3. **Status** shows the outbox depth so you know there's pending work.
-4. **Flush pending** replays queued writes.
-
-You can also `disable` shared mode at any point — existing shared rows are not deleted.
-
-## Safety guards
-
-The shared store is a multi-engineer surface. AMX adds three guards on top:
-
-1. **Cross-profile session resume is refused.** A `/ask` session from `prod_pg` cannot be
-   resumed against `dev_snowflake`.
-2. **The picker confirms destructive actions.** Disable, Flush pending, and Dump DDL
-   all confirm before doing anything.
-3. **Every shared row carries attribution.** `created_by`, `hostname`, `client_version`,
-   `local_id` — so the team can answer "who ran this?".
-
-See [Safety guards](safety-guards.md) for the full list.
-
-## Reads still come from local
-
-In v0.12, **reads still come from local SQLite**. `/history list` shows runs from your
-machine, not the shared store. Cross-machine read views (e.g. "show me everyone's runs
-against `prod_pg`") are slated for a follow-up minor.
-
-This is a deliberate staging — it keeps `/history list` fast (no network round-trip) and
-lets the team validate write semantics before exposing the shared view.
-
-## Configuration
-
-The relevant `config.yml` keys (all optional, schema v2):
+## Sample config
 
 ```yaml
-schema_version: 2
+db_profiles:
+  prod-pg:
+    backend: postgresql
+    host: db-prod.eu-west-1.rds.amazonaws.com
+    port: 5432
+    user: amx_history_writer
+    password: keyring://amx/prod-pg/password
+    database: analytics
+
 history_store_enabled: true
-history_store_profile: prod_pg
+history_store_profile: prod-pg
 history_store_schema: AMX
 ```
 
-Existing 0.11.x configs load unchanged — the schema bump is additive. If an older AMX
-binary tries to read a 0.12+ config, it raises `ConfigSchemaTooNewError` with an upgrade
-prompt rather than silently mangling the file.
+## Verify
 
-## See also
+1. `> /history-store status` — confirms the active store (file vs shared), profile name, schema name.
+2. `> /history list --limit 5` — confirms recent runs are visible.
+3. (On a second machine after enabling) `> /history list` returns the same rows.
 
-- [Team setup](team-setup.md) — recommended workflow for onboarding a team.
-- [Safety guards](safety-guards.md) — the three guards listed above, in detail.
-- [`/history`](../cli/history.md) — read interface for run history.
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `/history-store enable` fails with `CREATE SCHEMA` permission denied | DB user can't create schemas | Have the DBA create the schema (`CREATE SCHEMA AMX;`), then `/history-store enable` (it will detect the existing schema and skip the CREATE) |
+| `external_history_store_unsupported` error | Profile points at ClickHouse or DuckDB | Pick a different host backend (PostgreSQL is the default recommendation) |
+| Two machines see different rows for the same run | One machine has `history_store_enabled: false` and is using the local file | `> /config show | grep history_store` on both; ensure both are `true` and pointing at the same profile |
+| `permission denied for relation amx_history_results` mid-`/apply` | DB user has SELECT but not INSERT/UPDATE on the audit tables | `GRANT INSERT, UPDATE ON AMX.amx_history_* TO <user>;` |
+| Slow `/history list` on a large team (1000+ runs) | Index missing or stale stats | `ANALYZE AMX.amx_history_runs; ANALYZE AMX.amx_history_results;` |
+| `/history-store migrate` fails partway through | Local SQLite file has a row that violates a NOT NULL constraint in the new schema | The migration is idempotent; re-run with `--skip-errors` to skip the bad row, then inspect `~/.amx/history.db` for the offender |
+
+## What's next
+
+- [Team setup](team-setup.md) — onboarding workflow built around this store.
+- [Safety guards](safety-guards.md) — what AMX prevents in shared mode.
+- [History command](../cli/history.md) — `/history list`, `/history show`, `/history compare` reference.

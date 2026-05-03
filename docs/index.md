@@ -1,17 +1,6 @@
 ---
 title: AMX documentation
-hide:
-  - navigation
 ---
-
-<div class="amx-pageintro">
-  <div class="amx-breadcrumb">
-    <a href="./">Home</a>
-    <span class="amx-breadcrumb__sep">›</span>
-    <span>Documentation</span>
-  </div>
-  <div class="amx-pagemeta">Last updated on May 3, 2026</div>
-</div>
 
 # AMX documentation
 
@@ -20,6 +9,8 @@ analysts, data engineers, and data catalog owners working with undocumented data
 schemas. AMX walks your database, reads your documentation and codebase, then drafts a
 complete description for every table and column, with confidence scores and a human
 review before anything lands in the live database.
+
+![AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)](assets/cli-hero.png){ .amx-hero-img }
 
 !!! tip
     AMX supports 10 database backends and 7 LLM providers. The fastest way to evaluate

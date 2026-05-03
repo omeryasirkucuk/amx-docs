@@ -65,6 +65,6 @@ permissions; the `~/.amx/` directory with `0o700`.
 If you find a way to leak secrets out of AMX (for example via logs, crash reports, or
 telemetry), please report it under this policy.
 
-See also [Configuration → Where secrets live](configuration/config-yml.md#where-secrets-live)
+See also [`config.yml`](configuration/config-yml.md)
 and [env vars](configuration/env-vars.md) for the cloud-document credentials AMX expects
 in environment variables.

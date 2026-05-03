@@ -1,92 +1,190 @@
 # Environment variables
 
 A handful of `AMX_*` and standard env vars affect AMX's behaviour. None are required —
-sensible defaults apply if you set nothing.
+the wizard works without setting any — but they let you keep secrets out of files,
+override config-yml entries for one shell, and integrate AMX into CI pipelines without
+hand-edits to `~/.amx/config.yml`. This page lists every variable AMX reads and shows
+the most useful patterns.
 
-## LLM and reasoning routes
+## Prerequisites
 
-| Variable | Default | Description |
-|---|---|---|
-| `AMX_LLM_MIN_MAX_TOKENS` | `16384` | Floor for `max_tokens` on recognised reasoning routes (o-series, gpt-5, kimi-k2-thinking, Claude extended thinking). Auto-applied when `_supports_thinking()` is true. |
-| `AMX_REASONING_EFFORT` | `medium` (OpenAI direct) / `low` (OpenRouter) | `low` / `medium` / `high`. Sent as `reasoning_effort` to OpenAI direct; sent as `reasoning.effort` to OpenRouter. |
+- AMX installed.
+- A shell where you can `export` env vars (or a CI runner that injects them).
 
-OpenRouter rejects sending both `reasoning.effort` and `reasoning.max_tokens` together —
-AMX sends `effort` only.
+## Step-by-step
 
-## Cloud document access
-
-| Variable | Required when | Description |
-|---|---|---|
-| `AMX_GOOGLE_SERVICE_ACCOUNT_JSON` | Private Google Drive files / folders | Path to a Google service account JSON. Share the file/folder with that service account email. |
-| `AMX_GOOGLE_OAUTH_TOKEN_JSON` | Alternative to service account | Path to a user OAuth token JSON from a prior consent flow. |
-| `AMX_AZURE_TENANT_ID` | Private SharePoint / OneDrive | Azure AD tenant id. |
-| `AMX_AZURE_CLIENT_ID` | Private SharePoint / OneDrive | Azure AD app registration client id. |
-| `AMX_AZURE_CLIENT_SECRET` | Private SharePoint / OneDrive | Azure AD app registration client secret. The app needs Microsoft Graph permissions **Files.Read.All** and **Sites.Read.All**. |
-
-Public sharing links work without any of these — AMX always tries the anonymous download
-first. See [Documents](../data-sources/documents.md#cloud-document-access).
-
-## AWS S3
-
-S3 uses the standard AWS credential chain. AMX does not introduce custom env vars for
-S3 — `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_PROFILE`, `AWS_REGION`, and
-`~/.aws/credentials` all work as expected.
-
-## Databricks TLS
-
-| Variable | Description |
-|---|---|
-| `AMX_DATABRICKS_TRUSTED_CA_FILE` | Path to a CA bundle PEM file for Databricks workspaces behind a corporate proxy. AMX-specific — checked before generic vars. |
-| `DATABRICKS_TRUSTED_CA_FILE` | Path to a CA bundle PEM file. Used by the Databricks SDK; AMX honours it as a fallback. |
-| `REQUESTS_CA_BUNDLE` | Generic CA bundle. AMX honours it as a fallback for Databricks if no Databricks-specific var is set. |
-| `SSL_CERT_FILE` | Last-resort fallback. |
-
-The order AMX checks: `tls_trusted_ca_file` field on the DB profile → `AMX_DATABRICKS_TRUSTED_CA_FILE` →
-`DATABRICKS_TRUSTED_CA_FILE` → `REQUESTS_CA_BUNDLE` → `SSL_CERT_FILE`.
-
-The first configured bundle wins. The successful path is saved back into the active DB
-profile so subsequent runs use it directly.
-
-See [Databricks → TLS notes](../backends/databricks.md#tls-notes) and
-[TLS and proxies](tls-and-proxies.md).
-
-## Standard Python env vars AMX honours
-
-- `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `GOOGLE_API_KEY` (alias `GEMINI_API_KEY`),
-  `DEEPSEEK_API_KEY`, `OPENROUTER_API_KEY` — used as fallback if no per-profile key is
-  configured.
-- `OPENAI_ORG_ID`, `OPENAI_PROJECT` — added to OpenAI request headers when set.
-- `GOOGLE_APPLICATION_CREDENTIALS` — used by the Gemini and BigQuery SDKs for
-  service-account auth.
-- `HTTPS_PROXY`, `HTTP_PROXY`, `NO_PROXY` — honoured by every backend driver and the LLM
-  HTTP layer.
-
-## Logging
-
-| Variable | Default | Description |
-|---|---|---|
-| `AMX_LOG_LEVEL` | `INFO` | One of `DEBUG`, `INFO`, `WARNING`, `ERROR`. Applies to `~/.amx/logs/amx.log` and stderr. |
-| `AMX_LOG_FORMAT` | `console` | `console` (Rich-formatted) or `json` (one event per line, useful for log shippers). |
-
-Third-party LiteLLM warnings / debug lines are suppressed by default; AMX surfaces only
-its own actionable warnings.
-
-## Setting env vars per project
-
-Drop a `.env` file in your project root and AMX picks it up via [python-dotenv](https://pypi.org/project/python-dotenv/):
-
-```dotenv
-OPENAI_API_KEY=sk-...
-AMX_LOG_LEVEL=DEBUG
-AMX_REASONING_EFFORT=high
-```
-
-The `.env` is loaded once when `amx` starts. Restart the session if you change it.
-
-## Where to confirm what's active
+### 1. Override the config dir for an isolated run
 
 ```bash
-amx doctor
+AMX_CONFIG_DIR=/tmp/amx-test amx /setup
 ```
 
-prints which env vars AMX has detected (without the values, for safety).
+The wizard creates `/tmp/amx-test/config.yml` instead of touching `~/.amx`. Useful for:
+running AMX inside a sandbox; trying a clean config without losing your daily one;
+running CI tests that mustn't pollute the dev machine.
+
+### 2. Inject secrets via env in CI
+
+```bash
+export AMX_DB_PASSWORD="$DB_PASSWORD"           # CI secret
+export OPENAI_API_KEY="$OPENAI_API_KEY"         # CI secret
+
+amx /run sales --profiling-mode metadata --auto-accept-high --apply
+```
+
+With these env vars set, the YAML can ship `password: ""` and `api_key: ""` (no secrets
+on disk); AMX picks the values up from env at session start.
+
+### 3. Point AMX at an Azure OpenAI endpoint without a separate provider
+
+```bash
+export OPENAI_API_BASE="https://my-azure-openai.openai.azure.com/"
+export OPENAI_API_KEY="$AZURE_OPENAI_KEY"
+
+amx /llm test
+```
+
+The OpenAI provider transparently switches to Azure routing.
+
+### 4. Verbose logging without changing the YAML
+
+```bash
+AMX_LOG=debug amx /run sales.customer
+```
+
+Equivalent to passing `--debug` to every command in the session.
+
+## Variable reference
+
+### Path / config
+
+| Variable | Default | What it does |
+|---|---|---|
+| `AMX_CONFIG_DIR` | `~/.amx` | Where AMX reads / writes `config.yml`, sessions, history file, Chroma index |
+| `AMX_LOG` | `info` | Log level: `debug` / `info` / `warning` / `error` |
+| `AMX_NO_COLOR` | unset | If set (any value), disable ANSI color in output |
+| `AMX_NO_KEYRING` | unset | If set, skip OS keychain — store secrets plaintext in `config.yml` |
+| `AMX_NO_NETWORK` | unset | If set, skip the connectivity ping at every `/run` start |
+| `AMX_PROFILE_DEFAULT` | unset | Default profile name to use when none is active (rare; useful in CI) |
+
+### Database secrets (override per-profile values)
+
+| Variable | What it does |
+|---|---|
+| `AMX_DB_PASSWORD` | Override the active DB profile's password |
+| `AMX_DB_HOST` | Override the active DB profile's host |
+| `AMX_DB_USER` | Override the active DB profile's user |
+| `AMX_DB_DATABASE` | Override the active DB profile's database |
+| `PGHOST` / `PGPORT` / `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Standard libpq vars; respected by the PostgreSQL adapter |
+| `PGSSLMODE` | `require` / `verify-ca` / `verify-full` — TLS mode for PostgreSQL |
+| `MYSQL_HOST` / `MYSQL_PORT` / `MYSQL_USER` / `MYSQL_PWD` | Standard MySQL vars |
+| `SNOWFLAKE_ACCOUNT` / `SNOWFLAKE_USER` / `SNOWFLAKE_PASSWORD` / `SNOWFLAKE_WAREHOUSE` / `SNOWFLAKE_ROLE` | Standard Snowflake vars |
+| `DATABRICKS_HOST` / `DATABRICKS_TOKEN` | Standard Databricks vars |
+| `GOOGLE_APPLICATION_CREDENTIALS` | Path to BigQuery service-account JSON (overrides `credentials_path:`) |
+| `AWS_PROFILE` / `AWS_REGION` / `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` | Standard boto3 vars; used by Redshift IAM auth |
+
+### LLM provider keys
+
+| Variable | What it does |
+|---|---|
+| `OPENAI_API_KEY` | Used when an OpenAI profile has `api_key: ""` |
+| `OPENAI_API_BASE` | Override OpenAI base URL — Azure OpenAI / proxy use cases |
+| `OPENAI_ORG_ID` | OpenAI organisation header |
+| `ANTHROPIC_API_KEY` | Used when an Anthropic profile has `api_key: ""` |
+| `GOOGLE_API_KEY` / `GEMINI_API_KEY` | Used by the Gemini provider |
+| `OPENROUTER_API_KEY` | OpenRouter |
+| `DEEPSEEK_API_KEY` | DeepSeek |
+
+### TLS / proxy
+
+| Variable | What it does |
+|---|---|
+| `HTTPS_PROXY` / `HTTP_PROXY` | Standard proxy vars; AMX uses urllib's resolution |
+| `NO_PROXY` | Standard exclusion list |
+| `REQUESTS_CA_BUNDLE` | CA bundle for HTTPS calls (LLM providers, Databricks, BigQuery) |
+| `SSL_CERT_FILE` | Same as above; some libraries prefer this name |
+| `AMX_DBX_TLS_NO_VERIFY` | If set, disable TLS verification on Databricks (insecure debug) |
+
+### Oracle thick mode
+
+| Variable | What it does |
+|---|---|
+| `AMX_ORACLE_LIB_DIR` | Path to Oracle Instant Client; switches the `oracledb` driver from thin to thick mode |
+| `TNS_ADMIN` | Oracle TNS / wallet directory |
+
+## Resolution order
+
+For any field that has a YAML value, an env var, AND a CLI flag, the order is:
+
+1. **CLI flag** (highest priority — `--db-profile`, `--profiling-mode`, etc.)
+2. **Env var** (e.g. `AMX_DB_PASSWORD`)
+3. **YAML value** (`db_profiles.<active>.password`)
+4. **Default** (lowest)
+
+This matches the convention used by most CLIs — explicit beats env beats config beats
+default.
+
+## Sample patterns
+
+### CI pipeline (no secrets on disk)
+
+```bash
+# Repository: ~/.amx/config.yml committed with empty secrets
+db_profiles:
+  ci:
+    backend: postgresql
+    host: ""
+    port: 5432
+    user: ""
+    password: ""
+    database: ci_test
+active_db_profile: ci
+
+# CI runner injects env vars per job:
+export AMX_DB_HOST="$CI_DB_HOST"
+export AMX_DB_USER="$CI_DB_USER"
+export AMX_DB_PASSWORD="$CI_DB_PASSWORD"
+export OPENAI_API_KEY="$CI_OPENAI_KEY"
+
+amx /run --profiling-mode metadata --auto-accept-high --apply
+```
+
+### One-off scratch profile in a temp dir
+
+```bash
+AMX_CONFIG_DIR=$(mktemp -d) amx
+> /setup
+# explore...
+> /exit
+# the temp dir is auto-cleaned when the shell exits (it's just a normal dir)
+```
+
+### Debugging a corporate-proxy-blocked LLM call
+
+```bash
+HTTPS_PROXY=http://proxy.corp:8080 \
+REQUESTS_CA_BUNDLE=/etc/ssl/corp-bundle.pem \
+AMX_LOG=debug \
+amx /llm test
+```
+
+## Verify
+
+1. `> /config show --include-env` — pretty-prints the resolved values, marking which came from env (`<- env: OPENAI_API_KEY`).
+2. `> amx doctor` — verifies the env-derived secrets actually authenticate.
+3. `> /db connect` — runs a real round-trip with the resolved credentials.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Env override seems ignored | The YAML profile's value was non-empty (env only fills in blank fields) | Set the YAML value to `""` to let env take over, OR use `--db-profile <name-with-blank>` |
+| `OPENAI_API_BASE` works for the SDK but not for `/llm test` | URL needs the trailing `/v1` | Set `https://my-azure.openai.azure.com/openai/deployments/<deployment>/`. Azure deployments are nested |
+| `keyring://` URI not resolved | `AMX_NO_KEYRING` is set, OR no OS keychain is reachable | Unset it, or install a keychain backend (`secretstorage` on Linux); fallback is plaintext in YAML with `chmod 600` |
+| `AWS_*` env vars ignored on Redshift IAM auth | The YAML profile has a non-empty `password` | Set `password: ""` in the YAML; AMX uses IAM only when password is blank |
+
+## What's next
+
+- [`config.yml`](config-yml.md) — what fields these env vars actually override.
+- [TLS and proxies](tls-and-proxies.md) — full proxy / CA bundle walkthrough.
+- [Per-backend pages](../backends/index.md) — backend-specific env vars (e.g. `PGSSLMODE` for PostgreSQL).

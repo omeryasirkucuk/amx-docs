@@ -1,162 +1,226 @@
 # `/ask` and `/search`
 
-`/ask` is conversational metadata Q&A grounded on AMX's internal search catalog. Use it to
-explore a database without writing SQL — "which tables store address data?", "how many
-columns does ADRC have?", "what joins ORDERS to CUSTOMERS?".
+`/ask` is conversational metadata Q&A grounded in AMX's internal search catalog. You ask
+in natural language; AMX retrieves the most relevant tables / columns / docs / code, and
+the LLM answers using only that retrieved context (so answers don't hallucinate
+columns that don't exist). `/search` is the lower-level command that powers `/ask` —
+useful when you want to inspect what's indexed without involving the LLM.
 
-## How `/ask` differs from `/run`
+## Prerequisites
 
-| `/run` | `/ask` |
-|---|---|
-| Generates new descriptions | Answers questions over existing metadata |
-| Multi-agent + write-back | Single Search Agent, read-only |
-| Per-column LLM calls | One LLM call per question (multi-step internally) |
-| Output: reviewed descriptions | Output: prose + grounded result table |
+- AMX installed.
+- An active DB profile that has been introspected at least once (run `/sync` if not).
+- An active LLM profile (used for the answer step in `/ask`; `/search` doesn't need one).
 
-## Asking questions
+## Step-by-step
+
+### 1. Sync the search catalog
 
 ```text
-/ask which tables in sap_s6p store dates?
-/ask how many columns does adrc have?
-/ask what is the ADRC table?
-/ask satır sayısı en fazla olan tablo hangisi          # works in any language
-/ask top 5 tables by row count
-/ask what joins orders to customers?
+> /search status
+Search catalog: 47 tables · 1,283 columns · 0 docs · 0 code refs
+Last sync: 2 hours ago (2026-05-03 13:42)
+Embedding model: openai/text-embedding-3-small
+Index store: chroma at ~/.amx/chroma/
+
+> /sync
+[1/4] Refreshing introspection cache ......  ok (47 tables, 1,283 columns)
+[2/4] Embedding 1,330 entries ..............  ok (4.1 s, $0.012)
+[3/4] Updating Chroma index ................  ok
+[4/4] Reconciling with description audit ...  ok
+✓ /sync finished. Catalog ready for /ask.
 ```
 
-The Search Agent answers in the same language as the question.
+The first `/sync` against a fresh DB takes a moment (one embedding call per table +
+column). Subsequent syncs only re-embed entries whose names or descriptions changed.
 
-### Answer shapes
+### 2. Ask a natural-language question
 
-The interpretation pass classifies each question into one of seven explicit answer shapes:
+```text
+> /ask which tables hold customer addresses?
+Searching catalog (top-k: 8) ...
+Reasoning over 8 results ...
 
-| Shape | Example | What you get |
+Customer addresses live in **sales.customer_address**, with foreign key columns to
+sales.customer (ca_customer_sk) and to a normalised geography table (ca_country_id).
+For shipping-only addresses, see sales.order_address — it's a per-order snapshot
+that can diverge from the customer's current address.
+
+Cited:
+  - sales.customer_address  (table)        — Address records keyed to customer.
+  - sales.customer_address.ca_customer_sk  (column) — FK to sales.customer.
+  - sales.order_address     (table)        — Per-order snapshot; not the source of truth.
+  - sales.customer          (table)        — Customer master; one current address per customer.
+```
+
+Every `/ask` answer ends with a `Cited:` block listing the catalog entries the LLM
+actually used. If the answer doesn't match the cited evidence, you've found a prompt
+or retrieval bug — file it.
+
+### 3. The seven answer shapes
+
+`/ask` adapts its answer shape to what the question is asking for. Same syntax —
+`/ask <natural-language question>` — different output structures:
+
+#### Shape 1 — Definition
+
+```text
+> /ask what is c_customer_sk?
+sales.customer.c_customer_sk is the **surrogate key** for the customer master table —
+an integer assigned at insert time, used as the FK target by every dependent table
+(orders, addresses, payment methods).
+
+Cited:
+  - sales.customer.c_customer_sk
+```
+
+#### Shape 2 — Lookup (one specific table/column)
+
+```text
+> /ask where is total revenue computed?
+**fct_order_summary.gross_revenue** holds gross revenue per order at the line-item
+level (sum of line totals before discounts). For the daily aggregate, see
+**fct_revenue_daily.daily_gross**.
+
+Cited:
+  - fct_order_summary.gross_revenue
+  - fct_revenue_daily.daily_gross
+```
+
+#### Shape 3 — Listing (multiple matches)
+
+```text
+> /ask list every table with a "deleted_at" column
+Found 7 tables with a deleted_at column:
+  - sales.customer (deleted_at, soft-delete marker added 2023)
+  - sales.customer_address (deleted_at)
+  - sales.order_summary (deleted_at)
+  - catalog.product (deleted_at)
+  ...
+
+Cited: (7 column entries elided)
+```
+
+#### Shape 4 — Cardinality / numeric
+
+```text
+> /ask how many tables in sales schema?
+**18 tables** in the sales schema (16 base tables, 2 views — materialized views
+counted separately: 1).
+
+Cited:
+  - /db inspect output (sales schema summary)
+```
+
+#### Shape 5 — Pathfinding (joins)
+
+```text
+> /ask how do I join orders to customers by region?
+Join chain (3 hops):
+
+  fct_orders
+    ON o_customer_sk = c_customer_sk
+  sales.customer
+    ON c_address_sk = ca_address_sk
+  sales.customer_address
+    ON ca_country_id = country_id
+  ref.country
+
+There's also a denormalised path via fct_order_summary if you only need the
+country code per order — that table joins customer_address up-front.
+
+Cited:
+  - fct_orders.o_customer_sk
+  - sales.customer.c_address_sk
+  - sales.customer_address.ca_country_id
+  - ref.country.country_id
+  - fct_order_summary (denormalised alternative)
+```
+
+#### Shape 6 — Reconciliation (which to trust)
+
+```text
+> /ask is fct_order_summary.gross_revenue the same as fct_revenue_daily.daily_gross?
+**No — they differ in granularity and tax handling.**
+
+  fct_order_summary.gross_revenue — per-order, sum of line items, BEFORE discounts.
+  fct_revenue_daily.daily_gross   — daily aggregate, AFTER discounts but BEFORE tax.
+
+If you're chasing a per-day number, `daily_gross` is the source of truth. To reconcile
+to per-order, sum `gross_revenue` minus the matched discount rows in fct_order_discount.
+
+Cited:
+  - fct_order_summary.gross_revenue
+  - fct_revenue_daily.daily_gross
+  - fct_order_discount
+```
+
+#### Shape 7 — "I don't know"
+
+```text
+> /ask what is the retention policy for telemetry events?
+I couldn't find a description of "retention policy" in this catalog. The closest
+matches were:
+  - events.telemetry_raw (no description on the table)
+  - events.telemetry_aggregate (has a description but doesn't mention retention)
+
+This is likely documented outside the database catalog. Try /add-doc-profile to point
+AMX at your internal documentation, then /ask again.
+
+Cited:
+  - events.telemetry_raw
+  - events.telemetry_aggregate
+```
+
+This shape is the most important — `/ask` must say "I don't know" rather than fabricate.
+
+### 4. Drop to `/search` for raw retrieval
+
+```text
+> /search "customer addresses"
+Top-8 results (cosine distance):
+  0.142  sales.customer_address      (table)   Address records keyed to customer.
+  0.198  sales.customer              (table)   Customer master; one current address per customer.
+  0.214  sales.customer_address.ca_customer_sk  (col)   FK to sales.customer.
+  0.301  sales.order_address         (table)   Per-order snapshot.
+  0.318  sales.customer_address.ca_country_id    (col)   FK to ref.country.
+  0.402  fct_order_summary.ship_country_code      (col)   Denormalised.
+  0.411  ref.country.country_id      (col)   Country master PK.
+  0.477  events.address_change_audit (table)   Append-only audit log.
+```
+
+`/search` is the same retrieval `/ask` runs internally, minus the LLM step. Useful
+for confirming the catalog has the rows you expect before you blame the LLM for a bad
+answer.
+
+## Sample config
+
+```yaml
+search:
+  embedding_model: openai/text-embedding-3-small
+  top_k: 8
+  index_store: ~/.amx/chroma
+```
+
+## Verify
+
+1. `> /search status` — confirms catalog row count, last-sync time, and embedding-model identity.
+2. `> /search "<a phrase you definitely know is in the catalog>"` — confirms retrieval works at all.
+3. `> /ask <a question with a known answer>` — confirms the LLM step works and citations resolve.
+
+## Troubleshooting
+
+| Symptom | Cause | Fix |
 |---|---|---|
-| `single_fact` | "which table has the most rows?" | One sentence headline |
-| `short_table` | "top 5 tables by row count" | 2–5 row markdown table |
-| `full_table` | "list all tables in sap_s6p with row counts" | Full table |
-| `ranked_list` | "tables most likely to contain addresses" | Ordered list |
-| `table_summary` | "what is the ADRC table?" | Multi-paragraph summary |
-| `join_candidates` | "what joins orders to customers?" | FK + heuristic candidates |
-| `prose` | "explain the relationship between sales and finance schemas" | Free-form |
+| `/ask` says "I don't know" for everything | Catalog isn't synced or is empty | `> /sync` and re-check `/search status` |
+| `/search` returns nothing for a known column | Embedding-model mismatch (you changed model after indexing) | `> /search rebuild` to drop and re-embed |
+| Citations don't resolve to real rows | DB profile changed and catalog wasn't re-synced | `> /sync` after switching DB profile |
+| `/ask` answer contradicts the citations | Prompt regression — file an issue with the run id from `/history list` | Workaround: lower `n_alternatives` to 1 to make answers more conservative |
+| `/sync` is slow on every run | Embedding-model latency, not AMX | Use a smaller model: `embedding_model: openai/text-embedding-3-small` |
+| Out-of-disk after several rebuilds | Chroma index isn't garbage-collected | `> /search rebuild` (drops the old index) or `rm -rf ~/.amx/chroma` and re-`/sync` |
 
-The bottom-of-output **Search matches** table is suppressed for inventory and prose answers
-(where the headline already carries the data) and filters out rows whose score is exactly
-`0.00`. Inventory rows render in a dedicated `Schema | Table | Columns | Rows | Cluster`
-table when shown.
+## What's next
 
-### Grounded retrieval
-
-For each question, the Search Agent runs a multi-step pipeline:
-
-1. **Interpretation.** Classify intent + answer shape + scoping (specific table vs broad
-   discovery).
-2. **Retrieval planning.** Choose between the SQLite catalog, the `amx_search` vector index,
-   or live DB introspection.
-3. **Grounded retrieval.** Fetch evidence from the chosen source(s).
-4. **Live verification.** For high-risk structural claims (column count, nullability, comment
-   coverage on a specific table), run safe read-only DB probes.
-5. **Synthesis.** Produce the answer using the grounded evidence and pick suggested follow-up
-   actions.
-
-`--debug` reveals the planner's Thought Trace and adds raw `Score` / `Source` / `Conf`
-columns to the result table. `--verbose` is an alias.
-
-### Live verification
-
-Table-scoped factual questions are **live-first**: questions like "what is the ADRC table?"
-or "are all ADRC columns commented?" resolve the requested table and run safe live metadata
-probes before answering structural facts. Open-ended semantic column searches like "city
-related column names" stay on catalog/vector retrieval unless you scope them to a table.
-
-Explicit table mentions (`schema.table`, `ADRC table`, `adrc tablosunda`) take precedence
-over fuzzy catalog matches. If the exact live table cannot be verified, AMX **refuses to
-substitute a similar candidate** like `ADR6`; fuzzy matches are shown only as suggestions.
-
-`/search` only labels an answer as **live verified** when live metadata rows were actually
-collected; catalog-only or fuzzy evidence is capped at lower confidence.
-
-### Approved actions (`--actions`)
-
-```text
-/ask --actions which tables are missing column comments?
-```
-
-`--actions` turns selected suggestions from the answer into a human-approved execution loop.
-AMX asks before running:
-
-- catalog sync
-- cached code-evidence refresh
-- single-table metadata analysis (a focused `/run`)
-
-Each action outcome is recorded in history.
-
-## Sessions
-
-Every `/ask` appends to a persistent session in `~/.amx/history.db`. Follow-ups remember
-prior turns even after `/exit` and restart:
-
-```text
-/ask which tables store address data?
-/ask any others?
-/ask what about its columns?
-```
-
-When a session's live token estimate exceeds ~40% of the model's input budget, AMX
-summarises the oldest slice with a single LLM call (Claude / Gemini / OpenAI / DeepSeek)
-and replaces it with a synthetic summary turn so follow-ups still ground against compacted
-history. Falls back to a stub when no LLM is available.
-
-### Managing sessions
-
-```text
-/session new "ADRC investigation"          # start fresh, pin as active
-/session list -n 10                        # recent sessions in this DB profile
-/session list --all-profiles               # across every DB profile
-/session resume <id>                       # switch active session pointer
-/session show --include-compacted          # full per-turn audit trail
-/session end                               # close the current session
-```
-
-New REPL boots always start fresh — opt back in via `/session resume`.
-
-`/session resume` refuses cross-profile resume so a session belonging to `prod_pg` won't
-be re-attached to `dev_snowflake` by mistake.
-
-## Catalog management
-
-`/ask` reads from the AMX search catalog inside `~/.amx/history.db`. Keep it fresh:
-
-| Command | When to use |
-|---|---|
-| `/search status` | Show catalog counts, freshness, and recent sync jobs |
-| `/search sources` | Enabled search settings and evidence-source coverage |
-| `/search sync [--schema …] [--table …]` | Sync DB structure / comments and cached code evidence |
-| `/search rebuild` | Recompute effective state and rebuild the `amx_search` vector index |
-| `/search embeddings [kind] [model]` | Switch embedding provider (`MiniLM` / `OpenAI-compatible` / `Local`) |
-| `/search context-detail [minimal\|standard\|rich\|deep]` | Catalog/code/history context budget |
-
-`/run`, `/run-apply`, `/history review`, and `/metadata edit` all auto-update the catalog —
-manual `/sync` is mostly needed when an external tool changed the database underneath you.
-
-After switching embeddings, run `/search rebuild` to re-embed the catalog.
-
-## Configuration
-
-```text
-/search config                             # show all /search settings for the active DB
-/search config max_neighbors 8             # update one
-```
-
-Settings are per-DB-profile. See [Search catalog](../data-sources/search-catalog.md) for
-what's tunable.
-
-## Failure semantics
-
-- If no active LLM profile exists, `/ask` fails closed and tells you to configure `/llm`.
-- Inventory/count questions use **live DB introspection** so they remain correct even when
-  only part of the catalog has generated descriptions.
-- Aggregate answers avoid dumping the generic schema/table/column result grid when that
-  grid would be irrelevant to the user question.
-- The interpreter is conservative about follow-up scope, ambiguity, and enum selection —
-  it prefers asking for clarification over guessing.
+- [Search catalog](../data-sources/search-catalog.md) — how the catalog is built, when to `/sync` vs `/rebuild`.
+- [Documents](../data-sources/documents.md) / [Codebase](../data-sources/codebase.md) — feed external context so `/ask` can answer "where is the retention policy" with real evidence.
+- [Run & Apply](run-and-apply.md) — write descriptions back so `/ask` has more to retrieve from next time.

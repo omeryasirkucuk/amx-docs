@@ -8,22 +8,26 @@
    ========================================================================= */
 
 :root {
-  --bg:           #FFFFFF;
-  --bg-sidebar:   #FFFFFF;
-  --bg-hover:     #F5F5F5;
-  --text:         #1B1F23;
-  --text-muted:   #5C6370;
-  --text-faint:   #8B919A;
-  --border:       #E5E7EB;
-  --accent:       #2563EB;
-  --accent-dark:  #1D4ED8;
-  --accent-soft:  #EFF4FF;
-
   --font-text:    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 [data-md-color-scheme="default"] {
+  --bg:           #FFFFFF;
+  --bg-sidebar:   #FAFBFC;
+  --bg-hover:     #F1F3F5;
+  --bg-elevated:  #FFFFFF;
+  --text:         #1B1F23;
+  --text-muted:   #57606A;
+  --text-faint:   #8B919A;
+  --border:       #E5E7EB;
+  --accent:       #2563EB;
+  --accent-dark:  #1D4ED8;
+  --accent-soft:  rgba(37, 99, 235, 0.08);
+  --code-bg:      #F6F8FA;
+  --tip:          #0F8C73;
+  --tip-soft:     rgba(15, 140, 115, 0.08);
+
   --md-default-bg-color:         var(--bg);
   --md-default-fg-color:         var(--text);
   --md-typeset-color:            var(--text);
@@ -33,17 +37,45 @@
   --md-primary-fg-color--dark:   var(--accent-dark);
   --md-primary-bg-color:         var(--bg);
   --md-accent-fg-color:          var(--accent);
-  --md-code-bg-color:            #F6F8FA;
+  --md-code-bg-color:            var(--code-bg);
   --md-code-fg-color:            var(--text);
 }
 
-/* Force the body and main background to white even if the system asks
-   for dark — design is light-only per spec. */
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color: var(--bg) !important;
-  --md-default-fg-color: var(--text) !important;
-  --md-typeset-color: var(--text) !important;
-  --md-typeset-a-color: var(--accent) !important;
+  --bg:           #1B1F24;
+  --bg-sidebar:   #16191D;
+  --bg-hover:     #22262D;
+  --bg-elevated:  #1F232A;
+  --text:         #D8DDE3;
+  --text-muted:   #9CA3AD;
+  --text-faint:   #6B7280;
+  --border:       #2A2E36;
+  --accent:       #60A5FA;
+  --accent-dark:  #93C5FD;
+  --accent-soft:  rgba(96, 165, 250, 0.10);
+  --code-bg:      #14171B;
+  --tip:          #34D399;
+  --tip-soft:     rgba(52, 211, 153, 0.10);
+
+  --md-default-bg-color:         var(--bg);
+  --md-default-fg-color:         var(--text);
+  --md-typeset-color:            var(--text);
+  --md-typeset-a-color:          var(--accent);
+  --md-primary-fg-color:         var(--accent);
+  --md-primary-fg-color--light:  var(--accent);
+  --md-primary-fg-color--dark:   var(--accent-dark);
+  --md-primary-bg-color:         var(--bg);
+  --md-accent-fg-color:          var(--accent);
+  --md-code-bg-color:            var(--code-bg);
+  --md-code-fg-color:            var(--text);
+
+  --md-typeset-kbd-color:        var(--bg-elevated);
+  --md-typeset-kbd-accent-color: var(--border);
+  --md-typeset-kbd-border-color: var(--border);
+
+  --md-default-fg-color--light:  var(--text-muted);
+  --md-default-fg-color--lighter: var(--text-faint);
+  --md-default-fg-color--lightest: var(--border);
 }
 
 html, body { background: var(--bg); }
@@ -75,11 +107,11 @@ body, .md-typeset {
 
 .md-typeset h1 {
   font-size: 36px;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
   color: var(--text);
-  margin: 0 0 16px;
+  margin: 0 0 20px;
 }
 .md-typeset h2 {
   font-size: 24px;
@@ -181,11 +213,14 @@ body, .md-typeset {
 }
 .amx-headright .md-header__button svg { width: 18px; height: 18px; }
 
-/* Hide Material's header search trigger and source repo button — search lives in sidebar */
+/* Hide Material's header search trigger and source repo button — search lives in sidebar.
+   Note: the palette toggle ALSO has class .md-header__option, so we re-show it
+   when nested inside our .amx-headright container. */
 .md-header__option { display: none; }
 .md-header__source { display: none; }
 .md-header form[name="search"] { display: none; }
 [for="__search"].md-icon.md-header__button { display: none; }
+.amx-headright .md-header__option { display: flex; }
 
 /* ───────────── Three-column grid layout ───────────── */
 /* DOM order from Material is: primary sidebar, secondary sidebar, content.
@@ -197,8 +232,8 @@ body, .md-typeset {
 .md-main__inner {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr) 220px;
-  gap: 48px;
-  max-width: 1440px;
+  gap: 40px;
+  max-width: 1480px;
   margin: 0 auto;
   padding: 24px 32px;
 }
@@ -229,7 +264,7 @@ body, .md-typeset {
 /* The inner text wrapper is what's constrained, NOT the column itself.
    Left-aligned (no margin: auto) so the text starts at the column's left edge. */
 .md-content__inner {
-  max-width: 720px;
+  max-width: 960px;
   margin: 0;
   padding: 0;
 }
@@ -288,101 +323,88 @@ body, .md-typeset {
   .amx-sidebar__nav > label.md-nav__title[for="__drawer"] { display: flex; }
 }
 
-/* Active page indicator pill — first element in the sidebar */
-.amx-sidebar__current {
-  display: flex;
-  align-items: center;
-  margin: 16px 16px;
-  padding: 0 12px;
-  min-height: 36px;
-  border-radius: 6px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none !important;
-  transition: background 150ms ease;
-  flex-shrink: 0;
-}
-.amx-sidebar__current:hover { background: #DBE7FF; }
-.amx-sidebar__current-text {
+/* ── Sticky home link → site root ───────────────────── */
+.amx-sidebar__home {
   display: block;
-  line-height: 1.4;
-  word-break: break-word;
-  white-space: normal;
-  padding: 8px 0;
+  padding: 8px 20px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: color 150ms ease;
 }
+.amx-sidebar__home:hover { color: var(--accent); text-decoration: none; }
+.amx-sidebar__home--active { color: var(--accent); }
 
-/* Groups container — flexes to fill the remaining height before the
-   collapse handle pins to the bottom. */
-.amx-sidebar__groups {
+/* ── Scrollable tree ────────────────────────────────── */
+.amx-sidebar__tree {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: 8px 0 16px;
+  padding: 8px 0 24px;
   min-height: 0;
 }
 
+/* ── Group (= one top-level or nested section) ───────── */
 .amx-sidebar__group {
-  margin: 0 0 8px;
+  margin: 0;
+  padding: 0;
 }
 .amx-sidebar__group + .amx-sidebar__group {
-  margin-top: 24px;
+  margin-top: 4px;
+}
+/* Extra breathing room between top-level groups */
+.amx-sidebar__group--depth-0 + .amx-sidebar__group--depth-0 {
+  margin-top: 16px;
 }
 
+/* Uppercase muted category label */
 .amx-sidebar__group-title {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin: 0;
-  padding: 8px 28px;
+  padding: 14px 20px 6px;
   line-height: 1.4;
 }
-
-.amx-sidebar__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.amx-sidebar__group--depth-1 > .amx-sidebar__group-title {
+  font-size: 10px;
+  padding: 10px 20px 4px 28px;
+  color: var(--text-faint);
 }
 
-.amx-sidebar__row {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
+/* ── Leaf links ────────────────────────────────────── */
 .amx-sidebar__link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 32px;
-  padding: 6px 28px 6px 40px;
-  font-size: 14px;
+  display: block;
+  padding: 5px 20px 5px 20px;
+  font-size: 13px;
   font-weight: 400;
-  color: var(--text);
+  color: var(--text-muted);
   text-decoration: none;
-  line-height: 1.4;
-  transition: background 100ms ease;
+  line-height: 1.45;
+  transition: background 80ms ease, color 80ms ease;
   white-space: normal;
   word-break: break-word;
-}
-.amx-sidebar__link-text {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.amx-sidebar__link-chevron {
-  flex-shrink: 0;
-  color: var(--text-faint);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1;
 }
 .amx-sidebar__link:hover {
   background: var(--bg-hover);
   color: var(--text);
   text-decoration: none;
 }
+/* Subtle active state — accent text + faint bg, NO thick left border */
+.amx-sidebar__link--active {
+  color: var(--accent) !important;
+  background: var(--accent-soft);
+  font-weight: 500;
+}
+
+/* Nested links sit deeper (mirrors --group-title indent) */
+.amx-sidebar__link--depth-0 { padding-left: 20px; }
+.amx-sidebar__link--depth-1 { padding-left: 28px; }
+.amx-sidebar__link--depth-2 { padding-left: 36px; }
+.amx-sidebar__link--depth-3 { padding-left: 44px; }
 
 
 /* ───────────── Right TOC — 220px, sticky, ≥1280px only ───────────── */
@@ -495,7 +517,7 @@ body, .md-typeset {
 .md-typeset .highlight pre {
   border-radius: 8px;
   border: 1px solid var(--border);
-  background: #F6F8FA;
+  background: var(--code-bg);
   font-size: 13px;
   line-height: 1.6;
   padding: 16px;
@@ -535,37 +557,60 @@ body, .md-typeset {
   color: var(--text);
 }
 
-/* ───────────── Tip callout ───────────── */
+/* ───────────── Tip / Note callouts — Databricks-style soft teal ───────────── */
 
 .md-typeset .admonition,
 .md-typeset details {
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border: none;
   border-radius: 8px;
-  background: var(--accent-soft);
+  background: var(--tip-soft);
   box-shadow: none;
   font-size: 14px;
-  padding: 4px 16px;
+  padding: 4px 18px;
   margin: 24px 0;
+  color: var(--text);
 }
 .md-typeset .admonition-title,
 .md-typeset summary {
   font-weight: 600;
-  font-size: 14px;
-  color: var(--text);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--tip);
   border-bottom: none;
   background: transparent;
-  padding: 12px 0 4px 28px;
+  padding: 14px 0 6px 28px;
+  text-transform: none;
 }
 .md-typeset .admonition-title::before,
 .md-typeset summary::before {
-  background-color: var(--accent) !important;
+  background-color: var(--tip) !important;
+  top: 14px;
 }
 .md-typeset .admonition > p,
 .md-typeset details > p {
   color: var(--text);
-  padding: 0 0 12px;
+  padding: 0 0 14px;
+  line-height: 1.6;
 }
+
+/* Warning / danger keep a warmer accent */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  background: rgba(245, 158, 11, 0.10);
+}
+.md-typeset .admonition.warning > .admonition-title,
+.md-typeset details.warning > summary { color: #D97706; }
+.md-typeset .admonition.warning > .admonition-title::before,
+.md-typeset details.warning > summary::before { background-color: #D97706 !important; }
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning,
+[data-md-color-scheme="slate"] .md-typeset details.warning {
+  background: rgba(251, 191, 36, 0.10);
+}
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary { color: #FBBF24; }
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title::before,
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary::before { background-color: #FBBF24 !important; }
 
 /* ───────────── Card grid — 2 columns on desktop ───────────── */
 
@@ -584,26 +629,31 @@ body, .md-typeset {
 
 .md-typeset .grid.cards > ul > li {
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
-  background: var(--bg);
+  border-radius: 6px;
+  padding: 18px 20px;
+  background: transparent;
   margin: 0;
-  transition: background 150ms ease, box-shadow 150ms ease;
+  transition: border-color 120ms ease, background 120ms ease;
   box-shadow: none;
 }
 .md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--accent);
   background: var(--bg-hover);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transform: none;
 }
 .md-typeset .grid.cards > ul > li > p:first-child,
 .md-typeset .grid.cards > ul > li > h3 {
-  margin: 0 0 8px !important;
-  font-weight: 600;
-  font-size: 16px !important;
+  margin: 0 0 6px !important;
+  font-weight: 700;
+  font-size: 15px !important;
   letter-spacing: 0;
+  color: var(--text) !important;
+  line-height: 1.35 !important;
+  transition: color 120ms ease;
+}
+.md-typeset .grid.cards > ul > li:hover > p:first-child,
+.md-typeset .grid.cards > ul > li:hover > h3 {
   color: var(--accent) !important;
-  line-height: 1.4 !important;
 }
 .md-typeset .grid.cards > ul > li > p:first-child a,
 .md-typeset .grid.cards > ul > li > h3 a {
@@ -613,21 +663,38 @@ body, .md-typeset {
 .md-typeset .grid.cards > ul > li > p {
   margin: 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.55;
 }
 .md-typeset .grid.cards > ul > li > p:not(:first-child) { margin-top: 8px; }
 
-/* ───────────── Page intro: breadcrumb + last-updated ───────────── */
+/* ───────────── Hero CLI screenshot on the home page ───────────── */
 
-.amx-pageintro { margin: 0 0 16px; }
+.md-typeset .amx-hero-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 28px 0 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0B0E12;            /* matches the dark terminal in the screenshot */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-hero-img {
+  box-shadow: none;
+}
+
+/* ───────────── Page intro: breadcrumb on top, last-updated immediately above H1 ───────────── */
+
+.amx-pageintro { margin: 0 0 4px; }
 .amx-breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 13px;
   color: var(--text-muted);
-  margin: 0;
+  margin: 0 0 24px;
 }
 .amx-breadcrumb a {
   color: var(--text-muted);
@@ -639,11 +706,6 @@ body, .md-typeset {
   display: inline-flex; align-items: center;
 }
 .amx-breadcrumb__home svg { width: 14px; height: 14px; }
-.amx-pagemeta {
-  font-size: 13px;
-  color: var(--text-faint);
-  margin: 4px 0 24px;
-}
 
 /* ───────────── Footer ───────────── */
 

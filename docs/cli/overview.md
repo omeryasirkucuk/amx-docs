@@ -1,210 +1,157 @@
 # CLI overview
 
-AMX is **interactive-first**. You start a session with `amx` and drive everything through
-slash commands. A handful of one-shot subcommands (`amx doctor`, `amx db history-store …`)
-also work directly from the shell — useful for scripts and CI.
+AMX is **interactive-first**. You start a session with `amx`, then drive everything
+through slash commands inside the REPL — no shell pipelines, no flag soup. This page
+covers the namespace structure, how to discover commands inline, and the muscle-memory
+shortcuts that make day-to-day use fast.
 
-## Starting a session
+## Prerequisites
+
+- AMX installed (`pip install amx`).
+- A terminal that supports ANSI colors (any modern terminal is fine).
+
+## Step-by-step
+
+### 1. Open the REPL
 
 ```bash
-amx                          # uses ~/.amx/config.yml
-amx --config ./team.yml      # custom config path
-amx --help                   # surface all top-level options
-amx --version
+amx
 ```
 
-## The slash-command model
-
-Commands are grouped by namespace. Type the namespace alone to see its commands and
-shortcuts:
+You land in the AMX session:
 
 ```text
-/db
+            █████╗ ███╗   ███╗██╗  ██╗
+           ██╔══██╗████╗ ████║╚██╗██╔╝
+           ███████║██╔████╔██║ ╚███╔╝
+           ██╔══██║██║╚██╔╝██║ ██╔██╗
+           ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
+           ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
+
+  AMX 0.12.0 · Active DB profile: prod-pg · Active LLM profile: openai-prod
+  Type /help for commands, /exit to quit.
+
+>
 ```
 
-shows the database namespace's full menu. To run a command directly:
+The header line tells you, at a glance, which DB and LLM profile your next command will
+use. If either says `none`, run `/setup` (first time) or `/use-db` / `/use-llm`.
+
+### 2. Discover commands
+
+Two interactive ways to learn the command surface:
 
 ```text
-/db connect
+> /help
+Top-level commands:
+  /setup         First-time wizard for DB + LLM profiles
+  /db            Database profile and connection management
+  /llm           LLM profile management
+  /docs          Document-source management (RAG)
+  /code          Code-source management
+  /metadata      Inspect introspection output
+  /run           Run agents on a scope
+  /apply         Write reviewed comments back to the DB
+  /search        Catalog search and embedding rebuild
+  /history       Audit trail and run comparison
+  /doctor        Diagnostics
+  /config        Show or edit ~/.amx/config.yml
+  /help, /exit, /clear, /back, /save
 ```
-
-or, with auto-namespace-selection from the root prompt:
 
 ```text
-/connect
+> /db
+Database namespace:
+  /db-profiles            List configured DB profiles
+  /use-db <name>          Set the active DB profile
+  /add-db-profile         Wizard to register a new profile
+  /remove-db-profile      Delete a profile
+  /connect                Test the active connection
+  /schemas                List schemas in the active DB
+  /tables <schema>        List tables in a schema
+  /profile <table>        Run profiling-only on one table
+  /inspect                Server-side counts and stats
+  /history-store          Configure shared history store
+  /cleanup-placeholders   Clean stale review-queue rows
 ```
 
-AMX prints which namespace it auto-selected when there's no ambiguity.
+Each top-level letter (e.g. `/d`, `/r`) tab-completes the command name; arrow keys walk
+your previous commands.
 
-## Namespaces
+### 3. Use the namespace shortcuts
 
-| Namespace | Purpose | Page |
+Slash commands are **flat** — `/use-db` works at the root prompt, you don't need to
+"enter" the `/db` namespace first. But typing `/db` *does* drop you into a sub-prompt
+where every command is implicitly under `/db`:
+
+```text
+> /db
+[db]> profiles
+default        prod-pg          dev-snowflake
+[db]> use-db prod-pg
+✓ Active DB profile → prod-pg
+[db]> /back
+>
+```
+
+Use this when you're doing a lot of DB-related work in a row and want shorter typing.
+`/back` (or `Ctrl-D`) returns to the root.
+
+### 4. Save and resume sessions
+
+```text
+> /save
+✓ Session saved: ~/.amx/sessions/2026-05-03_15-42.amxsession
+
+# Later, in a new shell:
+amx --resume 2026-05-03_15-42
+```
+
+Session save captures the active profiles, current scope (last `/run` table list), and
+the in-memory review queue — so you can step away from a half-reviewed run and pick up
+exactly where you left off.
+
+### 5. Get unstuck
+
+When something doesn't work, the order of escalation is:
+
+```text
+> /doctor
+✓ AMX version — 0.12.0 (config schema v7)
+✓ Python runtime — 3.11.5
+✓ Active DB profile — prod-pg [postgresql] db-prod.../analytics
+✓ Active LLM profile — openai-prod [openai] gpt-4o
+✓ Reachable
+```
+
+If all checks pass but a specific command fails, re-run with `/run --debug` (or any
+command's `--debug` flag) for verbose tracing. See [Common errors](../troubleshooting/common-errors.md)
+for the most-frequently-seen failures.
+
+## The full namespace tree
+
+| Namespace | Purpose | Sub-commands (subset) |
 |---|---|---|
-| `/setup` | First-time configuration wizard | [Setup](setup.md) |
-| `/config` | Show current configuration | [Setup](setup.md#viewing-configuration) |
-| `/db` | DB profiles, connection, profiling, introspection, history-store | This page |
-| `/metadata` (`/manual`) | Inspect / edit DB comments without LLM agents | This page |
-| `/llm` | LLM profiles, language, temperature, batch sizes, thresholds | [Setup](setup.md#llm-profiles) |
-| `/code` | Codebase profiles, scan, analyse | [Run & apply](run-and-apply.md) |
-| `/docs` | Document profiles, ingest, search | [Run & apply](run-and-apply.md) |
-| `/analyze` (`/run`) | The metadata generation pipeline | [Run & apply](run-and-apply.md) |
-| `/search` (`/ask`) | Conversational metadata Q&A | [Ask & search](ask-and-search.md) |
-| `/session` | `/ask` conversation session management | [Ask & search](ask-and-search.md#sessions) |
-| `/history` | Run history, comparison, review | [History](history.md) |
-| `/doctor` | Diagnostics | [Doctor](doctor.md) |
-| `/usage` | Token usage summary | [History](history.md#usage) |
+| `/setup` | First-run wizard for DB + LLM | — |
+| `/config` | Show or edit `~/.amx/config.yml` | — |
+| `/db` | Connection & introspection | `profiles`, `add-db-profile`, `use-db`, `connect`, `schemas`, `tables`, `profile`, `inspect`, `history-store` |
+| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `temperature`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
+| `/docs` | RAG document sources | `doc-profiles`, `add-doc-profile`, `scan`, `ingest`, `search-docs`, `doc-analyze` |
+| `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
+| `/metadata` | Inspect introspection cache | — |
+| `/analyze` | Run + apply | `/run`, `/run-apply`, `/apply` |
+| `/search` | Catalog search | `/ask`, `/status`, `/sync`, `/rebuild` |
+| `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare` |
+| `/doctor` | Diagnostics | `--skip-network`, `--debug` |
 
-## Slash command quick reference
+## Verify
 
-The rest of this page is a single scrollable cheat sheet — every slash command grouped by
-namespace. Per-command details live on the linked pages.
+1. `> /help` — full command list, grouped by namespace.
+2. `> /db` then `>back` — confirms namespace navigation works.
+3. `> /doctor` — confirms profiles activate and reach their endpoints.
 
-### `/db` — Database
+## What's next
 
-| Command | Description |
-|---|---|
-| `/db-profiles` | List DB profiles (shows backend + connection summary per row) |
-| `/use-db [name]` | Switch active profile; interactive picker lists each profile's engine |
-| `/add-db-profile [name]` | Add/update a profile: choose engine first, then connection fields |
-| `/remove-db-profile <name>` | Remove a DB profile |
-| `/profiling [mode] [max_rows] [sample_size]` | Show or set DB profiling guardrails (`full` / `sampled` / `metadata`; `off` for no max-row cutoff) |
-| `/tls [on\|off] [ca_path\|clear]` | Show or set Databricks TLS settings on the active profile |
-| `/schema <name>` | Set default schema context |
-| `/table <name>` | Set default table context |
-| `/connect` | Test database connectivity |
-| `/schemas` | List available schemas |
-| `/tables [schema]` | List tables, views, and materialized views in a schema |
-| `/profile [schema] [table]` | Profile table structure and data |
-| `/inspect [profile]` | Diagnose a profile: backend, capabilities, connection test, visible schemas |
-| `/history-store` | Open the shared-history-store picker (Status / Enable / Disable / …) |
-
-See [Backends](../backends/index.md) for per-backend connection details.
-
-### `/metadata` (alias `/manual`) — Database comments
-
-| Command | Description |
-|---|---|
-| `/inspect [schema] [table]` | Show current database, schema, table/view, and column comments |
-| `/edit` | Start the interactive edit wizard |
-| `/edit <db>` | Edit a database/profile comment |
-| `/edit <db>.<schema>` | Edit one schema comment |
-| `/edit <db>.<schema>.<table>` | Edit one table/view comment |
-| `/edit <db>.<schema>.<table>.<column>` | Edit one column comment |
-| `/edit table <schema>.<table>` | Legacy scoped form (still supported) |
-| `/monitor [schema]` | Show table/view and column comment coverage |
-
-### `/llm` — LLM provider settings
-
-| Command | Description |
-|---|---|
-| `/llm-profiles` | List LLM profiles |
-| `/use-llm <name>` | Switch active LLM profile |
-| `/add-llm-profile [name]` | Add/update an LLM profile (interactive) |
-| `/remove-llm-profile <name>` | Remove an LLM profile |
-| `/language [name]` | Show or set the metadata generation language for the active profile |
-| `/temperature [N]` | Show or set sampling temperature (clamped to `[0.0, 2.0]`, default `0.2`) |
-| `/prompt-detail [level]` | `minimal` \| `standard` \| `detailed` \| `full` |
-| `/n-alternatives [N]` | Alternatives per column (1–5, default 3) |
-| `/llm-batch-size [N]` | Columns per Profile-Agent LLM call |
-| `/batch-context-columns [off\|all\|N]` | Non-batch column names included as context |
-| `/logprob-thresholds [high] [medium]` | Confidence band thresholds |
-
-### `/code` — Codebase analysis
-
-| Command | Description |
-|---|---|
-| `/code-profiles` | List codebase profiles |
-| `/use-code <name>` | Switch active codebase profile |
-| `/add-code-profile [name]` | Add/update a codebase path (interactive) |
-| `/remove-code-profile <name>` | Remove a codebase profile |
-| `/code-scan [path]` | Scan codebase, save results, build `amx_code` semantic index |
-| `/code-refresh` | Clear active code profile's scan cache and semantic chunks |
-| `/code-results` | View the last cached code-scan results |
-| `/code-analyze [TABLE …]` | Run Code Agent standalone (LLM); results saved for next `/run` |
-| `/export-code-report [FILE]` | Export scan results to markdown |
-
-### `/docs` — Document RAG
-
-| Command | Description |
-|---|---|
-| `/doc-profiles` | List document path profiles |
-| `/use-doc <name>` | Switch active document profile |
-| `/add-doc-profile [name]` | Add/update document roots (interactive) |
-| `/remove-doc-profile <name>` | Remove a document profile |
-| `/scan [paths…]` | Scan and preview documents for RAG |
-| `/ingest [paths…]` | Ingest documents into the RAG vector store (`--refresh` to re-upsert) |
-| `/search-docs <text>` | Similarity search over ingested docs |
-| `/doc-analyze [TABLE …]` | Run RAG Agent standalone (LLM); results saved for next `/run` |
-| `/export-doc-report [FILE]` | Export RAG summary to markdown |
-
-### `/analyze` (alias `/run`) — Run agents
-
-| Command | Description |
-|---|---|
-| `/run [ASSET …]` | Run all agents with scope picker (`--code-profile`, `--code-refresh`, `--doc-profile`, `--llm-profile`) |
-| `/run-apply [ASSET …]` | Same as `/run --apply` |
-| `/apply` | Write pending approved metadata to the database |
-
-### `/search` (alias `/ask`) — Conversational Q&A
-
-| Command | Description |
-|---|---|
-| `/ask <question>` | Ask conversational metadata questions with grounded retrieval (`--actions` `--debug`) |
-| `/status` | Catalog counts, freshness, and recent sync jobs |
-| `/sources` | Enabled search settings and evidence-source coverage |
-| `/config [key] [value]` | View or update `/search` settings for the active DB profile |
-| `/context-detail [minimal\|standard\|rich\|deep]` | Catalog/code/history context budget for `/search` |
-| `/sync [--schema …] [--table …]` | Sync DB structure / comments and cached code evidence into the catalog |
-| `/rebuild` | Rebuild effective search state and the `amx_search` vector index |
-| `/embeddings [kind] [model]` | Switch embedding provider (`MiniLM` / `OpenAI-compatible` / `Local`) |
-
-### `/session` — Conversation sessions
-
-| Command | Description |
-|---|---|
-| `/session new [--title]` | Start a fresh `/ask` session and pin it active |
-| `/session list [-n N] [--all-profiles]` | Recent sessions with first-question excerpts |
-| `/session resume <id>` | Switch active session pointer (refuses cross-profile resume) |
-| `/session end` | Close the current session |
-| `/session show [--id N] [--include-compacted]` | Per-turn audit trail |
-
-### `/history` — Run history
-
-| Command | Description |
-|---|---|
-| `/list [-n N]` | Recent runs (`Duration(s)` and `Model(s)`) |
-| `/show <run_id>` | Full run JSON |
-| `/stats` | Aggregate run/event statistics + search lifecycle counts |
-| `/events [-n N]` | Recent app events (profile switches, run status, apply outcomes, …) |
-| `/results <run_id>` | All saved LLM alternatives for a past run |
-| `/review <run_id> [--unevaluated-only] [--apply]` | Re-evaluate saved alternatives interactively |
-| `/compare [RUN_IDS…] [flags]` | Pivot runs side-by-side ([full flag list](history.md#compare)) |
-
-### `/doctor` and `/usage`
-
-| Command | Description |
-|---|---|
-| `/doctor` (or `amx doctor` from any shell) | Diagnose installation / config / connectivity |
-| `/usage [window]` | Token usage summary (`24h`, `7d` default, `30d`, `all`) |
-
-See [Doctor](doctor.md) and [History → Usage](history.md#usage).
-
-## Auto-namespace selection
-
-When you run an unambiguous command from the root prompt, AMX picks the right namespace and
-prints which one it assumed. Ambiguous commands ask. For scripts, prefer the explicit
-namespace form (`/db connect` rather than `/connect`).
-
-## Flags shared across commands
-
-A handful of flags work on most run-shaped commands — see [Flags](flags.md):
-
-- `--db-profile NAME`
-- `--llm-profile NAME`
-- `--code-profile NAME`
-- `--doc-profile NAME`
-- `--code-refresh`
-- `--csv FILE` / `--md FILE` / `--json FILE` (where applicable)
-- `--apply`
-- `--actions` (on `/ask`)
-- `--verbose` / `--debug` (on `/ask`)
+- [Quick start](../getting-started/quickstart.md) — five-minute walkthrough using PostgreSQL + OpenAI.
+- [Run & Apply](run-and-apply.md) — the heart of the workflow: `/run`, review wizard, `/apply`.
+- [Setup wizard](setup.md) — first-time `/setup` walkthrough.

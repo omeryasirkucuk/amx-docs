@@ -1,5 +1,4 @@
-{# Auto-generated breadcrumb + last-updated row.
-   Renders for every non-home page above the H1. #}
+{# Auto-generated breadcrumb. Renders for every non-home page above the H1. #}
 {% if page and not page.is_homepage %}
   <div class="amx-pageintro">
     <div class="amx-breadcrumb">
@@ -17,6 +16,5 @@
       <span class="amx-breadcrumb__sep">›</span>
       <span>{{ page.title }}</span>
     </div>
-    <div class="amx-pagemeta">Last updated on May 3, 2026</div>
   </div>
 {% endif %}

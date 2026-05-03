@@ -1,150 +1,165 @@
 # Profiling modes
 
-Each DB profile has a profiling mode that controls how aggressively AMX reads table data
-when profiling. The mode is the single biggest knob for warehouse load — choose it before
-tuning prompts.
+Each DB profile has a profiling mode that controls how aggressively AMX reads table
+data before sending it to the LLM. The mode is the single biggest knob for warehouse
+cost, run latency, and description quality. This page explains the three modes, when
+to pick each one, the per-backend behavior, and the cost / time trade-offs with real
+numbers.
+
+## Prerequisites
+
+- AMX installed.
+- An active DB profile.
 
 ## The three modes
 
-| Mode | Row count | Per-column stats | Sample values | Warehouse load |
-|---|---|---|---|---|
-| `full` | exact `COUNT(*)` | null / distinct / min / max via aggregate scan | up to 5 distinct non-null per column | high |
-| `sampled` | backend table statistics | small backend-sample only | small sample via backend sampling syntax | low |
-| `metadata` | backend table statistics only | none | none | minimal |
+| Mode | Reads | Cost on warehouse backends | When to use |
+|---|---|---|---|
+| `full` | Every row in the table | High (full scan) | You need exact distinct counts for keys / cardinality validation |
+| `sampled` | TABLESAMPLE / SAMPLE / USING SAMPLE — typically 5,000 rows | Low (small scan) | Daily description drafting; the recommended default |
+| `metadata` | INFORMATION_SCHEMA / system catalogs only | Zero (no rows scanned) | Whole-warehouse inventory sweeps; cheap whole-schema first drafts |
 
-### `full`
+## Step-by-step
 
-```text
-/db profiling full
+### 1. Set the mode per profile
+
+In `~/.amx/config.yml`:
+
+```yaml
+db_profiles:
+  prod-pg:
+    backend: postgresql
+    # ...
+    profiling_mode: sampled        # full | sampled | metadata
+    profiling_sample_size: 5000    # only used in `sampled` mode
+    profiling_max_rows: 1000000    # safety cap even in `full` mode
 ```
 
-Exact row count plus per-column null count, distinct count, min/max, and samples. If table
-statistics report more rows than `profiling_max_rows`, AMX **skips the expensive full
-column scans** and keeps lightweight metadata plus samples — so a wildly oversized table
-can't accidentally start a sequential scan.
-
-Snowflake, Databricks, and BigQuery also skip full scans when row-count statistics are
-unavailable rather than running an unbounded query.
-
-Use `full` for:
-
-- Small to medium tables (< 5M rows by default).
-- Initial inference where you want every signal possible.
-- Tables that don't have reliable backend statistics.
-
-### `sampled`
+Or interactively:
 
 ```text
-/db profiling sampled 500000 3
+> /db profiling-mode
+Current mode: full
+  full      — read every row to compute exact null/distinct stats
+  sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
+  metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
+
+> /db profiling-mode sampled
+✓ Active mode → sampled (5000 rows per table)
 ```
 
-Skips exact row count and full per-column aggregate scans; uses backend table statistics
-when available and retrieves only small sample values with backend sampling syntax where
-supported.
+### 2. Override per command
 
-Use `sampled` for:
-
-- Production warehouses where `full` would be expensive.
-- Routine re-runs after metadata is already in good shape.
-- Wide schemas where the per-column distinct counts aren't load-bearing.
-
-### `metadata`
+Every mode-aware command (`/run`, `/profile`, `/sync`) accepts `--profiling-mode`:
 
 ```text
-/db profiling metadata
+> /run sales --profiling-mode metadata --auto-accept-high
+[scope]   18 tables (sales)
+[Profile] reading INFORMATION_SCHEMA for 18 tables ...  ok (0.4 s)
+[LLM]     drafting 412 column descriptions in 21 batches ...  ok in 38 s
+✓ /run finished. 412 columns drafted (no row scans on the warehouse).
 ```
 
-Skips table-data reads entirely. Uses schema metadata, comments, constraints, and backend
-table statistics when available.
+This is the cheapest possible whole-warehouse sweep — no rows scanned.
 
-Use `metadata` for:
-
-- Initial discovery on huge warehouses where you want "what tables exist?" before doing
-  any column profiling.
-- CI / dev environments where the data is synthetic and column statistics aren't
-  meaningful.
-- Demos against backends where you want to avoid touching table data.
-
-## Setting the mode
+### 3. Verify what each mode actually queries
 
 ```text
-/db
-/profiling                                    # show active settings
-/profiling full                               # mode only
-/profiling sampled 500000 3                   # mode + max_rows + sample_size
-/profiling metadata
-/profiling full off 5                         # full mode, no max-row cutoff, samples=5
+> /run sales.customer --profiling-mode full --debug | grep "SQL"
+[SQL Profile] SELECT * FROM sales.customer
+[SQL Profile] SELECT COUNT(DISTINCT c_first_name), COUNT(DISTINCT c_last_name), ...
+
+> /run sales.customer --profiling-mode sampled --debug | grep "SQL"
+[SQL Profile] SELECT * FROM sales.customer TABLESAMPLE BERNOULLI(5000) LIMIT 5000
+
+> /run sales.customer --profiling-mode metadata --debug | grep "SQL"
+[SQL Profile] SELECT column_name, data_type, is_nullable FROM information_schema.columns
+              WHERE table_schema = 'sales' AND table_name = 'customer';
 ```
 
-`off` for `max_rows` removes the cutoff entirely. Settings are saved on the active DB
-profile in `config.yml`.
+## Per-backend sampling syntax
 
-## Backend sampling syntax
-
-When `sampled` mode applies, AMX uses each backend's native sampling clause:
+The `sampled` mode uses backend-native sampling where supported:
 
 | Backend | Sampling SQL |
 |---|---|
-| PostgreSQL | `TABLESAMPLE BERNOULLI (n)` / `TABLESAMPLE SYSTEM (n)` |
-| Snowflake | `SAMPLE (n PERCENT)` / `SAMPLE BLOCK (n PERCENT)` |
-| Databricks | `TABLESAMPLE (n PERCENT)` |
-| BigQuery | `TABLESAMPLE SYSTEM (n PERCENT)` |
-| MySQL / Oracle / SQL Server / Redshift | Backend statistics + small sample only |
-| ClickHouse | `SAMPLE (n)` (only on tables with a sampling key) |
-| DuckDB | `USING SAMPLE n PERCENT` |
+| PostgreSQL | `TABLESAMPLE BERNOULLI(<n>)` (or `SYSTEM` for fast-but-clumpy) |
+| Snowflake | `SAMPLE (<n> ROWS)` (or `SAMPLE BLOCK (<n>)` for column-store-friendly) |
+| Databricks | `TABLESAMPLE (<n> ROWS)` |
+| BigQuery | `TABLESAMPLE SYSTEM (<percent> PERCENT)` (BQ has no row-count form) |
+| Redshift | falls back to backend stats + small `LIMIT` |
+| MySQL / MariaDB | falls back to backend stats + small `LIMIT` |
+| Oracle | `SAMPLE (<percent>)` clause + small `LIMIT` |
+| SQL Server | `TABLESAMPLE (<n> ROWS)` |
+| ClickHouse | `SAMPLE <n>` clause |
+| DuckDB | `USING SAMPLE <n> ROWS` |
 
-When the backend doesn't support sampling, AMX falls back to a `LIMIT` plus optional
-`ORDER BY RANDOM()` so the sample isn't biased toward physical row order.
+When backend table-stats are unavailable in `full` mode (rare but possible on
+Snowflake / Databricks / BigQuery), AMX falls back to the `sampled` path automatically
+and prints a warning rather than running an unbounded query.
 
-## Backend behavior
+## Cost / time examples
 
-Wall-clock impact varies per backend:
+Approximate numbers for a typical 47-table / 1,283-column schema:
 
-- **PostgreSQL / MySQL / Oracle / MSSQL / DuckDB.** Self-hosted; impact is wall-clock and
-  storage I/O. `full` on a wide 50M-row table can take minutes; `sampled` runs in seconds.
-- **Snowflake.** `full` against a wide table can wake the warehouse and run for tens of
-  seconds. Switch to `sampled` or `metadata` for routine work.
-- **Databricks.** Same as Snowflake — `full` runs against the SQL warehouse for the
-  duration of the scan.
-- **BigQuery.** `full` runs `COUNT(*)` and per-column distinct counts; on a partitioned
-  table this is bounded but on a non-partitioned 1TB table it's the full table. Use
-  `sampled` or `metadata` for regular work.
-- **Redshift.** `full` mode can lock the warehouse for other workloads — wall-clock
-  matters here even on idle clusters.
-- **ClickHouse.** `full` against a `MergeTree` table is fast but reads bytes from disk;
-  `sampled` is much faster on large tables.
+| Backend × Mode | Wall time | Compute cost |
+|---|---|---|
+| PostgreSQL × `metadata` | ~5 s | ~$0 |
+| PostgreSQL × `sampled` | ~30 s | ~$0 |
+| PostgreSQL × `full` | minutes (depends on row count) | ~$0 |
+| Snowflake X-Small × `metadata` | ~10 s | ~$0 (no warehouse wake) |
+| Snowflake X-Small × `sampled` | ~45 s | ~1–3 credit-seconds (~$0.01–$0.03) |
+| Snowflake X-Small × `full` | minutes–hours | depends on table sizes |
+| BigQuery × `metadata` | ~8 s | $0 (INFORMATION_SCHEMA is free) |
+| BigQuery × `sampled` | ~25 s | a few MB × per-table = pennies |
+| BigQuery × `full` | depends on scan size | scan-size × $5/TB |
+| Databricks Serverless × `sampled` | ~60 s (incl. cold start) | depends on warehouse size |
 
-## Failure handling
+These numbers are illustrative — your row counts, table widths, and warehouse size
+matter. Always run `/profile <one-table>` first and check the timer before unleashing
+`/run` on a whole schema.
 
-Backend profiling failures are normalised into actionable messages where possible.
-PostgreSQL, Snowflake, Databricks, and BigQuery permission / missing-object / warehouse /
-quota / connection failures surface remediation text instead of leaking raw driver
-tracebacks. AMX can skip expensive per-column stats when a single column-level stats query
-fails, so the run keeps making progress.
+## Decision flow
 
-## What gets sent to the LLM
+- **Whole-warehouse first sweep** → `metadata` for inventory, then `sampled` only on the subset you want descriptions for.
+- **Daily description drafting** → `sampled`. The default for a reason.
+- **Cardinality / uniqueness audit** → `full` on the specific table only. Don't run `full` warehouse-wide.
+- **Snowflake / Databricks / BigQuery on a tight budget** → `metadata` for the bulk, with `sampled` reserved for tables you actually care about.
+- **DuckDB / local Postgres** → `full` is fine; warehouse cost concerns don't apply.
 
-Independent of profiling mode, AMX never sends full table dumps. The Profile Agent
-prompt includes:
+## Sample config
 
-- Table-level: row count (when available), existing comments, schema/database comment.
-- Per-column: name, type, nullable, null count, distinct count, cardinality ratio, min/max,
-  up to 5 sample values, existing comment.
-- Constraints: PK, FKs in/out, unique, check.
-- Related metadata: existing comments on FK-related neighbour tables.
+```yaml
+db_profiles:
+  prod-sf:
+    backend: snowflake
+    # ...
+    profiling_mode: sampled
+    profiling_sample_size: 5000
+    profiling_max_rows: 1000000
+```
 
-In `metadata` mode, the per-column null/distinct/min/max fields are omitted entirely (they
-weren't computed). The LLM works from the type and existing comment alone.
+`profiling_max_rows` is a safety cap — it applies even in `full` mode, so a `/run` on
+an unexpectedly huge table can't accidentally bill you for an hour-long warehouse scan.
 
-## Recommendations
+## Verify
 
-| Scenario | Mode |
-|---|---|
-| Local dev DB | `full` |
-| Production warehouse first run | `sampled` |
-| Production warehouse recurring | `sampled` or `metadata` |
-| BigQuery against TB-scale tables | `metadata` for discovery, `sampled` for inference |
-| Snowflake when the warehouse is asleep | `metadata` (avoids waking it) |
-| Anything where you want the strongest signal | `full` |
+1. `> /db profiling-mode` — prints the current mode.
+2. `> /run --profiling-mode metadata --filter '^stg_'` — a metadata-only sweep over staging tables; should complete in a few seconds and cost nothing.
+3. `> /history show <run-id>` after a run — shows wall-clock time and (on warehouse backends) approximate scanned bytes.
 
-Use `/usage 7d` after a few runs to see token consumption and adjust accordingly.
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `Profile agent fell back to sampled mode (table-stats unavailable)` warning during `full` run | Backend hasn't computed stats for the table (e.g. brand-new Snowflake table) | Run `ANALYZE TABLE …` (or backend equivalent), or accept the sampled fallback |
+| Costs higher than expected on Snowflake | `full` mode wakes the warehouse for the duration of every column-stats query | Switch to `sampled`; or set the warehouse to a smaller size |
+| All sampled output looks identical for a clustered column | Table is range-partitioned and the sample landed in one partition | Increase `profiling_sample_size`, or use `TABLESAMPLE SYSTEM` for block sampling |
+| `metadata` mode skipped a column | The column was added after the catalog stats were last refreshed | `> /sync` to refresh; or run `ANALYZE` on the table |
+| `profiling_max_rows` keeps tripping | Cap is set too low for tables you actually need full stats on | Raise the per-profile cap, or override per-run with `--profiling-max-rows` |
+
+## What's next
+
+- [Configuration: env vars](env-vars.md) — global overrides for sampling.
+- [Run & Apply](../cli/run-and-apply.md) — `/run` flag combinations including profiling overrides.
+- [Per-backend pages](../backends/index.md) — backend-specific notes on what `full` actually costs.
