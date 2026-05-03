@@ -730,6 +730,10 @@ body, .md-typeset {
   margin: 0;
   transition: border-color 120ms ease, background 120ms ease;
   box-shadow: none;
+  /* Containing block for the title-link's ::before overlay below — that's
+     what makes the whole card clickable, not just the title text. */
+  position: relative;
+  cursor: pointer;
 }
 .md-typeset .grid.cards > ul > li:hover {
   border-color: var(--accent);
@@ -754,6 +758,24 @@ body, .md-typeset {
 .md-typeset .grid.cards > ul > li > h3 a {
   color: inherit !important;
   text-decoration: none !important;
+}
+/* Stretch the title-link's hit-area over the entire card via an absolutely
+   positioned ::before. Any click anywhere in the card now navigates to the
+   linked page — no need to aim for the title text. */
+.md-typeset .grid.cards > ul > li > p:first-child a::before,
+.md-typeset .grid.cards > ul > li > h3 a::before {
+  content: "";
+  position: absolute;
+  inset: 0;          /* fill the parent card */
+  z-index: 1;
+  border-radius: 6px; /* match the card's border-radius for clean focus rings */
+}
+/* Any other links inside the description sit above the overlay so they
+   remain individually clickable. */
+.md-typeset .grid.cards > ul > li > p:not(:first-child) a,
+.md-typeset .grid.cards > ul > li > p:not(:first-child) code {
+  position: relative;
+  z-index: 2;
 }
 .md-typeset .grid.cards > ul > li > p {
   margin: 0;
