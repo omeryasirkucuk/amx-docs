@@ -218,6 +218,39 @@ body, .md-typeset {
   margin-left: auto;
 }
 
+/* GitHub repo link in the header right slot — icon + label, subtle until hover. */
+.amx-headright__github {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
+}
+.amx-headright__github:hover {
+  color: var(--text);
+  border-color: var(--text-muted);
+  background: var(--bg-hover);
+  text-decoration: none;
+}
+.amx-headright__github svg {
+  flex-shrink: 0;
+}
+@media (max-width: 768px) {
+  .amx-headright__github {
+    padding: 6px 8px;
+    /* Hide label on phones, keep icon only */
+  }
+  .amx-headright__github span {
+    display: none;
+  }
+}
+
 /* Theme toggle — strip Material's button styling so it's just the icon */
 .amx-headright .md-header__button {
   background: transparent;

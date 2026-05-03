@@ -8,6 +8,59 @@ function setPageSlug() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
+// Anchor-jump offset for the sticky header.
+//
+// CSS scroll-margin-top + scroll-padding-top would normally handle this,
+// but mkdocs-material's navigation.instant intercepts in-page anchor
+// clicks and runs its own window.scrollTo({top: y}) — that path bypasses
+// scroll-margin-top entirely, so the heading lands right under the 56px
+// sticky header and the user sees the previous section.
+//
+// Fix: capture-phase click handler that runs BEFORE Material's, computes
+// the correct offset target, scrolls there ourselves, and stops the
+// event so Material doesn't fight us.
+
+const ANCHOR_OFFSET_PX = 80; // header (56px) + breathing room (24px)
+
+document.addEventListener(
+  "click",
+  function (e) {
+    const link = e.target.closest('a[href^="#"]');
+    if (!link) return;
+    const href = link.getAttribute("href");
+    if (!href || href === "#") return;
+    const id = decodeURIComponent(href.slice(1));
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const y = target.getBoundingClientRect().top + window.scrollY - ANCHOR_OFFSET_PX;
+    window.scrollTo({ top: y, behavior: "smooth" });
+
+    // Reflect the anchor in the URL so back/forward + share-link work.
+    if (window.history && window.history.pushState) {
+      window.history.pushState(null, "", href);
+    }
+  },
+  true // capture phase — fires before Material's listener
+);
+
+// On initial load with #fragment in URL, also re-apply the offset.
+window.addEventListener("load", function () {
+  if (!location.hash) return;
+  const id = decodeURIComponent(location.hash.slice(1));
+  const target = document.getElementById(id);
+  if (!target) return;
+  // Wait for fonts/images so the heading's final position is settled.
+  setTimeout(function () {
+    const y = target.getBoundingClientRect().top + window.scrollY - ANCHOR_OFFSET_PX;
+    window.scrollTo({ top: y, behavior: "auto" });
+  }, 100);
+});
+
+// ─────────────────────────────────────────────────────────────────────
 // Sidebar scroll preservation
 //
 // The left-sidebar scroll container is .md-sidebar__scrollwrap (Material's
