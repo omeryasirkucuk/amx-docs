@@ -80,6 +80,16 @@
 
 html, body { background: var(--bg); }
 
+/* Anchor-jump offset for the sticky header.
+   Without this, clicking an "On this page" link scrolls so the heading
+   sits exactly at viewport top — under the 56px sticky header — making
+   the *previous* section's tail what the reader actually sees. Both
+   scroll-padding-top (modern, document-level) and scroll-margin-top
+   (per-element, broader browser support) are set so all anchor-jump
+   paths land cleanly below the header with breathing room. */
+html { scroll-padding-top: 80px; }
+.md-typeset :is(h1, h2, h3, h4, h5, h6) { scroll-margin-top: 80px; }
+
 /* ───────────── Base typography ───────────── */
 
 body, .md-typeset {
