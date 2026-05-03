@@ -13,8 +13,12 @@ site_dir: site
 
 theme:
   name: material
+  custom_dir: overrides
   language: en
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   features:
+    - announce.dismiss
     - navigation.instant
     - navigation.instant.progress
     - navigation.tracking
@@ -35,15 +39,15 @@ theme:
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: deep purple
+      accent: deep purple
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: indigo
-      accent: indigo
+      primary: deep purple
+      accent: deep purple
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode
@@ -52,7 +56,12 @@ theme:
     code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
-    logo: material/database-search
+
+extra_css:
+  - stylesheets/extra.css
+
+extra_javascript:
+  - javascripts/extra.js
 
 extra:
   social:

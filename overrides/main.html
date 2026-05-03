@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{# Inject our custom footer at the page bottom (replaces Material's footer meta). #}
+{% block footer %}
+  {% include "partials/footer.html" %}
+{% endblock %}
+
+{# Tighten the announcement bar for a clean enterprise look. #}
+{% block announce %}
+  <a href="https://github.com/omeryasirkucuk/amx/releases" style="color: inherit; text-decoration: none;">
+    <strong>AMX v0.12.0 is out</strong> — shared run-history store, six new database backends, OpenAI Batch &nbsp;→
+  </a>
+{% endblock %}
