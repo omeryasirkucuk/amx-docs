@@ -117,25 +117,25 @@ plugins:
 
 nav:
   - Home: index.md
-  - Getting Started:
-      - getting-started/installation.md
-      - getting-started/quickstart.md
-      - getting-started/first-run.md
+  - Get Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+      - First Run Walkthrough: getting-started/first-run.md
   - Concepts:
-      - concepts/architecture.md
-      - concepts/agents.md
-      - concepts/universal-metadata.md
-      - concepts/human-in-the-loop.md
-  - CLI Reference:
-      - cli/overview.md
-      - cli/setup.md
-      - cli/run-and-apply.md
-      - cli/ask-and-search.md
-      - cli/history.md
-      - cli/doctor.md
-      - cli/flags.md
+      - Architecture: concepts/architecture.md
+      - Agents: concepts/agents.md
+      - Universal Metadata: concepts/universal-metadata.md
+      - Human in the Loop: concepts/human-in-the-loop.md
+  - CLI:
+      - Overview: cli/overview.md
+      - Setup: cli/setup.md
+      - Run & Apply: cli/run-and-apply.md
+      - Ask & Search: cli/ask-and-search.md
+      - History: cli/history.md
+      - Doctor: cli/doctor.md
+      - Flags: cli/flags.md
   - Backends:
-      - backends/index.md
+      - Overview: backends/index.md
       - PostgreSQL: backends/postgresql.md
       - Snowflake: backends/snowflake.md
       - Databricks: backends/databricks.md
@@ -146,37 +146,38 @@ nav:
       - Redshift: backends/redshift.md
       - ClickHouse: backends/clickhouse.md
       - DuckDB: backends/duckdb.md
-  - LLM Providers:
-      - llm-providers/index.md
-      - llm-providers/openai.md
-      - llm-providers/anthropic.md
-      - llm-providers/gemini.md
-      - llm-providers/ollama-local.md
-      - llm-providers/batch-mode.md
-  - Data Sources:
-      - data-sources/codebase.md
-      - data-sources/documents.md
-      - data-sources/search-catalog.md
-  - Collaboration:
-      - collaboration/shared-history-store.md
-      - collaboration/team-setup.md
-      - collaboration/safety-guards.md
-  - Configuration:
-      - configuration/config-yml.md
-      - configuration/env-vars.md
-      - configuration/tls-and-proxies.md
-      - configuration/profiling-modes.md
-  - Python API:
-      - api/index.md
-      - api/reference.md
   - Guides:
-      - guides/sap-discovery-walkthrough.md
-      - guides/snowflake-warehouse-cost.md
-      - guides/batch-large-schema.md
-  - Troubleshooting:
-      - troubleshooting/faq.md
-      - troubleshooting/doctor.md
-      - troubleshooting/common-errors.md
-  - Contributing: contributing.md
-  - Security: security.md
-  - Changelog: changelog.md
+      - SAP Discovery: guides/sap-discovery-walkthrough.md
+      - Snowflake Cost: guides/snowflake-warehouse-cost.md
+      - Batch Large Schema: guides/batch-large-schema.md
+  - Reference:
+      - Configuration:
+          - config.yml: configuration/config-yml.md
+          - Environment variables: configuration/env-vars.md
+          - TLS and proxies: configuration/tls-and-proxies.md
+          - Profiling modes: configuration/profiling-modes.md
+      - LLM Providers:
+          - Overview: llm-providers/index.md
+          - OpenAI: llm-providers/openai.md
+          - Anthropic: llm-providers/anthropic.md
+          - Gemini: llm-providers/gemini.md
+          - Ollama and local: llm-providers/ollama-local.md
+          - Batch mode: llm-providers/batch-mode.md
+      - Data Sources:
+          - Codebase: data-sources/codebase.md
+          - Documents: data-sources/documents.md
+          - Search catalog: data-sources/search-catalog.md
+      - Collaboration:
+          - Shared history store: collaboration/shared-history-store.md
+          - Team setup: collaboration/team-setup.md
+          - Safety guards: collaboration/safety-guards.md
+      - Troubleshooting:
+          - FAQ: troubleshooting/faq.md
+          - Diagnostics: troubleshooting/doctor.md
+          - Common errors: troubleshooting/common-errors.md
+      - Project:
+          - Python API: api/index.md
+          - API Reference: api/reference.md
+          - Contributing: contributing.md
+          - Security: security.md
+          - Changelog: changelog.md

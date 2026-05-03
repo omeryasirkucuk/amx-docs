@@ -1,59 +1,140 @@
 {#-
-  AMX custom left-sidebar nav per spec:
+  AMX custom left sidebar.
+
+  Renders only the CURRENT TOP-LEVEL SECTION's children, never the whole
+  nav tree. Header has the top-level sections; sidebar has the
+  sub-pages. They never duplicate each other.
+
+  Layout:
     [search box]
-    [active page pill]
-    [grouped categories: GROUP HEADER + child links with › chevron]
-    [collapse « handle]
+    [active page pill — the current page; not repeated in the list]
+    [grouped sub-pages — all OTHER pages in this section]
+    [collapse «]
+
+  - Sections with nested sub-sections (e.g. Reference) render each
+    sub-section as a group header with its children indented below.
+  - Sections with flat children (e.g. Get Started) render one group
+    using the section title as header.
 -#}
-{% import "partials/nav-item.html" as item with context %}
-{% set class = "md-nav md-nav--primary amx-sidebar__nav" %}
-{% if "toc.integrate" in features %}
-  {% set class = class ~ " md-nav--integrated" %}
-{% endif %}
 
-<nav class="{{ class }}" aria-label="{{ lang.t('nav') }}" data-md-level="0">
+{# 1. Find the active top-level section. The first nav item is "Home"
+   — skip it; on the home page, hide:navigation in frontmatter
+   prevents this template from rendering at all.
+   Use namespace() so the assignment persists outside the for loop. #}
+{% set ns = namespace(active=none) %}
+{% for nav_item in nav.items %}
+  {% if nav_item.active and not loop.first %}
+    {% set ns.active = nav_item %}
+  {% endif %}
+{% endfor %}
+{% set active_section = ns.active %}
 
-  {# Mobile drawer label (hidden on desktop, used by Material's drawer toggle) #}
+{% if active_section and active_section.children %}
+
+{# 2. Inspect children to decide layout. #}
+{% set sub_ns = namespace(has=false) %}
+{% for child in active_section.children %}
+  {% if child.is_section %}{% set sub_ns.has = true %}{% endif %}
+{% endfor %}
+{% set has_sub_sections = sub_ns.has %}
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="{{ lang.t('nav') }}" data-md-level="0">
+
+  {# Mobile drawer label (hidden on desktop) #}
   <label class="md-nav__title" for="__drawer">
     <a href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}"
        title="{{ config.site_name | e }}"
        class="md-nav__button md-logo"
-       aria-label="{{ config.site_name }}"
-       data-md-component="logo">
+       aria-label="{{ config.site_name }}">
       {% include "partials/logo.html" %}
     </a>
     {{ config.site_name }}
   </label>
 
-  {# 1) Search box at the top of the sidebar (label triggers Material's search dialog) #}
+  {# 3. Search box (label triggers Material's search dialog) #}
   <label class="amx-sidebar__search" for="__search">
     <svg class="amx-sidebar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <circle cx="11" cy="11" r="7"/>
       <path d="m21 21-4.35-4.35"/>
     </svg>
-    <span class="amx-sidebar__search-text">Search documentation</span>
+    <span class="amx-sidebar__search-text">Search docs</span>
     <kbd class="amx-sidebar__search-kbd">⌘K</kbd>
   </label>
 
-  {# 2) Active page indicator pill — current section #}
-  <a class="amx-sidebar__current"
-     href="{{ config.extra.homepage | d(nav.homepage.url, true) | url }}">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-    </svg>
-    AMX Documentation
+  {# 4. Active page indicator pill — current page only #}
+  <a class="amx-sidebar__current" href="{{ page.url | url }}" aria-current="page">
+    <span class="amx-sidebar__current-text">{{ page.title }}</span>
   </a>
 
-  {# 3) The grouped category list — Material's nav rendered with sections #}
-  <ul class="md-nav__list" data-md-scrollfix>
-    {% for nav_item in nav.items %}
-      {% set path = "__nav_" ~ loop.index %}
-      {{ item.render(nav_item, path, 1) }}
-    {% endfor %}
-  </ul>
+  {# 5. Grouped sub-pages list. The current page is excluded everywhere. #}
+  <div class="amx-sidebar__groups">
+    {% if has_sub_sections %}
 
-  {# 4) Collapse handle at bottom #}
+      {# Section has nested sub-sections (e.g. Reference) — each sub-section
+         becomes its own group; standalone pages collapse into one group. #}
+      {% set ungrouped = [] %}
+      {% for child in active_section.children %}
+        {% if child.is_section and child.children %}
+          <div class="amx-sidebar__group">
+            <h3 class="amx-sidebar__group-title">{{ child.title }}</h3>
+            <ul class="amx-sidebar__list">
+              {% for leaf in child.children %}
+                {% if leaf.is_page and leaf.url and leaf.url != page.url %}
+                  <li class="amx-sidebar__row">
+                    <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
+                      <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
+                      <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
+                    </a>
+                  </li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </div>
+        {% elif child.is_page and child.url and child.url != page.url %}
+          {# Standalone pages — collected for an "Other" group at the end #}
+          {% set _ = ungrouped.append(child) %}
+        {% endif %}
+      {% endfor %}
+      {% if ungrouped %}
+        <div class="amx-sidebar__group">
+          <h3 class="amx-sidebar__group-title">More</h3>
+          <ul class="amx-sidebar__list">
+            {% for leaf in ungrouped %}
+              <li class="amx-sidebar__row">
+                <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
+                  <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
+                  <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+    {% else %}
+
+      {# Section has only flat children (e.g. Get Started) — single group
+         with the section title as the header. #}
+      <div class="amx-sidebar__group">
+        <h3 class="amx-sidebar__group-title">{{ active_section.title }}</h3>
+        <ul class="amx-sidebar__list">
+          {% for leaf in active_section.children %}
+            {% if leaf.is_page and leaf.url and leaf.url != page.url %}
+              <li class="amx-sidebar__row">
+                <a class="amx-sidebar__link" href="{{ leaf.url | url }}">
+                  <span class="amx-sidebar__link-text">{{ leaf.title }}</span>
+                  <span class="amx-sidebar__link-chevron" aria-hidden="true">›</span>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+    {% endif %}
+  </div>
+
+  {# 6. Collapse handle at bottom #}
   <button class="amx-sidebar__collapse" aria-label="Collapse sidebar" type="button">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <polyline points="11 17 6 12 11 7"/>
@@ -61,3 +142,5 @@
     </svg>
   </button>
 </nav>
+
+{% endif %}
