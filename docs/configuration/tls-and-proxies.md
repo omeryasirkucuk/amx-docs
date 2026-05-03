@@ -94,8 +94,8 @@ verification. Don't ship that to production.
 ## Verifying the connection
 
 ```bash
-amx doctor                       # full check including TLS
-amx doctor --skip-network        # offline check (skip everything network)
+> /doctor                       # full check including TLS
+> /doctor --skip-network        # offline check (skip everything network)
 ```
 
 For a one-off connection test against the active DB profile:

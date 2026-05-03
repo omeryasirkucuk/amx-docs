@@ -148,7 +148,7 @@ warehouse-cost-sensitive scans (no row scans at all).
 
 1. `> /connect` — reports server version + round-trip latency. Anything beyond a couple of seconds is usually a DNS or TLS handshake delay.
 2. `> /db inspect` — server-side counts (databases, schemas, tables, views, materialized views) plus which `COMMENT ON` rows already have text.
-3. `> amx doctor --skip-network` then re-run without the flag — confirms drivers loaded and the active profile reaches the server.
+3. `> /doctor --skip-network` then re-run without the flag — confirms drivers loaded and the active profile reaches the server.
 
 ## Troubleshooting
 

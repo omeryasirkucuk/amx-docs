@@ -143,7 +143,7 @@ cluster.
 
 1. `> /connect` — server version + latency. Latency over a couple of seconds usually means the leader node is busy or your client IP is going through a NAT gateway over a Direct Connect link.
 2. `> /db inspect` — table / view / matview counts plus distinctive types (datashares, external tables). Spectrum schemas are listed but flagged as read-only.
-3. `> amx doctor` — confirms drivers loaded, profile reachable, and (for IAM auth) that AWS credentials resolve.
+3. `> /doctor` — confirms drivers loaded, profile reachable, and (for IAM auth) that AWS credentials resolve.
 
 ## Troubleshooting
 

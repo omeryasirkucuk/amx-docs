@@ -1,20 +1,30 @@
-# Diagnostics with `amx doctor`
+# Diagnostics with `/doctor`
 
-`amx doctor` is the first thing to run when something looks wrong. It runs from any shell
-— including a broken AMX state — and reports actionable problems with your install,
-config, and connectivity.
+`/doctor` is the first thing to run when something looks wrong. Open AMX, type
+`/doctor`, and it streams an actionable check per phase covering install, config,
+and connectivity.
 
-For the full reference see [`amx doctor`](../cli/doctor.md). This page is task-oriented:
+For the full reference see [`/doctor`](../cli/doctor.md). This page is task-oriented:
 "I see X — what does doctor tell me?"
 
 ## Quick reference
 
 ```bash
-amx doctor                       # full check, hits the network
-amx doctor --skip-network        # offline quick check
+amx
 ```
 
-Inside an AMX session: `/doctor`.
+```text
+> /doctor                       # full check, hits the network
+> /doctor --skip-network        # offline quick check
+> /doctor --debug               # verbose, every probe traced
+```
+
+If the REPL itself won't start, the same diagnostic also runs as a shell command:
+
+```bash
+amx doctor
+amx doctor --skip-network
+```
 
 ## What each line means
 
@@ -130,7 +140,7 @@ key.
 
 ### `LLM models endpoint timeout`
 
-Network egress problem. Check proxy / firewall. Run `amx doctor --skip-network` to
+Network egress problem. Check proxy / firewall. Run `/doctor --skip-network` to
 confirm everything else is fine — if it does, the LLM endpoint is the only problem.
 
 ### `Cannot read ~/.amx/config.yml`
@@ -161,7 +171,7 @@ For LLM profiles:
 ```text
 /llm-profiles            # see all
 /use-llm <name>          # switch
-amx doctor               # test the new active one
+> /doctor               # test the new active one
 ```
 
 ## What doctor doesn't do

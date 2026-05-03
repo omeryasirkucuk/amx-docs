@@ -132,7 +132,7 @@ active_db_profile: prod-dbx
 
 1. `> /connect` — reports the cluster runtime version (e.g. `14.3.x-photon`) and round-trip latency. Latency over ~1.5 s usually means the warehouse is cold-starting; subsequent calls drop to ~200–400 ms.
 2. `> /db inspect` — confirms catalog / schema counts and flags any Hive-metastore schemas as read-only.
-3. `> amx doctor` — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as `Access token rejected by /api/2.0/clusters/list`).
+3. `> /doctor` — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as `Access token rejected by /api/2.0/clusters/list`).
 
 ## Troubleshooting
 

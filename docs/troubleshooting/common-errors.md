@@ -34,7 +34,7 @@ running. AMX refuses to load it rather than risk silently mangling.
 
 **Cause:** Postgres unreachable. Wrong host / port / firewall / not running.
 
-**Fix:** `amx doctor` confirms the active profile is the one you think it is. Verify with
+**Fix:** `/doctor` confirms the active profile is the one you think it is. Verify with
 `psql -h <host> -p <port> -U <user> -d <database>` directly.
 
 ### `snowflake.connector.errors.OperationalError: 250001 — Could not connect to Snowflake backend`
@@ -81,7 +81,7 @@ the dataset.
 **Cause:** `/analyze /run` tests the active LLM **before** profiling any asset. The pre-flight
 failed.
 
-**Fix:** Run `amx doctor`. Usually it's an invalid API key or a deactivated model.
+**Fix:** Run `/doctor`. Usually it's an invalid API key or a deactivated model.
 
 ### `Model returned 0 visible characters and used all 900 output tokens`
 
@@ -201,11 +201,19 @@ the outbox.
 
 ## When you can't tell what's wrong
 
+Inside the AMX REPL:
+
+```text
+> /doctor --skip-network             # offline check
+> /doctor --debug                    # verbose, every probe traced
+```
+
+Outside the REPL:
+
 ```bash
-amx doctor --skip-network            # offline check
-AMX_LOG_LEVEL=DEBUG amx doctor       # verbose
 tail -f ~/.amx/logs/amx.log          # live log
+AMX_LOG_LEVEL=DEBUG amx              # restart AMX with verbose logging
 ```
 
 Then file an issue at <https://github.com/omeryasirkucuk/amx/issues> with the relevant
-log excerpts (redact secrets) and the output of `amx --version` plus `amx doctor`.
+log excerpts (redact secrets) and the output of `amx --version` plus `/doctor`.

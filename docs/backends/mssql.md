@@ -167,7 +167,7 @@ active_db_profile: prod-mssql
 
 1. `> /connect` — server version + driver + latency. The driver line is essential when troubleshooting "driver not found" errors.
 2. `> /db inspect` — counts of tables, views, procedures (FN/TF/IF), triggers, sequences, synonyms, partitions.
-3. `> amx doctor` — confirms `pyodbc` is loaded, the chosen ODBC driver is registered, and the profile reaches the server.
+3. `> /doctor` — confirms `pyodbc` is loaded, the chosen ODBC driver is registered, and the profile reaches the server.
 
 ## Troubleshooting
 
