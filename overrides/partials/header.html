@@ -1,0 +1,111 @@
+{# Custom AMX header — replaces Material's default partial.
+   Layout: [logo] [site title] [primary nav]    [search] [theme toggle] [Help▾] [Version▾] [Lang▾] [CTA] #}
+{% set site_url = config.site_url | default(nav.homepage.url, true) | url %}
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="{{ lang.t('header.title') }}">
+
+    {# Mobile drawer toggle #}
+    <label class="md-header__button md-icon" for="__drawer">
+      {% include ".icons/material/menu" ~ ".svg" %}
+    </label>
+
+    {# Logo #}
+    <a href="{{ site_url }}" title="{{ config.site_name | e }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}">
+      {% if config.theme.logo %}
+        <img src="{{ config.theme.logo | url }}" alt="logo">
+      {% else %}
+        {% include ".icons/" ~ config.theme.icon.logo ~ ".svg" %}
+      {% endif %}
+    </a>
+
+    {# Site title #}
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">{{ config.site_name }}</span>
+        </div>
+      </div>
+    </div>
+
+    {# Primary horizontal nav (mirrors top-level nav items, desktop only) #}
+    <nav class="amx-nav" aria-label="Primary">
+      {% for item in nav %}
+        {% set is_active = item.active %}
+        {% if item.is_page and item.url %}
+          <a href="{{ item.url | url }}"{% if is_active %} class="active"{% endif %}>{{ item.title }}</a>
+        {% elif item.is_section and item.children and item.children[0].url %}
+          <a href="{{ item.children[0].url | url }}"{% if is_active %} class="active"{% endif %}>{{ item.title }}</a>
+        {% endif %}
+      {% endfor %}
+    </nav>
+
+    {# Search #}
+    {% if "search" in config["plugins"] %}
+      <label class="md-header__button md-icon" for="__search">
+        {% include ".icons/material/magnify.svg" %}
+      </label>
+      {% include "partials/search.html" %}
+    {% endif %}
+
+    {# Right cluster: theme toggle, dropdowns, CTA #}
+    <div class="amx-headright">
+
+      {# Theme palette toggle #}
+      {% if config.theme.palette %}
+        {% if not config.theme.palette is mapping %}
+          {% include "partials/palette.html" %}
+        {% endif %}
+      {% endif %}
+
+      {# Help dropdown #}
+      <div class="amx-dropdown">
+        <button class="amx-dropdown__btn" type="button">
+          Help
+          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="amx-dropdown__menu">
+          <a href="{{ '/troubleshooting/faq/' | url }}">FAQ</a>
+          <a href="{{ '/troubleshooting/doctor/' | url }}">Diagnostics (<code>doctor</code>)</a>
+          <a href="{{ '/troubleshooting/common-errors/' | url }}">Common errors</a>
+          <a href="https://github.com/omeryasirkucuk/amx/issues" target="_blank" rel="noopener">GitHub issues</a>
+        </div>
+      </div>
+
+      {# Version dropdown #}
+      <div class="amx-dropdown">
+        <button class="amx-dropdown__btn" type="button">
+          v0.12
+          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="amx-dropdown__menu">
+          <a href="{{ site_url }}">latest (v0.12.x)</a>
+          <a href="https://github.com/omeryasirkucuk/amx/releases" target="_blank" rel="noopener">All releases</a>
+          <a href="{{ '/changelog/' | url }}">Changelog</a>
+        </div>
+      </div>
+
+      {# Language dropdown #}
+      <div class="amx-dropdown">
+        <button class="amx-dropdown__btn" type="button">
+          EN
+          <svg class="chevron" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        </button>
+        <div class="amx-dropdown__menu">
+          <a href="#">English (US)</a>
+        </div>
+      </div>
+
+      {# Primary CTA #}
+      <a href="{{ '/getting-started/installation/' | url }}" class="amx-cta">Install AMX</a>
+
+    </div>
+  </nav>
+
+  {# Tab bar (top-level section nav, sticky), only when navigation.tabs is on #}
+  {% if "navigation.tabs.sticky" in features %}
+    {% if "navigation.tabs" in features %}
+      {% include "partials/tabs.html" %}
+    {% endif %}
+  {% endif %}
+</header>

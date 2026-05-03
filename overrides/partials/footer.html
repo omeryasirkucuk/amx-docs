@@ -1,15 +1,20 @@
-{# Utilitarian footer — single row. No marketing columns. #}
+{# Thin dotted footer per spec — single line of small links + copyright underneath. #}
 <footer class="amx-footer">
-  <div class="amx-footer__inner">
-    <div>
-      © 2026 Omer Yasir Kucuk · AMX is open source under
-      <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>
-    </div>
-    <div class="amx-footer__links">
-      <a href="https://github.com/omeryasirkucuk/amx" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://pypi.org/project/amx/" target="_blank" rel="noopener">PyPI</a>
-      <a href="https://github.com/omeryasirkucuk/amx/issues" target="_blank" rel="noopener">Issues</a>
-      <a href="{{ '/security/' | url }}">Security</a>
-    </div>
+  <div class="amx-footer__links">
+    <a href="https://github.com/omeryasirkucuk/amx" target="_blank" rel="noopener">GitHub</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://pypi.org/project/amx/" target="_blank" rel="noopener">PyPI</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="{{ '/changelog/' | url }}">Changelog</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="{{ '/contributing/' | url }}">Contributing</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="{{ '/security/' | url }}">Security</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/issues" target="_blank" rel="noopener">Issues</a>
+  </div>
+  <div class="amx-footer__copy">
+    © 2026 Omer Yasir Kucuk · Released under the
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener" style="color: inherit;">Apache 2.0 License</a>
   </div>
 </footer>

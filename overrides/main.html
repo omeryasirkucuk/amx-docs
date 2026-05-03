@@ -1,15 +1,38 @@
 {% extends "base.html" %}
 
-{# Inject "Was this page helpful?" widget at the end of every content page,
-   except the home page (which doesn't need it). #}
-{% block content %}
+{% block htmltitle %}
+  {% if page and page.is_homepage %}
+    <title>{{ config.site_name }} documentation</title>
+  {% else %}
+    {{ super() }}
+  {% endif %}
+{% endblock %}
+
+{# Add an "amx-home" class to <body> on the home page so CSS can hide the
+   right TOC and adjust layout. #}
+{% block extrahead %}
   {{ super() }}
-  {% if page and page.url != "" %}
+  {% if page and page.is_homepage %}
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.classList.add('amx-home');
+      });
+    </script>
+  {% endif %}
+{% endblock %}
+
+{# Inject breadcrumb + last-updated above content, "Was this page helpful?"
+   at the end. Both skip the home page. #}
+{% block content %}
+  {% include "partials/breadcrumb.html" %}
+  {{ super() }}
+  {% if page and not page.is_homepage %}
     {% include "partials/feedback.html" %}
   {% endif %}
 {% endblock %}
 
-{# Replace Material's footer with our utilitarian footer. #}
+{# Replace Material's footer + add the floating Ask AI widget. #}
 {% block footer %}
   {% include "partials/footer.html" %}
+  {% include "partials/ask-widget.html" %}
 {% endblock %}

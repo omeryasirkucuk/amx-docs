@@ -1,0 +1,22 @@
+{# Auto-generated breadcrumb + last-updated row.
+   Renders for every non-home page above the H1. #}
+{% if page and not page.is_homepage %}
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="{{ config.site_url | default('/') | url }}">Home</a>
+      {% if page.ancestors %}
+        {% for ancestor in page.ancestors | reverse %}
+          <span class="amx-breadcrumb__sep">›</span>
+          {% if ancestor.url %}
+            <a href="{{ ancestor.url | url }}">{{ ancestor.title }}</a>
+          {% else %}
+            <span>{{ ancestor.title }}</span>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>{{ page.title }}</span>
+    </div>
+    <div class="amx-pagemeta">Last updated on May 3, 2026</div>
+  </div>
+{% endif %}
