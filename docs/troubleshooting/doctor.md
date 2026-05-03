@@ -18,21 +18,28 @@ Inside an AMX session: `/doctor`.
 
 ## What each line means
 
+`doctor` streams the same `[Stage]` progress lines that `/run` uses, so each check is
+visible as it happens — a stalled probe (usually `[LLM]`) shows up as `in progress` for
+much longer than the others rather than looking like a hang.
+
 ```text
-✓ amx binary           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
+[Binary]   scanning PATH for amx ......................  ok (0.0 s)
+           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
 ```
 
-The path of the `amx` you're running, plus version. **Multiple lines here means multiple
-binaries on PATH** — pick one and uninstall the others.
+The path of the `amx` you're running, plus version. **A second indented line under
+`[Binary]` means a second `amx` on PATH** — pick one and uninstall the others.
 
 ```text
-✓ python runtime       3.12.2 (/Users/jane/.venvs/amx/bin/python)
+[Python]   detecting interpreter ......................  ok (0.0 s)
+           3.12.2 (/Users/jane/.venvs/amx/bin/python)
 ```
 
 Python version + path. Warns on < 3.10.
 
 ```text
-✓ config schema        v2 (matches binary expectation)
+[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
+           v2 (matches binary expectation)
 ```
 
 The schema version of `~/.amx/config.yml` vs what this binary expects. `Config schema too
@@ -40,40 +47,58 @@ new` means the binary is older than the config — upgrade. `Config schema too o
 the opposite — AMX migrates on next save.
 
 ```text
-✓ ~/.amx permissions   0o700, config.yml 0o600
+[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
+           0o700, config.yml 0o600
 ```
 
 Confirms the directory and config file modes are correct. Wrong modes warn — fix with
 `chmod`.
 
 ```text
-✓ DB profile           local_pg (postgresql 14.10)  — connection OK in 42ms
+[Drivers]  importing backend drivers .................   in progress
+           postgresql ................................   ok
+           snowflake .................................   fail (missing)
+```
+
+One indented line per backend referenced in `config.yml`. Active profile is selected but
+the driver isn't installed → run `pip install amx-cli`.
+
+```text
+[DB]       testing active profile local_pg ...........   in progress
+           connect ...................................   ok (42 ms)
+           handshake .................................   ok (postgresql 14.10)
 ```
 
 Real connection test against the **active** DB profile (not all profiles). For Databricks,
 walks through saved profile → CA bundle from environment → `tls_no_verify` to find the
-first working path.
+first working path; each attempt prints its own indented line.
 
 ```text
-✗ DB profile           snow_prod (snowflake)
-  → Missing driver. Install with:
-        pip install amx-cli
+[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
+           api key in keychain .......................   ok
+           models endpoint ...........................   ok (218 ms)
 ```
 
-Active profile is selected but the driver isn't installed. Run the printed command.
+Confirms the API key is present and the provider's models endpoint responds. Replaced by
+`[LLM]      skipped (--skip-network) ..................   skipped` under `--skip-network`.
 
 ```text
-✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
+[History]  inspecting local store .....................  ok (0.0 s)
+           local mode, 247 runs persisted
 ```
 
-Confirms the API key is present and the provider's models endpoint responds. Skipped under
-`--skip-network`.
+Local SQLite is healthy. If shared mode is enabled, an extra indented line also reports
+outbox depth (`pending_shared_writes: 0`).
 
 ```text
-✓ History store        local mode, 247 runs persisted
+✓ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
+  Failed: backend driver — snow_prod (snowflake): missing
+  → pip install amx-cli
 ```
 
-Local SQLite is healthy. If shared mode is enabled, also reports outbox depth.
+Final summary mirrors `/run`'s footer: total elapsed time, pass/fail counts, and the first
+remediation hint inline. `✓` means everything passed (exit `0`); `✗` means at least one
+check failed (exit `1`) so CI can react.
 
 ## Common failures and fixes
 
