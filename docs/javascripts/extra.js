@@ -1,7 +1,6 @@
 // AMX docs — light enhancements on top of Material.
 
-// Expose a body data attribute with the current page slug so CSS can target
-// the homepage (used to hide the right TOC etc.).
+// ── Page-slug data attribute (used by CSS to target home page) ──
 function setPageSlug() {
   const path = window.location.pathname.replace(/\/$/, "");
   const slug = path.split("/").filter(Boolean).pop() || "index";
@@ -9,76 +8,117 @@ function setPageSlug() {
 }
 
 // ─────────────────────────────────────────────────────────────────────
-// Preserve the left sidebar's scroll position across navigation.
+// Sidebar scroll preservation
 //
-// The sidebar's nav HTML changes per page (active-class moves), so
-// mkdocs-material's instant navigation can't preserve the scrollTop on
-// the .amx-sidebar__tree element naturally — it re-renders. We bridge
-// that by snapshotting the scroll position into sessionStorage right
-// before a navigation fires, then restoring it after the new page is
-// in place. Works for instant-nav (pushState) and full reload alike.
+// The left-sidebar scroll container is .md-sidebar__scrollwrap (Material's
+// default). We continuously snapshot its scrollTop into sessionStorage on
+// every scroll event, then restore on every page setup. We restore at
+// multiple delays because Material may try to auto-scroll the sidebar to
+// the active link after page load, and we want our saved position to win.
 
 const SCROLL_KEY = "amx-sidebar-scrollTop";
+const SCROLL_SELECTORS = [
+  ".md-sidebar__scrollwrap",
+  ".amx-sidebar__tree",
+  ".md-sidebar--primary"
+];
 
-function saveSidebarScroll() {
-  const tree = document.querySelector(".amx-sidebar__tree");
-  if (tree) sessionStorage.setItem(SCROLL_KEY, String(tree.scrollTop));
+function getScrollContainer() {
+  for (const sel of SCROLL_SELECTORS) {
+    const el = document.querySelector(sel);
+    if (!el) continue;
+    // Only return one that actually has scrollable overflow.
+    if (el.scrollHeight > el.clientHeight + 4) return el;
+  }
+  // Fallback to the first existing one even if it's not currently overflowing.
+  for (const sel of SCROLL_SELECTORS) {
+    const el = document.querySelector(sel);
+    if (el) return el;
+  }
+  return null;
 }
 
-function restoreSidebarScroll() {
-  const tree = document.querySelector(".amx-sidebar__tree");
-  if (!tree) return;
-  const saved = sessionStorage.getItem(SCROLL_KEY);
-  if (saved === null) return;
-  // Apply after the current frame so layout has settled.
-  requestAnimationFrame(() => {
-    tree.scrollTop = parseInt(saved, 10) || 0;
+let _scrollSaveTimer = null;
+function attachScrollSaver() {
+  // Listen on every candidate so we catch whichever element actually scrolls.
+  SCROLL_SELECTORS.forEach((sel) => {
+    document.querySelectorAll(sel).forEach((el) => {
+      // Avoid double-binding
+      if (el.dataset.amxScrollBound === "1") return;
+      el.dataset.amxScrollBound = "1";
+      el.addEventListener(
+        "scroll",
+        () => {
+          if (_scrollSaveTimer) clearTimeout(_scrollSaveTimer);
+          _scrollSaveTimer = setTimeout(() => {
+            sessionStorage.setItem(SCROLL_KEY, String(el.scrollTop));
+          }, 40);
+        },
+        { passive: true }
+      );
+    });
   });
 }
 
-// Capture click on any sidebar / header / breadcrumb link before it navigates.
-// Use capture phase so we run before Material's own click handler.
+function restoreScroll() {
+  const saved = parseInt(sessionStorage.getItem(SCROLL_KEY) || "0", 10);
+  if (!saved) return;
+
+  function apply() {
+    SCROLL_SELECTORS.forEach((sel) => {
+      const el = document.querySelector(sel);
+      if (el && el.scrollHeight > el.clientHeight + 4 && el.scrollTop !== saved) {
+        el.scrollTop = saved;
+      }
+    });
+  }
+
+  // Multiple delays — Material's instant nav may scroll the sidebar to the
+  // active link slightly after navigation. Re-apply our saved position
+  // several times in the first 500ms so our value wins.
+  apply();
+  requestAnimationFrame(apply);
+  setTimeout(apply, 50);
+  setTimeout(apply, 150);
+  setTimeout(apply, 350);
+}
+
+function setup() {
+  setPageSlug();
+  attachScrollSaver();
+  restoreScroll();
+}
+
+// ── Initial page load
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", setup);
+} else {
+  setup();
+}
+
+// ── mkdocs-material instant navigation: hook history.pushState + popstate.
+(function patchHistory() {
+  const orig = history.pushState;
+  history.pushState = function () {
+    const r = orig.apply(this, arguments);
+    setTimeout(setup, 0);
+    return r;
+  };
+  window.addEventListener("popstate", () => setTimeout(setup, 0));
+})();
+
+// ── Defensive: capture-phase click handler that snapshots scroll
+// immediately before any link nav, so even if a scroll listener somehow
+// hasn't fired yet, the latest position is captured.
 document.addEventListener(
   "click",
   function (e) {
     const link = e.target.closest("a[href]");
     if (!link) return;
     const href = link.getAttribute("href") || "";
-    // Pure in-page anchor jumps don't navigate — keep current scroll.
     if (href.startsWith("#")) return;
-    saveSidebarScroll();
+    const el = getScrollContainer();
+    if (el) sessionStorage.setItem(SCROLL_KEY, String(el.scrollTop));
   },
   true
 );
-
-// Initial page load (full reload path)
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    setPageSlug();
-    restoreSidebarScroll();
-  });
-} else {
-  setPageSlug();
-  restoreSidebarScroll();
-}
-
-// Instant navigation path: mkdocs-material uses history.pushState() to swap
-// pages without firing DOMContentLoaded on the new one. Hook pushState +
-// popstate so we re-run our setup after every URL change.
-(function patchHistory() {
-  const orig = history.pushState;
-  history.pushState = function () {
-    const r = orig.apply(this, arguments);
-    setTimeout(() => {
-      setPageSlug();
-      restoreSidebarScroll();
-    }, 0);
-    return r;
-  };
-  window.addEventListener("popstate", () => {
-    setTimeout(() => {
-      setPageSlug();
-      restoreSidebarScroll();
-    }, 0);
-  });
-})();

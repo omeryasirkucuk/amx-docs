@@ -16,7 +16,7 @@ theme:
   custom_dir: overrides
   language: en
   logo: assets/amx-logo.png
-  favicon: assets/favicon.svg
+  favicon: assets/favicon.png
   features:
     - navigation.instant
     - navigation.instant.progress
