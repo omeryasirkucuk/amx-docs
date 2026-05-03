@@ -225,19 +225,21 @@ body, .md-typeset {
   align-items: center;
   gap: 8px;
   margin-left: auto;
-  /* Width mirrors the right TOC column (220px) so the GitHub button
-     sits directly above "ON THIS PAGE" — i.e. its left edge aligns
-     with the right TOC's left edge, not floats to the page's right
-     margin. Visible only when the TOC is showing (≥1280px). */
+  /* Mirror the right TOC column geometry (220px wide, with the same
+     12px internal left padding the TOC links use) so the GitHub
+     button sits directly above the "ON THIS PAGE" text below.
+     Visible only when the right TOC is showing (≥1280px). */
   width: 220px;
+  padding-left: 12px;
   justify-content: flex-start;
 }
 @media (max-width: 1280px) {
   .amx-headright {
-    /* Right TOC is hidden below 1280px — let the cluster shrink so
-       the button sits at the right edge of the header, not in a
-       fixed 220px well that creates dead space. */
+    /* Right TOC is hidden below 1280px — drop the column-mirroring
+       and let the cluster sit at the header's right edge so it
+       doesn't float in dead space. */
     width: auto;
+    padding-left: 0;
     justify-content: flex-end;
   }
 }

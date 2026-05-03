@@ -74,6 +74,57 @@ window.addEventListener("load", function () {
 });
 
 // ─────────────────────────────────────────────────────────────────────
+// Custom right-TOC active-state tracker
+//
+// Material's stock IntersectionObserver for the "On this page" panel
+// uses a threshold that doesn't match our 80px sticky-header offset,
+// so the active vertical bar points one section ABOVE where the user
+// actually is. We replace it with a scroll-driven check that flips
+// the active class based on which heading's top is closest to (and
+// above) the 100px-from-top mark.
+
+const TOC_ACTIVE_OFFSET = 100; // header (56) + buffer below
+
+function updateTocActive() {
+  const headings = document.querySelectorAll(
+    ".md-content h1[id], .md-content h2[id], .md-content h3[id], .md-content h4[id]"
+  );
+  if (!headings.length) return;
+
+  // Find the last heading whose top is at or above the offset line.
+  let activeId = headings[0].id;
+  for (const h of headings) {
+    const top = h.getBoundingClientRect().top;
+    if (top <= TOC_ACTIVE_OFFSET) {
+      activeId = h.id;
+    } else {
+      break;
+    }
+  }
+
+  const links = document.querySelectorAll(".md-sidebar--secondary .md-nav__link");
+  if (!links.length) return;
+  links.forEach(function (link) {
+    const isMatch = link.getAttribute("href") === "#" + activeId;
+    link.classList.toggle("md-nav__link--active", isMatch);
+  });
+}
+
+let _tocTickQueued = false;
+function _onScrollForToc() {
+  if (_tocTickQueued) return;
+  _tocTickQueued = true;
+  requestAnimationFrame(function () {
+    updateTocActive();
+    _tocTickQueued = false;
+  });
+}
+
+window.addEventListener("scroll", _onScrollForToc, { passive: true });
+window.addEventListener("load", updateTocActive);
+window.addEventListener("hashchange", updateTocActive);
+
+// ─────────────────────────────────────────────────────────────────────
 // Sidebar scroll preservation
 //
 // The left-sidebar scroll container is .md-sidebar__scrollwrap (Material's
