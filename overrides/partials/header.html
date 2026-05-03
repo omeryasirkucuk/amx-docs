@@ -48,15 +48,8 @@
       {% include "partials/search.html" %}
     {% endif %}
 
-    {# Right cluster: theme toggle, dropdowns, CTA #}
+    {# Right cluster: dropdowns, CTA (no theme toggle — light mode only per spec) #}
     <div class="amx-headright">
-
-      {# Theme palette toggle #}
-      {% if config.theme.palette %}
-        {% if not config.theme.palette is mapping %}
-          {% include "partials/palette.html" %}
-        {% endif %}
-      {% endif %}
 
       {# Help dropdown #}
       <div class="amx-dropdown">
@@ -102,10 +95,5 @@
     </div>
   </nav>
 
-  {# Tab bar (top-level section nav, sticky), only when navigation.tabs is on #}
-  {% if "navigation.tabs.sticky" in features %}
-    {% if "navigation.tabs" in features %}
-      {% include "partials/tabs.html" %}
-    {% endif %}
-  {% endif %}
+  {# Spec: exactly ONE header row. No tabs strip below. #}
 </header>

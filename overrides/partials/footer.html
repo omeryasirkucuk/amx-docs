@@ -1,20 +1,11 @@
-{# Thin dotted footer per spec — single line of small links + copyright underneath. #}
+{# Spec footer: thin centered single row.
+   Privacy · Terms · © 2026 Omer Yasir Kucuk. All rights reserved. #}
 <footer class="amx-footer">
-  <div class="amx-footer__links">
-    <a href="https://github.com/omeryasirkucuk/amx" target="_blank" rel="noopener">GitHub</a>
+  <div class="amx-footer__line">
+    <a href="{{ '/security/' | url }}">Privacy</a>
     <span class="amx-footer__sep">·</span>
-    <a href="https://pypi.org/project/amx/" target="_blank" rel="noopener">PyPI</a>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
     <span class="amx-footer__sep">·</span>
-    <a href="{{ '/changelog/' | url }}">Changelog</a>
-    <span class="amx-footer__sep">·</span>
-    <a href="{{ '/contributing/' | url }}">Contributing</a>
-    <span class="amx-footer__sep">·</span>
-    <a href="{{ '/security/' | url }}">Security</a>
-    <span class="amx-footer__sep">·</span>
-    <a href="https://github.com/omeryasirkucuk/amx/issues" target="_blank" rel="noopener">Issues</a>
-  </div>
-  <div class="amx-footer__copy">
-    © 2026 Omer Yasir Kucuk · Released under the
-    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener" style="color: inherit;">Apache 2.0 License</a>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
   </div>
 </footer>

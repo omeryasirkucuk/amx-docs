@@ -2,7 +2,6 @@
 title: AMX documentation
 hide:
   - navigation
-  - toc
 ---
 
 <div class="amx-pageintro">
