@@ -1,0 +1,655 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/collaboration/safety-guards/">
+      
+      
+        <link rel="prev" href="../team-setup/">
+      
+      
+        <link rel="next" href="../../troubleshooting/faq/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Safety guards - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#safety-guards" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#guard-1-cross-profile-session-resume-is-refused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guard 1 — Cross-profile session resume is refused
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guard-2-picker-confirms-destructive-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guard 2 — Picker confirms destructive actions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#guard-3-every-shared-row-carries-attribution" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Guard 3 — Every shared row carries attribution
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-these-three" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why these three
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-not-guarded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is NOT guarded
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Collaboration</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Safety guards</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="safety-guards">Safety guards<a class="headerlink" href="#safety-guards" title="Permanent link">&para;</a></h1>
+<p>Shared mode adds three guards on top of plain dual-writing. They exist because the shared
+store is a multi-engineer surface — a confused session pointer or a typo'd subcommand
+shouldn't be able to corrupt teammates' work.</p>
+<h2 id="guard-1-cross-profile-session-resume-is-refused">Guard 1 — Cross-profile session resume is refused<a class="headerlink" href="#guard-1-cross-profile-session-resume-is-refused" title="Permanent link">&para;</a></h2>
+<p><code>/session resume &lt;id&gt;</code> against a session that belongs to a different DB profile is
+<strong>refused with a clear error</strong>.</p>
+<p>The model:</p>
+<ul>
+<li>Each <code>/ask</code> session is bound to the DB profile that was active when it was created.</li>
+<li>Resuming the session against a different DB profile would let the conversation reference
+  catalog state that doesn't exist in the new profile, leading to confidently wrong
+  answers.</li>
+</ul>
+<p>If you really need to look at a session from another profile, use <code>/session show --id N</code>
+which is read-only.</p>
+<h2 id="guard-2-picker-confirms-destructive-actions">Guard 2 — Picker confirms destructive actions<a class="headerlink" href="#guard-2-picker-confirms-destructive-actions" title="Permanent link">&para;</a></h2>
+<p>The <code>/db</code> → <code>/history-store</code> picker confirms before doing anything destructive:</p>
+<ul>
+<li><strong>Disable</strong> — confirms before turning off dual-writes.</li>
+<li><strong>Flush pending</strong> — confirms before replaying the queued shared writes (because if the
+  shared backend is permanently unreachable, you may want to drop the queue rather than
+  retry).</li>
+<li><strong>Dump DDL</strong> — confirms when running against a profile that already has the schema (to
+  prevent accidentally re-bootstrapping).</li>
+</ul>
+<p>The picker default is always <strong>Status</strong> — the safest, read-only action.</p>
+<p>The corresponding direct subcommands (<code>amx db history-store disable</code>, <code>… flush-pending</code>,
+<code>… dump-ddl</code>) skip the confirm — they're for scripts and intentional power-user use.</p>
+<h2 id="guard-3-every-shared-row-carries-attribution">Guard 3 — Every shared row carries attribution<a class="headerlink" href="#guard-3-every-shared-row-carries-attribution" title="Permanent link">&para;</a></h2>
+<p>Each row written to the shared store includes:</p>
+<ul>
+<li><code>created_by</code> — username (<code>getpass.getuser()</code>).</li>
+<li><code>hostname</code> — the machine that ran AMX (<code>socket.gethostname()</code>).</li>
+<li><code>client_version</code> — the AMX version that wrote the row.</li>
+<li><code>local_id</code> — the local SQLite INT id on the originating machine, for joining back.</li>
+</ul>
+<p>This means:</p>
+<ul>
+<li><strong>Audit.</strong> "Who ran this?" has an answer.</li>
+<li><strong>Provenance.</strong> "What version of AMX wrote this?" has an answer — useful when bug fixes
+  change description style.</li>
+<li><strong>Diff.</strong> The dual-write coordinator can find the right shared row when later UPDATEs
+  fire (e.g. when a run finishes and we update its terminal status).</li>
+</ul>
+<h2 id="why-these-three">Why these three<a class="headerlink" href="#why-these-three" title="Permanent link">&para;</a></h2>
+<p>Shared mode introduces three new failure modes, and each guard maps to one:</p>
+<table>
+<thead>
+<tr>
+<th>Failure</th>
+<th>Guard</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Engineer A's session memory bleeds into engineer B's catalog because of a typo'd <code>/session resume</code></td>
+<td>Cross-profile session resume refused</td>
+</tr>
+<tr>
+<td>Engineer A runs <code>Disable</code> thinking it just turns off shared mode for one run; in fact it stops dual-writing for everyone using their workstation</td>
+<td>Picker confirms destructive actions</td>
+</tr>
+<tr>
+<td>Engineer A's runs and engineer B's runs are indistinguishable in the shared store</td>
+<td>Every row carries attribution</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-is-not-guarded">What is NOT guarded<a class="headerlink" href="#what-is-not-guarded" title="Permanent link">&para;</a></h2>
+<p>These are intentional non-features:</p>
+<ul>
+<li><strong>No row-level access control in the shared store.</strong> Anyone with read access to the
+  shared backend's <code>AMX</code> schema can see every team member's runs. If you need
+  per-engineer privacy, use separate schemas or separate backends.</li>
+<li><strong>No locking.</strong> Two engineers can run AMX against the same table at the same time. Each
+  produces their own run with their own results. The dual-write coordinator handles
+  ordering.</li>
+<li><strong>No automatic conflict resolution at apply time.</strong> If two engineers both <code>/apply</code>
+  against the same column with different descriptions, the second write wins (by
+  database-update semantics). Use the team workflow to coordinate big runs.</li>
+</ul>
+<p>The trade-off: AMX optimises for low ceremony (no admin UI, no permission tables) at the
+cost of trusting the team to coordinate via existing channels. For larger teams with
+stricter compliance requirements, run AMX read-only (no <code>/apply</code>) and feed accepted
+descriptions to your existing data-catalog tool through <code>--md</code> / <code>--json</code> exports.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

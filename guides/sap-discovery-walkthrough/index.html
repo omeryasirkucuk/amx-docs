@@ -1,0 +1,742 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/guides/sap-discovery-walkthrough/">
+      
+      
+        <link rel="prev" href="../../backends/duckdb/">
+      
+      
+        <link rel="next" href="../batch-large-schema/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>SAP Discovery - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#guide-sap-discovery-walkthrough" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="./" class="active">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-starting-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The starting state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ingest-documents-and-scan-the-codebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ingest documents and scan the codebase
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#plan-the-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Plan the run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-pass-the-50-etl-touched-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First pass — the 50 ETL-touched tables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-ask-to-plan-the-second-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Use /ask to plan the second pass
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#second-pass-wider-scope-lighter-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Second pass — wider scope, lighter model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#third-pass-the-long-tail" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Third pass — the long tail
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#three-weeks-in" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three weeks in
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lessons-learned-for-next-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lessons learned (for next time)
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Guides</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>SAP Discovery</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="guide-sap-discovery-walkthrough">Guide: SAP discovery walkthrough<a class="headerlink" href="#guide-sap-discovery-walkthrough" title="Permanent link">&para;</a></h1>
+<p>A worked example: bring a documentation-free SAP-style schema from cryptic identifiers to
+fully-described columns in one afternoon. The same pattern applies to any
+legacy / vendor-supplied schema with thousands of named-but-undocumented columns.</p>
+<h2 id="the-starting-state">The starting state<a class="headerlink" href="#the-starting-state" title="Permanent link">&para;</a></h2>
+<p>A read-only Postgres replica of an SAP S/6 source system, ~600 tables, 40K columns. Almost
+no <code>COMMENT ON COLUMN</code>; all identifiers are SAP's German-rooted abbreviations
+(<code>AUDAT</code>, <code>BUDAT</code>, <code>MATNR</code>, <code>MENGE</code>, …).</p>
+<p>We have:</p>
+<ul>
+<li><strong>Documentation:</strong> the SAP module manuals as PDFs, ~3,000 pages total. Mostly accurate
+  but written for SAP consultants, not data engineers.</li>
+<li><strong>Codebase:</strong> the company's ETL repo (Python + SQL) which loads selected SAP tables into
+  a downstream warehouse. References are concentrated in transform scripts.</li>
+<li><strong>Time budget:</strong> one afternoon for the high-confidence majority; the rest can wait.</li>
+</ul>
+<h2 id="setup">Setup<a class="headerlink" href="#setup" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>amx
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>/setup
+</span></code></pre></div>
+<p>Three profiles:</p>
+<ul>
+<li><strong>DB:</strong> <code>sap_replica</code> — Postgres with <code>profiling_mode: sampled</code> and
+  <code>profiling_max_rows: 5_000_000</code>. The replica has billions of rows; we don't want
+  <code>full</code> mode here.</li>
+<li><strong>LLM:</strong> <code>openai_main</code> — <code>gpt-4o</code> with <code>language: en</code>, <code>temperature: 0.2</code>,
+  <code>n_alternatives: 3</code>.</li>
+<li><strong>Doc:</strong> <code>sap_handbook</code> — local path to the PDFs.</li>
+<li><strong>Code:</strong> <code>etl_repo</code> — the company's ETL repo on disk.</li>
+</ul>
+<h2 id="ingest-documents-and-scan-the-codebase">Ingest documents and scan the codebase<a class="headerlink" href="#ingest-documents-and-scan-the-codebase" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/docs
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/ingest --refresh
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>/code
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/code-scan
+</span></code></pre></div>
+<p>Total time: ~12 minutes for the PDFs (embedding via MiniLM) and ~4 minutes for the ETL
+repo. Sanity check:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/search-docs document date posting date
+</span></code></pre></div>
+<p>Returns relevant SAP doc snippets — the RAG store is healthy.</p>
+<h2 id="plan-the-run">Plan the run<a class="headerlink" href="#plan-the-run" title="Permanent link">&para;</a></h2>
+<p>The schema is huge. We won't try to do everything at once. Instead:</p>
+<ol>
+<li><strong>First pass (this afternoon):</strong> the 50 tables that ETL actually touches. The Code
+   Agent will have strong evidence for these, so the multi-agent merge will have
+   high-confidence output.</li>
+<li><strong>Second pass (later this week):</strong> the next 200 tables. Doc evidence dominates,
+   confidence will be lower, more manual review.</li>
+<li><strong>Third pass (next month):</strong> the long tail. Bulk <code>metadata</code> mode for inventory, then
+   prioritise from <code>/ask</code>.</li>
+</ol>
+<h2 id="first-pass-the-50-etl-touched-tables">First pass — the 50 ETL-touched tables<a class="headerlink" href="#first-pass-the-50-etl-touched-tables" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/run-apply --schema sap_s6p t001 mara makt mvke mara_text vbak vbap likp lips bkpf bseg
+</span></code></pre></div>
+<p>(plus the rest of the 50, listed)</p>
+<p>Wall clock: ~25 minutes.</p>
+<p>In the review wizard:</p>
+<ul>
+<li>~70% of columns: top suggestion is <code>high</code> confidence with all three agents agreeing.
+  Bulk-accept.</li>
+<li>~20%: <code>medium</code> with one or two agents agreeing. Read each one, accept or pick alternative.</li>
+<li>~10%: <code>low</code> or split alternatives. Skip for now or write our own.</li>
+</ul>
+<p>Apply:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/apply
+</span></code></pre></div>
+<p>Verify with <code>psql</code>:</p>
+<div class="language-sql highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">SELECT</span><span class="w"> </span><span class="k">column_name</span><span class="p">,</span><span class="w"> </span><span class="n">col_description</span><span class="p">(</span><span class="s1">&#39;sap_s6p.t001&#39;</span><span class="p">::</span><span class="n">regclass</span><span class="p">,</span><span class="w"> </span><span class="n">ordinal_position</span><span class="p">)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">columns</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">WHERE</span><span class="w"> </span><span class="n">table_schema</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;sap_s6p&#39;</span><span class="w"> </span><span class="k">AND</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;t001&#39;</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">LIMIT</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span></code></pre></div>
+<h2 id="use-ask-to-plan-the-second-pass">Use <code>/ask</code> to plan the second pass<a class="headerlink" href="#use-ask-to-plan-the-second-pass" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/ask which tables in sap_s6p contain customer data?
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>/ask which tables reference t001?
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>/ask top 20 tables by row count in sap_s6p
+</span></code></pre></div>
+<p>The Search Agent uses the catalog (now richer thanks to the first pass) to answer. The
+top-20 inventory query gives us the next batch — high-volume tables that probably matter
+most for downstream consumers.</p>
+<h2 id="second-pass-wider-scope-lighter-model">Second pass — wider scope, lighter model<a class="headerlink" href="#second-pass-wider-scope-lighter-model" title="Permanent link">&para;</a></h2>
+<p>We're confident in the prompts and the merge now. Switch to a smaller model for volume:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/use-llm openai_mini       # gpt-4o-mini profile
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>/llm-batch-size 30
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>/n-alternatives 1
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>/run sap_s6p --batch       # async overnight via OpenAI Batch
+</span></code></pre></div>
+<p>Batch jobs run overnight. Next morning:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/history list -n 5         # see the batch job complete
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>/history results &lt;id&gt;      # inspect alternatives before reviewing
+</span></code></pre></div>
+<p>Then walk the review wizard.</p>
+<h2 id="third-pass-the-long-tail">Third pass — the long tail<a class="headerlink" href="#third-pass-the-long-tail" title="Permanent link">&para;</a></h2>
+<p>For the remaining ~350 tables, switch to <code>metadata</code> mode:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/db profiling metadata
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>/run sap_s6p --batch
+</span></code></pre></div>
+<p>The Profile Agent now sees only schema metadata (types, constraints, comments on
+neighbours) — no per-column scans. Confidence will be lower, so accept rate during
+review is lower too. The output is good enough for inventory; targeted high-confidence
+runs against specific tables can come later.</p>
+<h2 id="three-weeks-in">Three weeks in<a class="headerlink" href="#three-weeks-in" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/usage 30d
+</span></code></pre></div>
+<p>Reports total token consumption.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/history compare --schema sap_s6p --by llm_model --last 5 --diff
+</span></code></pre></div>
+<p>Pivots the most recent five sap_s6p runs side by side, grouped by model. Shows where the
+smaller model produced different (sometimes better, sometimes worse) descriptions.</p>
+<h2 id="lessons-learned-for-next-time">Lessons learned (for next time)<a class="headerlink" href="#lessons-learned-for-next-time" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Code coverage matters more than doc coverage.</strong> The 70% high-confidence rate on the
+  ETL-touched tables drops to ~40% on tables ETL doesn't touch. If the team can extend
+  ETL coverage (even just SELECT statements that reference the tables), AMX inference
+  improves directly.</li>
+<li><strong>Bulk-accept saves the most time, but only after you've calibrated.</strong> First pass:
+  manual per-column. Second pass: aggressive bulk-accept once you trust the high-confidence
+  band.</li>
+<li><strong>Switch to Batch as soon as you can.</strong> Synchronous chat is for the first pass; once
+  prompts are stable, every subsequent run should go through Batch.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

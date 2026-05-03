@@ -1,0 +1,752 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/troubleshooting/doctor/">
+      
+      
+        <link rel="prev" href="../faq/">
+      
+      
+        <link rel="next" href="../common-errors/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Diagnostics - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#diagnostics-with-amx-doctor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-each-line-means" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What each line means
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-failures-and-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common failures and fixes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Common failures and fixes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#multiple-amx-binaries-on-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple amx binaries on PATH
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-schema-too-new" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config schema too new
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#missing-driver" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Missing driver
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#certificate_verify_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CERTIFICATE_VERIFY_FAILED
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-models-endpoint-401" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM models endpoint 401
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-models-endpoint-timeout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM models endpoint timeout
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cannot-read-amxconfigyml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cannot read ~/.amx/config.yml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#history-store-shared-mode-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        History store: shared mode error
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-doctor-isnt-enough" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When doctor isn't enough
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-doctor-doesnt-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What doctor doesn't do
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Troubleshooting</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Diagnostics</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="diagnostics-with-amx-doctor">Diagnostics with <code>amx doctor</code><a class="headerlink" href="#diagnostics-with-amx-doctor" title="Permanent link">&para;</a></h1>
+<p><code>amx doctor</code> is the first thing to run when something looks wrong. It runs from any shell
+— including a broken AMX state — and reports actionable problems with your install,
+config, and connectivity.</p>
+<p>For the full reference see <a href="../../cli/doctor/"><code>amx doctor</code></a>. This page is task-oriented:
+"I see X — what does doctor tell me?"</p>
+<h2 id="quick-reference">Quick reference<a class="headerlink" href="#quick-reference" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>doctor<span class="w">                       </span><span class="c1"># full check, hits the network</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network<span class="w">        </span><span class="c1"># offline quick check</span>
+</span></code></pre></div>
+<p>Inside an AMX session: <code>/doctor</code>.</p>
+<h2 id="what-each-line-means">What each line means<a class="headerlink" href="#what-each-line-means" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>✓ amx binary           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
+</span></code></pre></div>
+<p>The path of the <code>amx</code> you're running, plus version. <strong>Multiple lines here means multiple
+binaries on PATH</strong> — pick one and uninstall the others.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>✓ python runtime       3.12.2 (/Users/jane/.venvs/amx/bin/python)
+</span></code></pre></div>
+<p>Python version + path. Warns on &lt; 3.10.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>✓ config schema        v2 (matches binary expectation)
+</span></code></pre></div>
+<p>The schema version of <code>~/.amx/config.yml</code> vs what this binary expects. <code>Config schema too
+new</code> means the binary is older than the config — upgrade. <code>Config schema too old</code> means
+the opposite — AMX migrates on next save.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>✓ ~/.amx permissions   0o700, config.yml 0o600
+</span></code></pre></div>
+<p>Confirms the directory and config file modes are correct. Wrong modes warn — fix with
+<code>chmod</code>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>✓ DB profile           local_pg (postgresql 14.10)  — connection OK in 42ms
+</span></code></pre></div>
+<p>Real connection test against the <strong>active</strong> DB profile (not all profiles). For Databricks,
+walks through saved profile → CA bundle from environment → <code>tls_no_verify</code> to find the
+first working path.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>✗ DB profile           snow_prod (snowflake)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  → Missing driver. Install with:
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>        pip install amx
+</span></code></pre></div>
+<p>Active profile is selected but the driver isn't installed. Run the printed command.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>✓ LLM profile          openai_main (gpt-4o-mini)    — models endpoint OK
+</span></code></pre></div>
+<p>Confirms the API key is present and the provider's models endpoint responds. Skipped under
+<code>--skip-network</code>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>✓ History store        local mode, 247 runs persisted
+</span></code></pre></div>
+<p>Local SQLite is healthy. If shared mode is enabled, also reports outbox depth.</p>
+<h2 id="common-failures-and-fixes">Common failures and fixes<a class="headerlink" href="#common-failures-and-fixes" title="Permanent link">&para;</a></h2>
+<h3 id="multiple-amx-binaries-on-path"><code>Multiple amx binaries on PATH</code><a class="headerlink" href="#multiple-amx-binaries-on-path" title="Permanent link">&para;</a></h3>
+<p>Use a venv consistently. <code>which -a amx</code> shows you every binary; uninstall the ones you
+don't want with <code>pip uninstall amx</code> from the offending Python.</p>
+<h3 id="config-schema-too-new"><code>Config schema too new</code><a class="headerlink" href="#config-schema-too-new" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx
+</span></code></pre></div>
+<h3 id="missing-driver"><code>Missing driver</code><a class="headerlink" href="#missing-driver" title="Permanent link">&para;</a></h3>
+<p>Run the exact <code>pip install amx</code> from doctor's output.</p>
+<h3 id="certificate_verify_failed"><code>CERTIFICATE_VERIFY_FAILED</code><a class="headerlink" href="#certificate_verify_failed" title="Permanent link">&para;</a></h3>
+<p>Backend (usually Databricks) doesn't trust the corporate CA. Set
+<code>tls_trusted_ca_file</code> on the profile, or set <code>AMX_DATABRICKS_TRUSTED_CA_FILE</code>. See
+<a href="../../configuration/tls-and-proxies/">TLS and proxies</a>.</p>
+<h3 id="llm-models-endpoint-401"><code>LLM models endpoint 401</code><a class="headerlink" href="#llm-models-endpoint-401" title="Permanent link">&para;</a></h3>
+<p>API key is wrong or rotated. Re-run <code>/add-llm-profile</code> for that profile and re-enter the
+key.</p>
+<h3 id="llm-models-endpoint-timeout"><code>LLM models endpoint timeout</code><a class="headerlink" href="#llm-models-endpoint-timeout" title="Permanent link">&para;</a></h3>
+<p>Network egress problem. Check proxy / firewall. Run <code>amx doctor --skip-network</code> to
+confirm everything else is fine — if it does, the LLM endpoint is the only problem.</p>
+<h3 id="cannot-read-amxconfigyml"><code>Cannot read ~/.amx/config.yml</code><a class="headerlink" href="#cannot-read-amxconfigyml" title="Permanent link">&para;</a></h3>
+<p>File mode wrong, or you previously ran AMX as a different user. <code>chmod 0600
+~/.amx/config.yml</code> and <code>chmod 0700 ~/.amx/</code>.</p>
+<h3 id="history-store-shared-mode-error"><code>History store: shared mode error</code><a class="headerlink" href="#history-store-shared-mode-error" title="Permanent link">&para;</a></h3>
+<p>Shared backend is unreachable. The <code>pending_shared_writes</code> outbox carries the failed
+writes — when the backend is back, run <code>/db history-store</code> → <strong>Flush pending</strong>.</p>
+<h2 id="when-doctor-isnt-enough">When doctor isn't enough<a class="headerlink" href="#when-doctor-isnt-enough" title="Permanent link">&para;</a></h2>
+<p>Doctor only tests the <strong>active</strong> DB and LLM profile. To diagnose all profiles individually:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/db inspect prod_pg
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>/db inspect snow_prod
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>/db inspect databricks-prod
+</span></code></pre></div>
+<p><code>/db inspect</code> reports the backend, capabilities, connection test, visible schemas, and
+table counts — without running any LLM agents.</p>
+<p>For LLM profiles:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>/llm-profiles            # see all
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>/use-llm &lt;name&gt;          # switch
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>amx doctor               # test the new active one
+</span></code></pre></div>
+<h2 id="what-doctor-doesnt-do">What doctor doesn't do<a class="headerlink" href="#what-doctor-doesnt-do" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Doesn't fix anything automatically. Every remediation is a printed command.</li>
+<li>Doesn't list every DB profile — only the <strong>active</strong> one is connection-tested.</li>
+<li>Doesn't modify <code>config.yml</code>. All checks are read-only.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,906 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/api/">
+      
+      
+        <link rel="prev" href="../troubleshooting/common-errors/">
+      
+      
+        <link rel="next" href="reference/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Python API - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#python-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../configuration/config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href=".."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href=".."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#stability-promise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stability promise
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pre-10-caveat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pre-1.0 caveat
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-public" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's public
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What&#39;s public">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-convenience-surface-amx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top-level convenience surface (amx)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#amxcore-library-first-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        amx.core — library-first API
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-disk-formats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-disk formats
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-internal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's internal
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-write-code-that-survives-upgrades" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to write code that survives upgrades
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#headless-ask-from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headless /ask from Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#headless-run-from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Headless /run from Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-read-further" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to read further
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Project</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Python API</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="python-api">Python API<a class="headerlink" href="#python-api" title="Permanent link">&para;</a></h1>
+<p>AMX has a small, <strong>stable</strong> programmatic API for headless use — driving the multi-agent
+inference pipeline from a Python script, notebook, or service without going through the
+interactive CLI shell. This page is the contract; the <a href="reference/">Reference</a> is the
+auto-generated docstring detail.</p>
+<h2 id="stability-promise">Stability promise<a class="headerlink" href="#stability-promise" title="Permanent link">&para;</a></h2>
+<p>Anything documented here will follow <a href="https://semver.org/">Semantic Versioning</a> starting
+from <code>1.0.0</code>:</p>
+<ul>
+<li><strong>Patch</strong> (<code>1.0.x</code>) — bug fixes, no public-API changes.</li>
+<li><strong>Minor</strong> (<code>1.x.0</code>) — additive only (new names, new optional kwargs, new optional fields
+  on returned dataclasses). Existing code keeps working.</li>
+<li><strong>Major</strong> (<code>x.0.0</code>) — breaking changes only here, with a <code>DEPRECATED</code> notice in a prior
+  minor release whenever practical.</li>
+</ul>
+<p>Anything <strong>not</strong> listed in this document is <strong>internal</strong>. Importing it works today but the
+symbol, signature, location, or behaviour can change in any release without notice. If
+something internal is genuinely useful to you, <a href="https://github.com/omeryasirkucuk/amx/issues">open an issue</a> —
+we'll consider promoting it.</p>
+<h2 id="pre-10-caveat">Pre-1.0 caveat<a class="headerlink" href="#pre-10-caveat" title="Permanent link">&para;</a></h2>
+<p>While AMX is at <code>0.x</code>, the contract is <strong>best-effort</strong>. We avoid breaking the listed
+symbols whenever possible and flag any necessary breakage in the <a href="../changelog/">changelog</a>
+under <code>BREAKING CHANGE</code>. Hard guarantees kick in at <code>1.0.0</code>.</p>
+<p>If a stability guarantee here matters to you for production use, <a href="https://github.com/omeryasirkucuk/amx/issues">open an issue</a>
+— we'd rather hear it now than break you later.</p>
+<h2 id="whats-public">What's public<a class="headerlink" href="#whats-public" title="Permanent link">&para;</a></h2>
+<h3 id="top-level-convenience-surface-amx">Top-level convenience surface (<code>amx</code>)<a class="headerlink" href="#top-level-convenience-surface-amx" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Kind</th>
+<th>Stability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>amx.__version__</code></td>
+<td><code>str</code></td>
+<td>Stable</td>
+</tr>
+<tr>
+<td><code>amx.init(config_path: str \| None = None) -&gt; AMXApplication</code></td>
+<td>function</td>
+<td>Stable</td>
+</tr>
+<tr>
+<td><code>amx.AMXApplication</code></td>
+<td>class (lazy re-export)</td>
+<td>Stable</td>
+</tr>
+<tr>
+<td><code>amx.AbstractEntity</code></td>
+<td>class (lazy re-export)</td>
+<td>Stable</td>
+</tr>
+<tr>
+<td><code>amx.UniversalMetadataAdapter</code></td>
+<td>class (lazy re-export)</td>
+<td>Stable</td>
+</tr>
+</tbody>
+</table>
+<p>These are re-exports of names defined in <code>amx.core</code> for one-line scripts. Library code
+should prefer importing from <code>amx.core</code> directly.</p>
+<h3 id="amxcore-library-first-api"><code>amx.core</code> — library-first API<a class="headerlink" href="#amxcore-library-first-api" title="Permanent link">&para;</a></h3>
+<p>Every name listed in <code>amx.core.__all__</code> is part of the public contract:</p>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Kind</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>amx.core.AMXApplication</code></td>
+<td>dataclass</td>
+<td>Composable runtime that owns a config, a history store, and the active agents. Built via <code>AMXApplication.load(config_path)</code> for the typical case.</td>
+</tr>
+<tr>
+<td><code>amx.core.AskToolbox</code></td>
+<td>dataclass</td>
+<td>Tool registry the loop-based ask agent calls into (schema explorer, catalog, etc.).</td>
+</tr>
+<tr>
+<td><code>amx.core.LoopBasedAskAgent</code></td>
+<td>class</td>
+<td>Headless re-implementation of <code>/ask</code> for scripts and notebooks.</td>
+</tr>
+<tr>
+<td><code>amx.core.ToolAskResponse</code></td>
+<td>dataclass</td>
+<td>Structured response from the loop-based ask agent (answer, intent, tool trace, confidence).</td>
+</tr>
+<tr>
+<td><code>amx.core.AbstractEntity</code></td>
+<td>dataclass</td>
+<td>Backend-neutral entity abstraction used by the Universal Metadata Interface.</td>
+</tr>
+<tr>
+<td><code>amx.core.UniversalMetadataAdapter</code></td>
+<td>class</td>
+<td>Maps backend-specific column / table profiles into <code>AbstractEntity</code>.</td>
+</tr>
+<tr>
+<td><code>amx.core.StateManager</code></td>
+<td>class</td>
+<td>Write-through persistence for config + SQLite-backed state across sessions.</td>
+</tr>
+<tr>
+<td><code>amx.core.infer_table_metadata(cfg, schema, table, *, include_rag, include_codebase)</code></td>
+<td>function</td>
+<td>One-call programmatic metadata inference. Returns a list of suggestion dicts ready for review.</td>
+</tr>
+</tbody>
+</table>
+<p>For the full docstrings and signatures, see <a href="reference/">Reference</a>.</p>
+<h3 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h3>
+<p>The <code>amx</code> console script (defined under <code>[project.scripts]</code> in <code>pyproject.toml</code>) is part of
+the public API:</p>
+<ul>
+<li>The set of slash commands documented in <a href="../cli/overview/">CLI Reference</a> is the
+  contract.</li>
+<li>Slash command <strong>flags</strong> (<code>--db-profile</code>, <code>--last</code>, <code>--diff</code>, <code>--csv</code>, …) are stable
+  within a major version.</li>
+<li>Output is <strong>rendered for humans</strong> — no contract on column order, terminal styling, or
+  table widths. Scripts that need to consume AMX output should use the export flags
+  (<code>--csv</code>, <code>--md</code>, <code>--json</code>) where available.</li>
+</ul>
+<h3 id="on-disk-formats">On-disk formats<a class="headerlink" href="#on-disk-formats" title="Permanent link">&para;</a></h3>
+<p>These are part of the public contract because users depend on them across upgrades:</p>
+<ul>
+<li><strong><code>~/.amx/config.yml</code></strong> — schema is versioned (<code>schema_version: N</code> field, see
+  <code>amx.config.CONFIG_SCHEMA_VERSION</code>). When AMX bumps the schema, an older binary refuses
+  to load a newer config rather than silently mangling it (raises
+  <code>ConfigSchemaTooNewError</code>). Full layout in <a href="../configuration/config-yml/">config.yml</a>.</li>
+<li><strong><code>~/.amx/history.db</code></strong> — SQLite tables (<code>analysis_runs</code>, <code>run_results</code>, <code>app_events</code>,
+  etc.) accept additive migrations within a major version. Column types and the meaning
+  of existing columns are stable.</li>
+<li><strong><code>--json</code> export shape</strong> — the keys <code>schema_version</code>, <code>run_summary</code>, <code>per_column</code>,
+  <code>aggregate_metrics</code> are stable. The full JSON shape is documented in the AMX repo at
+  <code>tests/eval/README.md</code>.</li>
+</ul>
+<h2 id="whats-internal">What's internal<a class="headerlink" href="#whats-internal" title="Permanent link">&para;</a></h2>
+<p>Everything else. Highlights:</p>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Why it's internal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>amx.cli</code>, <code>amx.cli_support.*</code></td>
+<td>CLI plumbing, refactored frequently</td>
+</tr>
+<tr>
+<td><code>amx.cli_*</code> (top-level shims like <code>amx.cli_db</code>, <code>amx.cli_run</code>)</td>
+<td>Backwards-compat shims that re-export from <code>amx.cli_support.commands.*</code>; will be removed in a future major release. Use the underlying modules only at your own risk; prefer <code>amx.core.*</code> for programmatic access.</td>
+</tr>
+<tr>
+<td><code>amx.agents.*</code></td>
+<td>Profile / RAG / Code agent internals. The orchestrator decides what gets called and how — directly instantiating these from user code couples you to the agent contract.</td>
+</tr>
+<tr>
+<td><code>amx.search._agent.*</code>, <code>amx.search._catalog.*</code></td>
+<td>Already underscore-prefixed. Do not import.</td>
+</tr>
+<tr>
+<td><code>amx.search.agent</code>, <code>amx.search.catalog</code>, <code>amx.search.service</code></td>
+<td>Public-shaped names but not part of the contract — use <code>amx.core.AMXApplication</code> to get a configured <code>SearchService</code>.</td>
+</tr>
+<tr>
+<td><code>amx.db.*</code>, <code>amx.llm.*</code>, <code>amx.docs.*</code>, <code>amx.codebase.*</code></td>
+<td>Backend adapters; tightly coupled to the active config.</td>
+</tr>
+<tr>
+<td><code>amx.storage.*</code></td>
+<td>History store implementation. <code>amx.core.AMXApplication</code> exposes the configured store via <code>app.history_store</code>.</td>
+</tr>
+<tr>
+<td><code>amx.utils.*</code></td>
+<td>Internal helpers (Rich console wrappers, logging, token counting).</td>
+</tr>
+<tr>
+<td><code>amx.config.AMXConfig</code></td>
+<td>Used internally; configure programmatically by passing a path to <code>amx.init(...)</code> or by editing <code>~/.amx/config.yml</code>. The dataclass shape is <strong>not</strong> stable.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-write-code-that-survives-upgrades">How to write code that survives upgrades<a class="headerlink" href="#how-to-write-code-that-survives-upgrades" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Good — uses only public surface.</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">infer_table_metadata</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;~/.amx/config.yml&quot;</span><span class="p">)</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">suggestions</span> <span class="o">=</span> <span class="n">infer_table_metadata</span><span class="p">(</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;sales&quot;</span><span class="p">,</span> <span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_codebase</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;column&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">])</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Risky — imports an internal symbol whose location may move.</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.search.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchService</span>          <span class="c1"># internal</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.agents.orchestrator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orchestrator</span>      <span class="c1"># internal</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># The replacement when this breaks:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">service</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">search_service</span>                          <span class="c1"># configured for you</span>
+</span></code></pre></div>
+<h2 id="headless-ask-from-python">Headless <code>/ask</code> from Python<a class="headerlink" href="#headless-ask-from-python" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">LoopBasedAskAgent</span><span class="p">,</span> <span class="n">AskToolbox</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;~/.amx/config.yml&quot;</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">toolbox</span> <span class="o">=</span> <span class="n">AskToolbox</span><span class="o">.</span><span class="n">from_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">agent</span> <span class="o">=</span> <span class="n">LoopBasedAskAgent</span><span class="p">(</span><span class="n">toolbox</span><span class="o">=</span><span class="n">toolbox</span><span class="p">)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">response</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;which tables in sap_s6p store dates?&quot;</span><span class="p">)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">answer</span><span class="p">)</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">intent</span><span class="p">)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">tool_trace</span><span class="p">)</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+</span></code></pre></div>
+<p><code>ToolAskResponse</code> is a stable dataclass — fields can be added in minor versions but not
+removed.</p>
+<h2 id="headless-run-from-python">Headless <code>/run</code> from Python<a class="headerlink" href="#headless-run-from-python" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">infer_table_metadata</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">infer_table_metadata</span><span class="p">(</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;sap_s6p&quot;</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;t001&quot;</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">include_codebase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">)</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;column&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">30s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">6s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The return shape is documented in the <a href="reference/">Reference</a> under <code>infer_table_metadata</code>.</p>
+<p>For applying suggestions back to the database programmatically, use
+<code>app.metadata_writer.apply(...)</code> — see <code>AMXApplication</code> in the reference.</p>
+<h2 id="where-to-read-further">Where to read further<a class="headerlink" href="#where-to-read-further" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="reference/">Reference</a> — auto-generated from docstrings.</li>
+<li><a href="../configuration/config-yml/">config.yml</a> — the on-disk format the API reads/writes.</li>
+<li><a href="../cli/overview/">CLI overview</a> — when you'd reach for the CLI vs the library API.</li>
+<li><a href="https://github.com/omeryasirkucuk/amx/blob/main/docs/PUBLIC_API.md"><code>docs/PUBLIC_API.md</code></a>
+  in the AMX repo — the canonical source for this contract.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

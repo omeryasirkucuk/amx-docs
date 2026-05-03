@@ -1,0 +1,1064 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/configuration/env-vars/">
+      
+      
+        <link rel="prev" href="../config-yml/">
+      
+      
+        <link rel="next" href="../tls-and-proxies/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Environment variables - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#environment-variables" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step-by-step
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step-by-step">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-override-the-config-dir-for-an-isolated-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Override the config dir for an isolated run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-inject-secrets-via-env-in-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Inject secrets via env in CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. Point AMX at an Azure OpenAI endpoint without a separate provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-verbose-logging-without-changing-the-yaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Verbose logging without changing the YAML
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#variable-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variable reference
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Variable reference">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-config" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Path / config
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database-secrets-override-per-profile-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Database secrets (override per-profile values)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-provider-keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM provider keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS / proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#oracle-thick-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Oracle thick mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolution-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Resolution order
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sample-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sample patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sample patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ci-pipeline-no-secrets-on-disk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI pipeline (no secrets on disk)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#one-off-scratch-profile-in-a-temp-dir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-off scratch profile in a temp dir
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#debugging-a-corporate-proxy-blocked-llm-call" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Debugging a corporate-proxy-blocked LLM call
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Configuration</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Environment variables</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h1>
+<p>A handful of <code>AMX_*</code> and standard env vars affect AMX's behaviour. None are required —
+the wizard works without setting any — but they let you keep secrets out of files,
+override config-yml entries for one shell, and integrate AMX into CI pipelines without
+hand-edits to <code>~/.amx/config.yml</code>. This page lists every variable AMX reads and shows
+the most useful patterns.</p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<ul>
+<li>AMX installed.</li>
+<li>A shell where you can <code>export</code> env vars (or a CI runner that injects them).</li>
+</ul>
+<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
+<h3 id="1-override-the-config-dir-for-an-isolated-run">1. Override the config dir for an isolated run<a class="headerlink" href="#1-override-the-config-dir-for-an-isolated-run" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span>/tmp/amx-test<span class="w"> </span>amx<span class="w"> </span>/setup
+</span></code></pre></div>
+<p>The wizard creates <code>/tmp/amx-test/config.yml</code> instead of touching <code>~/.amx</code>. Useful for:
+running AMX inside a sandbox; trying a clean config without losing your daily one;
+running CI tests that mustn't pollute the dev machine.</p>
+<h3 id="2-inject-secrets-via-env-in-ci">2. Inject secrets via env in CI<a class="headerlink" href="#2-inject-secrets-via-env-in-ci" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DB_PASSWORD</span><span class="s2">&quot;</span><span class="w">           </span><span class="c1"># CI secret</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPENAI_API_KEY</span><span class="s2">&quot;</span><span class="w">         </span><span class="c1"># CI secret</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>amx<span class="w"> </span>/run<span class="w"> </span>sales<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span></code></pre></div>
+<p>With these env vars set, the YAML can ship <code>password: ""</code> and <code>api_key: ""</code> (no secrets
+on disk); AMX picks the values up from env at session start.</p>
+<h3 id="3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider">3. Point AMX at an Azure OpenAI endpoint without a separate provider<a class="headerlink" href="#3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_BASE</span><span class="o">=</span><span class="s2">&quot;https://my-azure-openai.openai.azure.com/&quot;</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$AZURE_OPENAI_KEY</span><span class="s2">&quot;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>amx<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
+</span></code></pre></div>
+<p>The OpenAI provider transparently switches to Azure routing.</p>
+<h3 id="4-verbose-logging-without-changing-the-yaml">4. Verbose logging without changing the YAML<a class="headerlink" href="#4-verbose-logging-without-changing-the-yaml" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span>amx<span class="w"> </span>/run<span class="w"> </span>sales.customer
+</span></code></pre></div>
+<p>Equivalent to passing <code>--debug</code> to every command in the session.</p>
+<h2 id="variable-reference">Variable reference<a class="headerlink" href="#variable-reference" title="Permanent link">&para;</a></h2>
+<h3 id="path-config">Path / config<a class="headerlink" href="#path-config" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMX_CONFIG_DIR</code></td>
+<td><code>~/.amx</code></td>
+<td>Where AMX reads / writes <code>config.yml</code>, sessions, history file, Chroma index</td>
+</tr>
+<tr>
+<td><code>AMX_LOG</code></td>
+<td><code>info</code></td>
+<td>Log level: <code>debug</code> / <code>info</code> / <code>warning</code> / <code>error</code></td>
+</tr>
+<tr>
+<td><code>AMX_NO_COLOR</code></td>
+<td>unset</td>
+<td>If set (any value), disable ANSI color in output</td>
+</tr>
+<tr>
+<td><code>AMX_NO_KEYRING</code></td>
+<td>unset</td>
+<td>If set, skip OS keychain — store secrets plaintext in <code>config.yml</code></td>
+</tr>
+<tr>
+<td><code>AMX_NO_NETWORK</code></td>
+<td>unset</td>
+<td>If set, skip the connectivity ping at every <code>/run</code> start</td>
+</tr>
+<tr>
+<td><code>AMX_PROFILE_DEFAULT</code></td>
+<td>unset</td>
+<td>Default profile name to use when none is active (rare; useful in CI)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="database-secrets-override-per-profile-values">Database secrets (override per-profile values)<a class="headerlink" href="#database-secrets-override-per-profile-values" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMX_DB_PASSWORD</code></td>
+<td>Override the active DB profile's password</td>
+</tr>
+<tr>
+<td><code>AMX_DB_HOST</code></td>
+<td>Override the active DB profile's host</td>
+</tr>
+<tr>
+<td><code>AMX_DB_USER</code></td>
+<td>Override the active DB profile's user</td>
+</tr>
+<tr>
+<td><code>AMX_DB_DATABASE</code></td>
+<td>Override the active DB profile's database</td>
+</tr>
+<tr>
+<td><code>PGHOST</code> / <code>PGPORT</code> / <code>PGUSER</code> / <code>PGPASSWORD</code> / <code>PGDATABASE</code></td>
+<td>Standard libpq vars; respected by the PostgreSQL adapter</td>
+</tr>
+<tr>
+<td><code>PGSSLMODE</code></td>
+<td><code>require</code> / <code>verify-ca</code> / <code>verify-full</code> — TLS mode for PostgreSQL</td>
+</tr>
+<tr>
+<td><code>MYSQL_HOST</code> / <code>MYSQL_PORT</code> / <code>MYSQL_USER</code> / <code>MYSQL_PWD</code></td>
+<td>Standard MySQL vars</td>
+</tr>
+<tr>
+<td><code>SNOWFLAKE_ACCOUNT</code> / <code>SNOWFLAKE_USER</code> / <code>SNOWFLAKE_PASSWORD</code> / <code>SNOWFLAKE_WAREHOUSE</code> / <code>SNOWFLAKE_ROLE</code></td>
+<td>Standard Snowflake vars</td>
+</tr>
+<tr>
+<td><code>DATABRICKS_HOST</code> / <code>DATABRICKS_TOKEN</code></td>
+<td>Standard Databricks vars</td>
+</tr>
+<tr>
+<td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+<td>Path to BigQuery service-account JSON (overrides <code>credentials_path:</code>)</td>
+</tr>
+<tr>
+<td><code>AWS_PROFILE</code> / <code>AWS_REGION</code> / <code>AWS_ACCESS_KEY_ID</code> / <code>AWS_SECRET_ACCESS_KEY</code></td>
+<td>Standard boto3 vars; used by Redshift IAM auth</td>
+</tr>
+</tbody>
+</table>
+<h3 id="llm-provider-keys">LLM provider keys<a class="headerlink" href="#llm-provider-keys" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OPENAI_API_KEY</code></td>
+<td>Used when an OpenAI profile has <code>api_key: ""</code></td>
+</tr>
+<tr>
+<td><code>OPENAI_API_BASE</code></td>
+<td>Override OpenAI base URL — Azure OpenAI / proxy use cases</td>
+</tr>
+<tr>
+<td><code>OPENAI_ORG_ID</code></td>
+<td>OpenAI organisation header</td>
+</tr>
+<tr>
+<td><code>ANTHROPIC_API_KEY</code></td>
+<td>Used when an Anthropic profile has <code>api_key: ""</code></td>
+</tr>
+<tr>
+<td><code>GOOGLE_API_KEY</code> / <code>GEMINI_API_KEY</code></td>
+<td>Used by the Gemini provider</td>
+</tr>
+<tr>
+<td><code>OPENROUTER_API_KEY</code></td>
+<td>OpenRouter</td>
+</tr>
+<tr>
+<td><code>DEEPSEEK_API_KEY</code></td>
+<td>DeepSeek</td>
+</tr>
+</tbody>
+</table>
+<h3 id="tls-proxy">TLS / proxy<a class="headerlink" href="#tls-proxy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>HTTPS_PROXY</code> / <code>HTTP_PROXY</code></td>
+<td>Standard proxy vars; AMX uses urllib's resolution</td>
+</tr>
+<tr>
+<td><code>NO_PROXY</code></td>
+<td>Standard exclusion list</td>
+</tr>
+<tr>
+<td><code>REQUESTS_CA_BUNDLE</code></td>
+<td>CA bundle for HTTPS calls (LLM providers, Databricks, BigQuery)</td>
+</tr>
+<tr>
+<td><code>SSL_CERT_FILE</code></td>
+<td>Same as above; some libraries prefer this name</td>
+</tr>
+<tr>
+<td><code>AMX_DBX_TLS_NO_VERIFY</code></td>
+<td>If set, disable TLS verification on Databricks (insecure debug)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="oracle-thick-mode">Oracle thick mode<a class="headerlink" href="#oracle-thick-mode" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMX_ORACLE_LIB_DIR</code></td>
+<td>Path to Oracle Instant Client; switches the <code>oracledb</code> driver from thin to thick mode</td>
+</tr>
+<tr>
+<td><code>TNS_ADMIN</code></td>
+<td>Oracle TNS / wallet directory</td>
+</tr>
+</tbody>
+</table>
+<h2 id="resolution-order">Resolution order<a class="headerlink" href="#resolution-order" title="Permanent link">&para;</a></h2>
+<p>For any field that has a YAML value, an env var, AND a CLI flag, the order is:</p>
+<ol>
+<li><strong>CLI flag</strong> (highest priority — <code>--db-profile</code>, <code>--profiling-mode</code>, etc.)</li>
+<li><strong>Env var</strong> (e.g. <code>AMX_DB_PASSWORD</code>)</li>
+<li><strong>YAML value</strong> (<code>db_profiles.&lt;active&gt;.password</code>)</li>
+<li><strong>Default</strong> (lowest)</li>
+</ol>
+<p>This matches the convention used by most CLIs — explicit beats env beats config beats
+default.</p>
+<h2 id="sample-patterns">Sample patterns<a class="headerlink" href="#sample-patterns" title="Permanent link">&para;</a></h2>
+<h3 id="ci-pipeline-no-secrets-on-disk">CI pipeline (no secrets on disk)<a class="headerlink" href="#ci-pipeline-no-secrets-on-disk" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Repository: ~/.amx/config.yml committed with empty secrets</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>db_profiles:
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>ci:
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>backend:<span class="w"> </span>postgresql
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span>host:<span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span>port:<span class="w"> </span><span class="m">5432</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span>user:<span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span>password:<span class="w"> </span><span class="s2">&quot;&quot;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span>database:<span class="w"> </span>ci_test
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>active_db_profile:<span class="w"> </span>ci
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="c1"># CI runner injects env vars per job:</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_HOST</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_HOST</span><span class="s2">&quot;</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_USER</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_USER</span><span class="s2">&quot;</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_PASSWORD</span><span class="s2">&quot;</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_OPENAI_KEY</span><span class="s2">&quot;</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>amx<span class="w"> </span>/run<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span></code></pre></div>
+<h3 id="one-off-scratch-profile-in-a-temp-dir">One-off scratch profile in a temp dir<a class="headerlink" href="#one-off-scratch-profile-in-a-temp-dir" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="w"> </span>amx
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>&gt;<span class="w"> </span>/setup
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># explore...</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&gt;<span class="w"> </span>/exit
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># the temp dir is auto-cleaned when the shell exits (it&#39;s just a normal dir)</span>
+</span></code></pre></div>
+<h3 id="debugging-a-corporate-proxy-blocked-llm-call">Debugging a corporate-proxy-blocked LLM call<a class="headerlink" href="#debugging-a-corporate-proxy-blocked-llm-call" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.corp:8080<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">REQUESTS_CA_BUNDLE</span><span class="o">=</span>/etc/ssl/corp-bundle.pem<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>amx<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
+</span></code></pre></div>
+<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
+<ol>
+<li><code>&gt; /config show --include-env</code> — pretty-prints the resolved values, marking which came from env (<code>&lt;- env: OPENAI_API_KEY</code>).</li>
+<li><code>&gt; amx doctor</code> — verifies the env-derived secrets actually authenticate.</li>
+<li><code>&gt; /db connect</code> — runs a real round-trip with the resolved credentials.</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Env override seems ignored</td>
+<td>The YAML profile's value was non-empty (env only fills in blank fields)</td>
+<td>Set the YAML value to <code>""</code> to let env take over, OR use <code>--db-profile &lt;name-with-blank&gt;</code></td>
+</tr>
+<tr>
+<td><code>OPENAI_API_BASE</code> works for the SDK but not for <code>/llm test</code></td>
+<td>URL needs the trailing <code>/v1</code></td>
+<td>Set <code>https://my-azure.openai.azure.com/openai/deployments/&lt;deployment&gt;/</code>. Azure deployments are nested</td>
+</tr>
+<tr>
+<td><code>keyring://</code> URI not resolved</td>
+<td><code>AMX_NO_KEYRING</code> is set, OR no OS keychain is reachable</td>
+<td>Unset it, or install a keychain backend (<code>secretstorage</code> on Linux); fallback is plaintext in YAML with <code>chmod 600</code></td>
+</tr>
+<tr>
+<td><code>AWS_*</code> env vars ignored on Redshift IAM auth</td>
+<td>The YAML profile has a non-empty <code>password</code></td>
+<td>Set <code>password: ""</code> in the YAML; AMX uses IAM only when password is blank</td>
+</tr>
+</tbody>
+</table>
+<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../config-yml/"><code>config.yml</code></a> — what fields these env vars actually override.</li>
+<li><a href="../tls-and-proxies/">TLS and proxies</a> — full proxy / CA bundle walkthrough.</li>
+<li><a href="../../backends/">Per-backend pages</a> — backend-specific env vars (e.g. <code>PGSSLMODE</code> for PostgreSQL).</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

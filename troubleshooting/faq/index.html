@@ -1,0 +1,943 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/troubleshooting/faq/">
+      
+      
+        <link rel="prev" href="../../collaboration/safety-guards/">
+      
+      
+        <link rel="next" href="../doctor/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>FAQ - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#faq" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Installation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-do-i-install-amx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How do I install AMX?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multiple-amx-binaries-on-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multiple amx binaries on PATH
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-does-amx-store-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does AMX store secrets?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configschematoonewerror" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ConfigSchemaTooNewError
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-share-a-config-across-machines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can I share a config across machines?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Running">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#run-failed-with-llm-unreachable" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /run failed with "LLM unreachable"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-returned-0-visible-characters-and-used-all-output-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /run returned 0 visible characters and used all output tokens
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#finish_reasonlength-on-every-column" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        finish_reason=length on every column
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#run-is-slow-on-a-wide-schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /run is slow on a wide schema
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-the-suggestion-confidence-lower-than-i-expected" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is the suggestion confidence lower than I expected?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Backends
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Backends">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#can-amx-write-back-to-a-read-only-db-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can AMX write back to a read-only DB profile?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-is-shared-mode-blocked-for-clickhouse-duckdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why is shared mode blocked for ClickHouse / DuckDB?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#databricks-certificate_verify_failed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Databricks CERTIFICATE_VERIFY_FAILED
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="/ask">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ask-says-no-active-llm-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask says "no active LLM profile"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ask-returned-an-empty-result-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask returned an empty result table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ask-answered-in-the-wrong-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask answered in the wrong language
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#history-and-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        History and storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="History and storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-is-amxhistorydb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where is ~/.amx/history.db?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#can-i-delete-historydb-to-start-over" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Can I delete history.db to start over?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#my-teammates-runs-arent-visible-in-history-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        My teammate's runs aren't visible in /history list
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-ask-more" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where to ask more
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Troubleshooting</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>FAQ</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="faq">FAQ<a class="headerlink" href="#faq" title="Permanent link">&para;</a></h1>
+<p>The most-asked questions, in roughly the order new users hit them.</p>
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<h3 id="how-do-i-install-amx">How do I install AMX?<a class="headerlink" href="#how-do-i-install-amx" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx
+</span></code></pre></div>
+<p>That's the only command. The install includes the CLI, the multi-agent runtime, every
+LLM SDK, and every supported database driver.</p>
+<h3 id="multiple-amx-binaries-on-path">Multiple <code>amx</code> binaries on PATH<a class="headerlink" href="#multiple-amx-binaries-on-path" title="Permanent link">&para;</a></h3>
+<p><code>amx doctor</code> reports every <code>amx</code> it finds. Usually this means one is in your global pip
+install and another is in a project venv. Pick one and uninstall the other, or use a
+venv consistently.</p>
+<h2 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h2>
+<h3 id="where-does-amx-store-secrets">Where does AMX store secrets?<a class="headerlink" href="#where-does-amx-store-secrets" title="Permanent link">&para;</a></h3>
+<p>In the OS keychain when available (macOS Keychain, Windows Credential Manager, Linux
+Secret Service via libsecret). The YAML stores a reference, not the secret. On headless
+Linux without a keychain, secrets fall back to <code>~/.amx/config.yml</code> itself with mode
+<code>0o600</code>.</p>
+<h3 id="configschematoonewerror"><code>ConfigSchemaTooNewError</code><a class="headerlink" href="#configschematoonewerror" title="Permanent link">&para;</a></h3>
+<p>Your AMX binary is older than the config schema in <code>~/.amx/config.yml</code>. Upgrade:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx
+</span></code></pre></div>
+<p>If you need to downgrade (e.g. team-wide pin), AMX refuses to load the newer config rather
+than mangling it. Either roll back the schema by hand (delete the keys from the newer
+schema version, decrement <code>schema_version</code>) or stand up a separate config with
+<code>amx --config /path/to/old.yml</code>.</p>
+<h3 id="can-i-share-a-config-across-machines">Can I share a config across machines?<a class="headerlink" href="#can-i-share-a-config-across-machines" title="Permanent link">&para;</a></h3>
+<p>Yes — <code>amx --config /path/to/team.yml</code> reads any file. But secrets stored in the OS
+keychain don't travel with the YAML; each machine needs its own keychain entries (or
+falls back to inline secrets).</p>
+<h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
+<h3 id="run-failed-with-llm-unreachable"><code>/run</code> failed with "LLM unreachable"<a class="headerlink" href="#run-failed-with-llm-unreachable" title="Permanent link">&para;</a></h3>
+<p><code>/analyze /run</code> tests the active LLM before profiling any asset and stops if the
+model/profile is unreachable or deactivated. Run <code>amx doctor</code> — it'll tell you whether
+the API key is invalid, the endpoint is unreachable, or the model is deactivated.</p>
+<h3 id="run-returned-0-visible-characters-and-used-all-output-tokens"><code>/run</code> returned 0 visible characters and used all output tokens<a class="headerlink" href="#run-returned-0-visible-characters-and-used-all-output-tokens" title="Permanent link">&para;</a></h3>
+<p>This is the reasoning-route token-budget exhaustion message. The model burned the whole
+budget on internal thinking. AMX now auto-raises <code>max_tokens</code> to 16384 for recognised
+reasoning routes, but if you see this, your model isn't recognised. Set the env var
+manually:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_LLM_MIN_MAX_TOKENS</span><span class="o">=</span><span class="m">16384</span>
+</span></code></pre></div>
+<h3 id="finish_reasonlength-on-every-column"><code>finish_reason=length</code> on every column<a class="headerlink" href="#finish_reasonlength-on-every-column" title="Permanent link">&para;</a></h3>
+<p>The prompt + expected output is bigger than the model's <code>max_tokens</code>. AMX <strong>never silently
+parses truncated JSON</strong> — the run halts. Either:</p>
+<ul>
+<li>Reduce <code>/llm-batch-size N</code> so fewer columns go in one prompt.</li>
+<li>Drop <code>/n-alternatives</code> to 1.</li>
+<li>Switch <code>/prompt-detail</code> to <code>minimal</code>.</li>
+<li>Or raise <code>max_tokens</code> if the provider supports it.</li>
+</ul>
+<h3 id="run-is-slow-on-a-wide-schema"><code>/run</code> is slow on a wide schema<a class="headerlink" href="#run-is-slow-on-a-wide-schema" title="Permanent link">&para;</a></h3>
+<p>Switch profiling to <code>sampled</code> or <code>metadata</code>. Use <code>/run --batch</code> for overnight async runs.
+See <a href="../../llm-providers/batch-mode/">Batch mode</a> and <a href="../../configuration/profiling-modes/">Profiling
+modes</a>.</p>
+<h3 id="why-is-the-suggestion-confidence-lower-than-i-expected">Why is the suggestion confidence lower than I expected?<a class="headerlink" href="#why-is-the-suggestion-confidence-lower-than-i-expected" title="Permanent link">&para;</a></h3>
+<p>A few causes:</p>
+<ul>
+<li><strong>Anthropic Batch results don't have logprobs</strong> — they fall back to model-declared
+  confidence which tends to be conservative.</li>
+<li><strong>The RAG and Code agents had no evidence for this column</strong> — without external
+  evidence, the merge step trusts the Profile Agent alone, which lowers calibrated
+  confidence.</li>
+<li><strong>Logprob thresholds are tuned high.</strong> <code>/llm-thresholds 0.85 0.6</code> is the default; lower
+  it if you want more rows to land in the <code>high</code> band.</li>
+</ul>
+<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
+<h3 id="can-amx-write-back-to-a-read-only-db-profile">Can AMX write back to a read-only DB profile?<a class="headerlink" href="#can-amx-write-back-to-a-read-only-db-profile" title="Permanent link">&para;</a></h3>
+<p>No. The <code>/apply</code> step needs write privileges. Use a separate profile for write-back:
+<code>amx_reader</code> for <code>/run</code>, <code>amx_writer</code> for <code>/apply</code>. Or grant <code>COMMENT</code> privilege to your
+read profile.</p>
+<h3 id="why-is-shared-mode-blocked-for-clickhouse-duckdb">Why is shared mode blocked for ClickHouse / DuckDB?<a class="headerlink" href="#why-is-shared-mode-blocked-for-clickhouse-duckdb" title="Permanent link">&para;</a></h3>
+<p>ClickHouse cannot <code>UPDATE</code> rows the way <code>finish_run</code> requires. DuckDB is a local file,
+not shared storage. Both are blocked at Enable time with a clear error listing the
+supported backends.</p>
+<h3 id="databricks-certificate_verify_failed">Databricks <code>CERTIFICATE_VERIFY_FAILED</code><a class="headerlink" href="#databricks-certificate_verify_failed" title="Permanent link">&para;</a></h3>
+<p>Set a <code>tls_trusted_ca_file</code> on the Databricks DB profile, or set
+<code>AMX_DATABRICKS_TRUSTED_CA_FILE</code>. See <a href="../../backends/databricks/">Databricks</a>
+and <a href="../../configuration/tls-and-proxies/">TLS and proxies</a>.</p>
+<h2 id="ask"><code>/ask</code><a class="headerlink" href="#ask" title="Permanent link">&para;</a></h2>
+<h3 id="ask-says-no-active-llm-profile"><code>/ask</code> says "no active LLM profile"<a class="headerlink" href="#ask-says-no-active-llm-profile" title="Permanent link">&para;</a></h3>
+<p><code>/ask</code> fails closed when no LLM is configured. Run <code>/llm</code> → <code>/add-llm-profile &lt;name&gt;</code>.</p>
+<h3 id="ask-returned-an-empty-result-table"><code>/ask</code> returned an empty result table<a class="headerlink" href="#ask-returned-an-empty-result-table" title="Permanent link">&para;</a></h3>
+<p>You probably asked a broad semantic question against a schema with no generated
+descriptions yet. Either run <code>/analyze run</code> against the schema first, or rephrase the
+question to use exact identifiers (<code>/ask what is the ADRC table?</code>).</p>
+<h3 id="ask-answered-in-the-wrong-language"><code>/ask</code> answered in the wrong language<a class="headerlink" href="#ask-answered-in-the-wrong-language" title="Permanent link">&para;</a></h3>
+<p><code>/search</code> answer language is forced to the detected language of your question. If
+detection misfires, prefix your question with the language explicitly: <code>/ask in English,
+which tables …</code>.</p>
+<h2 id="history-and-storage">History and storage<a class="headerlink" href="#history-and-storage" title="Permanent link">&para;</a></h2>
+<h3 id="where-is-amxhistorydb">Where is <code>~/.amx/history.db</code>?<a class="headerlink" href="#where-is-amxhistorydb" title="Permanent link">&para;</a></h3>
+<p>On macOS / Linux: <code>/Users/&lt;name&gt;/.amx/history.db</code>. On Windows: <code>C:\Users\&lt;name&gt;\.amx\history.db</code>.</p>
+<p>Override with <code>AMX_HOME=/some/other/path</code> (Linux/macOS) or by setting your home directory
+explicitly.</p>
+<h3 id="can-i-delete-historydb-to-start-over">Can I delete <code>history.db</code> to start over?<a class="headerlink" href="#can-i-delete-historydb-to-start-over" title="Permanent link">&para;</a></h3>
+<p>Yes, but you'll lose run history, the search catalog, and all session memory. The next
+<code>amx</code> start recreates an empty database. <code>config.yml</code> is unaffected.</p>
+<h3 id="my-teammates-runs-arent-visible-in-history-list">My teammate's runs aren't visible in <code>/history list</code><a class="headerlink" href="#my-teammates-runs-arent-visible-in-history-list" title="Permanent link">&para;</a></h3>
+<p>In v0.12, <strong>reads still come from local SQLite</strong>. Cross-machine read views are slated
+for a follow-up minor. Until then, query the shared backend directly with SQL.</p>
+<h2 id="where-to-ask-more">Where to ask more<a class="headerlink" href="#where-to-ask-more" title="Permanent link">&para;</a></h2>
+<ul>
+<li>File a question / bug at <a href="https://github.com/omeryasirkucuk/amx/issues">https://github.com/omeryasirkucuk/amx/issues</a>.</li>
+<li>For security issues, see <a href="../../security/">Security</a>.</li>
+<li>See also <a href="../../cli/doctor/">doctor</a> and <a href="../common-errors/">Common errors</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,827 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://omeryasirkucuk.github.io/amx-docs/concepts/agents/">
+      
+      
+        <link rel="prev" href="../architecture/">
+      
+      
+        <link rel="next" href="../universal-metadata/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Agents - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-three-sub-agents" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="https://omeryasirkucuk.github.io/amx-docs/" title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/logo.svg" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../architecture/" class="active">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      
+        
+          <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.."
+       title="AMX"
+       class="md-nav__button md-logo"
+       aria-label="AMX">
+      
+  <img src="../../assets/logo.svg" alt="logo">
+
+    </a>
+    AMX
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#profile-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile Agent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Profile Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profiling-guardrails" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profiling guardrails
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rag-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RAG Agent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RAG Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#document-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document ingestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#document-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Document sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#what-the-rag-agent-sends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the RAG Agent sends
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#code-agent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Code Agent
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Code Agent">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#identifiers-outside-the-db" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Identifiers outside the DB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#orchestrator" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Orchestrator
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#confidence-and-logprobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confidence and logprobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tuning-knobs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tuning knobs
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://omeryasirkucuk.github.io/amx-docs/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Concepts</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Agents</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="the-three-sub-agents">The three sub-agents<a class="headerlink" href="#the-three-sub-agents" title="Permanent link">&para;</a></h1>
+<p>AMX runs three independent sub-agents over each asset, then merges their suggestions through
+an orchestrator. Each agent has a single responsibility and a clear evidence source.</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>Source</th>
+<th>Implementation</th>
+<th>Confidence signals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Profile Agent</strong></td>
+<td>Database</td>
+<td><code>amx.agents.profile_agent</code></td>
+<td>Logprobs, sample-value coverage, FK signals</td>
+</tr>
+<tr>
+<td><strong>RAG Agent</strong></td>
+<td>Documents</td>
+<td><code>amx.agents.rag_agent</code></td>
+<td>Retrieval similarity, snippet authoritativeness</td>
+</tr>
+<tr>
+<td><strong>Code Agent</strong></td>
+<td>Codebase</td>
+<td><code>amx.agents.code_agent</code></td>
+<td>Reference count, semantic similarity in <code>amx_code</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="profile-agent">Profile Agent<a class="headerlink" href="#profile-agent" title="Permanent link">&para;</a></h2>
+<p>The Profile Agent is the only agent guaranteed to have evidence — every column has at least
+its declared type. For each table, AMX sends the LLM:</p>
+<ul>
+<li><strong>Scope:</strong> database name, schema, table.</li>
+<li><strong>Table-level context:</strong> row count, existing table comment, schema comment, database comment.</li>
+<li><strong>Constraints and relationships:</strong><ul>
+<li>Primary key columns</li>
+<li>Outgoing foreign keys (upstream dependencies)</li>
+<li>Incoming foreign keys (downstream dependents)</li>
+<li>Unique constraints</li>
+<li>Check constraints</li>
+</ul>
+</li>
+<li><strong>Usage stats</strong> when available.</li>
+<li><strong>Related metadata:</strong> existing comments on FK-related neighbour tables.</li>
+<li><strong>Per-column profile:</strong><ul>
+<li>name, type, nullable</li>
+<li>null count, distinct count, cardinality ratio (<code>distinct_count / row_count</code>)</li>
+<li>min / max value (as text)</li>
+<li>up to 5 distinct non-null sample values</li>
+<li>existing column comment</li>
+</ul>
+</li>
+</ul>
+<p>AMX <strong>does not send full table dumps</strong>. It sends summarised profiling signals and small
+samples for inference.</p>
+<h3 id="profiling-guardrails">Profiling guardrails<a class="headerlink" href="#profiling-guardrails" title="Permanent link">&para;</a></h3>
+<p>Each DB profile carries one of three modes — see <a href="../../configuration/profiling-modes/">Profiling modes</a>
+for the full breakdown:</p>
+<ul>
+<li><code>full</code> — exact row count + per-column null/distinct/min/max + samples.</li>
+<li><code>sampled</code> — table statistics + small sample only.</li>
+<li><code>metadata</code> — schema metadata + comments + table statistics. No table-data reads.</li>
+</ul>
+<h3 id="failure-handling">Failure handling<a class="headerlink" href="#failure-handling" title="Permanent link">&para;</a></h3>
+<p>Backend profiling failures are normalised into actionable messages. Permission errors,
+missing objects, warehouse / quota / connection failures surface remediation text instead
+of leaking raw driver tracebacks. AMX can skip expensive per-column stats when a single
+column-level stats query fails — the run keeps making progress.</p>
+<h2 id="rag-agent">RAG Agent<a class="headerlink" href="#rag-agent" title="Permanent link">&para;</a></h2>
+<p>Reads the active document profile, retrieves relevant snippets per column from the local
+Chroma store, and generates suggestions backed by those snippets.</p>
+<h3 id="document-ingestion">Document ingestion<a class="headerlink" href="#document-ingestion" title="Permanent link">&para;</a></h3>
+<p><code>/ingest</code> walks each configured root, splits files into chunks (<code>langchain-text-splitters</code>),
+embeds them, and upserts into Chroma. Default embeddings are MiniLM (offline). Switch to
+OpenAI-compatible or local sentence-transformers via <code>/embeddings</code>.</p>
+<p>Supported file types: <code>pdf</code>, <code>docx</code>, <code>doc</code>, <code>txt</code>, <code>md</code>, <code>csv</code>, <code>xlsx</code>, <code>xls</code>, <code>html</code>,
+<code>htm</code>, <code>pptx</code>, <code>json</code>, <code>yaml</code>, <code>yml</code>, <code>rst</code>, <code>rtf</code>.</p>
+<h3 id="document-sources">Document sources<a class="headerlink" href="#document-sources" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Local files / directories</strong> — <code>/path/to/docs</code></li>
+<li><strong>GitHub repositories</strong> — cloned to a temp dir for the active scan, then deleted</li>
+<li><strong>AWS S3</strong> — <code>s3://bucket/prefix</code></li>
+<li><strong>Google Drive</strong> — public links zero-config; private files via service account or OAuth</li>
+<li><strong>SharePoint / OneDrive</strong> — public sharing links zero-config; private via Azure app</li>
+</ul>
+<p>See <a href="../../data-sources/documents/">Documents</a> for credential setup.</p>
+<h3 id="what-the-rag-agent-sends">What the RAG Agent sends<a class="headerlink" href="#what-the-rag-agent-sends" title="Permanent link">&para;</a></h3>
+<p>For each column:</p>
+<ul>
+<li>The column's name + type + table context.</li>
+<li>Top-K retrieved chunks (default 5) ranked by vector similarity.</li>
+<li>The chunk's source path so the prompt can mention provenance.</li>
+</ul>
+<p>Suggestions whose retrieval similarity falls below the floor are downweighted to <code>low</code>
+confidence so weak evidence doesn't overpower a high-quality Profile suggestion at merge time.</p>
+<h2 id="code-agent">Code Agent<a class="headerlink" href="#code-agent" title="Permanent link">&para;</a></h2>
+<p>Scans the active codebase profile and surfaces references to each column or table.
+Two complementary mechanisms:</p>
+<ol>
+<li><strong>Literal reference scan.</strong> Walks the tree, captures occurrences of identifiers in their
+   source context (function name, file path, surrounding lines). Cached on disk per profile.</li>
+<li><strong>Semantic code RAG.</strong> Chroma collection <code>amx_code</code> holds embedded chunks (Python by
+   function/class span; other languages by text split). The Code Agent queries by
+   table/column name and feeds the nearest neighbours into the LLM prompt.</li>
+</ol>
+<p>Chunks are tagged by source path and the agent <strong>filters retrieval to the active code
+profile</strong> so a multi-repo machine doesn't bleed snippets from one project into another.</p>
+<h3 id="identifiers-outside-the-db">Identifiers outside the DB<a class="headerlink" href="#identifiers-outside-the-db" title="Permanent link">&para;</a></h3>
+<p>Strings that look like catalog objects but are not in the connected table list appear as
+<strong>secondary context</strong> for the LLM (for example external lake tables referenced from your
+ETL repo). The agent labels them as such so the merge step can weight them appropriately.</p>
+<h3 id="cache">Cache<a class="headerlink" href="#cache" title="Permanent link">&para;</a></h3>
+<p><code>~/.amx/code_cache/&lt;slug&gt;/</code> stores a manifest plus serialised scan results so <code>/run</code> does
+not re-walk the repo every time. Use <code>--code-refresh</code> or <code>/code-refresh</code> after the tree
+changes; refresh clears the active profile's cache <strong>and</strong> semantic chunks.</p>
+<p>GitHub document and codebase sources are cloned into temporary directories only for the
+active scan/ingest operation, then removed.</p>
+<h2 id="orchestrator">Orchestrator<a class="headerlink" href="#orchestrator" title="Permanent link">&para;</a></h2>
+<p>The orchestrator (<code>amx.agents.orchestrator</code>) merges per-column candidate sets from all three
+agents into a final ranked list. The merge prompt:</p>
+<ul>
+<li>Uses <strong>source precedence</strong> rather than averaging conflicting descriptions. Profile +
+  Code references beat a single doc snippet; explicit comments in the DB beat inferred ones.</li>
+<li>Calibrates confidence using logprob thresholds (<code>high</code> / <code>medium</code> / <code>low</code>) configured via
+  <code>/logprob-thresholds</code>. The agent prompts explicitly avoid unsupported business claims and
+  explain confidence using evidence classes.</li>
+<li>Never silently parses truncated JSON: when <code>finish_reason=length</code>, AMX halts processing and
+  reports the truncation rather than guessing.</li>
+</ul>
+<p>The orchestrator also produces a <strong>table-level summary</strong> describing what the table is for,
+which is useful for downstream <code>/ask</code> queries.</p>
+<h2 id="confidence-and-logprobs">Confidence and logprobs<a class="headerlink" href="#confidence-and-logprobs" title="Permanent link">&para;</a></h2>
+<p>When provider token offsets can be reconstructed, AMX scores generated description text per
+suggestion using token logprobs. Otherwise it falls back to a whole-response score. Tune the
+thresholds:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>/llm-thresholds 0.85 0.6
+</span></code></pre></div>
+<p>means logprob ≥ 0.85 → <code>high</code>, ≥ 0.6 → <code>medium</code>, otherwise <code>low</code>.</p>
+<p>Confidence labels are also surfaced in <code>/history compare</code> so you can see how a prompt-detail
+or model change shifts the distribution between runs.</p>
+<h2 id="tuning-knobs">Tuning knobs<a class="headerlink" href="#tuning-knobs" title="Permanent link">&para;</a></h2>
+<p>Every behaviour above can be tuned for throughput / latency:</p>
+<ul>
+<li><code>/llm-batch-size N</code> — how many columns the Profile Agent sends in one LLM call.</li>
+<li><code>/batch-context-columns off|all|N</code> — non-batch column names included as context per batch.</li>
+<li><code>/n-alternatives 1..5</code> — alternatives per column. Default 3.</li>
+<li><code>/prompt-detail minimal|standard|detailed|full</code> — preset prompt budgets.</li>
+<li><code>/profiling sampled|metadata</code> — switch DB profiling intensity.</li>
+<li><code>/llm-batch-size</code> and OpenAI / Anthropic batch endpoints (<code>/run --batch</code>) for very large
+  schemas.</li>
+</ul>
+<p>See <a href="../../llm-providers/batch-mode/">Batch mode</a> and <a href="../../configuration/profiling-modes/">Profiling modes</a>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

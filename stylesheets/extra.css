@@ -1,0 +1,754 @@
+/* =========================================================================
+   AMX docs — built to STRICT three-column spec.
+   - Header: ONE slim row (logo + nav + theme toggle icon only)
+   - Left sidebar: 280px, populated (search + active pill + groups + collapse)
+   - Center content: 720px max
+   - Right TOC: 220px, sticky, ≥1280px only, anchors only
+   - No floating widgets, no feedback widget, no header dropdowns/CTA
+   ========================================================================= */
+
+:root {
+  --font-text:    "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+[data-md-color-scheme="default"] {
+  --bg:           #FFFFFF;
+  --bg-sidebar:   #FAFBFC;
+  --bg-hover:     #F1F3F5;
+  --bg-elevated:  #FFFFFF;
+  --text:         #1B1F23;
+  --text-muted:   #57606A;
+  --text-faint:   #8B919A;
+  --border:       #E5E7EB;
+  --accent:       #2563EB;
+  --accent-dark:  #1D4ED8;
+  --accent-soft:  rgba(37, 99, 235, 0.08);
+  --code-bg:      #F6F8FA;
+  --tip:          #0F8C73;
+  --tip-soft:     rgba(15, 140, 115, 0.08);
+
+  --md-default-bg-color:         var(--bg);
+  --md-default-fg-color:         var(--text);
+  --md-typeset-color:            var(--text);
+  --md-typeset-a-color:          var(--accent);
+  --md-primary-fg-color:         var(--accent);
+  --md-primary-fg-color--light:  var(--accent);
+  --md-primary-fg-color--dark:   var(--accent-dark);
+  --md-primary-bg-color:         var(--bg);
+  --md-accent-fg-color:          var(--accent);
+  --md-code-bg-color:            var(--code-bg);
+  --md-code-fg-color:            var(--text);
+}
+
+[data-md-color-scheme="slate"] {
+  --bg:           #1B1F24;
+  --bg-sidebar:   #16191D;
+  --bg-hover:     #22262D;
+  --bg-elevated:  #1F232A;
+  --text:         #D8DDE3;
+  --text-muted:   #9CA3AD;
+  --text-faint:   #6B7280;
+  --border:       #2A2E36;
+  --accent:       #60A5FA;
+  --accent-dark:  #93C5FD;
+  --accent-soft:  rgba(96, 165, 250, 0.10);
+  --code-bg:      #14171B;
+  --tip:          #34D399;
+  --tip-soft:     rgba(52, 211, 153, 0.10);
+
+  --md-default-bg-color:         var(--bg);
+  --md-default-fg-color:         var(--text);
+  --md-typeset-color:            var(--text);
+  --md-typeset-a-color:          var(--accent);
+  --md-primary-fg-color:         var(--accent);
+  --md-primary-fg-color--light:  var(--accent);
+  --md-primary-fg-color--dark:   var(--accent-dark);
+  --md-primary-bg-color:         var(--bg);
+  --md-accent-fg-color:          var(--accent);
+  --md-code-bg-color:            var(--code-bg);
+  --md-code-fg-color:            var(--text);
+
+  --md-typeset-kbd-color:        var(--bg-elevated);
+  --md-typeset-kbd-accent-color: var(--border);
+  --md-typeset-kbd-border-color: var(--border);
+
+  --md-default-fg-color--light:  var(--text-muted);
+  --md-default-fg-color--lighter: var(--text-faint);
+  --md-default-fg-color--lightest: var(--border);
+}
+
+html, body { background: var(--bg); }
+
+/* ───────────── Base typography ───────────── */
+
+body, .md-typeset {
+  font-family: var(--font-text);
+  font-size: 16px;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+.md-typeset p,
+.md-typeset li {
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.6;
+}
+.md-typeset a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.md-typeset a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+.md-typeset h1 {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin: 0 0 20px;
+}
+.md-typeset h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin: 56px 0 24px;
+}
+.md-typeset h2:first-of-type { margin-top: 32px; }
+.md-typeset h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 32px 0 12px;
+}
+.md-typeset h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 24px 0 8px;
+}
+.md-typeset .headerlink {
+  color: var(--text-faint) !important;
+  opacity: 0;
+  margin-left: 8px;
+  transition: opacity 150ms ease;
+}
+.md-typeset h2:hover .headerlink,
+.md-typeset h3:hover .headerlink,
+.md-typeset h4:hover .headerlink { opacity: 1; }
+
+/* ───────────── Header — one slim row, ~56px ───────────── */
+
+.md-header {
+  background: var(--bg);
+  color: var(--text);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+  height: 56px;
+  position: sticky;
+}
+.md-header__inner {
+  height: 56px;
+  padding: 0 24px;
+  max-width: none;
+  display: flex;
+  align-items: center;
+}
+.md-header__title {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--text);
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.md-header__button.md-logo { padding: 6px; }
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg { height: 28px; width: 28px; }
+
+.amx-nav {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-left: 32px;
+}
+.amx-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 6px 0;
+  white-space: nowrap;
+  transition: color 150ms ease;
+}
+.amx-nav a:hover,
+.amx-nav a.active { color: var(--accent); }
+@media (max-width: 1024px) { .amx-nav { display: none; } }
+
+.amx-headright {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Theme toggle — strip Material's button styling so it's just the icon */
+.amx-headright .md-header__button {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  color: var(--text-muted);
+  border-radius: 6px;
+  transition: color 150ms ease, background 150ms ease;
+}
+.amx-headright .md-header__button:hover {
+  color: var(--accent);
+  background: var(--bg-hover);
+}
+.amx-headright .md-header__button svg { width: 18px; height: 18px; }
+
+/* Hide Material's header search trigger and source repo button — search lives in sidebar.
+   Note: the palette toggle ALSO has class .md-header__option, so we re-show it
+   when nested inside our .amx-headright container. */
+.md-header__option { display: none; }
+.md-header__source { display: none; }
+.md-header form[name="search"] { display: none; }
+[for="__search"].md-icon.md-header__button { display: none; }
+.amx-headright .md-header__option { display: flex; }
+
+/* ───────────── Three-column grid layout ───────────── */
+/* DOM order from Material is: primary sidebar, secondary sidebar, content.
+   So we use explicit grid-column to put each into the correct track.
+   minmax(0, 1fr) is critical so long content can't stretch the track. */
+
+.md-grid { max-width: none; margin: 0; padding: 0; }
+.md-main { background: var(--bg); }
+.md-main__inner {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 220px;
+  gap: 40px;
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+.md-sidebar--primary    { grid-column: 1; }
+.md-content             { grid-column: 2; }
+.md-sidebar--secondary  { grid-column: 3; }
+
+@media (max-width: 1280px) {
+  .md-main__inner { grid-template-columns: 280px minmax(0, 1fr); gap: 32px; }
+  .md-sidebar--secondary { display: none; }
+}
+@media (max-width: 1024px) {
+  .md-main__inner { grid-template-columns: 1fr; gap: 0; padding: 0; }
+  .md-sidebar--primary { grid-column: 1; }
+  .md-content { grid-column: 1; }
+}
+
+/* ───────────── Center content column — fills its track, no width ───────────── */
+
+.md-content {
+  max-width: none;
+  width: auto;
+  min-width: 0;          /* critical: lets the column shrink below content size */
+  margin: 0;
+  background: var(--bg);
+}
+
+/* The inner text wrapper is what's constrained, NOT the column itself.
+   Left-aligned (no margin: auto) so the text starts at the column's left edge. */
+.md-content__inner {
+  max-width: 960px;
+  margin: 0;
+  padding: 0;
+}
+.md-content__inner::before { display: none; }
+.md-content__button { display: none !important; }
+
+/* H1 wraps at word boundaries only — never mid-word */
+.md-typeset h1 {
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+/* ───────────── Left sidebar ───────────── */
+/* Lives in grid column 1 (280px track). No width on the element — the
+   track sets it. No overflow:hidden — the inner scrollwrap handles
+   scroll with overflow-y: auto. */
+
+.md-sidebar--primary {
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border);
+  padding: 0;
+  position: sticky;
+  top: 56px;
+  height: calc(100vh - 56px);
+}
+.md-sidebar--primary .md-sidebar__scrollwrap {
+  background: var(--bg-sidebar);
+  margin: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+.md-sidebar--primary .md-sidebar__inner {
+  padding: 0;
+  font-size: 14px;
+}
+
+/* Hide the mobile drawer label on desktop */
+.md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] {
+  display: none;
+}
+@media (max-width: 1024px) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] { display: flex; }
+}
+
+.amx-sidebar__nav {
+  padding: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hide Material's mobile drawer label on desktop */
+.amx-sidebar__nav > label.md-nav__title[for="__drawer"] { display: none; }
+@media (max-width: 1024px) {
+  .amx-sidebar__nav > label.md-nav__title[for="__drawer"] { display: flex; }
+}
+
+/* ── Sticky home link → site root ───────────────────── */
+.amx-sidebar__home {
+  display: block;
+  padding: 8px 20px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: color 150ms ease;
+}
+.amx-sidebar__home:hover { color: var(--accent); text-decoration: none; }
+.amx-sidebar__home--active { color: var(--accent); }
+
+/* ── Scrollable tree ────────────────────────────────── */
+.amx-sidebar__tree {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 8px 0 24px;
+  min-height: 0;
+}
+
+/* ── Group (= one top-level or nested section) ───────── */
+.amx-sidebar__group {
+  margin: 0;
+  padding: 0;
+}
+.amx-sidebar__group + .amx-sidebar__group {
+  margin-top: 4px;
+}
+/* Extra breathing room between top-level groups */
+.amx-sidebar__group--depth-0 + .amx-sidebar__group--depth-0 {
+  margin-top: 16px;
+}
+
+/* Uppercase muted category label */
+.amx-sidebar__group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  padding: 14px 20px 6px;
+  line-height: 1.4;
+}
+.amx-sidebar__group--depth-1 > .amx-sidebar__group-title {
+  font-size: 10px;
+  padding: 10px 20px 4px 28px;
+  color: var(--text-faint);
+}
+
+/* ── Leaf links ────────────────────────────────────── */
+.amx-sidebar__link {
+  display: block;
+  padding: 5px 20px 5px 20px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-decoration: none;
+  line-height: 1.45;
+  transition: background 80ms ease, color 80ms ease;
+  white-space: normal;
+  word-break: break-word;
+}
+.amx-sidebar__link:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+  text-decoration: none;
+}
+/* Subtle active state — accent text + faint bg, NO thick left border */
+.amx-sidebar__link--active {
+  color: var(--accent) !important;
+  background: var(--accent-soft);
+  font-weight: 500;
+}
+
+/* Nested links sit deeper (mirrors --group-title indent) */
+.amx-sidebar__link--depth-0 { padding-left: 20px; }
+.amx-sidebar__link--depth-1 { padding-left: 28px; }
+.amx-sidebar__link--depth-2 { padding-left: 36px; }
+.amx-sidebar__link--depth-3 { padding-left: 44px; }
+
+
+/* ───────────── Right TOC — 220px, sticky, ≥1280px only ───────────── */
+
+/* Right TOC lives in grid column 3 (220px track). No width on the
+   element — the track sets it. No left padding — the grid gap handles
+   spacing between columns. */
+@media (min-width: 1281px) {
+  .md-sidebar--secondary {
+    display: block;
+    padding: 0;
+    position: sticky;
+    top: 80px;
+    align-self: start;
+    background: var(--bg);
+    max-height: calc(100vh - 96px);
+  }
+}
+@media (max-width: 1280px) {
+  .md-sidebar--secondary { display: none !important; }
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  background: var(--bg);
+  overflow-y: auto;
+  overflow-x: visible;
+  max-height: calc(100vh - 96px);
+  padding-right: 8px;
+}
+.md-sidebar--secondary .md-nav__title {
+  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0 0 12px 12px;
+  border-bottom: none;
+  background: transparent;
+  display: block;
+}
+.md-sidebar--secondary .md-nav__list {
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+.md-sidebar--secondary .md-nav__item {
+  padding: 0;
+  margin: 0;
+  display: block;
+}
+.md-sidebar--secondary .md-nav__link {
+  display: block;
+  padding: 6px 12px;
+  margin: 0;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-muted);
+  text-decoration: none;
+  line-height: 1.4;
+  min-height: 28px;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.md-sidebar--secondary .md-nav__link::after { content: none; }
+.md-sidebar--secondary .md-nav__link:hover {
+  background: transparent;
+  color: var(--accent);
+}
+.md-sidebar--secondary .md-nav__link--active {
+  border-left-color: var(--accent);
+  color: var(--text) !important;
+  font-weight: 500;
+  background: transparent;
+}
+
+/* ───────────── Buttons in body ───────────── */
+
+.md-typeset .md-button {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--bg);
+  transition: all 150ms ease;
+}
+.md-typeset .md-button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+.md-typeset .md-button--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #FFFFFF !important;
+}
+.md-typeset .md-button--primary:hover {
+  background: var(--accent-dark);
+  border-color: var(--accent-dark);
+  color: #FFFFFF !important;
+}
+
+/* ───────────── Code ───────────── */
+
+.md-typeset pre > code,
+.md-typeset .highlight pre {
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--code-bg);
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 16px;
+}
+.md-typeset code {
+  font-size: 13px;
+  border-radius: 4px;
+  padding: 2px 6px;
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+/* ───────────── Tables ───────────── */
+
+.md-typeset table:not([class]) {
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  box-shadow: none;
+}
+.md-typeset table:not([class]) th {
+  background: var(--bg-hover);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.md-typeset table:not([class]) td {
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text);
+}
+
+/* ───────────── Tip / Note callouts — Databricks-style soft teal ───────────── */
+
+.md-typeset .admonition,
+.md-typeset details {
+  border: none;
+  border-radius: 8px;
+  background: var(--tip-soft);
+  box-shadow: none;
+  font-size: 14px;
+  padding: 4px 18px;
+  margin: 24px 0;
+  color: var(--text);
+}
+.md-typeset .admonition-title,
+.md-typeset summary {
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--tip);
+  border-bottom: none;
+  background: transparent;
+  padding: 14px 0 6px 28px;
+  text-transform: none;
+}
+.md-typeset .admonition-title::before,
+.md-typeset summary::before {
+  background-color: var(--tip) !important;
+  top: 14px;
+}
+.md-typeset .admonition > p,
+.md-typeset details > p {
+  color: var(--text);
+  padding: 0 0 14px;
+  line-height: 1.6;
+}
+
+/* Warning / danger keep a warmer accent */
+.md-typeset .admonition.warning,
+.md-typeset details.warning {
+  background: rgba(245, 158, 11, 0.10);
+}
+.md-typeset .admonition.warning > .admonition-title,
+.md-typeset details.warning > summary { color: #D97706; }
+.md-typeset .admonition.warning > .admonition-title::before,
+.md-typeset details.warning > summary::before { background-color: #D97706 !important; }
+
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning,
+[data-md-color-scheme="slate"] .md-typeset details.warning {
+  background: rgba(251, 191, 36, 0.10);
+}
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title,
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary { color: #FBBF24; }
+[data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title::before,
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary::before { background-color: #FBBF24 !important; }
+
+/* ───────────── Card grid — 2 columns on desktop ───────────── */
+
+.md-typeset .grid.cards { margin: 24px 0; }
+.md-typeset .grid.cards > ul {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+@media (max-width: 768px) {
+  .md-typeset .grid.cards > ul { grid-template-columns: 1fr; }
+}
+
+.md-typeset .grid.cards > ul > li {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 18px 20px;
+  background: transparent;
+  margin: 0;
+  transition: border-color 120ms ease, background 120ms ease;
+  box-shadow: none;
+}
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+  transform: none;
+}
+.md-typeset .grid.cards > ul > li > p:first-child,
+.md-typeset .grid.cards > ul > li > h3 {
+  margin: 0 0 6px !important;
+  font-weight: 700;
+  font-size: 15px !important;
+  letter-spacing: 0;
+  color: var(--text) !important;
+  line-height: 1.35 !important;
+  transition: color 120ms ease;
+}
+.md-typeset .grid.cards > ul > li:hover > p:first-child,
+.md-typeset .grid.cards > ul > li:hover > h3 {
+  color: var(--accent) !important;
+}
+.md-typeset .grid.cards > ul > li > p:first-child a,
+.md-typeset .grid.cards > ul > li > h3 a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+.md-typeset .grid.cards > ul > li > p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+.md-typeset .grid.cards > ul > li > p:not(:first-child) { margin-top: 8px; }
+
+/* ───────────── Hero CLI screenshot on the home page ───────────── */
+
+.md-typeset .amx-hero-img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 28px 0 32px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #0B0E12;            /* matches the dark terminal in the screenshot */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-hero-img {
+  box-shadow: none;
+}
+
+/* ───────────── Page intro: breadcrumb on top, last-updated immediately above H1 ───────────── */
+
+.amx-pageintro { margin: 0 0 4px; }
+.amx-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0 0 24px;
+}
+.amx-breadcrumb a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+.amx-breadcrumb a:hover { color: var(--accent); }
+.amx-breadcrumb__sep { opacity: 0.5; }
+.amx-breadcrumb__home {
+  display: inline-flex; align-items: center;
+}
+.amx-breadcrumb__home svg { width: 14px; height: 14px; }
+
+/* ───────────── Footer ───────────── */
+
+.amx-footer {
+  background: var(--bg);
+  padding: 32px 24px;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+.amx-footer__line {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.amx-footer__line a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+.amx-footer__line a:hover { color: var(--accent); }
+.amx-footer__sep { margin: 0 8px; opacity: 0.6; }
+
+/* Hide Material's default footer chrome */
+.md-footer { background: transparent; }
+.md-footer-meta { display: none; }
+.md-footer__inner { padding: 0; }
+.md-footer__title { display: none; }
+.md-footer-nav { display: none !important; }
+
+/* ───────────── Misc ───────────── */
+
+.md-typeset hr { border: none; height: 1px; background: var(--border); margin: 32px 0; }
+.md-typeset blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  padding: 12px 16px;
+  border-radius: 0 6px 6px 0;
+  color: var(--text);
+}
+
+/* ───────────── Responsive ───────────── */
+
+@media (max-width: 768px) {
+  .md-typeset h1 { font-size: 28px; }
+  .md-typeset h2 { font-size: 20px; margin-top: 40px; }
+  .md-content__inner { padding: 24px 20px 48px; }
+}
