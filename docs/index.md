@@ -52,7 +52,7 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 
 -   [**Run diagnostics**](cli/doctor.md)
 
-    `amx doctor` checks install, config, and connectivity from any shell — even when AMX itself can't start.
+    `/doctor` checks install, config, and connectivity from any shell — even when AMX itself can't start.
 
 </div>
 
@@ -98,7 +98,7 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 
     Run history, comparison across runs, re-evaluation.
 
--   [**`amx doctor`**](cli/doctor.md)
+-   [**`/doctor`**](cli/doctor.md)
 
     Install / config / connectivity diagnostics.
 

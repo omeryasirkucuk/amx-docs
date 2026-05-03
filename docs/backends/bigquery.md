@@ -146,7 +146,7 @@ active_db_profile: prod-bq
 
 1. `> /connect` — reports the active project and the resolved ADC source. If the line reads `ADC: none` you have neither user creds nor a key file; re-run `gcloud auth application-default login` or set `credentials_path:`.
 2. `> /db inspect` — shows the configured `max_bytes_billed` ceiling so you know the safety net is in place before the first `/run`.
-3. `> amx doctor` — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).
+3. `> /doctor` — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).
 
 ## Troubleshooting
 

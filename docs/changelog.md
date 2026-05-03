@@ -10,7 +10,7 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ### 0.12.0 — `/doctor` streams staged progress like `/run`
 
-`amx doctor` (and the in-session `/doctor`) now print one `[Stage]` line per phase as
+`/doctor` (and the in-session `/doctor`) now print one `[Stage]` line per phase as
 the check runs — `[Binary]`, `[Python]`, `[Schema]`, `[FS]`, `[Drivers]`, `[DB]`,
 `[LLM]`, `[History]` — using the same live progress format `/run` uses. A stalled probe
 (typically the LLM models-endpoint ping) is now visible as `in progress` for much longer
@@ -18,7 +18,7 @@ than its peers instead of looking like a hang, and the closing
 `✓ /doctor finished in Xs. N passed, M failed.` summary mirrors `/run`'s footer with the
 first remediation inline. Exit codes are unchanged (`0` clean, `1` if any ✗); under
 `--skip-network` the `[LLM]` stage collapses to a single `skipped` line. See
-[`amx doctor`](cli/doctor.md) for the full sample output.
+[`/doctor`](cli/doctor.md) for the full sample output.
 
 ### 0.12.0 — shared run-history store for team collaboration
 

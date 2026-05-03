@@ -103,11 +103,18 @@ over a window.
 
 ## When something goes wrong
 
+Open AMX and run `/doctor`:
+
 ```bash
-amx doctor
+amx
 ```
 
-Runs from any shell, including a broken AMX state. Diagnoses install / config / connectivity
-and prints actionable hints next to each ✗.
+```text
+> /doctor
+```
+
+`/doctor` diagnoses install / config / connectivity and prints actionable hints next to
+each ✗. If AMX itself won't start (so you can't reach the REPL), the same checks are
+also exposed as a shell fallback: `amx doctor`.
 
 For the full review experience and a real example, continue with the [first run walkthrough](first-run.md).

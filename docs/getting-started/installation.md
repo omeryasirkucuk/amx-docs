@@ -38,12 +38,12 @@ See [Contributing](../contributing.md) for the full development workflow.
 
 ```bash
 amx --version
-amx doctor
+> /doctor
 ```
 
-`amx doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
+`/doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
 Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use `amx doctor --skip-network` for an
+a broken state — no interactive session required. Use `/doctor --skip-network` for an
 offline quick check.
 
 ## Where AMX writes files

@@ -1,22 +1,40 @@
-# `amx doctor`
+# `/doctor`
 
-`amx doctor` is the diagnostics command. It runs from any shell — including a broken AMX
-state — and reports actionable problems with your install, config, and connectivity.
+`/doctor` is the diagnostics command. Run it inside the AMX REPL whenever
+something looks wrong — install, config, or connectivity — and it streams an
+actionable check per phase.
 
-## Why `doctor` is special
+## Why `/doctor` is special
 
-Every other AMX command requires a working install and config. `doctor` doesn't. If `amx`
-won't start, `doctor` still tells you why. It's the first thing to run when something
-looks wrong.
+Every other slash command requires a working profile and a reachable LLM. `/doctor`
+doesn't — it's designed to keep working when nothing else does. It's also the *only*
+command exposed as a shell entry point (`amx doctor`), so even when `amx` itself
+won't start the REPL, you still get the same diagnostic output.
 
 ## Running it
 
+Open AMX, then call `/doctor`:
+
 ```bash
-amx doctor                    # full check, hits the network
-amx doctor --skip-network     # offline quick check
+amx
 ```
 
-You can also run it inside an AMX session as `/doctor`.
+```text
+> /doctor                    # full check, hits the network
+> /doctor --skip-network     # offline quick check
+```
+
+!!! tip "Shell-only fallback"
+    If `amx` won't even reach the REPL (broken install, corrupt config, missing
+    driver), the same diagnostic also runs as a shell command:
+
+    ```bash
+    amx doctor
+    amx doctor --skip-network
+    ```
+
+    This is the one place AMX intentionally exposes a slash command at the shell —
+    everywhere else, the canonical flow is `amx` → `> /<command>`.
 
 ## What it checks
 
@@ -45,7 +63,7 @@ instead of looking like a hang. The final line summarises pass/fail counts and p
 the first remediation:
 
 ```text
-$ amx doctor
+> /doctor
 [Binary]   scanning PATH for amx ......................  ok (0.0 s)
            /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
 [Python]   detecting interpreter ......................  ok (0.0 s)
@@ -95,7 +113,7 @@ Each ✗ comes with a one-line remediation:
 - **After `pip install --upgrade amx-cli`.** Catches schema bumps and missing extras.
 - **When a `/run` fails for no obvious reason.** Doctor will tell you whether the LLM is
   reachable, whether the DB is reachable, and whether either changed since the last run.
-- **In CI.** Run `amx doctor --skip-network` as a smoke test to confirm the installed
+- **In CI.** Run `/doctor --skip-network` as a smoke test to confirm the installed
   bundle is intact.
 
 ## What `doctor` does NOT do

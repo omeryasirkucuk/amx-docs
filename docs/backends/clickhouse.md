@@ -138,7 +138,7 @@ and the port is `8443`.
 
 1. `> /connect` — server version + latency. ClickHouse usually returns under ~100 ms; sustained higher values often mean the load balancer is in a different region from the client.
 2. `> /db inspect` — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.
-3. `> amx doctor` — driver loaded, profile reachable, write-back grants confirmed.
+3. `> /doctor` — driver loaded, profile reachable, write-back grants confirmed.
 
 ## Troubleshooting
 
