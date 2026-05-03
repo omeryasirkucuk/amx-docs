@@ -33,6 +33,25 @@ Pick an engine, then enter that engine's connection details:
 
 Per-backend setup pages: [Backends](../backends/index.md).
 
+### Profile-name and host input — current behaviour
+
+The same notes apply to the inline `/add-db-profile` and `/add-llm-profile` flows that
+sit under `/db` and `/llm`:
+
+- **Reusing a profile name silently enters edit mode.** Typing `dbr` into
+  `/add-db-profile` when a `dbr` profile already exists drops you into
+  `ℹ  Editing profile: dbr` instead of refusing with a "name already exists" message.
+  This is a known UX gap and will be tightened to an explicit error in a follow-up
+  release. Until then: pick a fresh name (e.g. `dbr-prod`, `dbr-dev`), or call
+  `/remove-db-profile dbr` first if you really want to start that profile from scratch.
+- **Host fields take whatever you type, including trailing slashes and schemes.**
+  AMX does not yet sanitise trailing `/` or `http(s)://` prefixes on Databricks /
+  Snowflake / Postgres host inputs — `https://dbc-32e8656e-1339.cloud.databricks.com/`
+  and `https://dbc-32e8656e-1339.cloud.databricks.com` are persisted verbatim and the
+  trailing slash can break the connector ("URL parses to a different path"). Until the
+  sanitiser lands, enter the host in its bare form (`dbc-32e8656e-1339.cloud.databricks.com`,
+  no scheme, no trailing `/`) — the per-backend pages show the canonical shape.
+
 ## Step 2 — LLM profile
 
 Pick a provider:

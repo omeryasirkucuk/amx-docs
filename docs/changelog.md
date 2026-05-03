@@ -8,17 +8,30 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.12.0 — docs aligned with interactive-only CLI
+
+AMX is interactive-only: standalone shell subcommands (`amx doctor`, `amx setup`,
+`amx /run …`, …) exit with `Direct subcommands are disabled. Start with amx, then run
+slash commands inside the session`. The docs now consistently route every example
+through `amx` followed by a slash command at the `>` prompt — installation, quickstart,
+backend "Verify" steps, LLM-provider setup notes, env-var recipes, and the flag
+reference all use the in-session form. Three new troubleshooting entries cover the
+Windows `signal.SIGWINCH` startup regression (cross-platform fix incoming as a 0.12.x
+patch), the shared-history-store `invalid literal for int() with base 10: ''` warning
+that surfaces on `/analyze` listing schemas, and the current profile-editor input gaps
+(reusing a profile name silently enters edit mode; host fields don't yet strip trailing
+slashes or `https://` schemes).
+
 ### 0.12.0 — `/doctor` streams staged progress like `/run`
 
-`amx doctor` (and the in-session `/doctor`) now print one `[Stage]` line per phase as
+`/doctor` (the in-session diagnostics command) now prints one `[Stage]` line per phase as
 the check runs — `[Binary]`, `[Python]`, `[Schema]`, `[FS]`, `[Drivers]`, `[DB]`,
 `[LLM]`, `[History]` — using the same live progress format `/run` uses. A stalled probe
 (typically the LLM models-endpoint ping) is now visible as `in progress` for much longer
 than its peers instead of looking like a hang, and the closing
 `✓ /doctor finished in Xs. N passed, M failed.` summary mirrors `/run`'s footer with the
-first remediation inline. Exit codes are unchanged (`0` clean, `1` if any ✗); under
-`--skip-network` the `[LLM]` stage collapses to a single `skipped` line. See
-[`amx doctor`](cli/doctor.md) for the full sample output.
+first remediation inline. Under `--skip-network` the `[LLM]` stage collapses to a single
+`skipped` line. See [`/doctor`](cli/doctor.md) for the full sample output.
 
 ### 0.12.0 — shared run-history store for team collaboration
 

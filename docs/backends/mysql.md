@@ -136,7 +136,7 @@ active_db_profile: prod-mysql
 
 1. `> /connect` — server version + round-trip latency.
 2. `> /db inspect` — counts of tables, views, procedures, functions, triggers, and events. Distinctive MySQL/MariaDB object types (events, partitions, storage engines) are listed in the inspect output.
-3. `> amx doctor` — driver loaded, profile reachable, comment write-back privilege confirmed.
+3. `> /doctor` — driver loaded, profile reachable, comment write-back privilege confirmed.
 
 ## Troubleshooting
 

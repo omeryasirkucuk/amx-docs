@@ -107,7 +107,7 @@ active_llm_profile: gemini-prod
 
 1. `> /llm test` — small ping completion. Surfaces auth / quota / safety-filter issues before a real run.
 2. `> /llm` — confirms the active profile and model id.
-3. `> amx doctor` — confirms reachability and that the model id resolves.
+3. `> /doctor` — confirms reachability and that the model id resolves.
 
 ## Safety filters — what to expect
 

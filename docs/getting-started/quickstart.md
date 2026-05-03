@@ -103,11 +103,14 @@ over a window.
 
 ## When something goes wrong
 
-```bash
-amx doctor
+Inside the AMX session:
+
+```text
+> /doctor
 ```
 
-Runs from any shell, including a broken AMX state. Diagnoses install / config / connectivity
-and prints actionable hints next to each ✗.
+Diagnoses install / config / connectivity and prints actionable hints next to each ✗.
+AMX is interactive-only — `amx doctor` and other direct subcommands are disabled, so
+always start with `amx` first.
 
 For the full review experience and a real example, continue with the [first run walkthrough](first-run.md).

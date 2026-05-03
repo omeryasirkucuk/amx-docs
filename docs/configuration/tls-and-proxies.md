@@ -93,16 +93,19 @@ verification. Don't ship that to production.
 
 ## Verifying the connection
 
-```bash
-amx doctor                       # full check including TLS
-amx doctor --skip-network        # offline check (skip everything network)
+Open the AMX session — diagnostics live behind slash commands now:
+
+```text
+amx
+> /doctor                       # full check including TLS
+> /doctor --skip-network        # offline check (skip everything network)
 ```
 
 For a one-off connection test against the active DB profile:
 
 ```text
 amx
-/db connect
+> /db connect
 ```
 
 Reports the path that succeeded (saved profile / env-var bundle / `tls_no_verify`) so you

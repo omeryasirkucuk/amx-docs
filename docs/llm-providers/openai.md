@@ -138,7 +138,7 @@ separate provider.
 
 1. `> /llm test` — pings the model with a one-token completion. Surfaces auth / quota errors before you invest in a real run.
 2. `> /llm` — shows the active profile, current model, and threshold settings.
-3. `> amx doctor` — confirms the profile reaches the API and the model id resolves.
+3. `> /doctor` — confirms the profile reaches the API and the model id resolves.
 
 ## Troubleshooting
 

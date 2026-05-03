@@ -15,9 +15,9 @@ LLM SDK, and every supported database driver.
 
 ### Multiple `amx` binaries on PATH
 
-`amx doctor` reports every `amx` it finds. Usually this means one is in your global pip
-install and another is in a project venv. Pick one and uninstall the other, or use a
-venv consistently.
+`/doctor` (run inside an AMX session) reports every `amx` it finds. Usually this means
+one is in your global pip install and another is in a project venv. Pick one and
+uninstall the other, or use a venv consistently.
 
 ## Configuration
 
@@ -52,7 +52,7 @@ falls back to inline secrets).
 ### `/run` failed with "LLM unreachable"
 
 `/analyze /run` tests the active LLM before profiling any asset and stops if the
-model/profile is unreachable or deactivated. Run `amx doctor` — it'll tell you whether
+model/profile is unreachable or deactivated. Run `/doctor` — it'll tell you whether
 the API key is invalid, the endpoint is unreachable, or the model is deactivated.
 
 ### `/run` returned 0 visible characters and used all output tokens

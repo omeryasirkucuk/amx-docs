@@ -4,6 +4,25 @@ The error messages you're most likely to see, with the cause and fix for each.
 
 ## Install errors
 
+### `AttributeError: module 'signal' has no attribute 'SIGWINCH'` on Windows
+
+**Cause:** AMX's interactive REPL installs a terminal-resize handler so the prompt
+redraws when you stretch the window. The current 0.12.0 launcher reaches for
+`signal.SIGWINCH` unconditionally, but `SIGWINCH` only exists on POSIX — native Windows
+Python doesn't expose it, so the launcher crashes during the splash banner:
+
+```text
+✗  AMX crashed: AttributeError: module 'signal' has no attribute 'SIGWINCH'
+  File "…\amx\cli_support\session.py", line 1079, in run_interactive_session
+    prev_sigwinch = signal.getsignal(signal.SIGWINCH)
+```
+
+**Fix:** This is a regression — the resize-handler should be feature-detected
+(`if hasattr(signal, "SIGWINCH")`) so Windows skips it and the REPL still starts.
+The patch is tracked for the next 0.12.x point release; `pip install --upgrade amx-cli`
+once it ships and `amx` will start cleanly on Windows again. No platform-specific shell
+is required.
+
 ### `ImportError: No module named 'psycopg2'` (or any other driver)
 
 **Cause:** A database driver isn't importable. This usually means a broken or partial
@@ -34,8 +53,8 @@ running. AMX refuses to load it rather than risk silently mangling.
 
 **Cause:** Postgres unreachable. Wrong host / port / firewall / not running.
 
-**Fix:** `amx doctor` confirms the active profile is the one you think it is. Verify with
-`psql -h <host> -p <port> -U <user> -d <database>` directly.
+**Fix:** `/doctor` (inside the AMX session) confirms the active profile is the one you
+think it is. Verify with `psql -h <host> -p <port> -U <user> -d <database>` directly.
 
 ### `snowflake.connector.errors.OperationalError: 250001 — Could not connect to Snowflake backend`
 
@@ -81,7 +100,8 @@ the dataset.
 **Cause:** `/analyze /run` tests the active LLM **before** profiling any asset. The pre-flight
 failed.
 
-**Fix:** Run `amx doctor`. Usually it's an invalid API key or a deactivated model.
+**Fix:** Run `/doctor` inside the AMX session. Usually it's an invalid API key or a
+deactivated model.
 
 ### `Model returned 0 visible characters and used all 900 output tokens`
 
@@ -199,13 +219,52 @@ Local writes still succeeded.
 **Fix:** When the backend is back, `/db` → `/history-store` → **Flush pending** replays
 the outbox.
 
+### `Could not connect to shared history store; falling back to local-only. Underlying error: invalid literal for int() with base 10: ''`
+
+**Cause:** The shared history store config has a port (or another integer field) saved
+as an empty string — usually because the wizard was confirmed without entering a port,
+or because the YAML was hand-edited and `port:` was left blank. AMX tries to coerce the
+value with `int("")` and the connection setup raises before the driver is reached. The
+same root cause also surfaces during `/analyze` as `✗ invalid literal for int() with
+base 10: ''` on the `Listing schemas for asset scope` step, because that pipeline
+re-touches the shared-store handle.
+
+**Fix (workaround):** Either re-run the picker with an explicit port, or open
+`~/.amx/config.yml` and set `port:` on the `history_store:` block to the backend's
+default (`5432` Postgres, `3306` MySQL, `1433` MSSQL, `1521` Oracle, `5439` Redshift,
+`9000` ClickHouse). Then restart `amx`:
+
+```text
+> /db
+> /history-store      # re-runs the wizard; pick the existing backend and confirm port
+```
+
+If you don't need shared mode yet, disable it cleanly so the warning stops:
+
+```text
+> /db
+> /history-store      # choose "disable" in the picker
+```
+
+Local-only mode keeps every `/run` and `/ask` working — only the cross-team dual-write
+is paused.
+
 ## When you can't tell what's wrong
 
+Inside the AMX session:
+
+```text
+> /doctor --skip-network            # offline check
+> /doctor                           # full check
+```
+
+To collect a verbose log without re-running, tail it from a second shell:
+
 ```bash
-amx doctor --skip-network            # offline check
-AMX_LOG_LEVEL=DEBUG amx doctor       # verbose
-tail -f ~/.amx/logs/amx.log          # live log
+tail -f ~/.amx/logs/amx.log         # live log
+AMX_LOG=debug amx                   # raise log level for the next session
 ```
 
 Then file an issue at <https://github.com/omeryasirkucuk/amx/issues> with the relevant
-log excerpts (redact secrets) and the output of `amx --version` plus `amx doctor`.
+log excerpts (redact secrets), the output of `amx --version`, and the `/doctor` summary
+copied from your session.

@@ -241,7 +241,7 @@ history_store_schema: AMX
 
 1. `> /config show` — pretty-prints the parsed config (secrets masked).
 2. `> /config validate` — re-runs the schema validator without modifying anything; surfaces any unknown keys or type mismatches.
-3. `> amx doctor` — checks the active profile actually reaches the resolved endpoints.
+3. `> /doctor` — checks the active profile actually reaches the resolved endpoints.
 
 ## Troubleshooting
 

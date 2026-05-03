@@ -32,10 +32,13 @@ have to memorise them per command. Each flag below works on `/run`, `/apply`,
 
 ## Common combinations
 
+All examples below run inside the AMX session (open it with `amx`, then type at the
+`>` prompt). Direct shell forms like `amx /run …` are disabled.
+
 ### Sweep a whole warehouse cheaply
 
-```bash
-amx /run \
+```text
+> /run \
   --profiling-mode metadata \
   --llm-profile openai-mini \
   --auto-accept-high \
@@ -49,8 +52,8 @@ store.
 
 ### Re-run only the tables that failed last time
 
-```bash
-amx /run \
+```text
+> /run \
   --filter '^(stg_|fct_|dim_)' \
   --limit 50 \
   --debug
@@ -61,8 +64,8 @@ the run bounded; `--debug` surfaces the exact failure if it happens again.
 
 ### Apply without the review wizard
 
-```bash
-amx /run-apply \
+```text
+> /run-apply \
   --auto-accept-high \
   --review-all=false \
   --apply
@@ -78,8 +81,8 @@ high-confidence drafts; everything else is queued for later interactive review.
 
 ### Test profiling cost without LLM calls
 
-```bash
-amx /profile sales.customer \
+```text
+> /profile sales.customer \
   --profiling-mode full \
   --skip-network
 ```

@@ -13,10 +13,18 @@ the most useful patterns.
 
 ## Step-by-step
 
+AMX is interactive-only — slash commands run inside the session, not from the shell.
+Each example below sets the env var(s) on the `amx` launch, then issues the slash
+command at the AMX prompt.
+
 ### 1. Override the config dir for an isolated run
 
 ```bash
-AMX_CONFIG_DIR=/tmp/amx-test amx /setup
+AMX_CONFIG_DIR=/tmp/amx-test amx
+```
+
+```text
+> /setup
 ```
 
 The wizard creates `/tmp/amx-test/config.yml` instead of touching `~/.amx`. Useful for:
@@ -28,8 +36,11 @@ running CI tests that mustn't pollute the dev machine.
 ```bash
 export AMX_DB_PASSWORD="$DB_PASSWORD"           # CI secret
 export OPENAI_API_KEY="$OPENAI_API_KEY"         # CI secret
+amx
+```
 
-amx /run sales --profiling-mode metadata --auto-accept-high --apply
+```text
+> /run sales --profiling-mode metadata --auto-accept-high --apply
 ```
 
 With these env vars set, the YAML can ship `password: ""` and `api_key: ""` (no secrets
@@ -40,8 +51,11 @@ on disk); AMX picks the values up from env at session start.
 ```bash
 export OPENAI_API_BASE="https://my-azure-openai.openai.azure.com/"
 export OPENAI_API_KEY="$AZURE_OPENAI_KEY"
+amx
+```
 
-amx /llm test
+```text
+> /llm test
 ```
 
 The OpenAI provider transparently switches to Azure routing.
@@ -49,7 +63,11 @@ The OpenAI provider transparently switches to Azure routing.
 ### 4. Verbose logging without changing the YAML
 
 ```bash
-AMX_LOG=debug amx /run sales.customer
+AMX_LOG=debug amx
+```
+
+```text
+> /run sales.customer
 ```
 
 Equivalent to passing `--debug` to every command in the session.
@@ -146,7 +164,11 @@ export AMX_DB_USER="$CI_DB_USER"
 export AMX_DB_PASSWORD="$CI_DB_PASSWORD"
 export OPENAI_API_KEY="$CI_OPENAI_KEY"
 
-amx /run --profiling-mode metadata --auto-accept-high --apply
+amx
+```
+
+```text
+> /run --profiling-mode metadata --auto-accept-high --apply
 ```
 
 ### One-off scratch profile in a temp dir
@@ -165,13 +187,17 @@ AMX_CONFIG_DIR=$(mktemp -d) amx
 HTTPS_PROXY=http://proxy.corp:8080 \
 REQUESTS_CA_BUNDLE=/etc/ssl/corp-bundle.pem \
 AMX_LOG=debug \
-amx /llm test
+amx
+```
+
+```text
+> /llm test
 ```
 
 ## Verify
 
 1. `> /config show --include-env` — pretty-prints the resolved values, marking which came from env (`<- env: OPENAI_API_KEY`).
-2. `> amx doctor` — verifies the env-derived secrets actually authenticate.
+2. `> /doctor` — verifies the env-derived secrets actually authenticate.
 3. `> /db connect` — runs a real round-trip with the resolved credentials.
 
 ## Troubleshooting

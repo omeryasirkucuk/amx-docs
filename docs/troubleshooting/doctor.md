@@ -1,24 +1,26 @@
-# Diagnostics with `amx doctor`
+# Diagnostics with `/doctor`
 
-`amx doctor` is the first thing to run when something looks wrong. It runs from any shell
-— including a broken AMX state — and reports actionable problems with your install,
-config, and connectivity.
+`/doctor` is the first thing to run when something looks wrong inside AMX. It reports
+actionable problems with your install, config, and connectivity, and is the fastest way
+to surface the first broken thing without running a real `/run`.
 
-For the full reference see [`amx doctor`](../cli/doctor.md). This page is task-oriented:
+For the full reference see [`/doctor`](../cli/doctor.md). This page is task-oriented:
 "I see X — what does doctor tell me?"
 
 ## Quick reference
 
-```bash
-amx doctor                       # full check, hits the network
-amx doctor --skip-network        # offline quick check
-```
+AMX is interactive-only; standalone shell subcommands are disabled. Open the session and
+use the slash form:
 
-Inside an AMX session: `/doctor`.
+```text
+amx
+> /doctor                       # full check, hits the network
+> /doctor --skip-network        # offline quick check
+```
 
 ## What each line means
 
-`doctor` streams the same `[Stage]` progress lines that `/run` uses, so each check is
+`/doctor` streams the same `[Stage]` progress lines that `/run` uses, so each check is
 visible as it happens — a stalled probe (usually `[LLM]`) shows up as `in progress` for
 much longer than the others rather than looking like a hang.
 
@@ -97,8 +99,8 @@ outbox depth (`pending_shared_writes: 0`).
 ```
 
 Final summary mirrors `/run`'s footer: total elapsed time, pass/fail counts, and the first
-remediation hint inline. `✓` means everything passed (exit `0`); `✗` means at least one
-check failed (exit `1`) so CI can react.
+remediation hint inline. `✓` means everything passed; `✗` means at least one check failed
+and the offending stage is named on the next line.
 
 ## Common failures and fixes
 
@@ -130,7 +132,7 @@ key.
 
 ### `LLM models endpoint timeout`
 
-Network egress problem. Check proxy / firewall. Run `amx doctor --skip-network` to
+Network egress problem. Check proxy / firewall. Run `/doctor --skip-network` to
 confirm everything else is fine — if it does, the LLM endpoint is the only problem.
 
 ### `Cannot read ~/.amx/config.yml`
@@ -161,7 +163,7 @@ For LLM profiles:
 ```text
 /llm-profiles            # see all
 /use-llm <name>          # switch
-amx doctor               # test the new active one
+/doctor                  # test the new active one
 ```
 
 ## What doctor doesn't do

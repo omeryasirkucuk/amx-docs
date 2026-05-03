@@ -5,6 +5,9 @@ AMX is a Python package distributed on PyPI.
 ## Prerequisites
 
 - **Python 3.10 or newer.** AMX is tested on 3.10, 3.11, and 3.12.
+- **macOS, Linux, or Windows.** AMX is cross-platform. See
+  [Common errors](../troubleshooting/common-errors.md) for the current Windows-startup
+  regression and its fix-version.
 - **A database you can connect to.** Any of the [10 supported backends](../backends/index.md).
 - **At least one LLM provider configured.** OpenAI, Anthropic, Gemini, DeepSeek, OpenRouter,
   Ollama, or any OpenAI-compatible local endpoint (vLLM / LM Studio / …).
@@ -38,13 +41,21 @@ See [Contributing](../contributing.md) for the full development workflow.
 
 ```bash
 amx --version
-amx doctor
 ```
 
-`amx doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
-Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use `amx doctor --skip-network` for an
-offline quick check.
+Then open the interactive session and run the diagnostics command:
+
+```text
+amx
+> /doctor
+```
+
+`/doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
+Python runtime, the config schema version, and active DB + LLM reachability. Use
+`/doctor --skip-network` for an offline quick check. AMX is interactive-only — direct
+shell subcommands (`amx doctor`, `amx setup`, …) are disabled and exit with
+`Direct subcommands are disabled. Start with amx, then run slash commands inside the
+session`.
 
 ## Where AMX writes files
 

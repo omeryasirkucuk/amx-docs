@@ -153,7 +153,7 @@ For key-pair auth swap `password:` for `private_key_path:`. For SSO, set
 
 1. `> /connect` — reports server version, active role, and active warehouse. Anything missing here is the most common reason `/run` later fails.
 2. `> /db inspect` — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".
-3. `> amx doctor` — verifies the Snowflake driver is installed, the profile is active, and the connection round-trips.
+3. `> /doctor` — verifies the Snowflake driver is installed, the profile is active, and the connection round-trips.
 
 ## Troubleshooting
 

@@ -158,7 +158,7 @@ db_profiles:
 
 1. `> /connect` — server version, mode (thin / thick), and latency.
 2. `> /db inspect` — counts of tables, views, materialized views, packages, procedures, triggers, sequences, synonyms, and UDTs. Materialized views and packages are first-class on Oracle.
-3. `> amx doctor` — driver loaded, profile reachable, write-back grants confirmed.
+3. `> /doctor` — driver loaded, profile reachable, write-back grants confirmed.
 
 ## Troubleshooting
 
