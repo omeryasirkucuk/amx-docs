@@ -246,9 +246,14 @@ body, .md-typeset {
   .md-sidebar--secondary { display: none; }
 }
 @media (max-width: 1024px) {
-  .md-main__inner { grid-template-columns: 1fr; gap: 0; padding: 0; }
-  .md-sidebar--primary { grid-column: 1; }
-  .md-content { grid-column: 1; }
+  /* Single-column layout — content fills the viewport, sidebar becomes a drawer overlay */
+  .md-main__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 16px 16px 32px;
+  }
+  .md-content { grid-column: 1 / -1; min-width: 0; }
+  /* The sidebar's grid placement is irrelevant once it's position:fixed (drawer rules apply) */
 }
 
 /* ───────────── Center content column — fills its track, no width ───────────── */
@@ -302,12 +307,91 @@ body, .md-typeset {
   font-size: 14px;
 }
 
-/* Hide the mobile drawer label on desktop */
+/* Hide Material's stock mobile drawer-title chrome (we don't render it from nav.html
+   anymore, but other Material partials may still emit one). */
 .md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] {
+  display: none !important;
+}
+
+/* Mobile close button — hidden on desktop; shown only inside the drawer */
+.amx-sidebar__close {
   display: none;
 }
+.amx-sidebar__close svg { width: 24px; height: 24px; display: block; }
+
+/* ── Mobile drawer (≤1024px) ─────────────────────────────────────
+   On desktop, .md-sidebar--primary is a sticky column inside the grid.
+   On mobile, it must slide in from the left as an overlay drawer
+   driven by the existing __drawer checkbox in <body>. */
+
 @media (max-width: 1024px) {
-  .md-sidebar--primary .md-nav--primary > .md-nav__title[for="__drawer"] { display: flex; }
+  /* Drawer container: fixed, full-height overlay, hidden by default */
+  .md-sidebar--primary {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100vh;
+    z-index: 5;
+    border-right: 1px solid var(--border);
+    transform: translateX(-100%);
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.25);
+    background: var(--bg-sidebar);
+    overflow-y: auto;
+  }
+
+  /* When __drawer is checked (hamburger tapped), slide in */
+  [data-md-toggle="drawer"]:checked ~ .md-container .md-sidebar--primary,
+  [data-md-toggle="drawer"]:checked ~ .md-overlay + .md-container .md-sidebar--primary {
+    transform: translateX(0);
+  }
+  /* Fallback selector — Material puts the input as a sibling of body chrome */
+  body:has(#__drawer:checked) .md-sidebar--primary {
+    transform: translateX(0);
+  }
+
+  /* Backdrop overlay when drawer is open */
+  .md-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+    z-index: 4;
+  }
+  body:has(#__drawer:checked) .md-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Show the close button only inside the mobile drawer */
+  .amx-sidebar__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 100ms ease, color 100ms ease;
+    z-index: 1;
+  }
+  .amx-sidebar__close:hover {
+    background: var(--bg-hover);
+    color: var(--text);
+  }
+
+  /* Pad the home link so it doesn't sit under the close X */
+  .amx-sidebar__home {
+    padding-right: 56px;
+  }
 }
 
 .amx-sidebar__nav {
@@ -747,8 +831,56 @@ body, .md-typeset {
 
 /* ───────────── Responsive ───────────── */
 
+/* Tablet and below: tighten content padding, let tables scroll horizontally
+   instead of forcing the page to be wider than the viewport. */
+@media (max-width: 1024px) {
+  .md-content__inner { padding: 4px 0 32px; max-width: 100%; }
+
+  /* Tables → horizontal scroll on overflow */
+  .md-typeset table:not([class]) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+  }
+  .md-typeset table:not([class]) th,
+  .md-typeset table:not([class]) td {
+    white-space: normal;
+  }
+
+  /* Code blocks and pre — let the content scroll, never overflow the viewport */
+  .md-typeset pre > code,
+  .md-typeset .highlight pre {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hero CLI screenshot scales with viewport */
+  .md-typeset .amx-hero-img {
+    margin: 16px 0 24px;
+    border-radius: 6px;
+  }
+
+  /* Header padding tightened */
+  .md-header__inner { padding: 0 16px; }
+  .amx-headright { gap: 4px; }
+}
+
+/* Phone-sized: shrink headings, single-column cards */
 @media (max-width: 768px) {
-  .md-typeset h1 { font-size: 28px; }
-  .md-typeset h2 { font-size: 20px; margin-top: 40px; }
-  .md-content__inner { padding: 24px 20px 48px; }
+  .md-typeset h1 { font-size: 28px; line-height: 1.2; margin-bottom: 16px; }
+  .md-typeset h2 { font-size: 20px; margin-top: 36px; }
+  .md-typeset h3 { font-size: 17px; }
+  .md-typeset p, .md-typeset li { font-size: 15px; }
+
+  /* Site title hidden on small phones — logo is enough */
+  .md-header__title { display: none; }
+
+  /* Card grid → single column on phones */
+  .md-typeset .grid.cards > ul { grid-template-columns: 1fr !important; gap: 12px; }
+
+  /* Footer compact */
+  .amx-footer { padding: 24px 16px; }
 }
