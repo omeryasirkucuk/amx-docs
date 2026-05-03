@@ -161,16 +161,26 @@ body, .md-typeset {
   display: flex;
   align-items: center;
 }
-.md-header__title {
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--text);
-  margin-left: 4px;
-  flex-shrink: 0;
+/* Logo image already says "AMX" — hide the wordmark beside it everywhere. */
+.md-header__title { display: none; }
+.md-header__button.md-logo {
+  padding: 6px 8px;
+  display: inline-flex;
+  align-items: center;
 }
-.md-header__button.md-logo { padding: 6px; }
-.md-header__button.md-logo img,
+/* The new AMX terminal-style logo is wide (≈2.2:1). Constrain by height,
+   let width auto-scale, keep crisp pixels (no smoothing). */
+.md-header__button.md-logo img {
+  height: 26px;
+  width: auto;
+  max-width: 120px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
 .md-header__button.md-logo svg { height: 28px; width: 28px; }
+@media (max-width: 768px) {
+  .md-header__button.md-logo img { height: 22px; max-width: 96px; }
+}
 
 .amx-nav {
   display: flex;
@@ -874,9 +884,6 @@ body, .md-typeset {
   .md-typeset h2 { font-size: 20px; margin-top: 36px; }
   .md-typeset h3 { font-size: 17px; }
   .md-typeset p, .md-typeset li { font-size: 15px; }
-
-  /* Site title hidden on small phones — logo is enough */
-  .md-header__title { display: none; }
 
   /* Card grid → single column on phones */
   .md-typeset .grid.cards > ul { grid-template-columns: 1fr !important; gap: 12px; }
