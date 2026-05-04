@@ -570,16 +570,20 @@
 <p>AMX walks your database, reads your documentation and codebase, then drafts a complete description for every table and column, with confidence scores and a human review before anything lands in the live database.</p>
 <div class="amx-why">
 <div class="amx-why__pain">
-<p><strong>The pain.</strong> Most AI metadata tools work <strong>column-by-column, schema-only</strong> — you approve generic suggestions one at a time, with no project context. Combining database + documentation + codebase evidence with a structured human review is rare; doing all four with native <code>COMMENT ON</code> write-back is rarer still.</p>
+<p><strong>The pain</strong>
+Most AI metadata tools work <strong>column-by-column, schema-only</strong> — you approve generic suggestions one at a time, with no project context. Combining database + documentation + codebase evidence with a structured human review is rare; doing all four with native <code>COMMENT ON</code> write-back is rarer still.</p>
 </div>
 <div class="amx-why__angle">
-<p><strong>AMX's angle.</strong> Database <strong>+</strong> documentation <strong>+</strong> codebase <strong>+</strong> human review, run together. Drafts in batches with confidence scores, written back as the SQL your warehouse already speaks. Whole-warehouse first-pass in <strong>minutes</strong>, not weeks.</p>
+<p><strong>The angle</strong>
+Database <strong>+</strong> documentation <strong>+</strong> codebase <strong>+</strong> human review, run together. Drafts in batches with confidence scores, written back as the SQL your warehouse already speaks. Whole-warehouse first-pass in <strong>minutes</strong>, not weeks.</p>
 </div>
 <div class="amx-why__ask">
-<p><strong>Then <code>/ask</code> it.</strong> Open a session and chat with the catalog you just built: <em>"what joins to <code>customer</code>?"</em>, <em>"any columns missing descriptions?"</em>, <em>"what does <code>x_legacy_status</code> mean?"</em>, <em>"which tables haven't been touched in 90 days?"</em>. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.</p>
+<p><strong>Ask it</strong>
+Open a session with <code>/ask</code> and chat with the catalog you just built: <em>what joins to <code>customer</code>?</em>, <em>any columns missing descriptions?</em>, <em>what does <code>x_legacy_status</code> mean?</em>, <em>which tables haven't been touched in 90 days?</em>. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.</p>
 </div>
 <div class="amx-why__compliance">
-<p><strong>Self-hosted by design · free and open source.</strong> AMX runs entirely in your environment. <strong>No SaaS account, no data leaves your network</strong>, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to <em>"nothing leaves your perimeter"</em>: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote. Released under the <strong><a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE">Apache License 2.0</a></strong> — free for any use, including commercial.</p>
+<p><strong>Self-hosted</strong>
+AMX runs entirely in your environment. <strong>No SaaS account, no data leaves your network</strong>, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to <em>nothing leaves your perimeter</em>: schema names, sample values, generated descriptions, the audit trail — all stay where you started. Released under the <strong><a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE">Apache License 2.0</a></strong> — free for any use, including commercial.</p>
 </div>
 </div>
 <p><img alt="AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)" class="amx-hero-img" src="assets/cli-hero.png" /></p>

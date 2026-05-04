@@ -1295,131 +1295,143 @@ body:has(#__search:checked) .md-search__inner {
    Left column is the pain point (amber accent — drawing attention),
    right column is AMX's response (cyan accent — on-brand). */
 
+/* Editorial 2-column grid, no card backgrounds, hairline dividers
+   between cells. Row 1: pain | angle. Row 2: /ask | self-hosted.
+   Each cell carries a small uppercase label with a single-pixel
+   accent dot — the only color in the section. Body text is the
+   normal --text-muted, no tinted backgrounds.
+   This pattern reads as "designed by a human" rather than the four-
+   coloured-cards-per-concept default that AI-prompted CSS tends to
+   produce. */
 .md-typeset .amx-why {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin: 28px 0;
-}
-.md-typeset .amx-why__ask {
-  /* Span the full row beneath pain + angle, giving /ask its own beat
-     in the narrative arc (problem → angle → outcome). */
-  grid-column: 1 / -1;
+  gap: 0;
+  margin: 40px 0 56px;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
 }
 .md-typeset .amx-why__pain,
 .md-typeset .amx-why__angle,
 .md-typeset .amx-why__ask,
 .md-typeset .amx-why__compliance {
-  border-radius: 10px;
-  padding: 20px 22px;
-  font-size: 14px;
-  line-height: 1.6;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 28px 32px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--text-muted);
 }
-.md-typeset .amx-why__pain {
-  background: rgba(245, 158, 11, 0.06);
-  border: 1px solid rgba(245, 158, 11, 0.25);
-  border-left: 4px solid #F59E0B;
-}
-.md-typeset .amx-why__pain strong:first-child {
-  color: #F59E0B;
-  letter-spacing: 0.02em;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__pain {
-  background: rgba(251, 191, 36, 0.08);
-  border-color: rgba(251, 191, 36, 0.25);
-  border-left-color: #FBBF24;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__pain strong:first-child {
-  color: #FBBF24;
-}
-
-.md-typeset .amx-why__angle {
-  background: var(--accent-soft);
-  border: 1px solid rgba(120, 241, 242, 0.25);
-  border-left: 4px solid var(--accent);
-}
-.md-typeset .amx-why__angle strong:first-child {
-  color: var(--accent);
-  letter-spacing: 0.02em;
-}
-
-/* Third box — /ask, emerald accent (third distinct color for the
-   third narrative beat: problem → angle → outcome).
-   Spans the full row beneath the first two via grid-column: 1 / -1. */
-.md-typeset .amx-why__ask {
-  background: rgba(16, 185, 129, 0.06);
-  border: 1px solid rgba(16, 185, 129, 0.25);
-  border-left: 4px solid #10B981;
-}
-.md-typeset .amx-why__ask strong:first-child {
-  color: #10B981;
-  letter-spacing: 0.02em;
-}
-
-/* Fourth box — self-hosted/compliance, indigo accent (distinct from
-   the other three: amber pain, cyan angle, emerald ask). Indigo
-   carries a "trust / security" semantic that compliance teams read. */
+/* Reset the override that put /ask + compliance on full rows */
+.md-typeset .amx-why__ask,
 .md-typeset .amx-why__compliance {
-  background: rgba(99, 102, 241, 0.06);
-  border: 1px solid rgba(99, 102, 241, 0.25);
-  border-left: 4px solid #6366F1;
-  grid-column: 1 / -1;
-}
-.md-typeset .amx-why__compliance strong:first-child {
-  color: #6366F1;
-  letter-spacing: 0.02em;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__compliance {
-  background: rgba(129, 140, 248, 0.08);
-  border-color: rgba(129, 140, 248, 0.25);
-  border-left-color: #818CF8;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__compliance strong:first-child {
-  color: #818CF8;
-}
-.md-typeset .amx-why__compliance em {
-  /* Reuse the inline-quote treatment from the /ask box for the
-     "nothing leaves your perimeter" callout. */
-  font-style: normal;
-  color: var(--text);
-  background: var(--bg-elevated);
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-size: 0.95em;
-  border: 1px solid var(--border);
-  white-space: nowrap;
-}
-.md-typeset .amx-why__compliance p { margin: 0; }
-.md-typeset .amx-why__ask em {
-  font-style: normal;
-  color: var(--text);
-  background: var(--bg-elevated);
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-size: 0.95em;
-  border: 1px solid var(--border);
-  white-space: nowrap;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__ask {
-  background: rgba(52, 211, 153, 0.08);
-  border-color: rgba(52, 211, 153, 0.25);
-  border-left-color: #34D399;
-}
-[data-md-color-scheme="slate"] .md-typeset .amx-why__ask strong:first-child {
-  color: #34D399;
+  grid-column: auto;
 }
 
+/* Bold lead-in becomes a small uppercase label on its own line, with
+   a colored dot. The colors stay (per-section accent), but they're
+   on a 6×6 dot + 11px tracked label, not a whole tinted box. */
+.md-typeset .amx-why__pain strong:first-child,
+.md-typeset .amx-why__angle strong:first-child,
+.md-typeset .amx-why__ask strong:first-child,
+.md-typeset .amx-why__compliance strong:first-child {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+.md-typeset .amx-why__pain strong:first-child::before,
+.md-typeset .amx-why__angle strong:first-child::before,
+.md-typeset .amx-why__ask strong:first-child::before,
+.md-typeset .amx-why__compliance strong:first-child::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.md-typeset .amx-why__pain strong:first-child::before        { background: #F59E0B; }
+.md-typeset .amx-why__angle strong:first-child::before       { background: var(--accent); }
+.md-typeset .amx-why__ask strong:first-child::before         { background: #10B981; }
+.md-typeset .amx-why__compliance strong:first-child::before  { background: #818CF8; }
+
+[data-md-color-scheme="slate"] .md-typeset .amx-why__pain strong:first-child::before {
+  background: #FBBF24;
+}
+
+/* Body paragraph — full width below the label, normal weight, slightly
+   bigger than the label for hierarchy */
 .md-typeset .amx-why__pain p,
 .md-typeset .amx-why__angle p,
-.md-typeset .amx-why__ask p {
+.md-typeset .amx-why__ask p,
+.md-typeset .amx-why__compliance p {
   margin: 0;
+  color: var(--text-muted);
 }
+
+/* Inline italics — quoted phrases / example queries. Editorial style:
+   stay italic, slightly more emphasis than body, no background/border. */
+.md-typeset .amx-why em {
+  font-style: italic;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+/* Inline code inside .amx-why — slightly smaller, no background.
+   The em wrapper around a code element (e.g. *what joins to `customer`?*)
+   gets the italic and the inner `customer` keeps its mono treatment. */
+.md-typeset .amx-why code {
+  font-size: 0.88em;
+  background: transparent;
+  padding: 0;
+  border: none;
+  color: var(--text);
+}
+
+/* Strong emphasis inside body paragraphs (the "Apache License 2.0"
+   link, "No SaaS account, no data leaves your network", etc.) keeps
+   the bolder treatment without being a section-label */
+.md-typeset .amx-why p strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.md-typeset .amx-why p a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: border-color 120ms ease;
+}
+.md-typeset .amx-why p a:hover {
+  border-bottom-color: var(--accent);
+}
+
 @media (max-width: 768px) {
-  .md-typeset .amx-why { grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
+  .md-typeset .amx-why {
+    grid-template-columns: 1fr;
+    margin: 28px 0;
+  }
   .md-typeset .amx-why__pain,
   .md-typeset .amx-why__angle,
   .md-typeset .amx-why__ask,
-  .md-typeset .amx-why__compliance { padding: 16px 18px; font-size: 13px; }
+  .md-typeset .amx-why__compliance {
+    padding: 22px 0;
+    border-right: none;
+    border-left: none;
+  }
+  .md-typeset .amx-why {
+    border-left: none;
+  }
 }
 
 /* ───────────── Hero flow diagram on the home page (above H1) ─────── */
