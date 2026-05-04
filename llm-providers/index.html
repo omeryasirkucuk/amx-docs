@@ -398,6 +398,8 @@
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="databricks-serving/"
+         >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="batch-mode/"
@@ -530,6 +532,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#override-rag-with-a-separate-profile" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Override RAG with a separate profile
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -593,6 +606,7 @@ the right one for your workload.</p>
 <li><strong>Cost-sensitive whole-warehouse drafting</strong> → <a href="batch-mode/">Batch mode</a> with <code>gpt-4o-mini</code> or <code>claude-haiku-3-5</code>. ~50% off the live-API rate, async SLA.</li>
 <li><strong>Cryptic legacy schemas (transliterated names, abbreviations)</strong> → <a href="anthropic/">Anthropic</a> with <code>claude-sonnet-4</code> or extended-thinking on a hard subset.</li>
 <li><strong>Big context windows for very wide tables</strong> → <a href="gemini/">Gemini</a> with <code>gemini-2.0-flash</code> and <code>column_batch_size: 15</code>.</li>
+<li><strong>Already on Databricks</strong> → <a href="databricks-serving/">Databricks Serving</a> with a Foundation Model endpoint (e.g. <code>databricks-meta-llama-3-1-70b-instruct</code>). Same workspace as your data, billed against your existing Databricks contract, no extra vendor.</li>
 <li><strong>On-prem / air-gapped</strong> → <a href="ollama-local/">Ollama and local</a>. Llama-3 / Qwen / DeepSeek work; logprob calibration is per-model.</li>
 </ul>
 <h2 id="provider-matrix">Provider matrix<a class="headerlink" href="#provider-matrix" title="Permanent link">&para;</a></h2>
@@ -631,6 +645,14 @@ the right one for your workload.</p>
 <td>✓ native</td>
 <td>✗ in AMX yet</td>
 <td><code>AIza…</code></td>
+</tr>
+<tr>
+<td><a href="databricks-serving/">Databricks Serving</a></td>
+<td><code>databricks-meta-llama-3-1-70b-instruct</code></td>
+<td>Bills against your Databricks workspace</td>
+<td>varies (per-endpoint)</td>
+<td>✗</td>
+<td>Databricks PAT</td>
 </tr>
 <tr>
 <td>OpenRouter</td>
@@ -716,9 +738,21 @@ steps → troubleshooting table → what to read next.</p>
 <li><a href="openai/">OpenAI</a> — the default; logprob-threshold tuning.</li>
 <li><a href="anthropic/">Anthropic</a> — Claude model selection, extended thinking.</li>
 <li><a href="gemini/">Gemini</a> — model picks, safety-filter handling.</li>
+<li><a href="databricks-serving/">Databricks Serving</a> — Foundation Models or custom serving endpoints; same workspace as your data.</li>
 <li><a href="ollama-local/">Ollama and local</a> — on-prem / air-gapped setup.</li>
 <li><a href="batch-mode/">Batch mode</a> — async / cheap drafts via OpenAI / Anthropic batch APIs.</li>
 </ul>
+<h2 id="override-rag-with-a-separate-profile">Override RAG with a separate profile<a class="headerlink" href="#override-rag-with-a-separate-profile" title="Permanent link">&para;</a></h2>
+<p>The RAG agent (which fuses documentation + codebase evidence into a column description)
+can run on a different LLM profile than the one drafting columns. Useful when a cheaper
+fast model is enough for prose synthesis but you still want a stronger model on the
+column-drafting batch path.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx /llm /use-rag-llm
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a># Picker lists every LLM profile + a &quot;(none)&quot; entry to clear the override.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a># Or non-interactive:
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>/use-rag-llm gpt-4o-mini       # pin the RAG agent to this profile
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>/use-rag-llm none              # clear the override (RAG falls back to active)
+</span></code></pre></div>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../getting-started/quickstart/">Quick start</a> — five-minute install-to-first-comment walkthrough.</li>
@@ -761,7 +795,7 @@ steps → troubleshooting table → what to read next.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.5</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.7</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -781,7 +815,7 @@ steps → troubleshooting table → what to read next.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.5"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.7"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>

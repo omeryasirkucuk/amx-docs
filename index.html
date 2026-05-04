@@ -392,6 +392,8 @@
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="llm-providers/databricks-serving/"
+         >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="llm-providers/batch-mode/"
@@ -592,7 +594,7 @@ AMX runs entirely in your environment. <strong>No SaaS account, no data leaves y
 <p><img alt="AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)" class="amx-hero-img" src="assets/cli-hero.png" /></p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>AMX supports 10 database backends and 7 LLM providers. The fastest way to evaluate
+<p>AMX supports 10 database backends and 8 LLM providers (including <code>databricks_serving</code> as of 0.12.7). The fastest way to evaluate
 is <code>pip install amx-cli</code>, then run <code>amx</code> and walk through the <code>/setup</code>
 wizard. Five minutes from install to your first reviewed description.</p>
 </div>
@@ -802,7 +804,7 @@ wizard. Five minutes from install to your first reviewed description.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.5</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.7</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -822,7 +824,7 @@ wizard. Five minutes from install to your first reviewed description.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.5"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": ".", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.7"}</script>
     
     
       <script src="assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -396,6 +396,8 @@
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/databricks-serving/"
+         >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/batch-mode/"
@@ -483,6 +485,39 @@
   
     <nav class="md-nav" aria-label="Latest highlights">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#0127-databricks_serving-is-a-first-class-llm-provider" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.7 — databricks_serving is a first-class LLM provider
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#0126-databricks-ask-polish-list_volumes-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.6 — Databricks /ask polish + list_volumes tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#0125-edit-db-profile-use-rag-llm-safer-profile-writes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.5 — /edit-db-profile + /use-rag-llm + safer profile writes
+      
+    </span>
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#0120-doctor-streams-staged-progress-like-run" class="md-nav__link">
@@ -635,6 +670,57 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0127-databricks_serving-is-a-first-class-llm-provider">0.12.7 — <code>databricks_serving</code> is a first-class LLM provider<a class="headerlink" href="#0127-databricks_serving-is-a-first-class-llm-provider" title="Permanent link">&para;</a></h3>
+<p><code>/add-llm-profile</code> now lists <code>databricks_serving</code> alongside OpenAI / Anthropic / Gemini
+/ etc. Pick a Foundation Model endpoint (e.g.
+<code>databricks-meta-llama-3-1-70b-instruct</code>, <code>databricks-dbrx-instruct</code>) or a custom
+serving endpoint published in your workspace, paste the workspace host, paste a PAT —
+done. AMX builds the <code>/serving-endpoints</code> URL for you. The big win: the LLM lives in
+the same workspace as the SQL warehouse you're documenting, so there's no extra vendor
+contract, no second authentication path, and inference cost stays on your existing
+Databricks bill. See <a href="../llm-providers/databricks-serving/">Databricks Serving</a> for the
+full walkthrough.</p>
+<p>Also fixed in 0.12.7: OpenAI Responses-style structured content blocks
+(<code>{"type":"output_text",...}</code>) are flattened before pydantic validation, so reasoning
+routes that emit content arrays no longer fail draft parsing.</p>
+<h3 id="0126-databricks-ask-polish-list_volumes-tool">0.12.6 — Databricks <code>/ask</code> polish + <code>list_volumes</code> tool<a class="headerlink" href="#0126-databricks-ask-polish-list_volumes-tool" title="Permanent link">&para;</a></h3>
+<p>The Databricks experience for <code>/ask</code> is noticeably less wizard-y in 0.12.6:</p>
+<ul>
+<li><strong>Auto-pick the user catalog.</strong> When the workspace has exactly one user-visible
+  catalog (the common case for analyst sandboxes and team workspaces), <code>/ask</code> picks it
+  silently instead of looping through a "select catalog" prompt for every question.</li>
+<li><strong>Catalog-scoped tools all auto-pick.</strong> <code>list_schemas</code>, <code>list_tables</code>, <code>describe</code>,
+  <code>sample</code> — every tool that needs a catalog now uses the same auto-pick logic, not
+  just the first one.</li>
+<li><strong><code>list_volumes</code> tool.</strong> <code>/ask</code> can now answer questions about Unity Catalog
+  Volumes ("what volumes exist?", "what's in <code>volume_x</code>?"), not just tables.</li>
+<li><strong>TLS asked first in <code>/db /add-db-profile</code>.</strong> The wizard used to probe catalogs
+  before knowing whether the workspace had custom TLS — corporate-CA setups would fail
+  the probe and you'd have to start over. TLS now comes first, the catalog probe runs
+  with the right truststore on the first try.</li>
+</ul>
+<h3 id="0125-edit-db-profile-use-rag-llm-safer-profile-writes">0.12.5 — <code>/edit-db-profile</code> + <code>/use-rag-llm</code> + safer profile writes<a class="headerlink" href="#0125-edit-db-profile-use-rag-llm-safer-profile-writes" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>/edit-db-profile</code>.</strong> Edit an existing DB profile in place — same wizard as
+  <code>/add-db-profile</code> but pre-fills with the current values, so press Enter to keep,
+  type to change. Pairs with the existing collision-detection on <code>/add-db-profile</code>,
+  which now points you at <code>/edit-db-profile</code> instead of failing.</li>
+<li><strong><code>/use-rag-llm</code>.</strong> Pin a different LLM profile to the RAG agent (the one that
+  fuses documentation + codebase evidence into a description) than the one drafting
+  columns. Useful when a cheaper fast model is enough for prose synthesis but you
+  want a stronger model on the column-drafting path. Run with no args for an
+  interactive picker, or <code>/use-rag-llm none</code> to clear the override.</li>
+<li><strong>Profile writes are transactional.</strong> A bug where newly-created profiles could be
+  silently empty after an <code>amx</code> restart (autosave running between two assignments
+  with stale state) is fixed — <code>upsert_db_profile</code> + <code>set_active_db_profile</code> now run
+  inside <code>cfg.transaction()</code> so save() sees consistent state.</li>
+<li><strong>Validating catalog/database picker.</strong> The wizard now validates the
+  catalog/database name against what the connection actually exposes, instead of
+  taking the user's typo at face value and failing on the first query.</li>
+<li><strong><code>/schema</code> and <code>/table</code> (singular) removed.</strong> Use the plural <code>/schemas</code> and
+  <code>/tables</code> (under the <code>/db</code> namespace) — they were the canonical commands all along
+  and the singular forms were undocumented duplicates.</li>
+</ul>
 <h3 id="0120-doctor-streams-staged-progress-like-run">0.12.0 — <code>/doctor</code> streams staged progress like <code>/run</code><a class="headerlink" href="#0120-doctor-streams-staged-progress-like-run" title="Permanent link">&para;</a></h3>
 <p><code>/doctor</code> (and the in-session <code>/doctor</code>) now print one <code>[Stage]</code> line per phase as
 the check runs — <code>[Binary]</code>, <code>[Python]</code>, <code>[Schema]</code>, <code>[FS]</code>, <code>[Drivers]</code>, <code>[DB]</code>,
@@ -739,7 +825,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.5</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.7</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -759,7 +845,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.5"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.7"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
