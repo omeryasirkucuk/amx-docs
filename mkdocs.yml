@@ -172,6 +172,9 @@ nav:
           - Shared history store: collaboration/shared-history-store.md
           - Team setup: collaboration/team-setup.md
           - Safety guards: collaboration/safety-guards.md
+      - Evaluation:
+          - Benchmarks: evaluation/benchmarks.md
+          - Comparisons: evaluation/comparisons.md
       - Troubleshooting:
           - FAQ: troubleshooting/faq.md
           - Diagnostics: troubleshooting/doctor.md

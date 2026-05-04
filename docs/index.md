@@ -26,7 +26,7 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 </div>
 
 <div class="amx-why__compliance" markdown>
-**Self-hosted by design.** AMX runs entirely in your environment. **No SaaS account, no data leaves your network**, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to *"nothing leaves your perimeter"*: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote.
+**Self-hosted by design · free and open source.** AMX runs entirely in your environment. **No SaaS account, no data leaves your network**, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to *"nothing leaves your perimeter"*: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote. Released under the **[Apache License 2.0](https://github.com/omeryasirkucuk/amx/blob/main/LICENSE)** — free for any use, including commercial.
 </div>
 
 </div>
@@ -172,7 +172,21 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 
 </div>
 
-## Quick links
+## Evaluation
+
+<div class="grid cards" markdown>
+
+-   [**Comparisons**](evaluation/comparisons.md)
+
+    AMX vs Snowflake Cortex, Databricks AI Comments, BigQuery Gemini, Atlan, Collibra, DataHub, OpenMetadata — dimension by dimension, fairly.
+
+-   [**Benchmarks**](evaluation/benchmarks.md)
+
+    The state of the field, AMX's confidence-band scoring, and the public Databricks-style protocol AMX is preparing.
+
+</div>
+
+## Project
 
 <div class="grid cards" markdown>
 
@@ -182,11 +196,11 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 
 -   [**Contributing**](contributing.md)
 
-    Development setup, branching, commit format, release process.
+    Development setup, branching, commit format, release process. Co-maintainers welcome.
 
--   [**About the maintainer**](about.md)
+-   [**Project team**](about.md)
 
-    Omer Yasir Kucuk — the engineer behind AMX.
+    Maintained by Omer Yasir Kucuk · contributors and sponsors welcome via GitHub.
 
 -   [**Security**](security.md)
 
