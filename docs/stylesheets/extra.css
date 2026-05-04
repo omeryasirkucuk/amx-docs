@@ -181,25 +181,32 @@ body, .md-typeset {
   display: flex;
   align-items: center;
 }
-/* Logo image already says "AMX" — hide the wordmark beside it everywhere. */
+/* Wordmark is rendered via the amber text logo below — Material's own
+   site-title block is redundant. */
 .md-header__title { display: none; }
 .md-header__button.md-logo {
-  padding: 6px 8px;
+  padding: 6px 10px;
   display: inline-flex;
   align-items: center;
+  gap: 6px;
 }
-/* The new AMX terminal-style logo is wide (≈2.2:1). Constrain by height,
-   let width auto-scale, keep crisp pixels (no smoothing). */
-.md-header__button.md-logo img {
-  height: 26px;
-  width: auto;
-  max-width: 120px;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
+/* Amber monospace "AMX" wordmark — matches the visualizer's accent.
+   Hover lightens to the soft accent ink so the link affordance is felt
+   without a color shift away from the palette. */
+.md-header__button.md-logo.amx-logo-text {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 17px;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-decoration: none;
+  line-height: 1;
 }
-.md-header__button.md-logo svg { height: 28px; width: 28px; }
+.md-header__button.md-logo.amx-logo-text:hover {
+  color: var(--accent-dark);
+}
 @media (max-width: 768px) {
-  .md-header__button.md-logo img { height: 22px; max-width: 96px; }
+  .md-header__button.md-logo.amx-logo-text { font-size: 15px; padding: 6px 8px; }
 }
 
 .amx-nav {
