@@ -14,19 +14,23 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 <div class="amx-why" markdown>
 
 <div class="amx-why__pain" markdown>
-**The pain.** Most AI metadata tools work **column-by-column, schema-only** — you approve generic suggestions one at a time, with no project context. Combining database + documentation + codebase evidence with a structured human review is rare; doing all four with native `COMMENT ON` write-back is rarer still.
+**The pain**
+Most AI metadata tools work **column-by-column, schema-only** — you approve generic suggestions one at a time, with no project context. Combining database + documentation + codebase evidence with a structured human review is rare; doing all four with native `COMMENT ON` write-back is rarer still.
 </div>
 
 <div class="amx-why__angle" markdown>
-**AMX's angle.** Database **+** documentation **+** codebase **+** human review, run together. Drafts in batches with confidence scores, written back as the SQL your warehouse already speaks. Whole-warehouse first-pass in **minutes**, not weeks.
+**The angle**
+Database **+** documentation **+** codebase **+** human review, run together. Drafts in batches with confidence scores, written back as the SQL your warehouse already speaks. Whole-warehouse first-pass in **minutes**, not weeks.
 </div>
 
 <div class="amx-why__ask" markdown>
-**Then `/ask` it.** Open a session and chat with the catalog you just built: *"what joins to `customer`?"*, *"any columns missing descriptions?"*, *"what does `x_legacy_status` mean?"*, *"which tables haven't been touched in 90 days?"*. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.
+**Ask it**
+Open a session with `/ask` and chat with the catalog you just built: *what joins to `customer`?*, *any columns missing descriptions?*, *what does `x_legacy_status` mean?*, *which tables haven't been touched in 90 days?*. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.
 </div>
 
 <div class="amx-why__compliance" markdown>
-**Self-hosted by design · free and open source.** AMX runs entirely in your environment. **No SaaS account, no data leaves your network**, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to *"nothing leaves your perimeter"*: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote. Released under the **[Apache License 2.0](https://github.com/omeryasirkucuk/amx/blob/main/LICENSE)** — free for any use, including commercial.
+**Self-hosted**
+AMX runs entirely in your environment. **No SaaS account, no data leaves your network**, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to *nothing leaves your perimeter*: schema names, sample values, generated descriptions, the audit trail — all stay where you started. Released under the **[Apache License 2.0](https://github.com/omeryasirkucuk/amx/blob/main/LICENSE)** — free for any use, including commercial.
 </div>
 
 </div>
