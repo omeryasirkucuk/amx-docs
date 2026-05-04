@@ -8,6 +8,61 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.12.7 — `databricks_serving` is a first-class LLM provider
+
+`/add-llm-profile` now lists `databricks_serving` alongside OpenAI / Anthropic / Gemini
+/ etc. Pick a Foundation Model endpoint (e.g.
+`databricks-meta-llama-3-1-70b-instruct`, `databricks-dbrx-instruct`) or a custom
+serving endpoint published in your workspace, paste the workspace host, paste a PAT —
+done. AMX builds the `/serving-endpoints` URL for you. The big win: the LLM lives in
+the same workspace as the SQL warehouse you're documenting, so there's no extra vendor
+contract, no second authentication path, and inference cost stays on your existing
+Databricks bill. See [Databricks Serving](llm-providers/databricks-serving.md) for the
+full walkthrough.
+
+Also fixed in 0.12.7: OpenAI Responses-style structured content blocks
+(`{"type":"output_text",...}`) are flattened before pydantic validation, so reasoning
+routes that emit content arrays no longer fail draft parsing.
+
+### 0.12.6 — Databricks `/ask` polish + `list_volumes` tool
+
+The Databricks experience for `/ask` is noticeably less wizard-y in 0.12.6:
+
+- **Auto-pick the user catalog.** When the workspace has exactly one user-visible
+  catalog (the common case for analyst sandboxes and team workspaces), `/ask` picks it
+  silently instead of looping through a "select catalog" prompt for every question.
+- **Catalog-scoped tools all auto-pick.** `list_schemas`, `list_tables`, `describe`,
+  `sample` — every tool that needs a catalog now uses the same auto-pick logic, not
+  just the first one.
+- **`list_volumes` tool.** `/ask` can now answer questions about Unity Catalog
+  Volumes ("what volumes exist?", "what's in `volume_x`?"), not just tables.
+- **TLS asked first in `/db /add-db-profile`.** The wizard used to probe catalogs
+  before knowing whether the workspace had custom TLS — corporate-CA setups would fail
+  the probe and you'd have to start over. TLS now comes first, the catalog probe runs
+  with the right truststore on the first try.
+
+### 0.12.5 — `/edit-db-profile` + `/use-rag-llm` + safer profile writes
+
+- **`/edit-db-profile`.** Edit an existing DB profile in place — same wizard as
+  `/add-db-profile` but pre-fills with the current values, so press Enter to keep,
+  type to change. Pairs with the existing collision-detection on `/add-db-profile`,
+  which now points you at `/edit-db-profile` instead of failing.
+- **`/use-rag-llm`.** Pin a different LLM profile to the RAG agent (the one that
+  fuses documentation + codebase evidence into a description) than the one drafting
+  columns. Useful when a cheaper fast model is enough for prose synthesis but you
+  want a stronger model on the column-drafting path. Run with no args for an
+  interactive picker, or `/use-rag-llm none` to clear the override.
+- **Profile writes are transactional.** A bug where newly-created profiles could be
+  silently empty after an `amx` restart (autosave running between two assignments
+  with stale state) is fixed — `upsert_db_profile` + `set_active_db_profile` now run
+  inside `cfg.transaction()` so save() sees consistent state.
+- **Validating catalog/database picker.** The wizard now validates the
+  catalog/database name against what the connection actually exposes, instead of
+  taking the user's typo at face value and failing on the first query.
+- **`/schema` and `/table` (singular) removed.** Use the plural `/schemas` and
+  `/tables` (under the `/db` namespace) — they were the canonical commands all along
+  and the singular forms were undocumented duplicates.
+
 ### 0.12.0 — `/doctor` streams staged progress like `/run`
 
 `/doctor` (and the in-session `/doctor`) now print one `[Stage]` line per phase as

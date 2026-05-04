@@ -28,7 +28,7 @@ You land in the AMX session:
            ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
            ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 
-  AMX 0.12.0 · Active DB profile: prod-pg · Active LLM profile: openai-prod
+  AMX 0.12.7 · Active DB profile: prod-pg · Active LLM profile: openai-prod
   Type /help for commands, /exit to quit.
 
 >
@@ -65,6 +65,7 @@ Database namespace:
   /db-profiles            List configured DB profiles
   /use-db <name>          Set the active DB profile
   /add-db-profile         Wizard to register a new profile
+  /edit-db-profile <name> Re-run the wizard pre-filled with current values
   /remove-db-profile      Delete a profile
   /connect                Test the active connection
   /schemas                List schemas in the active DB
@@ -134,8 +135,8 @@ for the most-frequently-seen failures.
 |---|---|---|
 | `/setup` | First-run wizard for DB + LLM | — |
 | `/config` | Show or edit `~/.amx/config.yml` | — |
-| `/db` | Connection & introspection | `profiles`, `add-db-profile`, `use-db`, `connect`, `schemas`, `tables`, `profile`, `inspect`, `history-store` |
-| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `temperature`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
+| `/db` | Connection & introspection | `profiles`, `add-db-profile`, `edit-db-profile`, `use-db`, `connect`, `schemas`, `tables`, `profile`, `inspect`, `history-store` |
+| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `use-rag-llm`, `temperature`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
 | `/docs` | RAG document sources | `doc-profiles`, `add-doc-profile`, `scan`, `ingest`, `search-docs`, `doc-analyze` |
 | `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
 | `/metadata` | Inspect introspection cache | — |
