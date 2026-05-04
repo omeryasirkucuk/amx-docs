@@ -75,6 +75,34 @@ if (document.readyState === "loading") {
   _amxLoadAllBadges();
 }
 
+// ─────────────────────────────────────────────────────────────────────
+// ⌘K / Ctrl-K shortcut to open the search modal.
+// Material already binds "/" and "s" by default; we add the macOS-
+// canonical ⌘K and the cross-platform Ctrl-K so the kbd hint in the
+// header search trigger is honest.
+document.addEventListener("keydown", function (e) {
+  // Ignore if focus is in an editable surface
+  const t = e.target;
+  const inEditable =
+    t &&
+    (t.tagName === "INPUT" ||
+      t.tagName === "TEXTAREA" ||
+      t.isContentEditable);
+
+  // ⌘K (mac) or Ctrl-K (others)
+  if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) {
+    const cb = document.getElementById("__search");
+    if (!cb) return;
+    e.preventDefault();
+    if (!cb.checked) cb.click();
+    // Focus the search input shortly after opening
+    setTimeout(function () {
+      const input = document.querySelector(".md-search__input");
+      if (input) input.focus();
+    }, 60);
+  }
+});
+
 // ── Page-slug data attribute (used by CSS to target home page) ──
 function setPageSlug() {
   const path = window.location.pathname.replace(/\/$/, "");

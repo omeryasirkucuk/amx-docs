@@ -73,10 +73,24 @@
       {% endfor %}
     </nav>
 
-    {# Right side: GitHub repo link, plus the palette toggle when palette
-       is configured as a list (we lock to slate via a single mapping, so
-       the toggle block below is currently a no-op — it stays so future
-       toggle re-enables don't need template surgery). #}
+    {# Search trigger — opens Material's stock __search modal on click.
+       The actual <input> + result panel are rendered by partials/search.html
+       at the bottom of the header. Visible label-style pseudo-input keeps
+       it discoverable; ⌘K / Ctrl-K / "/" shortcuts also activate it
+       (wired in extra.js). #}
+    <label class="amx-headsearch" for="__search" title="Search documentation">
+      <svg class="amx-headsearch__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+        <path fill="currentColor" d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5l-1.5 1.5l-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16A6.5 6.5 0 0 1 3 9.5A6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14S14 12 14 9.5S12 5 9.5 5"/>
+      </svg>
+      <span class="amx-headsearch__placeholder">Search docs</span>
+      <kbd class="amx-headsearch__kbd">⌘K</kbd>
+    </label>
+
+    {# Right side: GitHub repo + PyPI download pills, plus the palette
+       toggle when palette is configured as a list (we lock to slate
+       via a single mapping, so the toggle block below is currently a
+       no-op — it stays so future toggle re-enables don't need template
+       surgery). #}
     <div class="amx-headright">
       <a href="https://github.com/omeryasirkucuk/amx"
          target="_blank" rel="noopener"
@@ -118,5 +132,10 @@
         {% endif %}
       {% endif %}
     </div>
+
+    {# Search modal — hidden until the __search checkbox is flipped via
+       the .amx-headsearch label up top (or ⌘K / "/" shortcut). Material
+       wires the rest: input, suggest list, result panel, keyboard nav. #}
+    {% include "partials/search.html" %}
   </nav>
 </header>
