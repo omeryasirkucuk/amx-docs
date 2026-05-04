@@ -18,13 +18,11 @@
       {% include ".icons/material/menu.svg" %}
     </label>
 
-    {# Logo #}
-    <a href="{{ home_url }}" title="{{ config.site_name | e }}" class="md-header__button md-logo" aria-label="{{ config.site_name }}">
-      {% if config.theme.logo %}
-        <img src="{{ config.theme.logo | url }}" alt="logo">
-      {% else %}
-        {% include ".icons/" ~ config.theme.icon.logo ~ ".svg" %}
-      {% endif %}
+    {# Logo — text wordmark in the visualizer's amber accent so the
+       header reads identically to the SPA: monospace "AMX" instead of
+       the cyan ASCII-block PNG. Clickable, links to home. #}
+    <a href="{{ home_url }}" title="{{ config.site_name | e }}" class="md-header__button md-logo amx-logo-text" aria-label="{{ config.site_name }}">
+      AMX
     </a>
 
     {# Site title #}
