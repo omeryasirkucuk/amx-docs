@@ -366,6 +366,12 @@
          >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="collaboration/safety-guards/"
          >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Evaluation</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="evaluation/benchmarks/"
+         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="evaluation/comparisons/"
+         >Comparisons</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
       <div class="amx-sidebar__group-title">Troubleshooting</div>
       <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="troubleshooting/faq/"
@@ -472,10 +478,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#quick-links" class="md-nav__link">
+  <a href="#evaluation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Quick links
+        Evaluation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#project" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Project
       
     </span>
   </a>
@@ -517,7 +534,7 @@
 <p><strong>Then <code>/ask</code> it.</strong> Open a session and chat with the catalog you just built: <em>"what joins to <code>customer</code>?"</em>, <em>"any columns missing descriptions?"</em>, <em>"what does <code>x_legacy_status</code> mean?"</em>, <em>"which tables haven't been touched in 90 days?"</em>. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.</p>
 </div>
 <div class="amx-why__compliance">
-<p><strong>Self-hosted by design.</strong> AMX runs entirely in your environment. <strong>No SaaS account, no data leaves your network</strong>, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to <em>"nothing leaves your perimeter"</em>: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote.</p>
+<p><strong>Self-hosted by design · free and open source.</strong> AMX runs entirely in your environment. <strong>No SaaS account, no data leaves your network</strong>, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to <em>"nothing leaves your perimeter"</em>: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote. Released under the <strong><a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE">Apache License 2.0</a></strong> — free for any use, including commercial.</p>
 </div>
 </div>
 <p><img alt="AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)" class="amx-hero-img" src="assets/cli-hero.png" /></p>
@@ -656,7 +673,20 @@ wizard. Five minutes from install to your first reviewed description.</p>
 </li>
 </ul>
 </div>
-<h2 id="quick-links">Quick links<a class="headerlink" href="#quick-links" title="Permanent link">&para;</a></h2>
+<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">&para;</a></h2>
+<div class="grid cards">
+<ul>
+<li>
+<p><a href="evaluation/comparisons/"><strong>Comparisons</strong></a></p>
+<p>AMX vs Snowflake Cortex, Databricks AI Comments, BigQuery Gemini, Atlan, Collibra, DataHub, OpenMetadata — dimension by dimension, fairly.</p>
+</li>
+<li>
+<p><a href="evaluation/benchmarks/"><strong>Benchmarks</strong></a></p>
+<p>The state of the field, AMX's confidence-band scoring, and the public Databricks-style protocol AMX is preparing.</p>
+</li>
+</ul>
+</div>
+<h2 id="project">Project<a class="headerlink" href="#project" title="Permanent link">&para;</a></h2>
 <div class="grid cards">
 <ul>
 <li>
@@ -665,11 +695,11 @@ wizard. Five minutes from install to your first reviewed description.</p>
 </li>
 <li>
 <p><a href="contributing/"><strong>Contributing</strong></a></p>
-<p>Development setup, branching, commit format, release process.</p>
+<p>Development setup, branching, commit format, release process. Co-maintainers welcome.</p>
 </li>
 <li>
-<p><a href="about/"><strong>About the maintainer</strong></a></p>
-<p>Omer Yasir Kucuk — the engineer behind AMX.</p>
+<p><a href="about/"><strong>Project team</strong></a></p>
+<p>Maintained by Omer Yasir Kucuk · contributors and sponsors welcome via GitHub.</p>
 </li>
 <li>
 <p><a href="security/"><strong>Security</strong></a></p>

@@ -6,19 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+        <meta name="description" content="Where AMX stands on independent benchmarks for AI-generated database descriptions, and the evaluation protocol we plan to publish.">
       
       
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/getting-started/installation/">
+        <link rel="canonical" href="https://amxcli.com/evaluation/benchmarks/">
       
       
-        <link rel="prev" href="../..">
+        <link rel="prev" href="../../collaboration/safety-guards/">
       
       
-        <link rel="next" href="../quickstart/">
+        <link rel="next" href="../comparisons/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Installation - AMX</title>
+        <title>Benchmarks - AMX</title>
       
     
   
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#benchmarks" class="md-skip">
           Skip to content
         </a>
       
@@ -139,7 +139,7 @@
           
           
           
-            <a href="./" class="active">Get Started</a>
+            <a href="../../getting-started/installation/">Get Started</a>
             
           
         
@@ -177,7 +177,7 @@
           
           
           
-            <a href="../../configuration/config-yml/">Reference</a>
+            <a href="../../configuration/config-yml/" class="active">Reference</a>
             
           
         
@@ -267,12 +267,12 @@
   
   <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
       <div class="amx-sidebar__group-title">Get Started</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../quickstart/"
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
          >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../first-run/"
+         href="../../getting-started/first-run/"
          >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
       <div class="amx-sidebar__group-title">Concepts</div>
       <a class="amx-sidebar__link amx-sidebar__link--depth-0"
@@ -373,10 +373,10 @@
          href="../../collaboration/safety-guards/"
          >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
       <div class="amx-sidebar__group-title">Evaluation</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../evaluation/benchmarks/"
-         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../evaluation/comparisons/"
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../comparisons/"
          >Comparisons</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
       <div class="amx-sidebar__group-title">Troubleshooting</div>
       <a class="amx-sidebar__link amx-sidebar__link--depth-1"
@@ -429,10 +429,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#the-state-of-the-field" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        The state of the field
       
     </span>
   </a>
@@ -440,10 +440,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install" class="md-nav__link">
+  <a href="#what-amx-does-report-internally" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install
+        What AMX does report internally
       
     </span>
   </a>
@@ -451,10 +451,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#install-from-source" class="md-nav__link">
+  <a href="#the-planned-evaluation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Install from source
+        The planned evaluation
       
     </span>
   </a>
@@ -462,10 +462,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-the-install" class="md-nav__link">
+  <a href="#help-close-the-gap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify the install
+        Help close the gap
       
     </span>
   </a>
@@ -473,32 +473,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#where-amx-writes-files" class="md-nav__link">
+  <a href="#whats-next" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Where AMX writes files
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#upgrading" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Upgrading
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#next-steps" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Next steps
+        What's next
       
     </span>
   </a>
@@ -527,12 +505,17 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Get Started</span>
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Evaluation</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Installation</span>
+      <span>Benchmarks</span>
     </div>
   </div>
 
@@ -541,82 +524,111 @@
 
 
 
-<h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
-<p>AMX is a Python package distributed on PyPI.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li><strong>Python 3.10 or newer.</strong> AMX is tested on 3.10, 3.11, and 3.12.</li>
-<li><strong>A database you can connect to.</strong> Any of the <a href="../../backends/">10 supported backends</a>.</li>
-<li><strong>At least one LLM provider configured.</strong> OpenAI, Anthropic, Gemini, DeepSeek, OpenRouter,
-  Ollama, or any OpenAI-compatible local endpoint (vLLM / LM Studio / …).</li>
-</ul>
-<p>AMX focuses on metadata inference, not bulk data loading. Populate schemas and tables with
-your own ETL process, then point AMX at that database.</p>
-<h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli
-</span></code></pre></div>
-<p>That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
-RAG / search / codebase machinery, and every supported database driver.</p>
-<h2 id="install-from-source">Install from source<a class="headerlink" href="#install-from-source" title="Permanent link">&para;</a></h2>
-<p>For development or to track a feature branch:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/omeryasirkucuk/amx.git
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">cd</span><span class="w"> </span>amx
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>pre-commit<span class="w"> </span>install
-</span></code></pre></div>
-<p>See <a href="../../contributing/">Contributing</a> for the full development workflow.</p>
-<h2 id="verify-the-install">Verify the install<a class="headerlink" href="#verify-the-install" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>--version
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt;<span class="w"> </span>/doctor
-</span></code></pre></div>
-<p><code>/doctor</code> reports every <code>amx</code> binary on <code>PATH</code> (catches the version-skew bug class), the
-Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use <code>/doctor --skip-network</code> for an
-offline quick check.</p>
-<h2 id="where-amx-writes-files">Where AMX writes files<a class="headerlink" href="#where-amx-writes-files" title="Permanent link">&para;</a></h2>
+<h1 id="benchmarks">Benchmarks<a class="headerlink" href="#benchmarks" title="Permanent link">&para;</a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Status — planned</p>
+<p>AMX has <strong>not yet</strong> published external benchmark numbers for AI-generated
+column descriptions. This page is here for transparency: it explains the
+evaluation gap honestly, names the protocol AMX will adopt, and lays out
+a contribution path so the community can help close it.</p>
+</div>
+<h2 id="the-state-of-the-field">The state of the field<a class="headerlink" href="#the-state-of-the-field" title="Permanent link">&para;</a></h2>
+<p>There is <strong>no widely-accepted public benchmark for AI-generated database
+descriptions</strong>. The two related academic benchmarks measure something else:</p>
 <table>
 <thead>
 <tr>
-<th>Path</th>
-<th>Purpose</th>
+<th>Benchmark</th>
+<th>Measures</th>
+<th>Relevance to AMX</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>~/.amx/config.yml</code></td>
-<td>Profiles, settings (mode <code>0o600</code>)</td>
+<td><a href="https://bird-bench.github.io/">BIRD</a></td>
+<td>Text-to-SQL execution accuracy across 12,751 questions / 95 databases</td>
+<td>Tests <em>querying</em> a documented schema, not <em>generating</em> the documentation</td>
 </tr>
 <tr>
-<td><code>~/.amx/history.db</code></td>
-<td>Local SQLite: runs, results, app events, search catalog</td>
-</tr>
-<tr>
-<td><code>~/.amx/logs/amx.log</code></td>
-<td>Structured logs</td>
-</tr>
-<tr>
-<td><code>~/.amx/code_cache/&lt;slug&gt;/</code></td>
-<td>Cached code-scan results per profile</td>
+<td><a href="https://yale-lily.github.io/spider">Spider</a></td>
+<td>Cross-domain text-to-SQL on 200 databases</td>
+<td>Same — assumes documentation already exists</td>
 </tr>
 </tbody>
 </table>
-<p>Secrets are stored in the OS keychain (macOS Keychain, Windows Credential Manager, Linux
-Secret Service) when available; the YAML stores a reference rather than the secret itself.</p>
-<h2 id="upgrading">Upgrading<a class="headerlink" href="#upgrading" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>amx-cli
-</span></code></pre></div>
-<p>AMX uses semantic versioning. <code>0.x</code> is best-effort but breaking changes are flagged in the
-<a href="../../changelog/">changelog</a> under <code>BREAKING CHANGE</code>. Hard guarantees on the public Python
-API and CLI surface kick in at <code>1.0.0</code> — see the <a href="../../api/">Python API page</a> for the
-full contract.</p>
-<p>If a newer config schema is detected by an older AMX binary, AMX raises
-<code>ConfigSchemaTooNewError</code> rather than silently mangling the file. Upgrade or downgrade
-accordingly.</p>
-<h2 id="next-steps">Next steps<a class="headerlink" href="#next-steps" title="Permanent link">&para;</a></h2>
+<p>Neither evaluates "is this generated description faithful to the column's
+real meaning?" — which is what AMX produces. The closest existing protocol
+is the one published by <strong>Databricks in their 2024 AI Comments preview</strong>:
+62 schemas drawn from production workloads, two human reviewers + an LLM
+judge, measuring human preference rate of generated descriptions vs. the
+prior baseline. We treat that paper as the de facto methodology.</p>
+<h2 id="what-amx-does-report-internally">What AMX <em>does</em> report internally<a class="headerlink" href="#what-amx-does-report-internally" title="Permanent link">&para;</a></h2>
+<p>Every <code>/run</code> already records a per-column <strong>logprob-derived confidence
+band</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Band</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>verified</code></td>
+<td>Token-level confidence ≥ 0.95 across the entire description; cross-checked against profile + RAG + code evidence</td>
+</tr>
+<tr>
+<td><code>high_likelihood</code></td>
+<td>Confidence ≥ 0.85; majority of evidence sources agreed</td>
+</tr>
+<tr>
+<td><code>possible</code></td>
+<td>Confidence ≥ 0.50; at least one evidence source agreed</td>
+</tr>
+<tr>
+<td><code>weak_hypothesis</code></td>
+<td>Below 0.50; surfaced for review with no auto-accept</td>
+</tr>
+</tbody>
+</table>
+<p>These bands are <strong>internal calibration</strong>, not public benchmarks. They
+help the human reviewer triage what to read first; they don't tell an
+external buyer how AMX compares against, say, Snowflake Cortex on the
+same 62 schemas.</p>
+<h2 id="the-planned-evaluation">The planned evaluation<a class="headerlink" href="#the-planned-evaluation" title="Permanent link">&para;</a></h2>
+<p>The Databricks-style protocol AMX will publish:</p>
+<ol>
+<li><strong>Dataset</strong> — 50–80 production schemas, anonymised, drawn from at least
+   four backends (PostgreSQL, Snowflake, BigQuery, Databricks) and three
+   domains (e.g. e-commerce, healthcare, ERP-style enterprise). Open
+   release of the schema-and-ground-truth pairs as a benchmark dataset
+   in its own right.</li>
+<li><strong>Baselines</strong> — at minimum: AMX (with <code>gpt-4o</code>, <code>claude-sonnet-4</code>,
+   and <code>gemini-2.0-flash</code>), Snowflake Cortex <code>AI_GENERATE_TABLE_DESC</code>
+   on its supported subset, Databricks AI Comments via Catalog Explorer,
+   BigQuery Gemini Insights.</li>
+<li><strong>Reviewers</strong> — two domain experts per schema, blind to the source
+   tool. A third tie-break reviewer when the first two disagree.</li>
+<li><strong>LLM judge</strong> — a fixed <code>gpt-4o-2024-11-20</code> snapshot scoring each
+   description on a 5-point rubric (faithfulness, specificity, clarity,
+   actionability, no-hallucination).</li>
+<li><strong>Metrics</strong> — preference rate vs. the original <code>COMMENT ON</code> text
+   (where one exists) and pairwise win-rate against each baseline.</li>
+<li><strong>Reproducibility</strong> — full prompts, model versions, and reviewer
+   guidelines published alongside the numbers. Anyone with the dataset
+   should be able to re-run the protocol against their own tool.</li>
+</ol>
+<h2 id="help-close-the-gap">Help close the gap<a class="headerlink" href="#help-close-the-gap" title="Permanent link">&para;</a></h2>
+<p>If you'd like to contribute to AMX's first benchmark — schema donations,
+expert reviewers in a specific domain, or co-authoring the methodology
+paper — open a discussion at
+<a href="https://github.com/omeryasirkucuk/amx/discussions">github.com/omeryasirkucuk/amx/discussions</a>
+or email <a href="mailto:omeryasirkucuk@gmail.com">omeryasirkucuk@gmail.com</a>.</p>
+<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../quickstart/">Quick start</a> — five-minute happy path.</li>
-<li><a href="../first-run/">First run walkthrough</a> — narrated review session.</li>
-<li><a href="../../backends/">Per-backend setup</a> — connection details for each supported engine.</li>
+<li><a href="../comparisons/">Comparisons</a> — feature-by-feature comparison against the major AI-metadata tools, with explicit notes on which claims are evidenced and which are pending the benchmark above.</li>
+<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — confidence-band scoring at runtime.</li>
+<li><a href="../../cli/ask-and-search/"><code>/ask</code> and <code>/search</code></a> — the live Q&amp;A surface that goes on top of any descriptions you generate.</li>
 </ul>
 
 
@@ -624,6 +636,9 @@ accordingly.</p>
 
 
 
+
+  
+  
 
 
 

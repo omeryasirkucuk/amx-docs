@@ -1,0 +1,1461 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Honest, dimension-by-dimension comparison of AMX against Snowflake Cortex, Databricks AI Comments, BigQuery Gemini Insights, Atlan, Collibra, DataHub Cloud, and OpenMetadata.">
+      
+      
+        <meta name="author" content="Omer Yasir Kucuk">
+      
+      
+        <link rel="canonical" href="https://amxcli.com/evaluation/comparisons/">
+      
+      
+        <link rel="prev" href="../benchmarks/">
+      
+      
+        <link rel="next" href="../../troubleshooting/faq/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+  
+    
+      
+        <title>Comparisons - AMX</title>
+      
+    
+  
+
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#comparisons" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+      </div>
+    
+    
+      
+
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="header.title">
+
+    
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+
+    
+    <a href="../.." title="AMX" class="md-header__button md-logo" aria-label="AMX">
+      
+        <img src="../../assets/amx-logo.png" alt="logo">
+      
+    </a>
+
+    
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">AMX</span>
+        </div>
+      </div>
+    </div>
+
+    
+    
+
+    
+    
+    <nav class="amx-nav" aria-label="Primary">
+      
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../getting-started/installation/">Get Started</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../concepts/architecture/">Concepts</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../cli/overview/">CLI</a>
+            
+          
+        
+      
+        
+      
+        
+          
+          
+          
+            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            
+          
+        
+      
+        
+          
+          
+          
+            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            
+          
+        
+      
+    </nav>
+
+    
+    <div class="amx-headright">
+      <a href="https://github.com/omeryasirkucuk/amx"
+         target="_blank" rel="noopener"
+         class="amx-headright__pill"
+         aria-label="AMX on GitHub">
+        <span class="amx-headright__pill-label">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </span>
+        <span class="amx-headright__pill-divider" aria-hidden="true"></span>
+        <span class="amx-headright__pill-count" aria-label="GitHub stars">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+            <path d="M12 .587l3.668 7.431 8.205 1.193-5.937 5.787 1.402 8.172L12 19.255l-7.338 3.915 1.402-8.172L.127 9.211l8.205-1.193z"/>
+          </svg>
+          <span data-amx-github-stars>—</span>
+        </span>
+      </a>
+      <a href="https://pypi.org/project/amx-cli/"
+         target="_blank" rel="noopener"
+         class="amx-headright__pill"
+         aria-label="AMX on PyPI">
+        <span class="amx-headright__pill-label">
+          <svg viewBox="0 0 32 32" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M15.94 0L8.78 2.6l-.04 4.66 7.16-2.59 7.18 2.6v4.66l-7.18 2.6-7.16-2.6V7.27L1.6 9.86l.04 4.66 7.14 2.6 7.16-2.6 7.18 2.6 7.18-2.6V9.86L23.12 7.27V2.6L15.94 0zM8.78 17.34l-7.18 2.6.04 4.66 7.14 2.6 7.16-2.6V19.94l-7.16-2.6zM23.12 17.34l-7.18 2.6v4.66l7.18 2.6 7.18-2.6v-4.66l-7.18-2.6z"/>
+          </svg>
+        </span>
+        <span class="amx-headright__pill-divider" aria-hidden="true"></span>
+        <span class="amx-headright__pill-count" aria-label="PyPI downloads (last 30 days)">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">
+            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+          </svg>
+          <span data-amx-pypi-downloads>—</span>
+        </span>
+      </a>
+      
+        
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+
+
+<nav class="md-nav md-nav--primary amx-sidebar__nav" aria-label="Navigation" data-md-level="0">
+
+  
+  <label class="amx-sidebar__close" for="__drawer" aria-label="Close menu">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+    </svg>
+  </label>
+
+  
+  <a class="amx-sidebar__home"
+     href="../.."
+     >
+    AMX documentation
+  </a>
+
+  
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Get Started</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/installation/"
+         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/quickstart/"
+         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../getting-started/first-run/"
+         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Concepts</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/architecture/"
+         >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/universal-metadata/"
+         >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/human-in-the-loop/"
+         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">CLI</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/setup/"
+         >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/ask-and-search/"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/flags/"
+         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Backends</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/postgresql/"
+         >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/snowflake/"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/bigquery/"
+         >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mysql/"
+         >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/oracle/"
+         >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/mssql/"
+         >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/redshift/"
+         >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Guides</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/sap-discovery-walkthrough/"
+         >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/batch-large-schema/"
+         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
+      <div class="amx-sidebar__group-title">Reference</div>
+      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Configuration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
+         >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/profiling-modes/"
+         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">LLM Providers</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openai/"
+         >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/anthropic/"
+         >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/gemini/"
+         >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Data Sources</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/codebase/"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Collaboration</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
+         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Evaluation</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../benchmarks/"
+         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Comparisons</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Troubleshooting</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/faq/"
+         >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/doctor/"
+         >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../troubleshooting/common-errors/"
+         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
+      <div class="amx-sidebar__group-title">Project</div>
+      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/"
+         >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../api/reference/"
+         >API Reference</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../contributing/"
+         >Contributing</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../about/"
+         >About the maintainer</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../security/"
+         >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../changelog/"
+         >Changelog</a></div></div></div>
+
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#tldr-which-tool-fits-which-need" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TL;DR — which tool fits which need
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#capability-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capability comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Capability comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-ai-description-generation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1 · AI description generation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-llm-flexibility-data-sovereignty" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2 · LLM flexibility &amp; data sovereignty
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-backend-coverage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3 · Backend coverage
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-scale-cost-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4 · Scale, cost, performance
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-benchmarks-evaluation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5 · Benchmarks &amp; evaluation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-operational-maturity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 · Operational maturity
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#per-tool-quick-takes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-tool quick takes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Per-tool quick takes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vs-snowflake-cortex-ai_generate_table_desc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs Snowflake Cortex (AI_GENERATE_TABLE_DESC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-databricks-ai-comments-catalog-explorer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs Databricks AI Comments (Catalog Explorer)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-bigquery-gemini-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs BigQuery Gemini Insights
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-atlan-collibra-commercial-catalogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs Atlan / Collibra (commercial catalogs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-datahub-cloud-oss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs DataHub (Cloud + OSS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vs-openmetadata-oss" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        vs OpenMetadata (OSS)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+  
+
+  <div class="amx-pageintro">
+    <div class="amx-breadcrumb">
+      <a href="https://amxcli.com/">Home</a>
+      
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Reference</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Evaluation</span>
+          
+        
+      
+      <span class="amx-breadcrumb__sep">›</span>
+      <span>Comparisons</span>
+    </div>
+  </div>
+
+  
+                  
+
+
+
+<h1 id="comparisons">Comparisons<a class="headerlink" href="#comparisons" title="Permanent link">&para;</a></h1>
+<p>There is no single "AI metadata generator" market — the space is split
+between <strong>warehouse-native tools</strong> (Snowflake Cortex, Databricks AI
+Comments, BigQuery Gemini Insights), <strong>commercial catalogs</strong> (Atlan,
+Collibra, DataHub Cloud), and <strong>open-source catalogs</strong> (OpenMetadata,
+Amundsen). AMX sits in a different place: a CLI that generates and
+writes descriptions across multiple warehouses with bring-your-own
+LLM. This page lays out the trade-offs frankly, so you can decide
+whether AMX fits your environment.</p>
+<div class="admonition note">
+<p class="admonition-title">Reading this page</p>
+<p>Where AMX has independent verification, that's noted. Where the
+comparison rests on vendor documentation or behaviour we observed
+in trials, that's noted too. The accuracy claims that are <em>not</em>
+yet evidenced live in <a href="../benchmarks/">Benchmarks</a> — and the
+biggest credibility gap AMX has is that we haven't published a
+head-to-head benchmark yet.</p>
+</div>
+<h2 id="tldr-which-tool-fits-which-need">TL;DR — which tool fits which need<a class="headerlink" href="#tldr-which-tool-fits-which-need" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>You are…</th>
+<th>Best fit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>All-in on Snowflake, want zero-config AI</td>
+<td><strong>Snowflake Cortex</strong> (<code>AI_GENERATE_TABLE_DESC</code>) — single SQL call</td>
+</tr>
+<tr>
+<td>All-in on Databricks, OK with per-object click-through</td>
+<td><strong>Databricks AI Comments</strong> — native to Catalog Explorer</td>
+</tr>
+<tr>
+<td>All-in on BigQuery, willing to accept 350-column-per-table cap</td>
+<td><strong>BigQuery Gemini Insights</strong></td>
+</tr>
+<tr>
+<td>Multi-warehouse, OK with vendor LLM, big budget</td>
+<td><strong>Atlan / Collibra</strong> — full-featured commercial catalog</td>
+</tr>
+<tr>
+<td>OSS catalog needed for inventory + lineage, no AI required</td>
+<td><strong>OpenMetadata / DataHub</strong> (OSS)</td>
+</tr>
+<tr>
+<td><strong>Multi-warehouse + bring-your-own LLM + data must not leave perimeter</strong></td>
+<td><strong>AMX</strong></td>
+</tr>
+<tr>
+<td><strong>OSS catalog + AI generation feeding into it</strong></td>
+<td><strong>AMX → OpenMetadata/DataHub</strong> (complementary, not rival)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="capability-comparison">Capability comparison<a class="headerlink" href="#capability-comparison" title="Permanent link">&para;</a></h2>
+<h3 id="1-ai-description-generation">1 · AI description generation<a class="headerlink" href="#1-ai-description-generation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>AMX</th>
+<th>Snowflake Cortex</th>
+<th>BigQuery Gemini</th>
+<th>Databricks AI Comments</th>
+<th>Atlan</th>
+<th>Collibra</th>
+<th>DataHub Cloud</th>
+<th>OpenMetadata (OSS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Built-in AI generation</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓ partial</td>
+<td>✓</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Single-command DB-wide bulk run</td>
+<td>✓</td>
+<td>✓ partial</td>
+<td>partial</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Programmatic bulk-accept</td>
+<td>✓</td>
+<td>partial</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Multi-agent (DB + Docs + Code)</td>
+<td>✓</td>
+<td>—</td>
+<td>partial</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Code-aware analysis (codebase parsing)</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+</tr>
+<tr>
+<td>RAG over user documents</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Logprob-derived confidence bands</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Sample-data analysis (not just metadata)</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+</tr>
+<tr>
+<td>Human-in-the-loop review wizard</td>
+<td>✓</td>
+<td>partial</td>
+<td>partial</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>partial</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The big gaps in commercial competitors.</strong> Databricks AI Comments has
+no native bulk capability — generation happens per-object via Catalog
+Explorer UI and each suggestion must be accepted with a check-mark.
+Snowflake's <code>AI_GENERATE_TABLE_DESC</code> is a single-table stored procedure;
+schema-wide automation requires user-written loops. BigQuery Insights
+is per-table with a 350-column-per-table cap. DataHub Cloud has AI
+but only for auto-classification (PII tagging, etc.) — not column
+descriptions. OpenMetadata core (OSS) has no AI generation at all;
+it's paywalled in their Collate Cloud product.</p>
+<h3 id="2-llm-flexibility-data-sovereignty">2 · LLM flexibility &amp; data sovereignty<a class="headerlink" href="#2-llm-flexibility-data-sovereignty" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>AMX</th>
+<th>Snowflake Cortex</th>
+<th>BigQuery Gemini</th>
+<th>Databricks AI Comments</th>
+<th>Atlan</th>
+<th>Collibra</th>
+<th>DataHub Cloud</th>
+<th>OpenMetadata (OSS)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bring-your-own-LLM (model choice)</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>OpenAI / Anthropic / Gemini / DeepSeek</td>
+<td>✓</td>
+<td>—</td>
+<td>partial</td>
+<td>—</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Local LLM (Ollama, vLLM, LM Studio)</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Vendor-managed LLM (zero-setup)</td>
+<td>partial</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Data stays within tenant boundary</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Air-gapped / offline operation</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+</tr>
+<tr>
+<td>On-prem deployment</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>—</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Banking / Healthcare strict compliance</td>
+<td>✓</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+</tr>
+<tr>
+<td>Government / Defense (FedRAMP, IL5)</td>
+<td>✓</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+</tr>
+<tr>
+<td>GDPR / data-residency control</td>
+<td>✓</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Where AMX is unique.</strong> All warehouse-native tools mandate their own
+LLMs — you cannot pick <code>gpt-4o</code> over <code>Gemini</code> on BigQuery, or <code>Claude</code>
+over Cortex on Snowflake. Commercial catalogs (Atlan, Collibra,
+DataHub Cloud) require sending metadata — and often sample data — to
+vendor or third-party APIs. <strong>For organisations where data cannot
+leave on-prem boundaries, AMX paired with a local model (Ollama / vLLM)
+is in practice the only viable option.</strong> OpenMetadata OSS preserves
+on-prem but ships with no AI generation — so AMX-feeding-OpenMetadata
+becomes the standard pattern for OSS-only stacks.</p>
+<h3 id="3-backend-coverage">3 · Backend coverage<a class="headerlink" href="#3-backend-coverage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>AMX</th>
+<th>Snowflake Cortex</th>
+<th>BigQuery Gemini</th>
+<th>Databricks AI Comments</th>
+<th>Atlan</th>
+<th>Collibra</th>
+<th>DataHub Cloud</th>
+<th>OpenMetadata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PostgreSQL</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>Snowflake</td>
+<td>✓</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>BigQuery</td>
+<td>✓</td>
+<td>—</td>
+<td>✓</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>Databricks (Unity Catalog)</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>✓</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>MySQL / MariaDB</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>Redshift</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>ClickHouse</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>ingest</td>
+<td>partial</td>
+<td>ingest</td>
+<td>ingest</td>
+</tr>
+<tr>
+<td>DuckDB</td>
+<td>✓</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>partial</td>
+<td>partial</td>
+</tr>
+<tr>
+<td><strong>AMX with native AI generation + write-back</strong></td>
+<td><strong>10</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>1</strong></td>
+<td><strong>— (ingest only)</strong></td>
+<td><strong>— (ingest only)</strong></td>
+<td><strong>— (ingest only)</strong></td>
+<td><strong>— (ingest only)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>ingest</code> = the catalog reads existing metadata via JDBC/ODBC but does
+<strong>not</strong> generate AI descriptions for that backend. AMX generates
+descriptions and writes them back as native SQL (<code>COMMENT ON …</code>,
+<code>ALTER TABLE … SET OPTIONS</code>, <code>sp_addextendedproperty</code>, etc.) on every
+backend in the table.</p>
+<p><strong>The structural difference.</strong> Warehouse-native tools are
+single-vendor by design — Cortex won't run against BigQuery, Gemini
+Insights won't run against Snowflake. Catalog products (Atlan,
+Collibra, DataHub, OpenMetadata) cover 50–200+ sources but only ingest
+existing metadata; they do not generate AI descriptions across that
+breadth. <strong>AMX is the only tool generating AI descriptions across all
+ten major analytical and OLTP databases from a single CLI.</strong></p>
+<h3 id="4-scale-cost-performance">4 · Scale, cost, performance<a class="headerlink" href="#4-scale-cost-performance" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>AMX</th>
+<th>Snowflake Cortex</th>
+<th>BigQuery Gemini</th>
+<th>Databricks AI Comments</th>
+<th>Atlan / Collibra / DataHub Cloud</th>
+<th>OpenMetadata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tables per single run</td>
+<td>1000+</td>
+<td>5000+ (one SQL)</td>
+<td>per-table</td>
+<td>1 (UI click-through)</td>
+<td>per-asset</td>
+<td>1 (manual)</td>
+</tr>
+<tr>
+<td>Cost control</td>
+<td>per-token tracking + <code>--profiling-mode metadata</code></td>
+<td>warehouse credits</td>
+<td>BQ slot usage</td>
+<td>UC compute</td>
+<td>per-asset subscription</td>
+<td>self-hosted</td>
+</tr>
+<tr>
+<td>Cache / re-run optimisation</td>
+<td><code>~/.amx/history.db</code> (skips already-documented)</td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+<td>none</td>
+</tr>
+<tr>
+<td>Batch API support (parallel cheap mode)</td>
+<td>✓ (OpenAI / Anthropic batch)</td>
+<td>partial</td>
+<td>partial</td>
+<td>partial</td>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Resume on failure</td>
+<td>✓</td>
+<td>manual</td>
+<td>manual</td>
+<td>manual</td>
+<td>n/a</td>
+<td>manual</td>
+</tr>
+<tr>
+<td>Per-run token / cost report</td>
+<td>✓</td>
+<td>bill-based</td>
+<td>bill-based</td>
+<td>bill-based</td>
+<td>subscription</td>
+<td>n/a</td>
+</tr>
+<tr>
+<td>Typical setup time</td>
+<td>&lt; 10 min</td>
+<td>&lt; 5 min</td>
+<td>&lt; 5 min</td>
+<td>&lt; 10 min</td>
+<td>weeks–months</td>
+<td>hours–days</td>
+</tr>
+</tbody>
+</table>
+<p>The cache &amp; resume capability is unique to AMX: re-runs skip already-
+documented assets (matched by structural hash), so a second sweep over
+the same warehouse costs only the LLM tokens for the genuinely new or
+changed columns.</p>
+<h3 id="5-benchmarks-evaluation">5 · Benchmarks &amp; evaluation<a class="headerlink" href="#5-benchmarks-evaluation" title="Permanent link">&para;</a></h3>
+<p>See <a href="../benchmarks/">Benchmarks</a>. <strong>No tool in the AI-metadata
+generation space has published a public benchmark for description
+accuracy.</strong> The closest reference is Databricks' 2024 internal eval
+(62 schemas, two human reviewers + LLM judge, ~2× human preference
+rate). AMX has not yet published external numbers — that's the single
+largest credibility gap for enterprise adoption. The methodology AMX
+will adopt is documented on the Benchmarks page above.</p>
+<h3 id="6-operational-maturity">6 · Operational maturity<a class="headerlink" href="#6-operational-maturity" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>AMX</th>
+<th>Snowflake Cortex</th>
+<th>BigQuery Gemini</th>
+<th>Databricks AI Comments</th>
+<th>Atlan / Collibra</th>
+<th>DataHub</th>
+<th>OpenMetadata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Production deployments</td>
+<td>early-stage</td>
+<td>thousands</td>
+<td>thousands</td>
+<td>thousands</td>
+<td>thousands</td>
+<td>3000+ orgs</td>
+<td>1500+ orgs</td>
+</tr>
+<tr>
+<td>GitHub stars</td>
+<td>small (early)</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>10.7k+</td>
+<td>6.3k+</td>
+</tr>
+<tr>
+<td>Maintainer count</td>
+<td>1 (with <code>co-maintainers wanted</code>)</td>
+<td>vendor</td>
+<td>vendor</td>
+<td>vendor</td>
+<td>vendor</td>
+<td>300+</td>
+<td>500+</td>
+</tr>
+<tr>
+<td>Public case studies</td>
+<td>none yet</td>
+<td>many</td>
+<td>many</td>
+<td>many</td>
+<td>many</td>
+<td>many</td>
+<td>some</td>
+</tr>
+<tr>
+<td>Documentation depth</td>
+<td>this site</td>
+<td>extensive</td>
+<td>extensive</td>
+<td>extensive</td>
+<td>extensive</td>
+<td>extensive</td>
+<td>extensive</td>
+</tr>
+<tr>
+<td>SOC 2 / ISO 27001</td>
+<td>n/a (self-hosted)</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes</td>
+<td>yes (cloud)</td>
+<td>yes (Collate)</td>
+</tr>
+<tr>
+<td>Pricing</td>
+<td>free, OSS</td>
+<td>pay-per-use</td>
+<td>pay-per-use</td>
+<td>included with platform</td>
+<td>enterprise SaaS</td>
+<td>enterprise + free</td>
+<td>OSS</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Where AMX is honestly behind.</strong> Bus factor of 1, no production
+deployments named, community traction not yet established. Engineering
+isn't going to close that gap — adoption is. If AMX fits your
+infrastructure and compliance posture, the deployment evidence catches
+up by being one of the early references; if you need named-customer
+references on day one, the commercial alternatives are further along.</p>
+<h2 id="per-tool-quick-takes">Per-tool quick takes<a class="headerlink" href="#per-tool-quick-takes" title="Permanent link">&para;</a></h2>
+<h3 id="vs-snowflake-cortex-ai_generate_table_desc">vs Snowflake Cortex (<code>AI_GENERATE_TABLE_DESC</code>)<a class="headerlink" href="#vs-snowflake-cortex-ai_generate_table_desc" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick Cortex if</strong> — you're 100% on Snowflake, willing to use
+  Snowflake's bundled LLM, and OK with a single-table SQL call that
+  you wrap in your own loop for warehouse-wide runs.</li>
+<li><strong>Pick AMX if</strong> — you have ≥2 warehouse types, need bring-your-own
+  LLM (Snowflake's billing for Cortex calls is opaque and Snowflake-
+  only), or care about local-LLM compliance.</li>
+<li><strong>Together</strong> — AMX writes descriptions as native <code>COMMENT ON</code> on
+  Snowflake objects, so Snowflake's downstream tools (Horizon, Cortex
+  Search, Snowsight inspector) read them automatically.</li>
+</ul>
+<h3 id="vs-databricks-ai-comments-catalog-explorer">vs Databricks AI Comments (Catalog Explorer)<a class="headerlink" href="#vs-databricks-ai-comments-catalog-explorer" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick Databricks AI Comments if</strong> — you're 100% on Databricks Unity
+  Catalog and have a small enough schema that per-object UI clicks
+  scale.</li>
+<li><strong>Pick AMX if</strong> — your schema is wider than ~50 tables (UI click-
+  through becomes infeasible), you need confidence scores on each
+  suggestion, or you want the same tool for non-Databricks backends.</li>
+<li><strong>Together</strong> — AMX writes via <code>COMMENT ON COLUMN</code> (Unity Catalog
+  syntax) so Databricks AI Comments can pick AMX's output up as the
+  starting point and the human reviewer iterates from there.</li>
+</ul>
+<h3 id="vs-bigquery-gemini-insights">vs BigQuery Gemini Insights<a class="headerlink" href="#vs-bigquery-gemini-insights" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick BigQuery Gemini Insights if</strong> — you're 100% on BigQuery, OK
+  with the 350-column-per-table cap, and don't need code/docs context.</li>
+<li><strong>Pick AMX if</strong> — you have wide tables (&gt;350 columns), you need
+  Code-Aware analysis, or you want the same workflow on non-BigQuery
+  data.</li>
+<li><strong>Together</strong> — AMX writes via <code>ALTER TABLE … SET OPTIONS
+  (description = '…')</code>, the same field BigQuery Gemini reads.</li>
+</ul>
+<h3 id="vs-atlan-collibra-commercial-catalogs">vs Atlan / Collibra (commercial catalogs)<a class="headerlink" href="#vs-atlan-collibra-commercial-catalogs" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick Atlan or Collibra if</strong> — you need a full enterprise data
+  catalog (lineage, glossary, governance, business metadata, access
+  workflows, OKRs) and have the budget. AMX is not a catalog and
+  doesn't try to be.</li>
+<li><strong>Pick AMX if</strong> — your team already has lineage/glossary infrastructure
+  (or doesn't need it yet) and the missing piece is <em>AI-generated
+  column descriptions</em>.</li>
+<li><strong>Together</strong> — AMX feeds Atlan or Collibra. Both ingest
+  <code>COMMENT ON</code> / <code>description</code> fields from your warehouses, so AMX-
+  generated descriptions appear automatically in their UI.</li>
+</ul>
+<h3 id="vs-datahub-cloud-oss">vs DataHub (Cloud + OSS)<a class="headerlink" href="#vs-datahub-cloud-oss" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick DataHub if</strong> — you need a metadata catalog with strong lineage
+  and a large open-source community. DataHub's AI features are
+  classification (PII tagging), not description generation, so it's
+  not a direct competitor for AMX's core job.</li>
+<li><strong>Pick AMX if</strong> — you specifically need AI-generated column
+  descriptions and DataHub is your catalog of record.</li>
+<li><strong>Together</strong> — DataHub ingests <code>COMMENT ON</code> / column descriptions
+  from connected warehouses; AMX writes them. AMX → DataHub is a
+  natural flow.</li>
+</ul>
+<h3 id="vs-openmetadata-oss">vs OpenMetadata (OSS)<a class="headerlink" href="#vs-openmetadata-oss" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Pick OpenMetadata if</strong> — you need a fully OSS catalog (lineage,
+  glossary, ingestion) and don't need AI-generated descriptions.
+  OpenMetadata core has no AI generation; it's paywalled in their
+  Collate Cloud product.</li>
+<li><strong>Pick AMX if</strong> — you need AI-generated descriptions and prefer the
+  AMX → OpenMetadata flow over locking into Collate's hosted plan.</li>
+<li><strong>Together</strong> — this is the canonical OSS stack for "fully open
+  source, fully on-prem, full-featured catalog with AI descriptions".</li>
+</ul>
+<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../benchmarks/">Benchmarks</a> — the evaluation gap and the protocol AMX will publish.</li>
+<li><a href="../../">Self-hosted by design</a> — the compliance / data-sovereignty argument in detail.</li>
+<li><a href="../../backends/">Backends</a> — the 10 supported backends with <code>/add-db-profile</code> walkthroughs.</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+  
+<footer class="amx-footer">
+  <div class="amx-footer__line">
+    <a href="https://github.com/omeryasirkucuk/amx" target="_blank" rel="noopener" class="amx-footer__github" aria-label="AMX on GitHub">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+      <span>omeryasirkucuk/amx</span>
+    </a>
+    
+    <span class="amx-footer__sep">·</span>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.5</a>
+    
+    <span class="amx-footer__sep">·</span>
+    <a href="/security/">Privacy</a>
+    <span class="amx-footer__sep">·</span>
+    <a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE" target="_blank" rel="noopener">Terms</a>
+    <span class="amx-footer__sep">·</span>
+    © 2026 Omer Yasir Kucuk. All rights reserved.
+  </div>
+</footer>
+
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.5"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>
