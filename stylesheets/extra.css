@@ -517,18 +517,32 @@ body:has(#__search:checked) .md-search__inner {
   line-height: 1.4 !important;
 }
 
-/* Hide body excerpts, code teasers, "X more on this page" expanders.
-   This is the core of the minimal-dropdown UX — the user sees titles,
-   clicks to navigate, never reads body text inside the search panel. */
-.md-search-result__teaser {
+/* Hide body excerpts. Material renders result body as plain markdown
+   inside <article class="md-search-result__article md-typeset"> — there
+   is no .md-search-result__teaser class to target (it was removed in
+   newer Material). Hide every md-typeset child element except the
+   first heading so only the title shows. */
+.md-search-result__article > p,
+.md-search-result__article > ol,
+.md-search-result__article > ul,
+.md-search-result__article > pre,
+.md-search-result__article > blockquote,
+.md-search-result__article > div.highlight,
+.md-search-result__article > h2,
+.md-search-result__article > h3,
+.md-search-result__article > h4,
+.md-search-result__article > h5,
+.md-search-result__article > h6,
+.md-search-result__article > table,
+.md-search-result__article > details,
+.md-search-result__article > .admonition,
+.md-search-result__article > .md-typeset__table,
+.md-search-result__article > hr,
+.md-search-result__terms {
   display: none !important;
 }
+/* Hide the "X more on this page" expander */
 .md-search-result__more {
-  display: none !important;
-}
-.md-search-result__article p,
-.md-search-result__article pre,
-.md-search-result__article code {
   display: none !important;
 }
 
