@@ -388,11 +388,16 @@ body, .md-typeset {
    body excerpts and code-block teasers are hidden so the panel stays
    minimal and lets the rest of the page breathe. */
 
-/* Backdrop dimming */
+/* Backdrop dimming. Explicit low z-index so the overlay sits BEHIND
+   the modal panel — without this, the transform on .md-search__inner
+   creates a new stacking context that puts the overlay on top, and
+   the overlay's click handler (which closes the modal) absorbs every
+   click that should have navigated a result link. */
 .md-search__overlay {
   background: rgba(0, 0, 0, 0.55) !important;
   opacity: 0;
   pointer-events: none;
+  z-index: 1 !important;
 }
 [data-md-toggle="search"]:checked ~ .md-header .md-search__overlay,
 body:has(#__search:checked) .md-search__overlay {
@@ -423,6 +428,9 @@ body:has(#__search:checked) .md-search__overlay {
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55) !important;
   display: flex !important;
   flex-direction: column !important;
+  /* Above the overlay (z-index: 1) so result clicks don't get absorbed
+     by the click-to-close backdrop. */
+  z-index: 5 !important;
   /* Hidden until __search is checked */
   visibility: hidden;
   opacity: 0;
@@ -515,6 +523,14 @@ body:has(#__search:checked) .md-search__inner {
   font-weight: 500 !important;
   margin: 0 !important;
   line-height: 1.4 !important;
+}
+
+/* Hide the file/page icon Material absolute-positions inside each
+   result article — without this it overlaps the title's first letter
+   ("Databricks" with an icon over the D, etc.). */
+.md-search-result__icon,
+.md-search-result__article .md-icon {
+  display: none !important;
 }
 
 /* Hide body excerpts. Material renders result body as plain markdown
