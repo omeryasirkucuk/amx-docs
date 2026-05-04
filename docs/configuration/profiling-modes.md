@@ -33,7 +33,27 @@ db_profiles:
     profiling_mode: sampled        # full | sampled | metadata
     profiling_sample_size: 5000    # only used in `sampled` mode
     profiling_max_rows: 1000000    # safety cap even in `full` mode
+    profiling_stats_batch_size: 50 # columns per bulk stats query
 ```
+
+`profiling_stats_batch_size` controls how many columns share a single
+NULL/DISTINCT/MIN/MAX query. AMX builds one wide aggregate that covers
+the whole batch, then chunks the table's columns into batches of this
+size. **A 300-column table at the default (50) issues 6 stats queries
+instead of 300.** On a Databricks SQL warehouse that's 6 full-table
+scans instead of 300 — the single biggest speed-up for wide views.
+
+Tune it:
+
+- **Snowflake / Databricks / BigQuery**: raise to 100–150 if you have
+  the warehouse RAM. Their `COUNT(DISTINCT)` uses Bloom filters / HLL
+  internally so 100+ distinct counts in one query is comfortable.
+- **MSSQL / MySQL with very wide tables (300+ cols)**: drop to 25 or
+  20. Both engines build a separate sort hash per `COUNT(DISTINCT)`,
+  so a 50-col batch can spike RAM on a busy server.
+- **You hit a "single bad column" failure**: AMX automatically falls
+  back to a per-column loop for that batch only — no need to lower
+  the global default. The fallback message logs at DEBUG.
 
 Or interactively:
 
@@ -137,6 +157,7 @@ db_profiles:
     profiling_mode: sampled
     profiling_sample_size: 5000
     profiling_max_rows: 1000000
+    profiling_stats_batch_size: 50
 ```
 
 `profiling_max_rows` is a safety cap — it applies even in `full` mode, so a `/run` on
