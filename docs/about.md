@@ -53,12 +53,29 @@ hide:
 
 </div>
 
-## What is AMX?
+## About the project
 
 **AMX** is the open-source side of that work — a CLI for the long-tail problem of
 undocumented database schemas across the data platforms data engineers actually use day
-to day.
+to day. **Apache 2.0**, free for any use including commercial, with the explicit goal
+of staying community-driven rather than vendor-locked.
 
 - [Read the docs →](index.md)
-- [GitHub repo →](https://github.com/omeryasirkucuk/amx)
+- [GitHub repo →](https://github.com/omeryasirkucuk/amx) — issues, discussions, releases
 - [PyPI: `pip install amx-cli` →](https://pypi.org/project/amx-cli/)
+- [Comparisons →](evaluation/comparisons.md) and [Benchmarks →](evaluation/benchmarks.md)
+
+## Co-maintainers wanted
+
+AMX is currently a single-maintainer project. Long-term sustainability requires more
+hands. If you're a data engineer who's run AMX in production, written a backend
+adapter, or has experience with metadata catalogs (DataHub, OpenMetadata, Atlan,
+Collibra) and wants to help shape the project, the door is open:
+
+- Open a [GitHub Discussion](https://github.com/omeryasirkucuk/amx/discussions) describing how you'd like to contribute
+- File good-first-issue PRs against [github.com/omeryasirkucuk/amx](https://github.com/omeryasirkucuk/amx)
+- Email <omeryasirkucuk@gmail.com> for co-maintainer / sponsorship conversations
+
+**Sponsors:** none yet — happy to talk to organisations using AMX in production who'd
+like to fund maintenance, benchmark publication, or specific features (priority backend
+support, MCP server, hosted catalog UI). Recognition in the README + this page.
