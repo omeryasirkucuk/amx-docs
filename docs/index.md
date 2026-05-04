@@ -5,11 +5,15 @@ description: AI-powered CLI that documents undocumented database schemas — pul
 
 ![AMX components flow: Databases, Documents, and Codebase feed into AMX (Profile, RAG, and Code agents), which produces reviewed metadata accessible via Ask Metadata](assets/amx-flow.png){ .amx-flow-img }
 
+<div class="amx-intro" markdown>
+
 # AMX — Agentic Metadata Extractor
 
 AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data analysts, data engineers, and data catalog owners working with undocumented database schemas.
 
 AMX walks your database, reads your documentation and codebase, then drafts a complete description for every table and column, with confidence scores and a human review before anything lands in the live database.
+
+</div>
 
 <div class="amx-why" markdown>
 

@@ -1290,6 +1290,39 @@ body:has(#__search:checked) .md-search__inner {
   .amx-hero__socials { gap: 14px; margin-top: 28px; }
 }
 
+/* ───────────── Home intro — centered editorial header ─────────── */
+/* Wraps H1 + the two opening paragraphs. Centered, constrained line
+   length (60ch-ish) so the text doesn't sprawl across the full grid
+   width. Permalink anchor (¶) hidden on the home H1 — it'd offset the
+   centered title visually. */
+.md-typeset .amx-intro {
+  text-align: center;
+  max-width: 760px;
+  margin: 8px auto 48px;
+}
+.md-typeset .amx-intro h1 {
+  margin: 0 0 24px;
+  font-size: 2.6rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.md-typeset .amx-intro h1 .headerlink {
+  display: none;
+}
+.md-typeset .amx-intro p {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--text-muted);
+  margin: 0 auto 14px;
+  max-width: 680px;
+}
+.md-typeset .amx-intro p:last-child { margin-bottom: 0; }
+@media (max-width: 768px) {
+  .md-typeset .amx-intro { margin: 0 auto 32px; }
+  .md-typeset .amx-intro h1 { font-size: 1.9rem; margin-bottom: 18px; }
+  .md-typeset .amx-intro p { font-size: 15px; }
+}
+
 /* ───────────── Why AMX — pain vs angle, two-column callout ──────────── */
 /* Sits between the intro paragraphs and the CLI hero on the home page.
    Left column is the pain point (amber accent — drawing attention),
