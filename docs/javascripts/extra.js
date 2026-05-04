@@ -1,5 +1,68 @@
 // AMX docs — light enhancements on top of Material.
 
+// ─────────────────────────────────────────────────────────────────────
+// GitHub star count for the header button.
+//
+// Fetches stargazer count from GitHub's public API once per hour per
+// browser (localStorage TTL), updates every [data-amx-github-stars]
+// element. Each unique visitor IP makes ≤24 requests/day to the
+// GitHub API — well under the 60/hr unauth rate limit even at scale.
+// Graceful failure: if the API is unreachable or rate-limited the
+// "—" fallback stays on screen.
+(function () {
+  const REPO = "omeryasirkucuk/amx";
+  const CACHE_KEY = "amx-gh-star-count";
+  const TTL_MS = 60 * 60 * 1000; // 1 hour
+
+  function format(n) {
+    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+    return String(n);
+  }
+
+  function paint(n) {
+    document.querySelectorAll("[data-amx-github-stars]").forEach(function (el) {
+      el.textContent = format(n);
+    });
+  }
+
+  function loadStars() {
+    // Try cache first
+    try {
+      const raw = localStorage.getItem(CACHE_KEY);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        if (obj && Date.now() - obj.t < TTL_MS && typeof obj.n === "number") {
+          paint(obj.n);
+          return;
+        }
+      }
+    } catch (e) { /* ignore */ }
+
+    // Fetch fresh
+    fetch("https://api.github.com/repos/" + REPO, {
+      headers: { Accept: "application/vnd.github+json" },
+    })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (!j || typeof j.stargazers_count !== "number") return;
+        try {
+          localStorage.setItem(
+            CACHE_KEY,
+            JSON.stringify({ n: j.stargazers_count, t: Date.now() })
+          );
+        } catch (e) { /* storage full / disabled — ignore */ }
+        paint(j.stargazers_count);
+      })
+      .catch(function () { /* offline / rate-limited — keep the "—" fallback */ });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadStars);
+  } else {
+    loadStars();
+  }
+})();
+
 // ── Page-slug data attribute (used by CSS to target home page) ──
 function setPageSlug() {
   const path = window.location.pathname.replace(/\/$/, "");
