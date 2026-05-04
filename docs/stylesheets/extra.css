@@ -1301,10 +1301,11 @@ body:has(#__search:checked) .md-search__inner {
   margin: 8px auto 48px;
 }
 .md-typeset .amx-intro h1 {
-  margin: 0 0 24px;
-  font-size: 2.6rem;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  margin: 0 0 22px;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
 }
 .md-typeset .amx-intro h1 .headerlink {
   display: none;
@@ -1319,8 +1320,14 @@ body:has(#__search:checked) .md-search__inner {
 .md-typeset .amx-intro p:last-child { margin-bottom: 0; }
 @media (max-width: 768px) {
   .md-typeset .amx-intro { margin: 0 auto 32px; }
-  .md-typeset .amx-intro h1 { font-size: 1.9rem; margin-bottom: 18px; }
-  .md-typeset .amx-intro p { font-size: 15px; }
+  /* On mobile, drop white-space: nowrap so the title can wrap rather
+     than overflow the viewport. Smaller font keeps it usually 1 line. */
+  .md-typeset .amx-intro h1 {
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+    white-space: normal;
+  }
+  .md-typeset .amx-intro p { font-size: 14.5px; }
 }
 
 /* ───────────── Why AMX — pain vs angle, two-column callout ──────────── */
