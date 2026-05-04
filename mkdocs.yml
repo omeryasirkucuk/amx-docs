@@ -32,7 +32,8 @@ theme:
     - toc.follow
     - search.suggest
     - search.highlight
-    - search.share
+    # search.share intentionally disabled — adds a share-link icon
+    # next to the close button in the modal that we don't need.
     - content.code.copy
     - content.code.annotate
     - content.tabs.link

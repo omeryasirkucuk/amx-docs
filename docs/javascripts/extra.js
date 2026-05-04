@@ -136,9 +136,15 @@ function scrollToAnchor(id, behavior) {
 // Capture-phase click handler — fires before Material's instant-nav
 // listener, calls preventDefault + stopImmediatePropagation so Material
 // can't run its own scrollTo on the same click.
+//
+// Search-result links (inside .md-search__output) are skipped so
+// Material's own search handler can navigate + close the modal cleanly.
 document.addEventListener(
   "click",
   function (e) {
+    // Don't hijack clicks inside the search result list
+    if (e.target.closest(".md-search__output")) return;
+
     const link = e.target.closest('a[href^="#"]');
     if (!link) return;
     const href = link.getAttribute("href");
@@ -156,6 +162,22 @@ document.addEventListener(
   },
   true
 );
+
+// When a search result is clicked, close the modal so the user lands
+// on the navigated page without the panel still in the way. (Material
+// closes it on full-page nav already, but for same-page hash nav the
+// modal would otherwise stay open.)
+document.addEventListener("click", function (e) {
+  if (!e.target.closest(".md-search__output a[href]")) return;
+  const cb = document.getElementById("__search");
+  if (cb && cb.checked) {
+    // Defer one frame so Material's own navigation handler runs first
+    requestAnimationFrame(function () {
+      cb.checked = false;
+      cb.dispatchEvent(new Event("change", { bubbles: true }));
+    });
+  }
+});
 
 // hashchange fallback — if for any reason Material's scroll still won
 // (e.g. an event bubbled up before our handler ran), this fires after
