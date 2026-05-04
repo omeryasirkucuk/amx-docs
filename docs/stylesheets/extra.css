@@ -21,9 +21,9 @@
   --text-muted:   #57606A;
   --text-faint:   #8B919A;
   --border:       #E5E7EB;
-  --accent:       #2563EB;
-  --accent-dark:  #1D4ED8;
-  --accent-soft:  rgba(37, 99, 235, 0.08);
+  --accent:       #fb923c;
+  --accent-dark:  #f97316;
+  --accent-soft:  rgba(251, 146, 60, 0.08);
   --code-bg:      #F6F8FA;
   --tip:          #0F8C73;
   --tip-soft:     rgba(15, 140, 115, 0.08);
@@ -42,20 +42,20 @@
 }
 
 [data-md-color-scheme="slate"] {
-  --bg:           #1B1F24;
-  --bg-sidebar:   #16191D;
-  --bg-hover:     #22262D;
-  --bg-elevated:  #1F232A;
-  --text:         #D8DDE3;
-  --text-muted:   #9CA3AD;
-  --text-faint:   #6B7280;
-  --border:       #2A2E36;
-  --accent:       #60A5FA;
-  --accent-dark:  #93C5FD;
-  --accent-soft:  rgba(96, 165, 250, 0.10);
-  --code-bg:      #14171B;
-  --tip:          #34D399;
-  --tip-soft:     rgba(52, 211, 153, 0.10);
+  --bg:           #0f0f0e;
+  --bg-sidebar:   #131110;
+  --bg-hover:     #1f1d1b;
+  --bg-elevated:  #1a1918;
+  --text:         #f5f4f2;
+  --text-muted:   #a8a29e;
+  --text-faint:   #78706c;
+  --border:       #2a2723;
+  --accent:       #fb923c;
+  --accent-dark:  #fed7aa;
+  --accent-soft:  rgba(251, 146, 60, 0.10);
+  --code-bg:      #131110;
+  --tip:          #4ade80;
+  --tip-soft:     rgba(74, 222, 128, 0.10);
 
   --md-default-bg-color:         var(--bg);
   --md-default-fg-color:         var(--text);
@@ -1064,12 +1064,12 @@ body:has(#__search:checked) .md-search__inner {
 
 [data-md-color-scheme="slate"] .md-typeset .admonition.warning,
 [data-md-color-scheme="slate"] .md-typeset details.warning {
-  background: rgba(251, 191, 36, 0.10);
+  background: rgba(234, 179, 8, 0.10);
 }
 [data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title,
-[data-md-color-scheme="slate"] .md-typeset details.warning > summary { color: #FBBF24; }
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary { color: #eab308; }
 [data-md-color-scheme="slate"] .md-typeset .admonition.warning > .admonition-title::before,
-[data-md-color-scheme="slate"] .md-typeset details.warning > summary::before { background-color: #FBBF24 !important; }
+[data-md-color-scheme="slate"] .md-typeset details.warning > summary::before { background-color: #eab308 !important; }
 
 /* ───────────── Card grid — 2 columns on desktop ───────────── */
 
@@ -1154,8 +1154,8 @@ body:has(#__search:checked) .md-search__inner {
 /* Local color tokens for the hero card so we don't fight the rest of the
    theme (these match the personal site's --bg, --accent, --green). */
 .amx-hero {
-  --hero-accent: #3b82f6;
-  --hero-grad-end: #8b5cf6;
+  --hero-accent: #fb923c;
+  --hero-grad-end: #f59e0b;
   --hero-green: #22c55e;
   --hero-green-soft: rgba(34, 197, 94, 0.10);
   --hero-green-border: rgba(34, 197, 94, 0.20);
@@ -1177,7 +1177,7 @@ body:has(#__search:checked) .md-search__inner {
   margin-bottom: 28px;
   box-shadow:
     0 0 0 4px var(--bg),
-    0 0 0 5px rgba(59, 130, 246, 0.30);
+    0 0 0 5px rgba(251, 146, 60, 0.30);
 }
 
 /* Green role pill */
@@ -1212,7 +1212,7 @@ body:has(#__search:checked) .md-search__inner {
   color: var(--text);
 }
 .amx-hero__name-grad {
-  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(135deg, #fb923c, #f59e0b);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1247,8 +1247,8 @@ body:has(#__search:checked) .md-search__inner {
   border-color: var(--hero-accent);
 }
 .md-typeset .amx-btn--primary:hover {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: #f97316;
+  border-color: #f97316;
   color: #fff !important;
 }
 .md-typeset .amx-btn--secondary {
