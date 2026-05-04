@@ -226,29 +226,19 @@ body, .md-typeset {
   align-items: center;
   gap: 8px;
   margin-left: auto;
-  /* Mirror the right TOC column geometry (220px wide, with the same
-     12px internal left padding the TOC links use) so the GitHub
-     button sits directly above the "ON THIS PAGE" text below.
-     Visible only when the right TOC is showing (≥1280px). */
-  width: 220px;
-  padding-left: 12px;
-  justify-content: flex-start;
-}
-@media (max-width: 1280px) {
-  .amx-headright {
-    /* Right TOC is hidden below 1280px — drop the column-mirroring
-       and let the cluster sit at the header's right edge so it
-       doesn't float in dead space. */
-    width: auto;
-    padding-left: 0;
-    justify-content: flex-end;
-  }
+  /* Two pills (GitHub stars + PyPI downloads) sitting at the right
+     edge of the header. Width is no longer hard-aligned to the right
+     TOC column because we now have two badges that need ~280-320px;
+     instead we use justify-end so the cluster hugs the header's
+     right edge cleanly. */
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
-/* GitHub repo link in the header right slot — two-part pill:
-     [icon] GitHub | ★ <count>
+/* Generic two-part pill used for both GitHub stars and PyPI downloads:
+     [icon] | [counter-icon] <count>
    Subtle border, hover lifts both halves. */
-.amx-headright__github {
+.amx-headright__pill {
   display: inline-flex;
   align-items: stretch;
   gap: 0;
@@ -262,44 +252,46 @@ body, .md-typeset {
   overflow: hidden;
   transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
 }
-.amx-headright__github:hover {
+.amx-headright__pill:hover {
   color: var(--text);
   border-color: var(--text-muted);
   background: var(--bg-hover);
   text-decoration: none;
 }
-.amx-headright__github svg { flex-shrink: 0; }
-
-.amx-headright__github-label,
-.amx-headright__github-stars {
+.amx-headright__pill svg { flex-shrink: 0; }
+.amx-headright__pill-label,
+.amx-headright__pill-count {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 6px 10px;
   white-space: nowrap;
 }
-.amx-headright__github-label { gap: 8px; }
-.amx-headright__github-divider {
+.amx-headright__pill-divider {
   width: 1px;
   background: var(--border);
   flex-shrink: 0;
   margin: 4px 0;
 }
-.amx-headright__github-stars {
+.amx-headright__pill-count {
   font-variant-numeric: tabular-nums;
   font-weight: 500;
 }
-.amx-headright__github-stars [data-amx-github-stars] {
+.amx-headright__pill-count > span:last-child {
   min-width: 1.5ch;
   text-align: left;
   display: inline-block;
 }
 
 @media (max-width: 768px) {
-  /* Phone: collapse the "GitHub" label, keep the icon + star count */
-  .amx-headright__github-label span { display: none; }
-  .amx-headright__github-label { gap: 0; padding: 6px 8px; }
-  .amx-headright__github-stars { padding: 6px 8px; }
+  /* Phone: tighten padding so both pills fit alongside the hamburger */
+  .amx-headright__pill-label,
+  .amx-headright__pill-count { padding: 6px 8px; }
+  .amx-headright { gap: 6px; }
+}
+/* Below ~480px hide the PyPI pill entirely — keep just GitHub */
+@media (max-width: 480px) {
+  .amx-headright__pill:nth-of-type(2) { display: none; }
 }
 
 /* Theme toggle — strip Material's button styling so it's just the icon */
@@ -1038,7 +1030,8 @@ body, .md-typeset {
 }
 .md-typeset .amx-why__pain,
 .md-typeset .amx-why__angle,
-.md-typeset .amx-why__ask {
+.md-typeset .amx-why__ask,
+.md-typeset .amx-why__compliance {
   border-radius: 10px;
   padding: 20px 22px;
   font-size: 14px;
@@ -1084,6 +1077,41 @@ body, .md-typeset {
   color: #10B981;
   letter-spacing: 0.02em;
 }
+
+/* Fourth box — self-hosted/compliance, indigo accent (distinct from
+   the other three: amber pain, cyan angle, emerald ask). Indigo
+   carries a "trust / security" semantic that compliance teams read. */
+.md-typeset .amx-why__compliance {
+  background: rgba(99, 102, 241, 0.06);
+  border: 1px solid rgba(99, 102, 241, 0.25);
+  border-left: 4px solid #6366F1;
+  grid-column: 1 / -1;
+}
+.md-typeset .amx-why__compliance strong:first-child {
+  color: #6366F1;
+  letter-spacing: 0.02em;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__compliance {
+  background: rgba(129, 140, 248, 0.08);
+  border-color: rgba(129, 140, 248, 0.25);
+  border-left-color: #818CF8;
+}
+[data-md-color-scheme="slate"] .md-typeset .amx-why__compliance strong:first-child {
+  color: #818CF8;
+}
+.md-typeset .amx-why__compliance em {
+  /* Reuse the inline-quote treatment from the /ask box for the
+     "nothing leaves your perimeter" callout. */
+  font-style: normal;
+  color: var(--text);
+  background: var(--bg-elevated);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+.md-typeset .amx-why__compliance p { margin: 0; }
 .md-typeset .amx-why__ask em {
   font-style: normal;
   color: var(--text);
@@ -1112,7 +1140,8 @@ body, .md-typeset {
   .md-typeset .amx-why { grid-template-columns: 1fr; gap: 12px; margin: 20px 0; }
   .md-typeset .amx-why__pain,
   .md-typeset .amx-why__angle,
-  .md-typeset .amx-why__ask { padding: 16px 18px; font-size: 13px; }
+  .md-typeset .amx-why__ask,
+  .md-typeset .amx-why__compliance { padding: 16px 18px; font-size: 13px; }
 }
 
 /* ───────────── Hero flow diagram on the home page (above H1) ─────── */
