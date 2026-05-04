@@ -309,14 +309,107 @@ body, .md-typeset {
 }
 .amx-headright .md-header__button svg { width: 18px; height: 18px; }
 
-/* Hide Material's header search trigger and source repo button — search lives in sidebar.
-   Note: the palette toggle ALSO has class .md-header__option, so we re-show it
-   when nested inside our .amx-headright container. */
+/* Hide Material's stock search-trigger button and source repo block —
+   we render our own (.amx-headsearch) right in the nav row. The
+   .md-header__option class is also worn by the palette toggle, so we
+   re-show it inside .amx-headright. The search FORM (the modal) must
+   stay visible for the __search checkbox toggle to actually open it. */
 .md-header__option { display: none; }
 .md-header__source { display: none; }
-.md-header form[name="search"] { display: none; }
 [for="__search"].md-icon.md-header__button { display: none; }
 .amx-headright .md-header__option { display: flex; }
+
+/* ── Header search trigger (Algolia-style pseudo-input) ───────────── */
+.amx-headsearch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 24px;
+  padding: 0 10px 0 12px;
+  height: 34px;
+  min-width: 220px;
+  max-width: 280px;
+  flex-shrink: 1;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-elevated);
+  color: var(--text-faint);
+  font-size: 13px;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 100ms ease, color 100ms ease, background 100ms ease;
+}
+.amx-headsearch:hover {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+  background: var(--bg-hover);
+}
+.amx-headsearch__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+.amx-headsearch__placeholder {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.amx-headsearch__kbd {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+@media (max-width: 1100px) {
+  /* Tablet: collapse to icon-only — saves ~200px so the GitHub/PyPI
+     pills + nav still fit comfortably */
+  .amx-headsearch { min-width: 0; padding: 0 10px; }
+  .amx-headsearch__placeholder,
+  .amx-headsearch__kbd { display: none; }
+}
+@media (max-width: 1024px) {
+  /* Mobile drawer mode — hide the search trigger entirely; users
+     can still hit "/" or use the right-TOC search if exposed. */
+  .amx-headsearch { display: none; }
+}
+
+/* ── Material's search modal — restyle to fit our dark theme ──────── */
+.md-search__form {
+  background: var(--bg-elevated);
+}
+.md-search__input {
+  background: transparent;
+  color: var(--text);
+}
+.md-search__input::placeholder {
+  color: var(--text-faint);
+}
+.md-search__output {
+  background: var(--bg-sidebar);
+}
+.md-search-result__article {
+  background: var(--bg-elevated);
+}
+.md-search-result__meta,
+.md-search-result__teaser {
+  color: var(--text-muted);
+}
+.md-search-result__title {
+  color: var(--text);
+}
+.md-search-result mark {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
 
 /* ───────────── Three-column grid layout ───────────── */
 /* DOM order from Material is: primary sidebar, secondary sidebar, content.
