@@ -71,7 +71,7 @@ extra:
   # Bump this string for each release; the footer reads it via
   # {{ config.extra.version }}. Sample REPL/doctor outputs that quote
   # a specific version stay hardcoded — they're frozen examples.
-  version: "0.12.5"
+  version: "0.12.7"
 
 markdown_extensions:
   - abbr
@@ -163,6 +163,7 @@ nav:
           - OpenAI: llm-providers/openai.md
           - Anthropic: llm-providers/anthropic.md
           - Gemini: llm-providers/gemini.md
+          - Databricks Serving: llm-providers/databricks-serving.md
           - Ollama and local: llm-providers/ollama-local.md
           - Batch mode: llm-providers/batch-mode.md
       - Data Sources:

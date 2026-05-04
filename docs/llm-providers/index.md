@@ -13,6 +13,7 @@ Use this short decision tree before reaching for any specific page:
 - **Cost-sensitive whole-warehouse drafting** → [Batch mode](batch-mode.md) with `gpt-4o-mini` or `claude-haiku-3-5`. ~50% off the live-API rate, async SLA.
 - **Cryptic legacy schemas (transliterated names, abbreviations)** → [Anthropic](anthropic.md) with `claude-sonnet-4` or extended-thinking on a hard subset.
 - **Big context windows for very wide tables** → [Gemini](gemini.md) with `gemini-2.0-flash` and `column_batch_size: 15`.
+- **Already on Databricks** → [Databricks Serving](databricks-serving.md) with a Foundation Model endpoint (e.g. `databricks-meta-llama-3-1-70b-instruct`). Same workspace as your data, billed against your existing Databricks contract, no extra vendor.
 - **On-prem / air-gapped** → [Ollama and local](ollama-local.md). Llama-3 / Qwen / DeepSeek work; logprob calibration is per-model.
 
 ## Provider matrix
@@ -22,6 +23,7 @@ Use this short decision tree before reaching for any specific page:
 | [OpenAI](openai.md) | `gpt-4o` | Mid (cheap with `mini`) | ✓ native | ✓ ([batch](batch-mode.md)) | `sk-…` |
 | [Anthropic](anthropic.md) | `claude-sonnet-4-20250514` | Mid–High | ✓ derived | ✓ ([batch](batch-mode.md)) | `sk-ant-…` |
 | [Gemini](gemini.md) | `gemini-2.0-flash` | Low | ✓ native | ✗ in AMX yet | `AIza…` |
+| [Databricks Serving](databricks-serving.md) | `databricks-meta-llama-3-1-70b-instruct` | Bills against your Databricks workspace | varies (per-endpoint) | ✗ | Databricks PAT |
 | OpenRouter | provider/model id | Varies (markup) | varies | ✗ | `sk-or-…` |
 | DeepSeek | `deepseek-chat` | Very low | ✓ native | ✗ | API key |
 | [Ollama / local](ollama-local.md) | `llama3` | Free (compute is yours) | varies | ✗ | optional |
@@ -66,8 +68,24 @@ steps → troubleshooting table → what to read next.
 - [OpenAI](openai.md) — the default; logprob-threshold tuning.
 - [Anthropic](anthropic.md) — Claude model selection, extended thinking.
 - [Gemini](gemini.md) — model picks, safety-filter handling.
+- [Databricks Serving](databricks-serving.md) — Foundation Models or custom serving endpoints; same workspace as your data.
 - [Ollama and local](ollama-local.md) — on-prem / air-gapped setup.
 - [Batch mode](batch-mode.md) — async / cheap drafts via OpenAI / Anthropic batch APIs.
+
+## Override RAG with a separate profile
+
+The RAG agent (which fuses documentation + codebase evidence into a column description)
+can run on a different LLM profile than the one drafting columns. Useful when a cheaper
+fast model is enough for prose synthesis but you still want a stronger model on the
+column-drafting batch path.
+
+```text
+amx /llm /use-rag-llm
+# Picker lists every LLM profile + a "(none)" entry to clear the override.
+# Or non-interactive:
+/use-rag-llm gpt-4o-mini       # pin the RAG agent to this profile
+/use-rag-llm none              # clear the override (RAG falls back to active)
+```
 
 ## What's next
 
