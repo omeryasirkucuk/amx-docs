@@ -44,8 +44,8 @@ theme:
   # emitted into the header at all.
   palette:
     scheme: slate
-    primary: blue
-    accent: blue
+    primary: orange
+    accent: orange
   font:
     text: Inter
     code: JetBrains Mono
