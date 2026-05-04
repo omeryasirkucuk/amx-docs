@@ -25,6 +25,10 @@ AMX walks your database, reads your documentation and codebase, then drafts a co
 **Then `/ask` it.** Open a session and chat with the catalog you just built: *"what joins to `customer`?"*, *"any columns missing descriptions?"*, *"what does `x_legacy_status` mean?"*, *"which tables haven't been touched in 90 days?"*. Plain English in, grounded answers out — every response cites the exact catalog rows the LLM read, so you never get a fabricated column name back.
 </div>
 
+<div class="amx-why__compliance" markdown>
+**Self-hosted by design.** AMX runs entirely in your environment. **No SaaS account, no data leaves your network**, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to *"nothing leaves your perimeter"*: schema names, sample values, generated descriptions, the audit trail — all stay where you started. No vendor lock-in, no telemetry callbacks, no "trust us" footnote.
+</div>
+
 </div>
 
 ![AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)](assets/cli-hero.png){ .amx-hero-img }

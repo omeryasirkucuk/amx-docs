@@ -1,67 +1,79 @@
 // AMX docs — light enhancements on top of Material.
 
 // ─────────────────────────────────────────────────────────────────────
-// GitHub star count for the header button.
+// Header social-proof badges: GitHub star count + PyPI monthly downloads.
 //
-// Fetches stargazer count from GitHub's public API once per hour per
-// browser (localStorage TTL), updates every [data-amx-github-stars]
-// element. Each unique visitor IP makes ≤24 requests/day to the
-// GitHub API — well under the 60/hr unauth rate limit even at scale.
-// Graceful failure: if the API is unreachable or rate-limited the
-// "—" fallback stays on screen.
-(function () {
-  const REPO = "omeryasirkucuk/amx";
-  const CACHE_KEY = "amx-gh-star-count";
-  const TTL_MS = 60 * 60 * 1000; // 1 hour
+// Both fetch from public APIs and cache for an hour in localStorage,
+// so each unique browser makes at most ≤24 requests/day per source —
+// well under any rate limit. Graceful fallback: if either API is
+// unreachable or rate-limited, the "—" placeholder stays on screen
+// while the other badge can still update independently.
 
-  function format(n) {
-    if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
-    return String(n);
-  }
+function _amxFormatCount(n) {
+  if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, "") + "M";
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  return String(n);
+}
 
+function _amxLoadBadge(opts) {
+  // opts: { cacheKey, ttlMs, url, extract, selector }
   function paint(n) {
-    document.querySelectorAll("[data-amx-github-stars]").forEach(function (el) {
-      el.textContent = format(n);
+    document.querySelectorAll(opts.selector).forEach(function (el) {
+      el.textContent = _amxFormatCount(n);
     });
   }
-
-  function loadStars() {
-    // Try cache first
-    try {
-      const raw = localStorage.getItem(CACHE_KEY);
-      if (raw) {
-        const obj = JSON.parse(raw);
-        if (obj && Date.now() - obj.t < TTL_MS && typeof obj.n === "number") {
-          paint(obj.n);
-          return;
-        }
+  // Try cache first
+  try {
+    const raw = localStorage.getItem(opts.cacheKey);
+    if (raw) {
+      const obj = JSON.parse(raw);
+      if (obj && Date.now() - obj.t < opts.ttlMs && typeof obj.n === "number") {
+        paint(obj.n);
+        return;
       }
-    } catch (e) { /* ignore */ }
-
-    // Fetch fresh
-    fetch("https://api.github.com/repos/" + REPO, {
-      headers: { Accept: "application/vnd.github+json" },
+    }
+  } catch (e) { /* ignore */ }
+  // Fetch fresh
+  fetch(opts.url, opts.headers ? { headers: opts.headers } : undefined)
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (j) {
+      const n = j ? opts.extract(j) : null;
+      if (typeof n !== "number") return;
+      try {
+        localStorage.setItem(opts.cacheKey, JSON.stringify({ n: n, t: Date.now() }));
+      } catch (e) { /* storage full / disabled — ignore */ }
+      paint(n);
     })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (j) {
-        if (!j || typeof j.stargazers_count !== "number") return;
-        try {
-          localStorage.setItem(
-            CACHE_KEY,
-            JSON.stringify({ n: j.stargazers_count, t: Date.now() })
-          );
-        } catch (e) { /* storage full / disabled — ignore */ }
-        paint(j.stargazers_count);
-      })
-      .catch(function () { /* offline / rate-limited — keep the "—" fallback */ });
-  }
+    .catch(function () { /* offline / rate-limited — keep the "—" fallback */ });
+}
 
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", loadStars);
-  } else {
-    loadStars();
-  }
-})();
+function _amxLoadAllBadges() {
+  // GitHub star count (unauth API: 60/hr per IP)
+  _amxLoadBadge({
+    cacheKey: "amx-gh-star-count",
+    ttlMs: 60 * 60 * 1000,
+    url: "https://api.github.com/repos/omeryasirkucuk/amx",
+    headers: { Accept: "application/vnd.github+json" },
+    extract: function (j) { return j.stargazers_count; },
+    selector: "[data-amx-github-stars]",
+  });
+  // PyPI monthly downloads (pypistats.org public API, no auth, no rate limit)
+  _amxLoadBadge({
+    cacheKey: "amx-pypi-dl-month",
+    ttlMs: 60 * 60 * 1000,
+    url: "https://pypistats.org/api/packages/amx-cli/recent",
+    extract: function (j) {
+      return j && j.data ? j.data.last_month : null;
+    },
+    selector: "[data-amx-pypi-downloads]",
+  });
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", _amxLoadAllBadges);
+} else {
+  _amxLoadAllBadges();
+}
 
 // ── Page-slug data attribute (used by CSS to target home page) ──
 function setPageSlug() {
