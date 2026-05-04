@@ -382,33 +382,188 @@ body, .md-typeset {
   .amx-headsearch { display: none; }
 }
 
-/* ── Material's search modal — restyle to fit our dark theme ──────── */
+/* ── Material's search modal — converted to a centered command-palette
+   dropdown (Algolia / Vercel / Linear-style) instead of the stock
+   full-half-viewport panel. Shows only page titles + section headings;
+   body excerpts and code-block teasers are hidden so the panel stays
+   minimal and lets the rest of the page breathe. */
+
+/* Backdrop dimming */
+.md-search__overlay {
+  background: rgba(0, 0, 0, 0.55) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+[data-md-toggle="search"]:checked ~ .md-header .md-search__overlay,
+body:has(#__search:checked) .md-search__overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Re-position .md-search__inner from "right-half panel" to
+   centered floating card. Hidden by default (visibility/opacity 0
+   plus pointer-events: none) so Material's stock "modal" semantics
+   are preserved — the panel only appears when the __search checkbox
+   is flipped via the trigger or ⌘K. !important needed throughout
+   because Material's stock CSS pins these props with high specificity. */
+.md-search__inner {
+  position: fixed !important;
+  top: 72px !important;            /* below the 56px sticky header */
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) translateY(-8px) !important;
+  width: 640px !important;
+  max-width: calc(100vw - 32px) !important;
+  height: auto !important;
+  max-height: calc(100vh - 120px) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: var(--bg-elevated) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  /* Hidden until __search is checked */
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease, transform 150ms ease, visibility 0ms 150ms;
+}
+/* Visible when the search checkbox is checked */
+[data-md-toggle="search"]:checked ~ .md-header .md-search__inner,
+body:has(#__search:checked) .md-search__inner {
+  visibility: visible !important;
+  opacity: 1 !important;
+  transform: translateX(-50%) translateY(0) !important;
+  pointer-events: auto !important;
+  transition-delay: 0ms;
+}
+
+/* Search input row */
 .md-search__form {
-  background: var(--bg-elevated);
+  background: transparent !important;
+  height: 56px !important;
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 .md-search__input {
-  background: transparent;
-  color: var(--text);
+  background: transparent !important;
+  color: var(--text) !important;
+  font-size: 16px !important;
+  padding: 0 16px 0 48px !important;
+  height: 100% !important;
+  width: 100%;
 }
 .md-search__input::placeholder {
   color: var(--text-faint);
 }
+.md-search__icon[for="__search"] {
+  position: absolute !important;
+  left: 16px;
+  width: 18px !important;
+  height: 18px !important;
+  color: var(--text-muted) !important;
+}
+
+/* Result panel — scrollable list */
 .md-search__output {
-  background: var(--bg-sidebar);
+  background: transparent !important;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  height: auto !important;
+  position: static !important;
+  max-height: calc(100vh - 180px);
 }
+.md-search__scrollwrap {
+  background: transparent !important;
+  height: auto !important;
+  max-height: none !important;
+}
+
+/* "X matching documents" header line */
+.md-search-result__meta {
+  background: transparent !important;
+  color: var(--text-faint) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Each result row — compact, title + section heading only */
+.md-search-result__list { padding: 0 !important; }
+.md-search-result__item { border-bottom: 1px solid var(--border); }
+.md-search-result__item:last-child { border-bottom: none; }
+
 .md-search-result__article {
-  background: var(--bg-elevated);
+  background: transparent !important;
+  padding: 10px 16px !important;
 }
-.md-search-result__meta,
-.md-search-result__teaser {
-  color: var(--text-muted);
+.md-search-result__article--document {
+  /* Page-title rows — slightly bolder */
+  background: var(--bg) !important;
 }
+
+/* Compact, single-line titles */
 .md-search-result__title {
-  color: var(--text);
+  color: var(--text) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin: 0 !important;
+  line-height: 1.4 !important;
 }
+
+/* Hide body excerpts, code teasers, "X more on this page" expanders.
+   This is the core of the minimal-dropdown UX — the user sees titles,
+   clicks to navigate, never reads body text inside the search panel. */
+.md-search-result__teaser {
+  display: none !important;
+}
+.md-search-result__more {
+  display: none !important;
+}
+.md-search-result__article p,
+.md-search-result__article pre,
+.md-search-result__article code {
+  display: none !important;
+}
+
+/* Hover / active row */
+.md-search-result__link:focus,
+.md-search-result__link:hover {
+  background: var(--bg-hover) !important;
+}
+.md-search-result__link:focus .md-search-result__title,
+.md-search-result__link:hover .md-search-result__title {
+  color: var(--accent) !important;
+}
+
+/* Highlighted match terms */
 .md-search-result mark {
-  color: var(--accent);
-  background: var(--accent-soft);
+  color: var(--accent) !important;
+  background: transparent !important;
+  font-weight: 600;
+  border-bottom: 1px dotted var(--accent);
+}
+
+/* Tablet / phone — stretch to fill, lose the floating card look */
+@media (max-width: 768px) {
+  .md-search__inner {
+    top: 56px !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    border-radius: 0 !important;
+    height: calc(100vh - 56px) !important;
+    max-height: calc(100vh - 56px) !important;
+    border-left: none !important;
+    border-right: none !important;
+  }
 }
 
 /* ───────────── Three-column grid layout ───────────── */
