@@ -57,13 +57,19 @@ function _amxLoadAllBadges() {
     extract: function (j) { return j.stargazers_count; },
     selector: "[data-amx-github-stars]",
   });
-  // PyPI monthly downloads (pypistats.org public API, no auth, no rate limit)
+  // PyPI monthly downloads — read from a same-origin JSON file baked at
+  // deploy time by the GitHub Actions workflow. We can't fetch
+  // pypistats.org directly from the browser because pypistats responses
+  // carry no CORS headers, so the cross-origin fetch is blocked and the
+  // badge stays at "—". The workflow runs `curl pypistats | jq` from the
+  // server side (no CORS) and writes /assets/pypi.json before mkdocs
+  // builds. JSON shape: {"n": <int>, "t": <epoch_ms>}.
   _amxLoadBadge({
     cacheKey: "amx-pypi-dl-month",
     ttlMs: 60 * 60 * 1000,
-    url: "https://pypistats.org/api/packages/amx-cli/recent",
+    url: "/assets/pypi.json",
     extract: function (j) {
-      return j && j.data ? j.data.last_month : null;
+      return j && typeof j.n === "number" ? j.n : null;
     },
     selector: "[data-amx-pypi-downloads]",
   });
