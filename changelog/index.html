@@ -338,8 +338,8 @@
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../cli/visualize/"
-         >Visualize</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/studio/"
+         >Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/history/"
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/doctor/"
@@ -489,10 +489,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#0128-visualize-umbrella-release" class="md-nav__link">
+  <a href="#unreleased-amx-studio-launch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        0.12.8 — /visualize umbrella release
+        Unreleased — AMX Studio launch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#0128-amx-studio-umbrella-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.8 — AMX Studio umbrella release
       
     </span>
   </a>
@@ -683,8 +694,14 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
-<h3 id="0128-visualize-umbrella-release">0.12.8 — <code>/visualize</code> umbrella release<a class="headerlink" href="#0128-visualize-umbrella-release" title="Permanent link">&para;</a></h3>
-<p>The local web UI reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
+<h3 id="unreleased-amx-studio-launch">Unreleased — AMX Studio launch<a class="headerlink" href="#unreleased-amx-studio-launch" title="Permanent link">&para;</a></h3>
+<p>The local web UI is now <strong>AMX Studio</strong>. The slash command is <code>/studio</code>,
+the Click subcommand is <code>amx studio</code>, and the Python entry point is
+<code>amx.web.launch_studio</code>. The user-facing brand (FastAPI title, browser
+tab, auth error messages, Settings copy) all reads "AMX Studio." See
+the <a href="../cli/studio/">Studio docs</a> for a full walkthrough.</p>
+<h3 id="0128-amx-studio-umbrella-release">0.12.8 — AMX Studio umbrella release<a class="headerlink" href="#0128-amx-studio-umbrella-release" title="Permanent link">&para;</a></h3>
+<p>AMX Studio reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
 Stage 2–7 parity work + a design-system reset land together in 0.12.8: the SPA
 can now drive <code>/run</code> end-to-end (with live SSE progress and a tabbed run-detail
 view that surfaces every alternative), full DB / LLM / Docs / Code wizards live
@@ -692,9 +709,9 @@ on Settings, the new System page covers <code>amx doctor</code> / token usage / 
 status / team history-store / one-click placeholder cleanup, and every Browse
 page (database / schema / table / column) gets inline-edit + per-asset
 <strong>Generate</strong> that drafts a single comment through the same human-in-the-loop
-queue the CLI uses. The visualizer is dark-only, sits on a warm-amber palette,
+queue the CLI uses. AMX Studio is dark-only, sits on a warm-amber palette,
 and ships under a pixel-art AMX brand mark. README and amxcli.com both grow a
-<a href="../cli/visualize/"><code>/visualize</code></a> entry point with the Overview screenshot.</p>
+<a href="../cli/studio/"><code>/studio</code></a> entry point with the Overview screenshot.</p>
 <p>Also in 0.12.8: <code>Ctrl-C</code> now interrupts the running command instead of tearing
 down the whole REPL session, and <code>/edit</code> "Bulk by table" respects mode selection
 + survives a stale catalog (live-DB fallback splices the user's pick back in).</p>

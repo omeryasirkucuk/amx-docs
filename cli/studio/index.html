@@ -12,7 +12,7 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/cli/visualize/">
+        <link rel="canonical" href="https://amxcli.com/cli/studio/">
       
       
         <link rel="prev" href="../ask-and-search/">
@@ -31,7 +31,7 @@
   
     
       
-        <title>Visualize - AMX</title>
+        <title>Studio - AMX</title>
       
     
   
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#visualize-local-amx-web-ui" class="md-skip">
+        <a href="#studio-local-amx-web-ui-amx-studio" class="md-skip">
           Skip to content
         </a>
       
@@ -341,7 +341,7 @@
          href="../ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
-         aria-current="page">Visualize</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         aria-current="page">Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../history/"
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../doctor/"
@@ -585,10 +585,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#visualizer-auth-is-not-configured-on-every-request" class="md-nav__link">
+  <a href="#amx-studio-auth-is-not-configured-on-every-request" class="md-nav__link">
     <span class="md-ellipsis">
       
-        "Visualizer auth is not configured" on every request
+        "AMX Studio auth is not configured" on every request
       
     </span>
   </a>
@@ -671,7 +671,7 @@
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Visualize</span>
+      <span>Studio</span>
     </div>
   </div>
 
@@ -680,16 +680,19 @@
 
 
 
-<h1 id="visualize-local-amx-web-ui"><code>/visualize</code> — local AMX web UI<a class="headerlink" href="#visualize-local-amx-web-ui" title="Permanent link">&para;</a></h1>
-<p><code>/visualize</code> boots the AMX web UI on <code>127.0.0.1:&lt;port&gt;</code>, generates a one-shot
+<h1 id="studio-local-amx-web-ui-amx-studio"><code>/studio</code> — local AMX web UI (AMX Studio)<a class="headerlink" href="#studio-local-amx-web-ui-amx-studio" title="Permanent link">&para;</a></h1>
+<p><code>/studio</code> boots <strong>AMX Studio</strong> on <code>127.0.0.1:&lt;port&gt;</code>, generates a one-shot
 bearer token, and opens your default browser at the token-protected URL. It's the
 same review-and-apply workflow you get in the REPL — runs, results, the pending
 queue, the <code>/ask</code> chat, and full DB / LLM / Docs / Code profile management — but
 on a denser surface where you can see everything at once.</p>
-<p><img alt="AMX visualizer Overview page — sidebar with active SAP profile and schemas, four stat cards (active backend, LLM model, total runs, success rate), and a Recent runs feed with four Schema description rows" src="../../assets/visualize-overview.png" /></p>
+<p>The CLI command is <code>amx /studio</code> (slash form, used inside the AMX REPL) and
+<code>amx studio</code> (Click subcommand, used from a fresh shell). Both run the same
+<code>amx.web.launch_studio</code> entry point.</p>
+<p><img alt="AMX Studio Overview page — sidebar with active SAP profile and schemas, four stat cards (active backend, LLM model, total runs, success rate), and a Recent runs feed with four Schema description rows" src="../../assets/studio-overview.png" /></p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The visualizer ships <strong>inside</strong> the
+<li>AMX installed (<code>pip install amx-cli</code>). AMX Studio ships <strong>inside</strong> the
   <code>amx-cli</code> wheel — there is no separate package to install and no Node toolchain
   required.</li>
 <li>A modern browser (Chrome, Firefox, Safari, or Edge).</li>
@@ -697,15 +700,15 @@ on a denser surface where you can see everything at once.</p>
   <code>/setup</code> wizard.</li>
 </ul>
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>/visualize
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>/studio
 </span></code></pre></div>
 <p>Or as a top-level shell command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx<span class="w"> </span>visualize
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx<span class="w"> </span>studio
 </span></code></pre></div>
 <p>The default port is <strong>47821</strong>. Pass <code>--port &lt;n&gt;</code> to pin a specific port, or
 <code>--no-open</code> to skip the auto-launch when running over SSH.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--no-open
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--no-open
 </span></code></pre></div>
 <p>The launcher prints the token-protected URL — copy it into a browser on the same
 machine if <code>--no-open</code> was used, or use a tunneling tool to reach it from a
@@ -787,20 +790,20 @@ partial work is never rolled back to spare you a multi-minute redo.</p>
 cancellation), so cancellation latency is "one tool/agent step" — typically a
 few seconds.</p>
 <h2 id="security-model">Security model<a class="headerlink" href="#security-model" title="Permanent link">&para;</a></h2>
-<p>The visualizer binds <strong>only</strong> to <code>127.0.0.1</code> — never <code>0.0.0.0</code>. On top of
+<p>AMX Studio binds <strong>only</strong> to <code>127.0.0.1</code> — never <code>0.0.0.0</code>. On top of
 loopback isolation, every API call carries a one-shot bearer token generated
-fresh per <code>/visualize</code> invocation. The SPA captures the token from <code>?t=…</code> on
-first load, stashes it in <code>localStorage</code>, and strips it from the URL bar so it
-doesn't end up in browser history.</p>
+fresh per <code>/studio</code> invocation. The SPA captures the token from <code>?t=…</code> on
+first load, stashes it in <code>localStorage</code> (key <code>amx.studio.token</code>), and strips
+it from the URL bar so it doesn't end up in browser history.</p>
 <p>EventSource clients (the SSE streams behind <code>/ask</code>, <code>/run</code>, and <code>/apply</code>)
 re-attach the token via <code>?t=…</code> because browsers don't allow custom headers on
 <code>EventSource</code>.</p>
 <p>You can rotate the token by stopping the server (<kbd>Ctrl-C</kbd>) and
-re-running <code>amx /visualize</code>.</p>
+re-running <code>amx /studio</code>.</p>
 <h3 id="whats-not-exposed">What's not exposed<a class="headerlink" href="#whats-not-exposed" title="Permanent link">&para;</a></h3>
 <ul>
 <li>The JSON API does not include <code>/docs</code> or <code>/redoc</code>. The OpenAPI surface stays
-  internal so the visualizer doesn't accidentally expose your AMX configuration
+  internal so AMX Studio doesn't accidentally expose your AMX configuration
   to anyone who happened to grab the token.</li>
 <li>Static asset routes (<code>/</code>, <code>/assets/*</code>) are unauthenticated by design — they
   only ship the SPA bundle, not data.</li>
@@ -812,28 +815,28 @@ re-running <code>amx /visualize</code>.</p>
 <h3 id="browser-opens-to-a-404-connection-refused">Browser opens to a 404 / "Connection refused"<a class="headerlink" href="#browser-opens-to-a-404-connection-refused" title="Permanent link">&para;</a></h3>
 <p>The server may have failed to bind (port <code>47821</code> busy and the ephemeral fallback
 also fell over). Pass <code>--port</code> to force a different port:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
 </span></code></pre></div>
-<h3 id="visualizer-auth-is-not-configured-on-every-request">"Visualizer auth is not configured" on every request<a class="headerlink" href="#visualizer-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
+<h3 id="amx-studio-auth-is-not-configured-on-every-request">"AMX Studio auth is not configured" on every request<a class="headerlink" href="#amx-studio-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
 <p>The token cookie / <code>localStorage</code> entry was wiped or never captured on this
-browser. Re-launch <code>amx /visualize</code> and let the launcher re-open the browser
+browser. Re-launch <code>amx /studio</code> and let the launcher re-open the browser
 with a fresh <code>?t=…</code> URL.</p>
 <h3 id="ask-returns-search-catalog-isnt-initialised-yet"><code>/ask</code> returns "Search catalog isn't initialised yet"<a class="headerlink" href="#ask-returns-search-catalog-isnt-initialised-yet" title="Permanent link">&para;</a></h3>
-<p>Run <code>/sync</code> (or <code>/run</code> once) to populate the SQLite-backed catalog. The
-visualizer reuses the same store the CLI's <code>/ask</code> uses, so a sync from either
-side surfaces immediately.</p>
+<p>Run <code>/sync</code> (or <code>/run</code> once) to populate the SQLite-backed catalog. AMX Studio
+reuses the same store the CLI's <code>/ask</code> uses, so a sync from either side
+surfaces immediately.</p>
 <h3 id="pending-queue-is-empty-but-i-just-approved-rows">Pending queue is empty but I just approved rows<a class="headerlink" href="#pending-queue-is-empty-but-i-just-approved-rows" title="Permanent link">&para;</a></h3>
-<p>The visualizer reads <code>~/.amx/pending_metadata.json</code>. If you're on shared-mode
+<p>AMX Studio reads <code>~/.amx/pending_metadata.json</code>. If you're on shared-mode
 history, the queue is still local-only by design (write-back is per-machine).</p>
 <h3 id="connection-test-on-a-databricks-profile-fails-with-a-tls-error">Connection-test on a Databricks profile fails with a TLS error<a class="headerlink" href="#connection-test-on-a-databricks-profile-fails-with-a-tls-error" title="Permanent link">&para;</a></h3>
-<p>The visualizer reuses <code>DatabaseConnector.test_connection_result()</code>, so the same
+<p>AMX Studio reuses <code>DatabaseConnector.test_connection_result()</code>, so the same
 TLS setup as the CLI applies. Set <code>tls_no_verify=true</code> (or pin a
 <code>tls_trusted_ca_file</code>) on the profile from Settings, then click <strong>Test</strong> again.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../run-and-apply/"><code>/run</code> and <code>/apply</code></a> — same workflow, REPL-flavoured.</li>
 <li><a href="../ask-and-search/"><code>/ask</code> and <code>/search</code></a> — the conversational surface that
-  the visualizer's Ask tab wraps.</li>
+  AMX Studio's Ask tab wraps.</li>
 <li><a href="../../concepts/human-in-the-loop/">Human-in-the-loop review</a> — what the
   Pending queue actually does and why every Generate goes through it.</li>
 </ul>
