@@ -53,7 +53,7 @@ Top-level commands:
   /run           Run agents on a scope
   /apply         Write reviewed comments back to the DB
   /search        Catalog search and embedding rebuild
-  /visualize     Boot the local web UI on 127.0.0.1
+  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
   /history       Audit trail and run comparison
   /doctor        Diagnostics
   /config        Show or edit ~/.amx/config.yml
@@ -143,7 +143,7 @@ for the most-frequently-seen failures.
 | `/metadata` | Inspect introspection cache | — |
 | `/analyze` | Run + apply | `/run`, `/run-apply`, `/apply` |
 | `/search` | Catalog search | `/ask`, `/status`, `/sync`, `/rebuild` |
-| `/visualize` | Local web UI on `127.0.0.1` | `--port`, `--no-open` |
+| `/studio` | AMX Studio — local web UI on `127.0.0.1` | `--port`, `--no-open` |
 | `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare` |
 | `/doctor` | Diagnostics | `--skip-network`, `--debug` |
 
@@ -158,4 +158,4 @@ for the most-frequently-seen failures.
 - [Quick start](../getting-started/quickstart.md) — five-minute walkthrough using PostgreSQL + OpenAI.
 - [Run & Apply](run-and-apply.md) — the heart of the workflow: `/run`, review wizard, `/apply`.
 - [Setup wizard](setup.md) — first-time `/setup` walkthrough.
-- [`/visualize`](visualize.md) — same workflow on a local web UI when you'd rather see everything at once.
+- [`/studio`](studio.md) — same workflow on a local web UI (AMX Studio) when you'd rather see everything at once.

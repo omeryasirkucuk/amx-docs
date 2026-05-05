@@ -106,9 +106,9 @@ AMX runs entirely in your environment. **No SaaS account, no data leaves your ne
 
     Conversational metadata Q&A with grounded retrieval and live verification.
 
--   [**`/visualize`**](cli/visualize.md)
+-   [**`/studio`**](cli/studio.md)
 
-    Same review-and-apply workflow on a local web UI — runs, results, pending queue, profile management.
+    AMX Studio — same review-and-apply workflow on a local web UI: runs, results, pending queue, profile management.
 
 -   [**`/history`**](cli/history.md)
 

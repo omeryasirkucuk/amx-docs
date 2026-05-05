@@ -134,7 +134,7 @@ nav:
       - Setup: cli/setup.md
       - Run & Apply: cli/run-and-apply.md
       - Ask & Search: cli/ask-and-search.md
-      - Visualize: cli/visualize.md
+      - Studio: cli/studio.md
       - History: cli/history.md
       - Doctor: cli/doctor.md
       - Flags: cli/flags.md

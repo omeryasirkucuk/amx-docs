@@ -8,9 +8,17 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
-### 0.12.8 — `/visualize` umbrella release
+### Unreleased — AMX Studio launch
 
-The local web UI reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
+The local web UI is now **AMX Studio**. The slash command is `/studio`,
+the Click subcommand is `amx studio`, and the Python entry point is
+`amx.web.launch_studio`. The user-facing brand (FastAPI title, browser
+tab, auth error messages, Settings copy) all reads "AMX Studio." See
+the [Studio docs](cli/studio.md) for a full walkthrough.
+
+### 0.12.8 — AMX Studio umbrella release
+
+AMX Studio reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
 Stage 2–7 parity work + a design-system reset land together in 0.12.8: the SPA
 can now drive `/run` end-to-end (with live SSE progress and a tabbed run-detail
 view that surfaces every alternative), full DB / LLM / Docs / Code wizards live
@@ -18,9 +26,9 @@ on Settings, the new System page covers `amx doctor` / token usage / catalog
 status / team history-store / one-click placeholder cleanup, and every Browse
 page (database / schema / table / column) gets inline-edit + per-asset
 **Generate** that drafts a single comment through the same human-in-the-loop
-queue the CLI uses. The visualizer is dark-only, sits on a warm-amber palette,
+queue the CLI uses. AMX Studio is dark-only, sits on a warm-amber palette,
 and ships under a pixel-art AMX brand mark. README and amxcli.com both grow a
-[`/visualize`](cli/visualize.md) entry point with the Overview screenshot.
+[`/studio`](cli/studio.md) entry point with the Overview screenshot.
 
 Also in 0.12.8: `Ctrl-C` now interrupts the running command instead of tearing
 down the whole REPL session, and `/edit` "Bulk by table" respects mode selection
