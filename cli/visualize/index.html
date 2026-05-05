@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/cli/doctor/">
+        <link rel="canonical" href="https://amxcli.com/cli/visualize/">
       
       
-        <link rel="prev" href="../history/">
+        <link rel="prev" href="../ask-and-search/">
       
       
-        <link rel="next" href="../flags/">
+        <link rel="next" href="../history/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Doctor - AMX</title>
+        <title>Visualize - AMX</title>
       
     
   
@@ -84,7 +84,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#doctor" class="md-skip">
+        <a href="#visualize-local-amx-web-ui" class="md-skip">
           Skip to content
         </a>
       
@@ -339,13 +339,13 @@
          href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask-and-search/"
-         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../visualize/"
-         >Visualize</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../history/"
-         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
-         aria-current="page">Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         aria-current="page">Visualize</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../history/"
+         >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../flags/"
          >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
       <div class="amx-sidebar__group-title">Backends</div>
@@ -479,10 +479,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#why-doctor-is-special" class="md-nav__link">
+  <a href="#prerequisites" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why /doctor is special
+        Prerequisites
       
     </span>
   </a>
@@ -490,10 +490,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#running-it" class="md-nav__link">
+  <a href="#quick-start" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Running it
+        Quick start
       
     </span>
   </a>
@@ -501,10 +501,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-it-checks" class="md-nav__link">
+  <a href="#whats-in-the-ui" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What it checks
+        What's in the UI
       
     </span>
   </a>
@@ -512,10 +512,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-output" class="md-nav__link">
+  <a href="#generate-descriptions-from-any-page" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample output
+        Generate descriptions from any page
       
     </span>
   </a>
@@ -523,10 +523,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interpreting-failures" class="md-nav__link">
+  <a href="#cancelling-long-running-jobs" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Interpreting failures
+        Cancelling long-running jobs
       
     </span>
   </a>
@@ -534,21 +534,110 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-run-it" class="md-nav__link">
+  <a href="#security-model" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to run it
+        Security model
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Security model">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#whats-not-exposed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's not exposed
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#what-doctor-does-not-do" class="md-nav__link">
+  <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What doctor does NOT do
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Troubleshooting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#browser-opens-to-a-404-connection-refused" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Browser opens to a 404 / "Connection refused"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visualizer-auth-is-not-configured-on-every-request" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        "Visualizer auth is not configured" on every request
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ask-returns-search-catalog-isnt-initialised-yet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask returns "Search catalog isn't initialised yet"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pending-queue-is-empty-but-i-just-approved-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pending queue is empty but I just approved rows
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#connection-test-on-a-databricks-profile-fails-with-a-tls-error" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connection-test on a Databricks profile fails with a TLS error
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whats-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What's next
       
     </span>
   </a>
@@ -582,7 +671,7 @@
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Doctor</span>
+      <span>Visualize</span>
     </div>
   </div>
 
@@ -591,140 +680,162 @@
 
 
 
-<h1 id="doctor"><code>/doctor</code><a class="headerlink" href="#doctor" title="Permanent link">&para;</a></h1>
-<p><code>/doctor</code> is the diagnostics command. Run it inside the AMX REPL whenever
-something looks wrong — install, config, or connectivity — and it streams an
-actionable check per phase.</p>
-<h2 id="why-doctor-is-special">Why <code>/doctor</code> is special<a class="headerlink" href="#why-doctor-is-special" title="Permanent link">&para;</a></h2>
-<p>Every other slash command requires a working profile and a reachable LLM. <code>/doctor</code>
-doesn't — it's designed to keep working when nothing else does. It's also the <em>only</em>
-command exposed as a shell entry point (<code>amx doctor</code>), so even when <code>amx</code> itself
-won't start the REPL, you still get the same diagnostic output.</p>
-<h2 id="running-it">Running it<a class="headerlink" href="#running-it" title="Permanent link">&para;</a></h2>
-<p>Open AMX, then call <code>/doctor</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx
-</span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /doctor                    # full check, hits the network
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&gt; /doctor --skip-network     # offline quick check
-</span></code></pre></div>
-<div class="admonition tip">
-<p class="admonition-title">Shell-only fallback</p>
-<p>If <code>amx</code> won't even reach the REPL (broken install, corrupt config, missing
-driver), the same diagnostic also runs as a shell command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>doctor
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>doctor<span class="w"> </span>--skip-network
-</span></code></pre></div>
-<p>This is the one place AMX intentionally exposes a slash command at the shell —
-everywhere else, the canonical flow is <code>amx</code> → <code>&gt; /&lt;command&gt;</code>.</p>
-</div>
-<h2 id="what-it-checks">What it checks<a class="headerlink" href="#what-it-checks" title="Permanent link">&para;</a></h2>
+<h1 id="visualize-local-amx-web-ui"><code>/visualize</code> — local AMX web UI<a class="headerlink" href="#visualize-local-amx-web-ui" title="Permanent link">&para;</a></h1>
+<p><code>/visualize</code> boots the AMX web UI on <code>127.0.0.1:&lt;port&gt;</code>, generates a one-shot
+bearer token, and opens your default browser at the token-protected URL. It's the
+same review-and-apply workflow you get in the REPL — runs, results, the pending
+queue, the <code>/ask</code> chat, and full DB / LLM / Docs / Code profile management — but
+on a denser surface where you can see everything at once.</p>
+<p><img alt="AMX visualizer Overview page — sidebar with active SAP profile and schemas, four stat cards (active backend, LLM model, total runs, success rate), and a Recent runs feed with four Schema description rows" src="../../assets/visualize-overview.png" /></p>
+<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><code>amx</code> binaries on <code>PATH</code>.</strong> Reports every <code>amx</code> it finds, with version. This catches the
-  version-skew bug class — one <code>amx</code> in your global pip install, another in a project venv,
-  and confusion about which one ran.</li>
-<li><strong>Python runtime.</strong> Version + interpreter path. Warns on Python &lt; 3.10.</li>
-<li><strong>Config schema version.</strong> Reads <code>~/.amx/config.yml</code> and reports the schema version.
-  Warns if it's older than the binary expects (suggesting an upgrade) or newer (raises
-  <code>ConfigSchemaTooNewError</code> — downgrade or upgrade AMX).</li>
-<li><strong>Backend driver availability.</strong> For each DB profile, checks whether the required
-  database driver is importable. Missing drivers print a remediation hint.</li>
-<li><strong>Active DB profile reachability.</strong> Performs a real connection test (no LLM call). For
-  Databricks, walks through saved profile → CA bundle from environment → <code>tls_no_verify</code>
-  to find the first working path.</li>
-<li><strong>Active LLM profile reachability.</strong> Confirms the API key is present (in keychain or
-  config) and pings the provider's models endpoint. Skipped under <code>--skip-network</code>.</li>
-<li><strong>Filesystem.</strong> Confirms <code>~/.amx/</code> exists, has the right permissions (<code>0o700</code>), and that
-  <code>config.yml</code> is <code>0o600</code>.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The visualizer ships <strong>inside</strong> the
+  <code>amx-cli</code> wheel — there is no separate package to install and no Node toolchain
+  required.</li>
+<li>A modern browser (Chrome, Firefox, Safari, or Edge).</li>
+<li>An active DB and LLM profile, or a clean install ready for the in-browser
+  <code>/setup</code> wizard.</li>
 </ul>
-<h2 id="sample-output">Sample output<a class="headerlink" href="#sample-output" title="Permanent link">&para;</a></h2>
-<p><code>doctor</code> streams each check as it runs — one <code>[Stage]</code> line per phase, the same live
-progress format <code>/run</code> uses — so a stalled probe (typically the LLM ping) is obvious
-instead of looking like a hang. The final line summarises pass/fail counts and points at
-the first remediation:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /doctor
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[Binary]   scanning PATH for amx ......................  ok (0.0 s)
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>           /Users/jane/.venvs/amx/bin/amx (version 0.12.0)
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[Python]   detecting interpreter ......................  ok (0.0 s)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>           3.12.2 (/Users/jane/.venvs/amx/bin/python)
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>           v2 (matches binary expectation)
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>[FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>           0o700, config.yml 0o600
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>[Drivers]  importing backend drivers .................   in progress
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>           postgresql ................................   ok
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>           snowflake .................................   fail (missing)
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>[DB]       testing active profile local_pg ...........   in progress
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>           connect ...................................   ok (42 ms)
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>           handshake .................................   ok (postgresql 14.10)
-</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>[LLM]      pinging openai_main (gpt-4o-mini) ..........  in progress
-</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>           api key in keychain .......................   ok
-</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>           models endpoint ...........................   ok (218 ms)
-</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>[History]  inspecting local store .....................  ok (0.0 s)
-</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>           local mode, 247 runs persisted
-</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>✗ /doctor finished in 0.9 s. 7 checks passed, 1 failed.
-</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>  Failed: backend driver — snow_prod (snowflake): missing
-</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>  → pip install amx-cli
+<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>/visualize
 </span></code></pre></div>
-<p>Under <code>--skip-network</code> the <code>[LLM]</code> stage is replaced by a single
-<code>[LLM]      skipped (--skip-network) ..................   skipped</code> line and the timer
-typically falls under 0.3 s. A clean run finishes with <code>✓ /doctor finished</code> and exits
-with code <code>0</code>; any ✗ check exits with <code>1</code> so it slots cleanly into CI smoke tests.</p>
-<h2 id="interpreting-failures">Interpreting failures<a class="headerlink" href="#interpreting-failures" title="Permanent link">&para;</a></h2>
-<p>Each ✗ comes with a one-line remediation:</p>
+<p>Or as a top-level shell command:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx<span class="w"> </span>visualize
+</span></code></pre></div>
+<p>The default port is <strong>47821</strong>. Pass <code>--port &lt;n&gt;</code> to pin a specific port, or
+<code>--no-open</code> to skip the auto-launch when running over SSH.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--no-open
+</span></code></pre></div>
+<p>The launcher prints the token-protected URL — copy it into a browser on the same
+machine if <code>--no-open</code> was used, or use a tunneling tool to reach it from a
+laptop while the server runs on a remote box.</p>
+<h2 id="whats-in-the-ui">What's in the UI<a class="headerlink" href="#whats-in-the-ui" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Symptom</th>
-<th>Hint</th>
+<th>Page</th>
+<th>What it does</th>
+<th>Backed by</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Multiple <code>amx</code> binaries on PATH</td>
-<td>Use a venv consistently; remove the older install</td>
+<td><strong>Overview</strong> <code>/</code></td>
+<td>Stat cards (active backend, LLM model, total runs, success rate) + Recent runs feed. Tile and row click-throughs jump to Settings or the run detail.</td>
+<td><code>/api/history/stats</code>, <code>/api/history/runs</code></td>
 </tr>
 <tr>
-<td><code>Missing driver</code></td>
-<td>Run the printed <code>pip install amx-cli</code></td>
+<td><strong>Browse</strong> <code>/db/:profile</code>, <code>/db/:profile/:schema</code>, <code>/db/:profile/:schema/:table</code></td>
+<td>Walk the live database. Inline-edit any database / schema / table / column comment, or hit <strong>Generate</strong> to have the LLM draft just that asset and write it back through the same review loop the CLI uses.</td>
+<td><code>/api/live/...</code>, <code>/api/comments/...</code>, <code>/api/generate/...</code></td>
 </tr>
 <tr>
-<td><code>Config schema too new</code></td>
-<td>Upgrade with <code>pip install --upgrade amx-cli</code></td>
+<td><strong>Runs</strong> <code>/runs</code></td>
+<td>Every <code>/run</code> and <code>/run-apply</code> invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Compare 2–4 runs side-by-side via the <strong>Compare</strong> button.</td>
+<td><code>/api/history/runs</code>, <code>/api/history/compare</code></td>
 </tr>
 <tr>
-<td><code>CERTIFICATE_VERIFY_FAILED</code> (Databricks)</td>
-<td>Set a Trusted CA file in the profile or <code>AMX_DATABRICKS_TRUSTED_CA_FILE</code></td>
+<td><strong>Run detail</strong> <code>/runs/:id</code></td>
+<td>Live SSE progress while a run streams (sticky banner with elapsed timer + current activity + N/total processed), then a tabbed Summary / Results / Scope / Settings view once the run finishes. Per-row alternatives carousel + skip + custom-edit + restore.</td>
+<td><code>/api/history/runs/{id}</code>, <code>/api/pending/...</code></td>
 </tr>
 <tr>
-<td><code>LLM models endpoint 401</code></td>
-<td>API key is wrong or rotated; re-run <code>/add-llm-profile</code></td>
+<td><strong>Ask</strong> <code>/ask</code></td>
+<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar and end-session control.</td>
+<td><code>/api/ask</code> (SSE), <code>/api/ask/sessions/...</code></td>
 </tr>
 <tr>
-<td><code>LLM models endpoint timeout</code></td>
-<td>Check egress proxy / firewall; retry with <code>--skip-network</code> to confirm everything else is fine</td>
+<td><strong>Settings</strong> <code>/settings</code></td>
+<td>Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. Same fields as <code>/add-db-profile</code> / <code>/add-llm-profile</code> / <code>/add-doc-profile</code> / <code>/add-code-profile</code>.</td>
+<td><code>/api/profiles/...</code></td>
 </tr>
 <tr>
-<td><code>Cannot read ~/.amx/config.yml</code></td>
-<td>File mode wrong, or you ran AMX as a different user previously</td>
+<td><strong>System</strong> <code>/system</code></td>
+<td>Doctor checks (re-run, skip-network toggle), per-(provider, model) token usage + cost over today / 24h / 7d / 30d / all, search-catalog status, team history-store enable / disable, and one-click placeholder cleanup.</td>
+<td><code>/api/doctor</code>, <code>/api/usage</code>, <code>/api/catalog/status</code>, <code>/api/admin/...</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="when-to-run-it">When to run it<a class="headerlink" href="#when-to-run-it" title="Permanent link">&para;</a></h2>
+<p>The top bar also surfaces the active <strong>DB profile</strong>, <strong>catalog / database</strong>, and
+<strong>LLM profile</strong> as click-to-switch dropdown pills, plus a <code>⌘K</code> / <code>Ctrl-K</code> command
+palette for jumping to any page or quick action.</p>
+<h2 id="generate-descriptions-from-any-page">Generate descriptions from any page<a class="headerlink" href="#generate-descriptions-from-any-page" title="Permanent link">&para;</a></h2>
+<p>Bulk runs (the canonical <code>/run</code> path) stay the right tool when you want to fill
+in many assets at once. The Browse pages add a one-asset-at-a-time path for the
+times you want to fix or draft a single comment without spinning up a full run:</p>
 <ul>
-<li><strong>Right after install.</strong> Confirms you have everything the wizard needs.</li>
-<li><strong>After <code>pip install --upgrade amx-cli</code>.</strong> Catches schema bumps and missing extras.</li>
-<li><strong>When a <code>/run</code> fails for no obvious reason.</strong> Doctor will tell you whether the LLM is
-  reachable, whether the DB is reachable, and whether either changed since the last run.</li>
-<li><strong>In CI.</strong> Run <code>/doctor --skip-network</code> as a smoke test to confirm the installed
-  bundle is intact.</li>
+<li><strong>Database page</strong> → "Generate description" button writes the database / catalog
+  comment directly.</li>
+<li><strong>Schema page</strong> → "Just this schema" (single LLM call) vs "All tables" (full
+  bulk run, redirects to the live run-detail stream).</li>
+<li><strong>Table page</strong> → "Just this table" vs "All columns".</li>
+<li><strong>Column rows</strong> → per-row "Gen" button writes that one column's <code>COMMENT</code> in
+  place.</li>
 </ul>
-<h2 id="what-doctor-does-not-do">What <code>doctor</code> does NOT do<a class="headerlink" href="#what-doctor-does-not-do" title="Permanent link">&para;</a></h2>
+<p>Every generated suggestion still goes through the human-in-the-loop review queue
+— nothing lands in the live database until you accept it.</p>
+<h2 id="cancelling-long-running-jobs">Cancelling long-running jobs<a class="headerlink" href="#cancelling-long-running-jobs" title="Permanent link">&para;</a></h2>
+<p><code>/run</code> and <code>/apply</code> jobs run in daemon threads inside the parent CLI process.
+Each carries a <code>threading.Event</code> cancel token plumbed through the orchestrator;
+clicking <strong>Cancel</strong> on the progress card sets the token and the loop bails
+between rows.</p>
+<p><code>/apply</code> cancellation <strong>commits whatever was already written</strong> — matching the
+CLI's <kbd>Ctrl-C</kbd> behaviour. The transaction boundary is per-row, so
+partial work is never rolled back to spare you a multi-minute redo.</p>
+<p>In-flight LLM HTTP calls cannot be killed mid-flight (provider SDKs don't expose
+cancellation), so cancellation latency is "one tool/agent step" — typically a
+few seconds.</p>
+<h2 id="security-model">Security model<a class="headerlink" href="#security-model" title="Permanent link">&para;</a></h2>
+<p>The visualizer binds <strong>only</strong> to <code>127.0.0.1</code> — never <code>0.0.0.0</code>. On top of
+loopback isolation, every API call carries a one-shot bearer token generated
+fresh per <code>/visualize</code> invocation. The SPA captures the token from <code>?t=…</code> on
+first load, stashes it in <code>localStorage</code>, and strips it from the URL bar so it
+doesn't end up in browser history.</p>
+<p>EventSource clients (the SSE streams behind <code>/ask</code>, <code>/run</code>, and <code>/apply</code>)
+re-attach the token via <code>?t=…</code> because browsers don't allow custom headers on
+<code>EventSource</code>.</p>
+<p>You can rotate the token by stopping the server (<kbd>Ctrl-C</kbd>) and
+re-running <code>amx /visualize</code>.</p>
+<h3 id="whats-not-exposed">What's not exposed<a class="headerlink" href="#whats-not-exposed" title="Permanent link">&para;</a></h3>
 <ul>
-<li>It does not fix anything automatically. Every remediation is a printed command for you
-  to run.</li>
-<li>It does not list every DB profile — only the <strong>active</strong> one is connection-tested. Use
-  <code>/db inspect &lt;profile&gt;</code> for per-profile diagnosis.</li>
-<li>It does not modify <code>config.yml</code>. All checks are read-only.</li>
+<li>The JSON API does not include <code>/docs</code> or <code>/redoc</code>. The OpenAPI surface stays
+  internal so the visualizer doesn't accidentally expose your AMX configuration
+  to anyone who happened to grab the token.</li>
+<li>Static asset routes (<code>/</code>, <code>/assets/*</code>) are unauthenticated by design — they
+  only ship the SPA bundle, not data.</li>
+<li>Secret fields (<code>password</code>, <code>access_token</code>, <code>api_key</code>) are masked as <code>********</code>
+  in every response. PUT bodies treat the placeholder as "leave the existing
+  value alone" so editing one field on a profile doesn't blank the secret.</li>
+</ul>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h3 id="browser-opens-to-a-404-connection-refused">Browser opens to a 404 / "Connection refused"<a class="headerlink" href="#browser-opens-to-a-404-connection-refused" title="Permanent link">&para;</a></h3>
+<p>The server may have failed to bind (port <code>47821</code> busy and the ephemeral fallback
+also fell over). Pass <code>--port</code> to force a different port:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>/visualize<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
+</span></code></pre></div>
+<h3 id="visualizer-auth-is-not-configured-on-every-request">"Visualizer auth is not configured" on every request<a class="headerlink" href="#visualizer-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
+<p>The token cookie / <code>localStorage</code> entry was wiped or never captured on this
+browser. Re-launch <code>amx /visualize</code> and let the launcher re-open the browser
+with a fresh <code>?t=…</code> URL.</p>
+<h3 id="ask-returns-search-catalog-isnt-initialised-yet"><code>/ask</code> returns "Search catalog isn't initialised yet"<a class="headerlink" href="#ask-returns-search-catalog-isnt-initialised-yet" title="Permanent link">&para;</a></h3>
+<p>Run <code>/sync</code> (or <code>/run</code> once) to populate the SQLite-backed catalog. The
+visualizer reuses the same store the CLI's <code>/ask</code> uses, so a sync from either
+side surfaces immediately.</p>
+<h3 id="pending-queue-is-empty-but-i-just-approved-rows">Pending queue is empty but I just approved rows<a class="headerlink" href="#pending-queue-is-empty-but-i-just-approved-rows" title="Permanent link">&para;</a></h3>
+<p>The visualizer reads <code>~/.amx/pending_metadata.json</code>. If you're on shared-mode
+history, the queue is still local-only by design (write-back is per-machine).</p>
+<h3 id="connection-test-on-a-databricks-profile-fails-with-a-tls-error">Connection-test on a Databricks profile fails with a TLS error<a class="headerlink" href="#connection-test-on-a-databricks-profile-fails-with-a-tls-error" title="Permanent link">&para;</a></h3>
+<p>The visualizer reuses <code>DatabaseConnector.test_connection_result()</code>, so the same
+TLS setup as the CLI applies. Set <code>tls_no_verify=true</code> (or pin a
+<code>tls_trusted_ca_file</code>) on the profile from Settings, then click <strong>Test</strong> again.</p>
+<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../run-and-apply/"><code>/run</code> and <code>/apply</code></a> — same workflow, REPL-flavoured.</li>
+<li><a href="../ask-and-search/"><code>/ask</code> and <code>/search</code></a> — the conversational surface that
+  the visualizer's Ask tab wraps.</li>
+<li><a href="../../concepts/human-in-the-loop/">Human-in-the-loop review</a> — what the
+  Pending queue actually does and why every Generate goes through it.</li>
 </ul>
 
 
