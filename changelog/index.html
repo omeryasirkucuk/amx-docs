@@ -489,6 +489,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0128-visualize-umbrella-release" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.12.8 — /visualize umbrella release
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0127-databricks_serving-is-a-first-class-llm-provider" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -672,6 +683,21 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0128-visualize-umbrella-release">0.12.8 — <code>/visualize</code> umbrella release<a class="headerlink" href="#0128-visualize-umbrella-release" title="Permanent link">&para;</a></h3>
+<p>The local web UI reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
+Stage 2–7 parity work + a design-system reset land together in 0.12.8: the SPA
+can now drive <code>/run</code> end-to-end (with live SSE progress and a tabbed run-detail
+view that surfaces every alternative), full DB / LLM / Docs / Code wizards live
+on Settings, the new System page covers <code>amx doctor</code> / token usage / catalog
+status / team history-store / one-click placeholder cleanup, and every Browse
+page (database / schema / table / column) gets inline-edit + per-asset
+<strong>Generate</strong> that drafts a single comment through the same human-in-the-loop
+queue the CLI uses. The visualizer is dark-only, sits on a warm-amber palette,
+and ships under a pixel-art AMX brand mark. README and amxcli.com both grow a
+<a href="../cli/visualize/"><code>/visualize</code></a> entry point with the Overview screenshot.</p>
+<p>Also in 0.12.8: <code>Ctrl-C</code> now interrupts the running command instead of tearing
+down the whole REPL session, and <code>/edit</code> "Bulk by table" respects mode selection
++ survives a stale catalog (live-DB fallback splices the user's pick back in).</p>
 <h3 id="0127-databricks_serving-is-a-first-class-llm-provider">0.12.7 — <code>databricks_serving</code> is a first-class LLM provider<a class="headerlink" href="#0127-databricks_serving-is-a-first-class-llm-provider" title="Permanent link">&para;</a></h3>
 <p><code>/add-llm-profile</code> now lists <code>databricks_serving</code> alongside OpenAI / Anthropic / Gemini
 / etc. Pick a Foundation Model endpoint (e.g.
@@ -827,7 +853,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.7</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.8</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -847,7 +873,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.7"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.8"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
