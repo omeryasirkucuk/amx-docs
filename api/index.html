@@ -535,6 +535,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#amxapplication-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AMXApplication methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cli" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -661,7 +672,7 @@
 <p>AMX has a small, <strong>stable</strong> programmatic API for headless use — driving the multi-agent
 inference pipeline from a Python script, notebook, or service without going through the
 interactive CLI shell. This page is the contract; the <a href="reference/">Reference</a> is the
-auto-generated docstring detail.</p>
+hand-curated detail.</p>
 <h2 id="stability-promise">Stability promise<a class="headerlink" href="#stability-promise" title="Permanent link">&para;</a></h2>
 <p>Anything documented here will follow <a href="https://semver.org/">Semantic Versioning</a> starting
 from <code>1.0.0</code>:</p>
@@ -696,11 +707,6 @@ under <code>BREAKING CHANGE</code>. Hard guarantees kick in at <code>1.0.0</code
 <tr>
 <td><code>amx.__version__</code></td>
 <td><code>str</code></td>
-<td>Stable</td>
-</tr>
-<tr>
-<td><code>amx.init(config_path: str \| None = None) -&gt; AMXApplication</code></td>
-<td>function</td>
 <td>Stable</td>
 </tr>
 <tr>
@@ -739,19 +745,9 @@ should prefer importing from <code>amx.core</code> directly.</p>
 <td>Composable runtime that owns a config, a history store, and the active agents. Built via <code>AMXApplication.load(config_path)</code> for the typical case.</td>
 </tr>
 <tr>
-<td><code>amx.core.AskToolbox</code></td>
+<td><code>amx.core.InferenceResult</code></td>
 <td>dataclass</td>
-<td>Tool registry the loop-based ask agent calls into (schema explorer, catalog, etc.).</td>
-</tr>
-<tr>
-<td><code>amx.core.LoopBasedAskAgent</code></td>
-<td>class</td>
-<td>Headless re-implementation of <code>/ask</code> for scripts and notebooks.</td>
-</tr>
-<tr>
-<td><code>amx.core.ToolAskResponse</code></td>
-<td>dataclass</td>
-<td>Structured response from the loop-based ask agent (answer, intent, tool trace, confidence).</td>
+<td>Typed metadata-inference result returned from <code>AMXApplication.infer_metadata</code>. Stable field set with additive growth across minor versions.</td>
 </tr>
 <tr>
 <td><code>amx.core.AbstractEntity</code></td>
@@ -768,14 +764,51 @@ should prefer importing from <code>amx.core</code> directly.</p>
 <td>class</td>
 <td>Write-through persistence for config + SQLite-backed state across sessions.</td>
 </tr>
+</tbody>
+</table>
+<h3 id="amxapplication-methods"><code>AMXApplication</code> methods<a class="headerlink" href="#amxapplication-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
 <tr>
-<td><code>amx.core.infer_table_metadata(cfg, schema, table, *, include_rag, include_codebase)</code></td>
-<td>function</td>
-<td>One-call programmatic metadata inference. Returns a list of suggestion dicts ready for review.</td>
+<th>Method</th>
+<th>Returns</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMXApplication.load(config_path=None)</code></td>
+<td><code>AMXApplication</code></td>
+<td>Classmethod factory; the single canonical constructor.</td>
+</tr>
+<tr>
+<td><code>app.ask(question)</code></td>
+<td><code>SearchAnswer</code></td>
+<td>Runs the unified ask pipeline (multi-stage retrieval, live probes, verification, synthesis).</td>
+</tr>
+<tr>
+<td><code>app.explain(question)</code></td>
+<td><code>dict[str, Any]</code></td>
+<td>Same pipeline as <code>ask</code> but returns the structured explanation payload.</td>
+</tr>
+<tr>
+<td><code>app.infer_metadata(schema, table, *, include_rag=True, include_codebase=False)</code></td>
+<td><code>list[InferenceResult]</code></td>
+<td>Headless metadata inference for one table.</td>
+</tr>
+<tr>
+<td><code>app.run_analysis(scope=None, *, apply=False)</code></td>
+<td><code>dict[str, Any]</code></td>
+<td>Headless-safe analysis entrypoint.</td>
+</tr>
+<tr>
+<td><code>app.state</code></td>
+<td><code>StateManager</code></td>
+<td>Property — write-through state for the active profile namespace.</td>
 </tr>
 </tbody>
 </table>
-<p>For the full docstrings and signatures, see <a href="reference/">Reference</a>.</p>
+<p>For full docstrings and field shapes, see <a href="reference/">Reference</a>.</p>
 <h3 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h3>
 <p>The <code>amx</code> console script (defined under <code>[project.scripts]</code> in <code>pyproject.toml</code>) is part of
 the public API:</p>
@@ -825,6 +858,10 @@ the public API:</p>
 <td>Profile / RAG / Code agent internals. The orchestrator decides what gets called and how — directly instantiating these from user code couples you to the agent contract.</td>
 </tr>
 <tr>
+<td><code>amx.core.inference.infer_table_metadata</code></td>
+<td>Internal implementation behind <code>AMXApplication.infer_metadata</code>. Use the application method.</td>
+</tr>
+<tr>
 <td><code>amx.search._agent.*</code>, <code>amx.search._catalog.*</code></td>
 <td>Already underscore-prefixed. Do not import.</td>
 </tr>
@@ -838,7 +875,7 @@ the public API:</p>
 </tr>
 <tr>
 <td><code>amx.storage.*</code></td>
-<td>History store implementation. <code>amx.core.AMXApplication</code> exposes the configured store via <code>app.history_store</code>.</td>
+<td>History store implementation. <code>amx.core.AMXApplication.store</code> exposes the configured store.</td>
 </tr>
 <tr>
 <td><code>amx.utils.*</code></td>
@@ -846,66 +883,125 @@ the public API:</p>
 </tr>
 <tr>
 <td><code>amx.config.AMXConfig</code></td>
-<td>Used internally; configure programmatically by passing a path to <code>amx.init(...)</code> or by editing <code>~/.amx/config.yml</code>. The dataclass shape is <strong>not</strong> stable.</td>
+<td>Used internally; configure programmatically by passing a path to <code>AMXApplication.load(...)</code> or by editing <code>~/.amx/config.yml</code>. The dataclass shape is <strong>not</strong> stable.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="how-to-write-code-that-survives-upgrades">How to write code that survives upgrades<a class="headerlink" href="#how-to-write-code-that-survives-upgrades" title="Permanent link">&para;</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Good — uses only public surface.</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">infer_table_metadata</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;~/.amx/config.yml&quot;</span><span class="p">)</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">suggestions</span> <span class="o">=</span> <span class="n">infer_table_metadata</span><span class="p">(</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;sales&quot;</span><span class="p">,</span> <span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_codebase</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">suggestions</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">infer_metadata</span><span class="p">(</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="s2">&quot;sales&quot;</span><span class="p">,</span> <span class="s2">&quot;orders&quot;</span><span class="p">,</span> <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">include_codebase</span><span class="o">=</span><span class="kc">False</span>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="p">)</span>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">suggestions</span><span class="p">:</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="s2">&quot;column&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span> <span class="n">s</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">])</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">column</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">description</span><span class="p">)</span>
 </span></code></pre></div>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Risky — imports an internal symbol whose location may move.</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.search.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchService</span>          <span class="c1"># internal</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.agents.orchestrator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orchestrator</span>      <span class="c1"># internal</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.search.service</span><span class="w"> </span><span class="kn">import</span> <span class="n">SearchService</span>           <span class="c1"># internal</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.agents.orchestrator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Orchestrator</span>       <span class="c1"># internal</span>
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="c1"># The replacement when this breaks:</span>
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span>
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">service</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">search_service</span>                          <span class="c1"># configured for you</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">answer</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;which tables store dates?&quot;</span><span class="p">)</span>
 </span></code></pre></div>
 <h2 id="headless-ask-from-python">Headless <code>/ask</code> from Python<a class="headerlink" href="#headless-ask-from-python" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">LoopBasedAskAgent</span><span class="p">,</span> <span class="n">AskToolbox</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;~/.amx/config.yml&quot;</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">toolbox</span> <span class="o">=</span> <span class="n">AskToolbox</span><span class="o">.</span><span class="n">from_app</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">agent</span> <span class="o">=</span> <span class="n">LoopBasedAskAgent</span><span class="p">(</span><span class="n">toolbox</span><span class="o">=</span><span class="n">toolbox</span><span class="p">)</span>
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">response</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;which tables in sap_s6p store dates?&quot;</span><span class="p">)</span>
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">answer</span><span class="p">)</span>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">intent</span><span class="p">)</span>
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">tool_trace</span><span class="p">)</span>
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">answer</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">ask</span><span class="p">(</span><span class="s2">&quot;which tables in sap_s6p store dates?&quot;</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="nb">print</span><span class="p">(</span><span class="n">answer</span><span class="o">.</span><span class="n">summary</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">answer</span><span class="o">.</span><span class="n">rows</span><span class="p">:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">),</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;table_name&quot;</span><span class="p">),</span> <span class="n">row</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;column_name&quot;</span><span class="p">))</span>
 </span></code></pre></div>
-<p><code>ToolAskResponse</code> is a stable dataclass — fields can be added in minor versions but not
-removed.</p>
+<p><code>AMXApplication.ask</code> is the single canonical ask method — both Studio and the CLI's
+<code>/ask</code> route through the same <code>SearchService</code> → <code>SearchAgent</code> pipeline. The returned
+<code>SearchAnswer</code> carries the rendered summary plus the underlying rows the agent grounded
+its answer in. Detailed retrieval / verification trace is on <code>answer.details</code>.</p>
 <h2 id="headless-run-from-python">Headless <code>/run</code> from Python<a class="headerlink" href="#headless-run-from-python" title="Permanent link">&para;</a></h2>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span><span class="p">,</span> <span class="n">infer_table_metadata</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">amx.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">AMXApplication</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">app</span> <span class="o">=</span> <span class="n">AMXApplication</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">infer_table_metadata</span><span class="p">(</span>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="p">,</span>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;sap_s6p&quot;</span><span class="p">,</span>
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;t001&quot;</span><span class="p">,</span>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="n">include_codebase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="p">)</span>
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;column&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">30s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;confidence&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">6s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">col</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">results</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">infer_metadata</span><span class="p">(</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>    <span class="n">schema</span><span class="o">=</span><span class="s2">&quot;sap_s6p&quot;</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">table</span><span class="o">=</span><span class="s2">&quot;t001&quot;</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">include_rag</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="n">include_codebase</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">column</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;&lt;table&gt;&#39;</span><span class="si">:</span><span class="s2">30s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">confidence</span><span class="si">:</span><span class="s2">6s</span><span class="si">}</span><span class="s2">  </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">description</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </span></code></pre></div>
-<p>The return shape is documented in the <a href="reference/">Reference</a> under <code>infer_table_metadata</code>.</p>
-<p>For applying suggestions back to the database programmatically, use
-<code>app.metadata_writer.apply(...)</code> — see <code>AMXApplication</code> in the reference.</p>
+<p><code>InferenceResult</code> is a frozen dataclass — fields can be added in minor versions but not
+removed. The current shape:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>schema</code></td>
+<td><code>str</code></td>
+<td>Source schema</td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td><code>str</code></td>
+<td>Source table</td>
+</tr>
+<tr>
+<td><code>column</code></td>
+<td><code>str \| None</code></td>
+<td><code>None</code> for table-level suggestions</td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>str</code></td>
+<td>Suggested description</td>
+</tr>
+<tr>
+<td><code>confidence</code></td>
+<td><code>str</code></td>
+<td><code>"high"</code> / <code>"medium"</code> / <code>"low"</code></td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td><code>str</code></td>
+<td><code>"db_profile"</code>, <code>"rag"</code>, <code>"codebase"</code>, <code>"combined"</code></td>
+</tr>
+<tr>
+<td><code>asset_kind</code></td>
+<td><code>str</code></td>
+<td><code>"table"</code>, <code>"view"</code>, <code>"materialized_view"</code>, …</td>
+</tr>
+<tr>
+<td><code>applied</code></td>
+<td><code>bool</code></td>
+<td><code>True</code> when the suggestion was already written back</td>
+</tr>
+<tr>
+<td><code>alternatives</code></td>
+<td><code>tuple[str, ...]</code></td>
+<td>Other phrasings the agent considered</td>
+</tr>
+<tr>
+<td><code>logprob_score</code></td>
+<td><code>float \| None</code></td>
+<td>Token-level confidence score when available</td>
+</tr>
+</tbody>
+</table>
+<p>Call <code>r.as_dict()</code> for a JSON-safe view.</p>
 <h2 id="where-to-read-further">Where to read further<a class="headerlink" href="#where-to-read-further" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="reference/">Reference</a> — auto-generated from docstrings.</li>
+<li><a href="reference/">Reference</a> — hand-curated symbol-by-symbol detail.</li>
 <li><a href="../configuration/config-yml/">config.yml</a> — the on-disk format the API reads/writes.</li>
 <li><a href="../cli/overview/">CLI overview</a> — when you'd reach for the CLI vs the library API.</li>
 <li><a href="https://github.com/omeryasirkucuk/amx/blob/main/docs/PUBLIC_API.md"><code>docs/PUBLIC_API.md</code></a>

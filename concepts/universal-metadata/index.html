@@ -644,8 +644,8 @@ ClickHouse with a clear error rather than failing midway through bootstrap.</p>
 <li><code>/history compare</code> can pivot runs across different backends side by side.</li>
 <li>The Profile Agent prompt is backend-agnostic — it sees columns and types, not driver
   quirks.</li>
-<li><code>infer_table_metadata</code> (the headless API) returns the same dict shape regardless of
-  which backend produced the source data.</li>
+<li><code>AMXApplication.infer_metadata</code> (the headless API) returns the same
+  <code>InferenceResult</code> shape regardless of which backend produced the source data.</li>
 </ul>
 <h2 id="whats-still-backend-specific">What's still backend-specific<a class="headerlink" href="#whats-still-backend-specific" title="Permanent link">&para;</a></h2>
 <p>Some operations don't translate cleanly. AMX is explicit about these rather than silently

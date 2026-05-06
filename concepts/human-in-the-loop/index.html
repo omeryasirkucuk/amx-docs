@@ -685,9 +685,9 @@ so a later <code>/history review --unevaluated-only</code> is still possible if 
 <h2 id="where-the-wizard-lives">Where the wizard lives<a class="headerlink" href="#where-the-wizard-lives" title="Permanent link">&para;</a></h2>
 <p>The review UI is implemented in <code>amx.cli_support.commands.run</code> with shared rendering helpers
 in <code>amx.utils.live_display</code>. It is intentionally <strong>not</strong> part of the public Python API — for
-headless reviews, the recommended pattern is to call <code>infer_table_metadata</code> programmatically,
-then drive your own UI with the returned <code>suggestions</code> list. See <a href="../../api/">Python API</a>
-for the contract.</p>
+headless reviews, the recommended pattern is to call <code>AMXApplication.infer_metadata</code>
+programmatically, then drive your own UI with the returned <code>list[InferenceResult]</code>. See
+<a href="../../api/">Python API</a> for the contract.</p>
 
 
 
