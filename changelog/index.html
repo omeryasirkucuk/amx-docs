@@ -489,6 +489,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#unreleased-multi-profile-browse-and-ask" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Unreleased — Multi-profile browse and /ask
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#unreleased-amx-studio-launch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -694,8 +705,76 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="unreleased-multi-profile-browse-and-ask">Unreleased — Multi-profile browse and <code>/ask</code><a class="headerlink" href="#unreleased-multi-profile-browse-and-ask" title="Permanent link">&para;</a></h3>
+<p>AMX is multi-profile end-to-end. Both Studio and the CLI's <code>/ask</code> now
+operate across every saved DB profile simultaneously — no more switch
+dance.</p>
+<p><strong>Browse (Studio).</strong> The sidebar tree shows every saved DB profile as
+its own expandable row (profile → database/catalog → schema → table).
+Click any node to open it; per-request scope means two browser tabs
+on different profiles never collide. The legacy "Switch" pill is
+gone. Routes are explicit: <code>/db/:profile/:database/:schema/:table</code>
+for 2-level backends and <code>/cat/:profile/:catalog/:schema/:table</code> for
+3-level (Databricks UC, BigQuery). Inline comment editors and the
+"Generate description" buttons all carry the per-page profile so the
+write lands on the right backend.</p>
+<p><strong>Multi-profile <code>/ask</code>.</strong> Catalog tools span the configured profile
+list in a single SQL pass via <code>db_profile IN (?, ?, …)</code>. Live-DB
+tools (<code>list_schemas</code>, <code>list_tables_in_schema</code>, <code>list_databases</code>)
+parallel-query each profile via <code>ThreadPoolExecutor</code> (cap 8 workers,
+8s per-profile timeout — slow profile never blocks the others).
+Result rows always carry <code>db_profile</code> so the LLM cites the right
+source. New <code>find_joinable_across_profiles</code> tool scores
+cross-DB join candidates with a 4-signal mix (column-name token
+overlap, dtype compatibility, vector similarity, FK pattern) so
+"what can I join this table with from a different DB?" is one tool
+call away.</p>
+<p><strong>Studio scope dropdown.</strong> Above the Ask textarea: a multi-select
+profile picker (sticky per chat session, resets on <code>+ New</code>) plus a
+read-only "Focus: X (auto)" hint when the conversation has
+gravitated toward one profile in recent turns. The auto-focus
+heuristic scans the last 3 assistant turns; ≥60% mention dominance
+biases the system prompt without locking out cross-profile
+questions. Answer footer shows
+<code>N profiles · X.Ys · focus: WAREHOUSE</code> per turn.</p>
+<p><strong>CLI <code>/session</code> everywhere.</strong> <code>/session list</code>, <code>/session resume &lt;id&gt;</code>,
+<code>/session new</code>, <code>/session end</code>, <code>/session scope</code> now dispatch from
+every tab (was previously failing inside <code>/search</code>). The slash
+registry lists <code>/session</code> next to <code>/ask</code> under the search group.
+Resumed chats now replay the prior 4 Q/A pairs into the agent so
+follow-up references like "that table" / "the second one" resolve
+without re-explaining context.</p>
+<p><strong>Profile cleanup.</strong> Deleting the active or last DB / LLM profile is
+now allowed. Empty config surfaces a friendly "configure an LLM
+profile" prompt (Studio: 412 + <code>configure-llm</code> hint with "Open LLM
+settings" / "Run doctor" CTAs; CLI: <code>/search</code> discussion-requires-LLM
+message).</p>
+<p><strong>Robustness.</strong></p>
+<ul>
+<li><strong>Friendly LLM errors.</strong> <code>/ask</code> no longer hangs on "Reasoning…"
+  when the LLM is broken. Studio shows the configure-llm banner
+  immediately on a missing provider/model (412 pre-flight); worker
+  failures emit a <code>job.failed</code> SSE event with classification (auth /
+  rate-limit / network / model-not-found → <code>configure-llm</code> hint;
+  generic errors stay generic).</li>
+<li><strong>CLI Ctrl-C cancels cleanly.</strong> First press sets a <code>cancel_token</code>
+  the agent loop polls between iterations; second press also raises
+  KeyboardInterrupt for stuck socket I/O. The chat surfaces "Cancelled
+  by user." (Turkish: "Soru kullanıcı tarafından iptal edildi.")
+  rather than draining the question to completion.</li>
+<li><strong>Last/active profile delete.</strong> <code>/remove-db-profile</code> and
+  <code>/remove-llm-profile</code> no longer refuse the only profile — config
+  resets to empty, downstream surfaces handle it.</li>
+<li><strong><code>list_databases</code> shows full reach.</strong> Asking "which databases do
+  I have" across two profiles now enumerates every reachable
+  database/catalog per connection, not just the pinned default.</li>
+<li><strong>LiteLLM startup chatter silenced.</strong> Corp-network TLS proxies no
+  longer surface a "Failed to fetch remote model cost map" warning
+  on every <code>/ask</code> — <code>LITELLM_LOCAL_MODEL_COST_MAP=True</code> skips the
+  GitHub fetch entirely.</li>
+</ul>
 <h3 id="unreleased-amx-studio-launch">Unreleased — AMX Studio launch<a class="headerlink" href="#unreleased-amx-studio-launch" title="Permanent link">&para;</a></h3>
-<p>The local web UI is now <strong>AMX Studio</strong>. The slash command is <code>/studio</code>,
+<p>The local web UI is <strong>AMX Studio</strong>. The slash command is <code>/studio</code>,
 the Click subcommand is <code>amx studio</code>, and the Python entry point is
 <code>amx.web.launch_studio</code>. The user-facing brand (FastAPI title, browser
 tab, auth error messages, Settings copy) all reads "AMX Studio." See

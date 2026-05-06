@@ -512,6 +512,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#multi-profile-browse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-profile browse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chat-scope-and-focus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chat scope and focus
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#generate-descriptions-from-any-page" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -729,8 +751,8 @@ laptop while the server runs on a remote box.</p>
 <td><code>/api/history/stats</code>, <code>/api/history/runs</code></td>
 </tr>
 <tr>
-<td><strong>Browse</strong> <code>/db/:profile</code>, <code>/db/:profile/:schema</code>, <code>/db/:profile/:schema/:table</code></td>
-<td>Walk the live database. Inline-edit any database / schema / table / column comment, or hit <strong>Generate</strong> to have the LLM draft just that asset and write it back through the same review loop the CLI uses.</td>
+<td><strong>Browse</strong> <code>/db/:profile/:database/:schema/:table</code> (2-level) and <code>/cat/:profile/:catalog/:schema/:table</code> (3-level)</td>
+<td>Multi-profile asset tree: every saved DB profile is its own expandable row in the sidebar. Walk profile → database/catalog → schema → table; inline-edit any comment or hit <strong>Generate</strong> for one-asset-at-a-time LLM drafting through the same review loop the CLI uses. Two browser tabs on different profiles never collide.</td>
 <td><code>/api/live/...</code>, <code>/api/comments/...</code>, <code>/api/generate/...</code></td>
 </tr>
 <tr>
@@ -745,7 +767,7 @@ laptop while the server runs on a remote box.</p>
 </tr>
 <tr>
 <td><strong>Ask</strong> <code>/ask</code></td>
-<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar and end-session control.</td>
+<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, and the auto-detected focus profile.</td>
 <td><code>/api/ask</code> (SSE), <code>/api/ask/sessions/...</code></td>
 </tr>
 <tr>
@@ -760,9 +782,76 @@ laptop while the server runs on a remote box.</p>
 </tr>
 </tbody>
 </table>
-<p>The top bar also surfaces the active <strong>DB profile</strong>, <strong>catalog / database</strong>, and
-<strong>LLM profile</strong> as click-to-switch dropdown pills, plus a <code>⌘K</code> / <code>Ctrl-K</code> command
-palette for jumping to any page or quick action.</p>
+<p>The top bar surfaces the active <strong>LLM profile</strong> as a click-to-switch dropdown
+pill plus a <code>⌘K</code> / <code>Ctrl-K</code> command palette for jumping to any page or quick
+action. (DB profiles are no longer "active vs. inactive" — every saved profile
+shows up as its own expandable row in the sidebar so you can browse all of
+them simultaneously.)</p>
+<h2 id="multi-profile-browse">Multi-profile browse<a class="headerlink" href="#multi-profile-browse" title="Permanent link">&para;</a></h2>
+<p>The Browse sidebar lists <strong>every saved DB profile</strong> as its own expandable
+top-level row — no "active" / "switch" concept. Click any profile to lazy-load
+its catalogs / databases; expand a database/catalog to see its schemas; expand
+a schema to see its assets. The sidebar uses indent + typography to keep the
+hierarchy scannable when several profiles are open at once: profile rows are
+uppercase + bold, database/catalog rows are normal weight, schemas are dimmer
+small-caps, tables are the dimmest at the bottom.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>DB PROFILES
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>─────────────────────────────────
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>▾ LOCAL-PG                      ← profile (uppercase, bold)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    ▾ appdb                     ← database (normal weight)
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        ▾ public                ← schema (12px, dim)
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>              users             ← table (11px, dimmer)
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>              orders
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        ▸ analytics
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    ▸ reporting
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>▸ SNOWFLAKE-PROD
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>▸ DATABRICKS-STG
+</span></code></pre></div>
+<p><strong>Per-tab scope.</strong> URLs encode the full scope — <code>/db/:profile/:database/...</code>
+for 2-level backends (Postgres, MySQL, …) and <code>/cat/:profile/:catalog/...</code>
+for 3-level (Databricks Unity Catalog, BigQuery). Two browser tabs on
+different profiles never bleed state into each other; an inline comment
+edited on profile X writes to profile X's backend, regardless of what
+some other tab is viewing.</p>
+<p><strong>Per-row Gen still works.</strong> Inline-edit and the per-asset / per-row
+"Generate description" buttons on Database / Schema / Table pages all
+carry the page's profile through to the backend, so multi-profile users
+can draft one comment at a time across any number of profiles without a
+profile switch in between.</p>
+<h2 id="chat-scope-and-focus">Chat scope and focus<a class="headerlink" href="#chat-scope-and-focus" title="Permanent link">&para;</a></h2>
+<p>The Ask page (<code>/ask</code>) inherits the multi-profile model. Above the question
+textarea: a <strong>scope dropdown</strong> with multi-select checkboxes. Default is "All
+profiles" (every saved DB profile in scope); select individual profiles to
+narrow <code>/ask</code>'s retrieval to just those. The selection is <strong>sticky per chat
+session</strong> — picks persist within the chat and reset only when you start a
+new chat with <strong>+ New</strong>.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Scope: [▾ All profiles (5)        ]  [● Ask]
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>        ─────────────────────────
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        ☑  All profiles
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ─────────────────────────
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        ☐  SAP
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        ☐  WAREHOUSE
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        ☐  ANALYTICS
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        ☐  RAW
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        ☐  REPORTING
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        ─────────────────────────
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        Focus: WAREHOUSE (auto)
+</span></code></pre></div>
+<p>The <strong>Focus</strong> line at the bottom of the dropdown surfaces an auto-detected
+conversation focus — when ≥60% of profile mentions in the last 3 assistant
+turns point at one profile, the system prompt nudges the model to default
+to it for ambiguous questions. The user can still ask explicit cross-profile
+questions ("compare across all profiles", "is this in any other profile")
+and the model switches context smoothly.</p>
+<p>Each assistant turn carries a small footer below the answer:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>2 profiles · 3.4s · focus: warehouse
+</span></code></pre></div>
+<p>— the scope used, wall-clock latency, and (when applicable) the
+auto-detected focus, so users can spot a slow profile or a misaligned focus
+at a glance. Per-tool latency is also recorded internally for debugging.</p>
+<p>CLI parity: the same sticky-scope / focus / latency machinery powers
+<code>/ask</code> in the REPL — see <a href="../ask-and-search/#4-ask-across-multiple-db-profiles">Ask &amp; Search</a>
+for the matching <code>/use-db</code> / <code>--db-profile</code> / <code>/session scope</code> flows.</p>
 <h2 id="generate-descriptions-from-any-page">Generate descriptions from any page<a class="headerlink" href="#generate-descriptions-from-any-page" title="Permanent link">&para;</a></h2>
 <p>Bulk runs (the canonical <code>/run</code> path) stay the right tool when you want to fill
 in many assets at once. The Browse pages add a one-asset-at-a-time path for the
@@ -815,7 +904,7 @@ re-running <code>amx /studio</code>.</p>
 <h3 id="browser-opens-to-a-404-connection-refused">Browser opens to a 404 / "Connection refused"<a class="headerlink" href="#browser-opens-to-a-404-connection-refused" title="Permanent link">&para;</a></h3>
 <p>The server may have failed to bind (port <code>47821</code> busy and the ephemeral fallback
 also fell over). Pass <code>--port</code> to force a different port:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
 </span></code></pre></div>
 <h3 id="amx-studio-auth-is-not-configured-on-every-request">"AMX Studio auth is not configured" on every request<a class="headerlink" href="#amx-studio-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
 <p>The token cookie / <code>localStorage</code> entry was wiped or never captured on this

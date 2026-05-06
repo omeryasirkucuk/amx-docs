@@ -618,10 +618,71 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-drop-to-search-for-raw-retrieval" class="md-nav__link">
+  <a href="#4-ask-across-multiple-db-profiles" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Drop to /search for raw retrieval
+        4. Ask across multiple DB profiles
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Ask across multiple DB profiles">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-question-scope-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-question scope override
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sticky-scope-at-the-chat-session-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sticky scope at the chat-session level
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-manage-chat-sessions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Manage chat sessions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-cancelling-a-long-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Cancelling a long question
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-drop-to-search-for-raw-retrieval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Drop to /search for raw retrieval
       
     </span>
   </a>
@@ -854,26 +915,131 @@ or retrieval bug — file it.</p>
 </span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>  - events.telemetry_aggregate
 </span></code></pre></div>
 <p>This shape is the most important — <code>/ask</code> must say "I don't know" rather than fabricate.</p>
-<h3 id="4-drop-to-search-for-raw-retrieval">4. Drop to <code>/search</code> for raw retrieval<a class="headerlink" href="#4-drop-to-search-for-raw-retrieval" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&gt; /search &quot;customer addresses&quot;
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Top-8 results (cosine distance):
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  0.142  sales.customer_address      (table)   Address records keyed to customer.
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  0.198  sales.customer              (table)   Customer master; one current address per customer.
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  0.214  sales.customer_address.ca_customer_sk  (col)   FK to sales.customer.
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  0.301  sales.order_address         (table)   Per-order snapshot.
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  0.318  sales.customer_address.ca_country_id    (col)   FK to ref.country.
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  0.402  fct_order_summary.ship_country_code      (col)   Denormalised.
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>  0.411  ref.country.country_id      (col)   Country master PK.
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  0.477  events.address_change_audit (table)   Append-only audit log.
+<h3 id="4-ask-across-multiple-db-profiles">4. Ask across multiple DB profiles<a class="headerlink" href="#4-ask-across-multiple-db-profiles" title="Permanent link">&para;</a></h3>
+<p><code>/ask</code> operates over the <strong>multi-profile scope</strong> the SearchAgent collects at
+startup — every DB profile in <code>cfg.active_db_profiles</code> (set via <code>/use-db a b c</code>)
+or, when that list is empty, every saved DB profile in your config. Catalog
+tools (<code>search_tables_by_concept</code>, <code>find_table_by_name</code>, <code>find_columns_by_dtype</code>,
+<code>find_joinable_tables</code>) automatically span every profile in scope; live-DB tools
+(<code>list_schemas</code>, <code>list_tables_in_schema</code>, <code>list_databases</code>) fan out per profile
+in parallel with an 8-second per-profile timeout, so a slow / unreachable
+profile never blocks the others.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&gt; /use-db sap warehouse                  # multi-profile scope
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>&gt; /ask which tables hold customer data?
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>Reasoning over 14 results across 2 profiles ...
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>You have customer data in BOTH profiles:
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  **sap.kna1** — Customer master (SAP). c_customer_id is the PK; FK targets
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  in vbrk (billing), vbak (sales orders), kbn (campaigns).
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  **warehouse.dim_customer** — Star-schema dimension (BigQuery). Different
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  shape than SAP — tracks slowly-changing-dim history via valid_from /
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>  valid_to and a current_flag column. Joins to fct_orders.customer_sk.
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>Cited:
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a>  - sap.public.kna1                  (table, profile=sap)
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>  - warehouse.analytics.dim_customer (table, profile=warehouse)
+</span></code></pre></div>
+<p>Every result row carries <code>db_profile</code> so the answer cites the right source.
+You can also ask cross-profile join questions:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; /ask what can I join sap.kna1 with from the warehouse profile?
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>Looking across warehouse for compatible columns ...
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>Top candidates (score = 0.30·name + 0.20·dtype + 0.40·vector + 0.10·fk):
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  0.78  sap.public.kna1.kunnr (VARCHAR(10))  ↔  warehouse.analytics.dim_customer.cust_id (STRING)
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>        Strong: name overlap (cust↔kunnr via tokenisation), dtype family
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>        (string), FK pattern (kna1.kunnr is PK, dim_customer.cust_id ends in _id).
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>  0.61  sap.public.kna1.land1 (CHAR(3))      ↔  warehouse.ref.country.iso_code (STRING(3))
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>        Both 3-char ISO country codes. Caveat: weaker, the column comments
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>        don&#39;t share enough text to push the vector signal up.
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>Anything below 0.40 is coincidental and not recommended.
+</span></code></pre></div>
+<p>The cross-profile JOIN tool (<code>find_joinable_across_profiles</code>) kicks in
+automatically when the question explicitly mentions cross-profile joining;
+the LLM will fall back to the within-profile <code>find_joinable_tables</code> for
+single-DB questions.</p>
+<h4 id="per-question-scope-override">Per-question scope override<a class="headerlink" href="#per-question-scope-override" title="Permanent link">&para;</a></h4>
+<p>Need to scope a single question without changing the persisted scope?
+Pass <code>--db-profile NAME</code> (multiple times for multi):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; /ask --db-profile sap which schemas do I have?
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>&gt; /ask --db-profile sap --db-profile warehouse cross-DB question
+</span></code></pre></div>
+<h4 id="sticky-scope-at-the-chat-session-level">Sticky scope at the chat-session level<a class="headerlink" href="#sticky-scope-at-the-chat-session-level" title="Permanent link">&para;</a></h4>
+<p><code>/session scope &lt;profiles&gt;</code> pins a multi-profile scope to the active chat
+session — separate from the persisted <code>/use-db</code> scope, so you can experiment
+in one chat without disturbing the global default:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&gt; /session scope                         # show current scope
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&gt; /session scope sap warehouse           # pin to these two for THIS chat
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt; /session scope clear                   # back to config default
+</span></code></pre></div>
+<p>The Studio side has the equivalent control as a multi-select dropdown above
+the Ask textarea — see <a href="../studio/#chat-scope-and-focus">Studio</a>.</p>
+<h3 id="5-manage-chat-sessions">5. Manage chat sessions<a class="headerlink" href="#5-manage-chat-sessions" title="Permanent link">&para;</a></h3>
+<p>Every <code>/ask</code> turn lives in a chat session that AMX persists to
+<code>~/.amx/history.db</code>. Resume past sessions to continue a conversation —
+prior turns flow back to the agent as context, so follow-ups like "describe
+the first one" or "in Turkish" resolve without re-explaining.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>&gt; /session list                          # most recent sessions for the active profile pair
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>ID    Started      Last active   State    Turns  Title             First question
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>→ 42  2026-05-06   2026-05-06    active   8      (auto)            which tables hold customer data?
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>  41  2026-05-05   2026-05-05    closed   3      Pricing tables    list every pricing-related table
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>  ...
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>&gt; /session resume 42                     # make 42 the active session for the next /ask
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>&gt; /ask describe the first one            # &quot;first one&quot; resolves to sap.public.kna1 from session 42&#39;s history
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>&gt; /session new                           # start a fresh session
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>&gt; /session end                           # close the active session; next /ask starts a new one
+</span></code></pre></div>
+<p>A few details worth knowing:</p>
+<ul>
+<li><strong>Cross-profile resume is refused.</strong> Session #42 was created under
+  <code>sap</code>/<code>gpt-4o</code>; switching to <code>warehouse</code>/<code>claude-3</code> and trying
+  <code>/session resume 42</code> warns and bails — switch profiles first, or pass
+  <code>--all-profiles</code> to <code>/session list</code> to find the right one.</li>
+<li><strong><code>/session</code> works from every tab.</strong> <code>/session list</code>, <code>/session resume</code>,
+  etc. dispatch globally — no need to be at the root prompt.</li>
+<li><strong>Studio shares the store.</strong> Sessions you start in CLI show up in
+  Studio's Ask sidebar and vice versa — single source of truth at the
+  SQLite level.</li>
+</ul>
+<h3 id="6-cancelling-a-long-question">6. Cancelling a long question<a class="headerlink" href="#6-cancelling-a-long-question" title="Permanent link">&para;</a></h3>
+<p>Press <kbd>Ctrl-C</kbd> once to cancel a running <code>/ask</code> cleanly:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ask&gt; very-long-question-that-triggers-many-tool-calls
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>Search Agent: thinking with tools (3.4s)
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>^C
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>Cancelled by user.
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>ask&gt;                                     # back at the prompt, chat session intact
+</span></code></pre></div>
+<p>The first press sets a <code>cancel_token</code> the agent loop checks between every
+LLM iteration and tool dispatch — typically returns within a second or two.
+A second press also raises <code>KeyboardInterrupt</code> so any blocked socket I/O
+(rare; LiteLLM's HTTP retries) terminates immediately.</p>
+<h3 id="7-drop-to-search-for-raw-retrieval">7. Drop to <code>/search</code> for raw retrieval<a class="headerlink" href="#7-drop-to-search-for-raw-retrieval" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>&gt; /search &quot;customer addresses&quot;
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>Top-8 results (cosine distance):
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>  0.142  sales.customer_address      (table)   Address records keyed to customer.
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>  0.198  sales.customer              (table)   Customer master; one current address per customer.
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>  0.214  sales.customer_address.ca_customer_sk  (col)   FK to sales.customer.
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>  0.301  sales.order_address         (table)   Per-order snapshot.
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>  0.318  sales.customer_address.ca_country_id    (col)   FK to ref.country.
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>  0.402  fct_order_summary.ship_country_code      (col)   Denormalised.
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>  0.411  ref.country.country_id      (col)   Country master PK.
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>  0.477  events.address_change_audit (table)   Append-only audit log.
 </span></code></pre></div>
 <p><code>/search</code> is the same retrieval <code>/ask</code> runs internally, minus the LLM step. Useful
 for confirming the catalog has the rows you expect before you blame the LLM for a bad
 answer.</p>
 <h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">search</span><span class="p">:</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai/text-embedding-3-small</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">index_store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.amx/chroma</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="nt">search</span><span class="p">:</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai/text-embedding-3-small</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span><span class="nt">top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">  </span><span class="nt">index_store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.amx/chroma</span>
 </span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>

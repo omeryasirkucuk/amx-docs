@@ -671,12 +671,13 @@ use. If either says <code>none</code>, run <code>/setup</code> (first time) or <
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  /metadata      Inspect introspection output
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  /run           Run agents on a scope
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  /apply         Write reviewed comments back to the DB
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /search        Catalog search and embedding rebuild
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /history       Audit trail and run comparison
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /doctor        Diagnostics
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /config        Show or edit ~/.amx/config.yml
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /help, /exit, /clear, /back, /save
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /search        Catalog search, embedding rebuild, and chat sessions
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /history       Audit trail and run comparison
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /doctor        Diagnostics
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /config        Show or edit ~/.amx/config.yml
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /help, /exit, /clear, /back, /save
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /db
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Database namespace:
@@ -783,8 +784,8 @@ for the most-frequently-seen failures.</p>
 </tr>
 <tr>
 <td><code>/search</code></td>
-<td>Catalog search</td>
-<td><code>/ask</code>, <code>/status</code>, <code>/sync</code>, <code>/rebuild</code></td>
+<td>Catalog search + chat sessions</td>
+<td><code>/ask</code>, <code>/session list</code>, <code>/session resume</code>, <code>/session scope</code>, <code>/status</code>, <code>/sync</code>, <code>/rebuild</code></td>
 </tr>
 <tr>
 <td><code>/studio</code></td>
@@ -803,6 +804,12 @@ for the most-frequently-seen failures.</p>
 </tr>
 </tbody>
 </table>
+<p><strong>Tabs group; routing is global.</strong> Every top-level command (including
+<code>/session</code>, <code>/studio</code>, <code>/setup</code>, <code>/config</code>, <code>/doctor</code>, <code>/compare</code>,
+<code>/history-store</code>) dispatches from any tab — namespaces are about <em>discovering</em>
+related commands together, not about <em>gating</em> their availability. Type
+<code>/session list</code> while inside <code>/db</code> and it works exactly the same as from the
+root prompt.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /help</code> — full command list, grouped by namespace.</li>

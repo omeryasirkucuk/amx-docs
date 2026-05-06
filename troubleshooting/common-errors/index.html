@@ -796,6 +796,28 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#ask-hangs-on-reasoning-forever" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /ask hangs on "Reasoning…" forever
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pressing-ctrl-c-in-cli-ask-doesnt-stop-the-question" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pressing Ctrl-C in CLI /ask doesn't stop the question
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#could-not-verify-table-sap_s6padrc" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1002,7 +1024,29 @@ description or move it to a table-level comment.</p>
 <h2 id="ask-errors"><code>/ask</code> errors<a class="headerlink" href="#ask-errors" title="Permanent link">&para;</a></h2>
 <h3 id="no-active-llm-profile-refusing-to-ask"><code>No active LLM profile — refusing to ask</code><a class="headerlink" href="#no-active-llm-profile-refusing-to-ask" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> <code>/ask</code> fails closed when no LLM is configured.</p>
-<p><strong>Fix:</strong> Run <code>/llm</code> → <code>/add-llm-profile &lt;name&gt;</code>.</p>
+<p><strong>Fix:</strong> Run <code>/llm</code> → <code>/add-llm-profile &lt;name&gt;</code>. In Studio, the same scenario
+shows a "Couldn't reach the LLM" banner with <strong>Open LLM settings</strong> and
+<strong>Run doctor</strong> CTAs above the chat textarea — that's the
+<code>configure-llm</code> hint surfacing as UI rather than a generic error toast.</p>
+<h3 id="ask-hangs-on-reasoning-forever"><code>/ask</code> hangs on "Reasoning…" forever<a class="headerlink" href="#ask-hangs-on-reasoning-forever" title="Permanent link">&para;</a></h3>
+<p><strong>Cause:</strong> Older AMX builds didn't surface LLM-init failures as a terminal SSE
+event, so a misconfigured provider (missing API key, bad model id, network
+down to the provider, expired token) drained the worker without ever telling
+the SPA the question failed.</p>
+<p><strong>Fix:</strong> Upgrade to 0.12.9 or newer — the <code>/ask</code> path classifies LLM-side
+errors (auth, rate limit, model-not-found, network/DNS) and emits a clean
+<code>job.failed</code> SSE event with a <code>configure-llm</code> hint. The chat now surfaces
+"Couldn't reach the LLM. Check your provider settings…" instead of leaving
+the bubble at "Reasoning…". On the CLI, the same scenario returns a friendly
+"Cancelled by user." or surfaces the LiteLLM error string verbatim.</p>
+<h3 id="pressing-ctrl-c-in-cli-ask-doesnt-stop-the-question">Pressing <kbd>Ctrl-C</kbd> in CLI <code>/ask</code> doesn't stop the question<a class="headerlink" href="#pressing-ctrl-c-in-cli-ask-doesnt-stop-the-question" title="Permanent link">&para;</a></h3>
+<p><strong>Cause:</strong> Older builds let the LLM HTTP call drain to completion before
+Python's default <code>KeyboardInterrupt</code> could reach the user — the first press
+felt ignored.</p>
+<p><strong>Fix:</strong> Upgrade to 0.12.9+. The CLI installs a temporary SIGINT handler for
+the duration of <code>/ask</code> that sets a <code>cancel_token</code> the agent loop polls between
+iterations (graceful exit within a tool / LLM step). A second press also
+raises <code>KeyboardInterrupt</code> so any blocked socket I/O eventually terminates.</p>
 <h3 id="could-not-verify-table-sap_s6padrc"><code>Could not verify table sap_s6p.adrc</code><a class="headerlink" href="#could-not-verify-table-sap_s6padrc" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Explicit table mention in the question, but the live DB doesn't have that
 table.</p>
