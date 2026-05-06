@@ -8,9 +8,84 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### Unreleased — Multi-profile browse and `/ask`
+
+AMX is multi-profile end-to-end. Both Studio and the CLI's `/ask` now
+operate across every saved DB profile simultaneously — no more switch
+dance.
+
+**Browse (Studio).** The sidebar tree shows every saved DB profile as
+its own expandable row (profile → database/catalog → schema → table).
+Click any node to open it; per-request scope means two browser tabs
+on different profiles never collide. The legacy "Switch" pill is
+gone. Routes are explicit: `/db/:profile/:database/:schema/:table`
+for 2-level backends and `/cat/:profile/:catalog/:schema/:table` for
+3-level (Databricks UC, BigQuery). Inline comment editors and the
+"Generate description" buttons all carry the per-page profile so the
+write lands on the right backend.
+
+**Multi-profile `/ask`.** Catalog tools span the configured profile
+list in a single SQL pass via `db_profile IN (?, ?, …)`. Live-DB
+tools (`list_schemas`, `list_tables_in_schema`, `list_databases`)
+parallel-query each profile via `ThreadPoolExecutor` (cap 8 workers,
+8s per-profile timeout — slow profile never blocks the others).
+Result rows always carry `db_profile` so the LLM cites the right
+source. New `find_joinable_across_profiles` tool scores
+cross-DB join candidates with a 4-signal mix (column-name token
+overlap, dtype compatibility, vector similarity, FK pattern) so
+"what can I join this table with from a different DB?" is one tool
+call away.
+
+**Studio scope dropdown.** Above the Ask textarea: a multi-select
+profile picker (sticky per chat session, resets on `+ New`) plus a
+read-only "Focus: X (auto)" hint when the conversation has
+gravitated toward one profile in recent turns. The auto-focus
+heuristic scans the last 3 assistant turns; ≥60% mention dominance
+biases the system prompt without locking out cross-profile
+questions. Answer footer shows
+`N profiles · X.Ys · focus: WAREHOUSE` per turn.
+
+**CLI `/session` everywhere.** `/session list`, `/session resume <id>`,
+`/session new`, `/session end`, `/session scope` now dispatch from
+every tab (was previously failing inside `/search`). The slash
+registry lists `/session` next to `/ask` under the search group.
+Resumed chats now replay the prior 4 Q/A pairs into the agent so
+follow-up references like "that table" / "the second one" resolve
+without re-explaining context.
+
+**Profile cleanup.** Deleting the active or last DB / LLM profile is
+now allowed. Empty config surfaces a friendly "configure an LLM
+profile" prompt (Studio: 412 + `configure-llm` hint with "Open LLM
+settings" / "Run doctor" CTAs; CLI: `/search` discussion-requires-LLM
+message).
+
+**Robustness.**
+
+- **Friendly LLM errors.** `/ask` no longer hangs on "Reasoning…"
+  when the LLM is broken. Studio shows the configure-llm banner
+  immediately on a missing provider/model (412 pre-flight); worker
+  failures emit a `job.failed` SSE event with classification (auth /
+  rate-limit / network / model-not-found → `configure-llm` hint;
+  generic errors stay generic).
+- **CLI Ctrl-C cancels cleanly.** First press sets a `cancel_token`
+  the agent loop polls between iterations; second press also raises
+  KeyboardInterrupt for stuck socket I/O. The chat surfaces "Cancelled
+  by user." (Turkish: "Soru kullanıcı tarafından iptal edildi.")
+  rather than draining the question to completion.
+- **Last/active profile delete.** `/remove-db-profile` and
+  `/remove-llm-profile` no longer refuse the only profile — config
+  resets to empty, downstream surfaces handle it.
+- **`list_databases` shows full reach.** Asking "which databases do
+  I have" across two profiles now enumerates every reachable
+  database/catalog per connection, not just the pinned default.
+- **LiteLLM startup chatter silenced.** Corp-network TLS proxies no
+  longer surface a "Failed to fetch remote model cost map" warning
+  on every `/ask` — `LITELLM_LOCAL_MODEL_COST_MAP=True` skips the
+  GitHub fetch entirely.
+
 ### Unreleased — AMX Studio launch
 
-The local web UI is now **AMX Studio**. The slash command is `/studio`,
+The local web UI is **AMX Studio**. The slash command is `/studio`,
 the Click subcommand is `amx studio`, and the Python entry point is
 `amx.web.launch_studio`. The user-facing brand (FastAPI title, browser
 tab, auth error messages, Settings copy) all reads "AMX Studio." See

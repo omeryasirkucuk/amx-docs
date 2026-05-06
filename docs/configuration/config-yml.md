@@ -144,12 +144,20 @@ db_profiles:
     credentials_path: ""           # blank → ADC
     max_bytes_billed: 10737418240
 
-# Single active DB (legacy).
+# Single active DB (back-compat for tools still reading the legacy scalar).
+# Tracks the first entry of active_db_profiles below.
 active_db_profile: prod-pg
 
-# Multi-DB scope (0.11.0+). When set, /run / /sync etc. operate
-# across every profile listed here.
-active_db_profiles: [prod-pg]
+# Multi-DB scope. /run / /sync / /ask all operate across every profile
+# listed here in a single pass — Studio's browse sidebar shows all of
+# them as expandable rows, /ask catalog tools span them via SQL IN
+# clauses, and live-DB tools (list_schemas, list_databases, …) fan out
+# in parallel with an 8-second per-profile timeout.
+#
+# Set via /use-db a b c (persisted) or /session scope a b (chat-session
+# sticky). Studio's Ask page has a multi-select scope dropdown that
+# does the same per chat.
+active_db_profiles: [prod-pg, prod-bq]
 
 # ─────────────────────────────────────────────────────────────────────
 # Single-LLM shortcut, parallels `db:` above.

@@ -50,16 +50,99 @@ laptop while the server runs on a remote box.
 | Page | What it does | Backed by |
 |---|---|---|
 | **Overview** `/` | Stat cards (active backend, LLM model, total runs, success rate) + Recent runs feed. Tile and row click-throughs jump to Settings or the run detail. | `/api/history/stats`, `/api/history/runs` |
-| **Browse** `/db/:profile`, `/db/:profile/:schema`, `/db/:profile/:schema/:table` | Walk the live database. Inline-edit any database / schema / table / column comment, or hit **Generate** to have the LLM draft just that asset and write it back through the same review loop the CLI uses. | `/api/live/...`, `/api/comments/...`, `/api/generate/...` |
+| **Browse** `/db/:profile/:database/:schema/:table` (2-level) and `/cat/:profile/:catalog/:schema/:table` (3-level) | Multi-profile asset tree: every saved DB profile is its own expandable row in the sidebar. Walk profile → database/catalog → schema → table; inline-edit any comment or hit **Generate** for one-asset-at-a-time LLM drafting through the same review loop the CLI uses. Two browser tabs on different profiles never collide. | `/api/live/...`, `/api/comments/...`, `/api/generate/...` |
 | **Runs** `/runs` | Every `/run` and `/run-apply` invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Compare 2–4 runs side-by-side via the **Compare** button. | `/api/history/runs`, `/api/history/compare` |
 | **Run detail** `/runs/:id` | Live SSE progress while a run streams (sticky banner with elapsed timer + current activity + N/total processed), then a tabbed Summary / Results / Scope / Settings view once the run finishes. Per-row alternatives carousel + skip + custom-edit + restore. | `/api/history/runs/{id}`, `/api/pending/...` |
-| **Ask** `/ask` | Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar and end-session control. | `/api/ask` (SSE), `/api/ask/sessions/...` |
+| **Ask** `/ask` | Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, and the auto-detected focus profile. | `/api/ask` (SSE), `/api/ask/sessions/...` |
 | **Settings** `/settings` | Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. Same fields as `/add-db-profile` / `/add-llm-profile` / `/add-doc-profile` / `/add-code-profile`. | `/api/profiles/...` |
 | **System** `/system` | Doctor checks (re-run, skip-network toggle), per-(provider, model) token usage + cost over today / 24h / 7d / 30d / all, search-catalog status, team history-store enable / disable, and one-click placeholder cleanup. | `/api/doctor`, `/api/usage`, `/api/catalog/status`, `/api/admin/...` |
 
-The top bar also surfaces the active **DB profile**, **catalog / database**, and
-**LLM profile** as click-to-switch dropdown pills, plus a `⌘K` / `Ctrl-K` command
-palette for jumping to any page or quick action.
+The top bar surfaces the active **LLM profile** as a click-to-switch dropdown
+pill plus a `⌘K` / `Ctrl-K` command palette for jumping to any page or quick
+action. (DB profiles are no longer "active vs. inactive" — every saved profile
+shows up as its own expandable row in the sidebar so you can browse all of
+them simultaneously.)
+
+## Multi-profile browse
+
+The Browse sidebar lists **every saved DB profile** as its own expandable
+top-level row — no "active" / "switch" concept. Click any profile to lazy-load
+its catalogs / databases; expand a database/catalog to see its schemas; expand
+a schema to see its assets. The sidebar uses indent + typography to keep the
+hierarchy scannable when several profiles are open at once: profile rows are
+uppercase + bold, database/catalog rows are normal weight, schemas are dimmer
+small-caps, tables are the dimmest at the bottom.
+
+```
+DB PROFILES
+─────────────────────────────────
+▾ LOCAL-PG                      ← profile (uppercase, bold)
+    ▾ appdb                     ← database (normal weight)
+        ▾ public                ← schema (12px, dim)
+              users             ← table (11px, dimmer)
+              orders
+        ▸ analytics
+    ▸ reporting
+▸ SNOWFLAKE-PROD
+▸ DATABRICKS-STG
+```
+
+**Per-tab scope.** URLs encode the full scope — `/db/:profile/:database/...`
+for 2-level backends (Postgres, MySQL, …) and `/cat/:profile/:catalog/...`
+for 3-level (Databricks Unity Catalog, BigQuery). Two browser tabs on
+different profiles never bleed state into each other; an inline comment
+edited on profile X writes to profile X's backend, regardless of what
+some other tab is viewing.
+
+**Per-row Gen still works.** Inline-edit and the per-asset / per-row
+"Generate description" buttons on Database / Schema / Table pages all
+carry the page's profile through to the backend, so multi-profile users
+can draft one comment at a time across any number of profiles without a
+profile switch in between.
+
+## Chat scope and focus
+
+The Ask page (`/ask`) inherits the multi-profile model. Above the question
+textarea: a **scope dropdown** with multi-select checkboxes. Default is "All
+profiles" (every saved DB profile in scope); select individual profiles to
+narrow `/ask`'s retrieval to just those. The selection is **sticky per chat
+session** — picks persist within the chat and reset only when you start a
+new chat with **+ New**.
+
+```
+Scope: [▾ All profiles (5)        ]  [● Ask]
+        ─────────────────────────
+        ☑  All profiles
+        ─────────────────────────
+        ☐  SAP
+        ☐  WAREHOUSE
+        ☐  ANALYTICS
+        ☐  RAW
+        ☐  REPORTING
+        ─────────────────────────
+        Focus: WAREHOUSE (auto)
+```
+
+The **Focus** line at the bottom of the dropdown surfaces an auto-detected
+conversation focus — when ≥60% of profile mentions in the last 3 assistant
+turns point at one profile, the system prompt nudges the model to default
+to it for ambiguous questions. The user can still ask explicit cross-profile
+questions ("compare across all profiles", "is this in any other profile")
+and the model switches context smoothly.
+
+Each assistant turn carries a small footer below the answer:
+
+```
+2 profiles · 3.4s · focus: warehouse
+```
+
+— the scope used, wall-clock latency, and (when applicable) the
+auto-detected focus, so users can spot a slow profile or a misaligned focus
+at a glance. Per-tool latency is also recorded internally for debugging.
+
+CLI parity: the same sticky-scope / focus / latency machinery powers
+`/ask` in the REPL — see [Ask & Search](ask-and-search.md#4-ask-across-multiple-db-profiles)
+for the matching `/use-db` / `--db-profile` / `/session scope` flows.
 
 ## Generate descriptions from any page
 

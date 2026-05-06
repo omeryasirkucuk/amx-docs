@@ -174,7 +174,138 @@ Cited:
 
 This shape is the most important — `/ask` must say "I don't know" rather than fabricate.
 
-### 4. Drop to `/search` for raw retrieval
+### 4. Ask across multiple DB profiles
+
+`/ask` operates over the **multi-profile scope** the SearchAgent collects at
+startup — every DB profile in `cfg.active_db_profiles` (set via `/use-db a b c`)
+or, when that list is empty, every saved DB profile in your config. Catalog
+tools (`search_tables_by_concept`, `find_table_by_name`, `find_columns_by_dtype`,
+`find_joinable_tables`) automatically span every profile in scope; live-DB tools
+(`list_schemas`, `list_tables_in_schema`, `list_databases`) fan out per profile
+in parallel with an 8-second per-profile timeout, so a slow / unreachable
+profile never blocks the others.
+
+```text
+> /use-db sap warehouse                  # multi-profile scope
+> /ask which tables hold customer data?
+Reasoning over 14 results across 2 profiles ...
+
+You have customer data in BOTH profiles:
+
+  **sap.kna1** — Customer master (SAP). c_customer_id is the PK; FK targets
+  in vbrk (billing), vbak (sales orders), kbn (campaigns).
+
+  **warehouse.dim_customer** — Star-schema dimension (BigQuery). Different
+  shape than SAP — tracks slowly-changing-dim history via valid_from /
+  valid_to and a current_flag column. Joins to fct_orders.customer_sk.
+
+Cited:
+  - sap.public.kna1                  (table, profile=sap)
+  - warehouse.analytics.dim_customer (table, profile=warehouse)
+```
+
+Every result row carries `db_profile` so the answer cites the right source.
+You can also ask cross-profile join questions:
+
+```text
+> /ask what can I join sap.kna1 with from the warehouse profile?
+Looking across warehouse for compatible columns ...
+
+Top candidates (score = 0.30·name + 0.20·dtype + 0.40·vector + 0.10·fk):
+
+  0.78  sap.public.kna1.kunnr (VARCHAR(10))  ↔  warehouse.analytics.dim_customer.cust_id (STRING)
+        Strong: name overlap (cust↔kunnr via tokenisation), dtype family
+        (string), FK pattern (kna1.kunnr is PK, dim_customer.cust_id ends in _id).
+
+  0.61  sap.public.kna1.land1 (CHAR(3))      ↔  warehouse.ref.country.iso_code (STRING(3))
+        Both 3-char ISO country codes. Caveat: weaker, the column comments
+        don't share enough text to push the vector signal up.
+
+Anything below 0.40 is coincidental and not recommended.
+```
+
+The cross-profile JOIN tool (`find_joinable_across_profiles`) kicks in
+automatically when the question explicitly mentions cross-profile joining;
+the LLM will fall back to the within-profile `find_joinable_tables` for
+single-DB questions.
+
+#### Per-question scope override
+
+Need to scope a single question without changing the persisted scope?
+Pass `--db-profile NAME` (multiple times for multi):
+
+```text
+> /ask --db-profile sap which schemas do I have?
+> /ask --db-profile sap --db-profile warehouse cross-DB question
+```
+
+#### Sticky scope at the chat-session level
+
+`/session scope <profiles>` pins a multi-profile scope to the active chat
+session — separate from the persisted `/use-db` scope, so you can experiment
+in one chat without disturbing the global default:
+
+```text
+> /session scope                         # show current scope
+> /session scope sap warehouse           # pin to these two for THIS chat
+> /session scope clear                   # back to config default
+```
+
+The Studio side has the equivalent control as a multi-select dropdown above
+the Ask textarea — see [Studio](studio.md#chat-scope-and-focus).
+
+### 5. Manage chat sessions
+
+Every `/ask` turn lives in a chat session that AMX persists to
+`~/.amx/history.db`. Resume past sessions to continue a conversation —
+prior turns flow back to the agent as context, so follow-ups like "describe
+the first one" or "in Turkish" resolve without re-explaining.
+
+```text
+> /session list                          # most recent sessions for the active profile pair
+ID    Started      Last active   State    Turns  Title             First question
+→ 42  2026-05-06   2026-05-06    active   8      (auto)            which tables hold customer data?
+  41  2026-05-05   2026-05-05    closed   3      Pricing tables    list every pricing-related table
+  ...
+
+> /session resume 42                     # make 42 the active session for the next /ask
+> /ask describe the first one            # "first one" resolves to sap.public.kna1 from session 42's history
+
+> /session new                           # start a fresh session
+> /session end                           # close the active session; next /ask starts a new one
+```
+
+A few details worth knowing:
+
+- **Cross-profile resume is refused.** Session #42 was created under
+  `sap`/`gpt-4o`; switching to `warehouse`/`claude-3` and trying
+  `/session resume 42` warns and bails — switch profiles first, or pass
+  `--all-profiles` to `/session list` to find the right one.
+- **`/session` works from every tab.** `/session list`, `/session resume`,
+  etc. dispatch globally — no need to be at the root prompt.
+- **Studio shares the store.** Sessions you start in CLI show up in
+  Studio's Ask sidebar and vice versa — single source of truth at the
+  SQLite level.
+
+### 6. Cancelling a long question
+
+Press <kbd>Ctrl-C</kbd> once to cancel a running `/ask` cleanly:
+
+```text
+ask> very-long-question-that-triggers-many-tool-calls
+Search Agent: thinking with tools (3.4s)
+^C
+Cancelled by user.
+
+ask>                                     # back at the prompt, chat session intact
+```
+
+The first press sets a `cancel_token` the agent loop checks between every
+LLM iteration and tool dispatch — typically returns within a second or two.
+A second press also raises `KeyboardInterrupt` so any blocked socket I/O
+(rare; LiteLLM's HTTP retries) terminates immediately.
+
+### 7. Drop to `/search` for raw retrieval
 
 ```text
 > /search "customer addresses"
