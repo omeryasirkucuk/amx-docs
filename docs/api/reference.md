@@ -13,30 +13,10 @@ this page mirrors them with prose explanations.
 
 ```python
 import amx
-amx.__version__   # str, e.g. "0.12.0"
+amx.__version__   # str, e.g. "0.13.0"
 ```
 
 The installed AMX version. Useful for runtime feature checks and bug reports.
-
----
-
-## `amx.init`
-
-```python
-def init(config_path: str | None = None) -> AMXApplication
-```
-
-Convenience wrapper around `AMXApplication.load(config_path)`. Use it for one-line scripts:
-
-```python
-import amx
-
-app = amx.init()                              # loads ~/.amx/config.yml
-app = amx.init("/path/to/team.yml")           # custom config
-```
-
-Library code should prefer `from amx.core import AMXApplication` and call
-`AMXApplication.load(...)` directly — same effect, no top-level import surprise.
 
 ---
 
@@ -62,7 +42,7 @@ def load(cls, config_path: str | None = None) -> AMXApplication
 ```
 
 Loads `config.yml` (default `~/.amx/config.yml`), initialises the local SQLite history
-store, and constructs the search catalog. This is the standard entry point.
+store, and constructs the search catalog. This is the single canonical entry point.
 
 ```python
 from amx.core import AMXApplication
@@ -88,25 +68,23 @@ session-state mutations.
 def ask(self, question: str) -> SearchAnswer
 ```
 
-Run a single-shot ask question through the legacy `SearchService` pipeline.
+The canonical natural-language ask method. Routes through `SearchService` →
+`SearchAgent` (multi-stage retrieval, live probes, verification, synthesis) — the same
+pipeline Studio and the CLI's `/ask` use.
 
-`SearchAnswer` is the same shape used internally by `/ask`. Prefer `ask_with_tools` for
-new code — it returns the richer `ToolAskResponse` with the full reasoning trace.
+`SearchAnswer` carries:
 
-### `AMXApplication.ask_with_tools`
-
-```python
-def ask_with_tools(self, question: str) -> ToolAskResponse
-```
-
-Run the question through the loop-based ask agent. Returns a structured response with
-the answer, intent, tool trace, and confidence — see [`ToolAskResponse`](#amxcoretoolaskresponse).
+| Field | Description |
+|---|---|
+| `summary` | The synthesised natural-language answer (rendered, ready to print) |
+| `rows` | Underlying catalog rows the agent grounded its answer in |
+| `details` | Plan, retrieval, verification, and step-by-step `thought_trace` |
 
 ```python
-response = app.ask_with_tools("which tables in sap_s6p store dates?")
-print(response.answer)
-for step in response.trace:
-    print(step.action, "→", step.observation)
+answer = app.ask("which tables in sap_s6p store dates?")
+print(answer.summary)
+for step in answer.details.get("thought_trace", []):
+    print(step.get("step"), "→", step.get("observation"))
 ```
 
 ### `AMXApplication.explain`
@@ -115,8 +93,46 @@ for step in response.trace:
 def explain(self, question: str) -> dict[str, Any]
 ```
 
-Lower-level: returns the planner's reasoning + retrieval plan for a question without
-producing a final answer. Useful for debugging prompts.
+Same pipeline as `ask`, but returns the structured explanation payload directly (plan,
+retrieval, verification, trace). Useful for debugging prompts or building a custom UI on
+top of the agent's reasoning.
+
+### `AMXApplication.infer_metadata`
+
+```python
+def infer_metadata(
+    self,
+    schema: str,
+    table: str,
+    *,
+    include_rag: bool = True,
+    include_codebase: bool = False,
+) -> list[InferenceResult]
+```
+
+One-call programmatic metadata inference for a single table. Skips the interactive
+review wizard — returns one `InferenceResult` per produced suggestion (table-level + per
+column).
+
+```python
+from amx.core import AMXApplication
+
+app = AMXApplication.load()
+results = app.infer_metadata(
+    schema="sap_s6p",
+    table="t001",
+    include_rag=True,
+    include_codebase=True,
+)
+
+for r in results:
+    print(f"{r.column or '<table>':30s}  {r.confidence:6s}  {r.description}")
+```
+
+If `include_rag=True` and the active doc profile has ingested documents, the RAG agent
+contributes evidence. If `include_codebase=True` and a code profile is active, the Code
+agent does the same. Both default to off-the-network behaviour when their stores are
+empty (no LLM call, no error).
 
 ### `AMXApplication.run_analysis`
 
@@ -130,10 +146,9 @@ def run_analysis(
 ```
 
 Headless-safe analysis entry point. **Does not open interactive prompts** — when no
-explicit scope or saved selection exists, returns a structured `skipped` result.
-
-For full inference + writeback, prefer [`infer_table_metadata`](#amxcoreinfer_table_metadata)
-or the CLI `/run`.
+explicit scope or saved selection exists, returns a structured `skipped` result. For
+full inference + writeback per table, prefer
+[`AMXApplication.infer_metadata`](#amxapplicationinfer_metadata) or the CLI `/run`.
 
 ```python
 result = app.run_analysis(scope={"sap_s6p": ["t001", "vbak"]}, apply=False)
@@ -143,126 +158,32 @@ print(result["scope"])
 
 ---
 
-## `amx.core.infer_table_metadata`
-
-```python
-def infer_table_metadata(
-    cfg: AMXConfig,
-    schema: str,
-    table: str,
-    *,
-    include_rag: bool = True,
-    include_codebase: bool = False,
-) -> list[dict[str, Any]]
-```
-
-One-call programmatic metadata inference for a single table. Skips the interactive review
-wizard — returns suggestion dicts ready for your own UI to consume.
-
-```python
-import amx
-from amx.core import infer_table_metadata
-
-app = amx.init()
-results = infer_table_metadata(
-    app.config,
-    schema="sap_s6p",
-    table="t001",
-    include_rag=True,
-    include_codebase=True,
-)
-
-for col in results:
-    print(f"{col['column']:30s}  {col['confidence']:8s}  {col['description']}")
-```
-
-Each result dict carries the column identifier, top description, alternatives,
-confidence band, logprob (when available), evidence sources, and provenance. The shape is
-stable across minor versions; new optional fields may be added.
-
-If `include_rag=True` and the active doc profile has ingested documents, the RAG agent
-contributes evidence. If `include_codebase=True` and a code profile is active, the Code
-agent does the same. Both default to off-the-network behaviour when their stores are
-empty (no LLM call, no error).
-
----
-
-## `amx.core.AskToolbox`
-
-```python
-class AskToolbox:
-    def __init__(
-        self,
-        cfg: AMXConfig,
-        catalog: SearchCatalog,
-        *,
-        db_factory: Callable[[], DatabaseConnector] | None = None,
-        doc_query: Callable[[str, int], list[dict[str, Any]]] | None = None,
-    ) -> None
-```
-
-Bounded set of metadata tools the loop-based ask agent can call. The tools include catalog
-lookups, schema exploration, safe live DB probes, and (when configured) a document-query
-hook.
-
-You typically don't construct an `AskToolbox` directly — use `AMXApplication.ask_with_tools`
-which builds one for you. Construct it manually only when you want to inject custom
-`db_factory` or `doc_query` implementations (e.g. for tests).
-
-```python
-from amx.core import AMXApplication, AskToolbox, LoopBasedAskAgent
-
-app = AMXApplication.load()
-toolbox = AskToolbox(app.config, app.catalog)
-agent = LoopBasedAskAgent(toolbox)
-response = agent.answer("which tables in sap_s6p store dates?")
-```
-
----
-
-## `amx.core.LoopBasedAskAgent`
-
-```python
-class LoopBasedAskAgent:
-    def __init__(self, toolbox: AskToolbox) -> None: ...
-    def answer(self, question: str) -> ToolAskResponse: ...
-```
-
-Headless re-implementation of `/ask` for scripts and notebooks. Wraps the multi-step
-Search Agent pipeline (interpret → plan → retrieve → verify → synthesise) in a single
-`answer(question)` call.
-
----
-
-## `amx.core.ToolAskResponse`
+## `amx.core.InferenceResult`
 
 ```python
 @dataclass(frozen=True)
-class ToolAskResponse:
-    question: str
-    answer: str
-    trace: list[ReasoningTraceStep]
-    tool_results: list[ToolResult]
-    strategy: str = ""
+class InferenceResult:
+    schema: str
+    table: str
+    column: str | None        # None = table-level suggestion
+    description: str
+    confidence: str           # "high" | "medium" | "low"
+    source: str               # "db_profile" | "rag" | "codebase" | "combined"
+    asset_kind: str = "table"
+    applied: bool = False
+    alternatives: tuple[str, ...] = ()
+    logprob_score: float | None = None
 
     def as_dict(self) -> dict[str, Any]
 ```
 
-Structured response from `LoopBasedAskAgent.answer(...)` (and from
-`AMXApplication.ask_with_tools`).
+Typed metadata-inference result returned from
+[`AMXApplication.infer_metadata`](#amxapplicationinfer_metadata). The field set is
+stable across minor versions — additive changes only; existing fields keep their
+meaning across upgrades.
 
-| Field | Description |
-|---|---|
-| `question` | The original question, echoed |
-| `answer` | The synthesised natural-language answer |
-| `trace` | Ordered `ReasoningTraceStep` objects: `step`, `action`, `observation` |
-| `tool_results` | Raw `ToolResult` objects from each tool invocation: `tool`, `query`, `rows`, `error` |
-| `strategy` | Picked answer shape (`single_fact`, `short_table`, `full_table`, `ranked_list`, `table_summary`, `join_candidates`, `prose`) |
-
-`as_dict()` returns a JSON-safe dict for logging or transport.
-
-`ReasoningTraceStep` and `ToolResult` are part of the `ToolAskResponse` shape and
-therefore implicitly public — additive field changes only across minor versions.
+`as_dict()` returns a JSON-safe dict for logging or transport. `alternatives` is a
+tuple in the dataclass and a list in the dict view.
 
 ---
 
@@ -316,7 +237,7 @@ from amx.core import AMXApplication, UniversalMetadataAdapter
 
 app = AMXApplication.load()
 # (TableProfile is internal; in practice, AMXApplication.run_analysis or
-# infer_table_metadata yield AbstractEntity objects already.)
+# infer_metadata yield AbstractEntity / InferenceResult objects already.)
 ```
 
 In normal use, you don't call `UniversalMetadataAdapter` directly — the orchestrator
