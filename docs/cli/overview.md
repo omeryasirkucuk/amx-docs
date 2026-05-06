@@ -52,7 +52,8 @@ Top-level commands:
   /metadata      Inspect introspection output
   /run           Run agents on a scope
   /apply         Write reviewed comments back to the DB
-  /search        Catalog search and embedding rebuild
+  /search        Catalog search, embedding rebuild, and chat sessions
+  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
   /studio        Boot AMX Studio (local web UI) on 127.0.0.1
   /history       Audit trail and run comparison
   /doctor        Diagnostics
@@ -142,10 +143,17 @@ for the most-frequently-seen failures.
 | `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
 | `/metadata` | Inspect introspection cache | — |
 | `/analyze` | Run + apply | `/run`, `/run-apply`, `/apply` |
-| `/search` | Catalog search | `/ask`, `/status`, `/sync`, `/rebuild` |
+| `/search` | Catalog search + chat sessions | `/ask`, `/session list`, `/session resume`, `/session scope`, `/status`, `/sync`, `/rebuild` |
 | `/studio` | AMX Studio — local web UI on `127.0.0.1` | `--port`, `--no-open` |
 | `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare` |
 | `/doctor` | Diagnostics | `--skip-network`, `--debug` |
+
+**Tabs group; routing is global.** Every top-level command (including
+`/session`, `/studio`, `/setup`, `/config`, `/doctor`, `/compare`,
+`/history-store`) dispatches from any tab — namespaces are about *discovering*
+related commands together, not about *gating* their availability. Type
+`/session list` while inside `/db` and it works exactly the same as from the
+root prompt.
 
 ## Verify
 

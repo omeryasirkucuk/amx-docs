@@ -172,7 +172,35 @@ description or move it to a table-level comment.
 
 **Cause:** `/ask` fails closed when no LLM is configured.
 
-**Fix:** Run `/llm` → `/add-llm-profile <name>`.
+**Fix:** Run `/llm` → `/add-llm-profile <name>`. In Studio, the same scenario
+shows a "Couldn't reach the LLM" banner with **Open LLM settings** and
+**Run doctor** CTAs above the chat textarea — that's the
+`configure-llm` hint surfacing as UI rather than a generic error toast.
+
+### `/ask` hangs on "Reasoning…" forever
+
+**Cause:** Older AMX builds didn't surface LLM-init failures as a terminal SSE
+event, so a misconfigured provider (missing API key, bad model id, network
+down to the provider, expired token) drained the worker without ever telling
+the SPA the question failed.
+
+**Fix:** Upgrade to 0.12.9 or newer — the `/ask` path classifies LLM-side
+errors (auth, rate limit, model-not-found, network/DNS) and emits a clean
+`job.failed` SSE event with a `configure-llm` hint. The chat now surfaces
+"Couldn't reach the LLM. Check your provider settings…" instead of leaving
+the bubble at "Reasoning…". On the CLI, the same scenario returns a friendly
+"Cancelled by user." or surfaces the LiteLLM error string verbatim.
+
+### Pressing <kbd>Ctrl-C</kbd> in CLI `/ask` doesn't stop the question
+
+**Cause:** Older builds let the LLM HTTP call drain to completion before
+Python's default `KeyboardInterrupt` could reach the user — the first press
+felt ignored.
+
+**Fix:** Upgrade to 0.12.9+. The CLI installs a temporary SIGINT handler for
+the duration of `/ask` that sets a `cancel_token` the agent loop polls between
+iterations (graceful exit within a tool / LLM step). A second press also
+raises `KeyboardInterrupt` so any blocked socket I/O eventually terminates.
 
 ### `Could not verify table sap_s6p.adrc`
 
