@@ -489,21 +489,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#unreleased-multi-profile-browse-and-ask" class="md-nav__link">
+  <a href="#0129-multi-profile-browse-ask-and-amx-studio-launch" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Unreleased — Multi-profile browse and /ask
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#unreleased-amx-studio-launch" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Unreleased — AMX Studio launch
+        0.12.9 — Multi-profile browse, /ask, and AMX Studio launch
       
     </span>
   </a>
@@ -705,7 +694,7 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
-<h3 id="unreleased-multi-profile-browse-and-ask">Unreleased — Multi-profile browse and <code>/ask</code><a class="headerlink" href="#unreleased-multi-profile-browse-and-ask" title="Permanent link">&para;</a></h3>
+<h3 id="0129-multi-profile-browse-ask-and-amx-studio-launch">0.12.9 — Multi-profile browse, <code>/ask</code>, and AMX Studio launch<a class="headerlink" href="#0129-multi-profile-browse-ask-and-amx-studio-launch" title="Permanent link">&para;</a></h3>
 <p>AMX is multi-profile end-to-end. Both Studio and the CLI's <code>/ask</code> now
 operate across every saved DB profile simultaneously — no more switch
 dance.</p>
@@ -773,12 +762,26 @@ message).</p>
   on every <code>/ask</code> — <code>LITELLM_LOCAL_MODEL_COST_MAP=True</code> skips the
   GitHub fetch entirely.</li>
 </ul>
-<h3 id="unreleased-amx-studio-launch">Unreleased — AMX Studio launch<a class="headerlink" href="#unreleased-amx-studio-launch" title="Permanent link">&para;</a></h3>
-<p>The local web UI is <strong>AMX Studio</strong>. The slash command is <code>/studio</code>,
-the Click subcommand is <code>amx studio</code>, and the Python entry point is
-<code>amx.web.launch_studio</code>. The user-facing brand (FastAPI title, browser
-tab, auth error messages, Settings copy) all reads "AMX Studio." See
-the <a href="../cli/studio/">Studio docs</a> for a full walkthrough.</p>
+<p><strong>AMX Studio launch.</strong> The local web UI is <strong>AMX Studio</strong>. The slash
+command is <code>/studio</code>, the Click subcommand is <code>amx studio</code>, and the
+Python entry point is <code>amx.web.launch_studio</code>. The user-facing brand
+(FastAPI title, browser tab, auth error messages, Settings copy) all
+reads "AMX Studio." See the <a href="../cli/studio/">Studio docs</a> for a full
+walkthrough.</p>
+<p><strong><code>amx.core</code> Python library API cleanup (BREAKING).</strong> <code>amx.init</code>,
+<code>AMXApplication.ask_with_tools</code>, <code>LoopBasedAskAgent</code>, <code>AskToolbox</code>,
+<code>ToolAskResponse</code>, <code>ToolResult</code>, <code>ReasoningTraceStep</code>, and
+<code>infer_table_metadata</code> (free function) are removed. Use
+<code>AMXApplication.load(...)</code>, <code>app.ask(...)</code>, and the new typed
+<code>app.infer_metadata(schema, table, ...) -&gt; list[InferenceResult]</code>
+instead. See the migration block in the
+<a href="https://github.com/omeryasirkucuk/amx/blob/main/CHANGELOG.md#0129---2026-05-07">repo CHANGELOG</a>.</p>
+<p><strong>On-demand driver and dependency install.</strong> Connecting to a new DB
+backend (Snowflake, BigQuery, Databricks, MySQL, MS SQL, Trino,
+Redshift, …) installs the driver on first connect; feature-gated
+packages (RAG, codebase analysis, optional LLM provider SDKs)
+auto-install on first use. The <code>pip install amx-cli[…]</code> extras still
+work for reproducible environments.</p>
 <h3 id="0128-amx-studio-umbrella-release">0.12.8 — AMX Studio umbrella release<a class="headerlink" href="#0128-amx-studio-umbrella-release" title="Permanent link">&para;</a></h3>
 <p>AMX Studio reaches feature parity with the REPL. Thirteen UI-overhaul PRs +
 Stage 2–7 parity work + a design-system reset land together in 0.12.8: the SPA
@@ -949,7 +952,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.8</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.9</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -969,7 +972,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.8"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.9"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
