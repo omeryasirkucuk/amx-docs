@@ -8,7 +8,7 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
-### Unreleased — Multi-profile browse and `/ask`
+### 0.12.9 — Multi-profile browse, `/ask`, and AMX Studio launch
 
 AMX is multi-profile end-to-end. Both Studio and the CLI's `/ask` now
 operate across every saved DB profile simultaneously — no more switch
@@ -83,13 +83,28 @@ message).
   on every `/ask` — `LITELLM_LOCAL_MODEL_COST_MAP=True` skips the
   GitHub fetch entirely.
 
-### Unreleased — AMX Studio launch
+**AMX Studio launch.** The local web UI is **AMX Studio**. The slash
+command is `/studio`, the Click subcommand is `amx studio`, and the
+Python entry point is `amx.web.launch_studio`. The user-facing brand
+(FastAPI title, browser tab, auth error messages, Settings copy) all
+reads "AMX Studio." See the [Studio docs](cli/studio.md) for a full
+walkthrough.
 
-The local web UI is **AMX Studio**. The slash command is `/studio`,
-the Click subcommand is `amx studio`, and the Python entry point is
-`amx.web.launch_studio`. The user-facing brand (FastAPI title, browser
-tab, auth error messages, Settings copy) all reads "AMX Studio." See
-the [Studio docs](cli/studio.md) for a full walkthrough.
+**`amx.core` Python library API cleanup (BREAKING).** `amx.init`,
+`AMXApplication.ask_with_tools`, `LoopBasedAskAgent`, `AskToolbox`,
+`ToolAskResponse`, `ToolResult`, `ReasoningTraceStep`, and
+`infer_table_metadata` (free function) are removed. Use
+`AMXApplication.load(...)`, `app.ask(...)`, and the new typed
+`app.infer_metadata(schema, table, ...) -> list[InferenceResult]`
+instead. See the migration block in the
+[repo CHANGELOG](https://github.com/omeryasirkucuk/amx/blob/main/CHANGELOG.md#0129---2026-05-07).
+
+**On-demand driver and dependency install.** Connecting to a new DB
+backend (Snowflake, BigQuery, Databricks, MySQL, MS SQL, Trino,
+Redshift, …) installs the driver on first connect; feature-gated
+packages (RAG, codebase analysis, optional LLM provider SDKs)
+auto-install on first use. The `pip install amx-cli[…]` extras still
+work for reproducible environments.
 
 ### 0.12.8 — AMX Studio umbrella release
 
