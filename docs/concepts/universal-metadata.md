@@ -60,8 +60,8 @@ Because every adapter normalises into the same shape:
 - `/history compare` can pivot runs across different backends side by side.
 - The Profile Agent prompt is backend-agnostic — it sees columns and types, not driver
   quirks.
-- `infer_table_metadata` (the headless API) returns the same dict shape regardless of
-  which backend produced the source data.
+- `AMXApplication.infer_metadata` (the headless API) returns the same
+  `InferenceResult` shape regardless of which backend produced the source data.
 
 ## What's still backend-specific
 

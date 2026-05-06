@@ -113,6 +113,6 @@ so a later `/history review --unevaluated-only` is still possible if you change 
 
 The review UI is implemented in `amx.cli_support.commands.run` with shared rendering helpers
 in `amx.utils.live_display`. It is intentionally **not** part of the public Python API — for
-headless reviews, the recommended pattern is to call `infer_table_metadata` programmatically,
-then drive your own UI with the returned `suggestions` list. See [Python API](../api/index.md)
-for the contract.
+headless reviews, the recommended pattern is to call `AMXApplication.infer_metadata`
+programmatically, then drive your own UI with the returned `list[InferenceResult]`. See
+[Python API](../api/index.md) for the contract.
