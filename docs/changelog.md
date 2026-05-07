@@ -8,6 +8,85 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.13.0 — Doc & code RAG into `/ask`, Studio polish, durable secrets
+
+`/ask` finally reads the user's documentation and codebase. Two new
+LLM-callable tools (`search_docs`, `search_code`) ground answers in
+the doc RAG and the `amx_code` Chroma index that previous releases
+already built — both surfaces existed in 0.12.x but were never wired
+into the agent loop. When nothing is in scope, the tools short-circuit
+with a structured `no_*_for_scope` payload so the LLM doesn't
+hallucinate definitions or callsites. Lazy-init keeps the no-context
+`/ask` path zero-cost.
+
+**Doc/code ↔ DB profile linking.** Each doc or code profile can now
+be linked to one or more DB profiles. `/ask` running against scope
+`{X}` only pulls from doc/code profiles whose link list contains `X`
+(or is empty = global). New CLI commands `/doc-link`, `/code-link`,
+`/ask-context`. Studio's Settings → Docs/Code wizards expose the link
+as a multi-select chip control, and AskChat shows a small `📄 N docs ·
+💻 M code` rozeti above the scope dropdown so you always know what
+the agent has in its tool window.
+
+**Drag-drop document upload.** Studio's Settings → Docs gets per-card
+and per-wizard drop zones. Files land under
+`~/.amx/uploads/<profile>/<sha256>.<ext>` with per-file 25 MB and
+per-batch 100 MB caps and idempotent profile-path registration. The
+CLI counterpart `/doc-add <profile> <file>...` shares the same
+storage module, accept-list, and size guards. Empty-state nudges and
+a small `cli_support/hints.py` helper point terminal users at the
+visual surface and vice versa.
+
+**Studio Code Search & Code Analyze.** A new `Search code` box on
+`Settings → Code` mirrors the docs search (no LLM, just embedding
+similarity over `amx_code`). Each code-profile row gains an
+**Analyze** button that runs the Code Agent against the cached
+`/code-scan` and streams per-table progress; the on-disk JSON cache
+shape is byte-identical to what `/code-analyze` writes from the CLI,
+since both call into the new shared `amx/codebase/agent_service.py`.
+The CLI gains `/code-search` for the keyboard-only equivalent.
+
+**Live progress on numeric run-detail pages.** A run still being
+processed by a worker thread now exposes `live_job_id` on
+`GET /api/history/runs/{id}`; the run-detail page subscribes to the
+SSE stream and renders a compact activity card above the tabs. The
+live `/runs/new-{jobId}` view also redirects to the persisted detail
+page as soon as `run.created` fires, so users gain access to the full
+edit / pick / apply controls immediately instead of waiting for the
+worker to finish.
+
+**Apply path is finally well-behaved on Postgres.** Per-row
+`SAVEPOINT` isolation in `apply_review_results_to_db` so one failed
+COMMENT (eg. wrong schema name) no longer cascade-poisons the whole
+batch with `InFailedSqlTransaction`. The Studio Apply pending queue
+button now pins the worker to the run's own database/catalog instead
+of falling back to the active profile's pinned default — old runs
+that didn't capture scope on the row get an inline database picker
+on the run-detail page.
+
+**Inline scope picker on `/runs/new`.** Clicking **+ New run** on the
+Runs list without a sidebar-scoped URL now shows a chip-based DB
+profile + database/catalog picker instead of a "no scope selected"
+warning, so a run can start without first navigating through the
+sidebar.
+
+**Keyring references survive reinstalls on every OS.** Previously, a
+single transient keyring backend outage (macOS Keychain ACL miss
+after a binary path change, gnome-keyring / KWallet not running on
+Linux, Credential Manager access denied on Windows) permanently
+deleted the YAML's `keyring:` pointer because the next `cfg.save()`
+overwrote it with `""`. The resolver now leaves unresolved references
+intact, the LLM provider substitutes `AMX_LLM_API_KEY` for outgoing
+auth, and the DB connector strips them on a `replace()` copy — so
+the dataclass + YAML keep their pointers and the next process with a
+healthy backend resolves the secret automatically.
+
+**Cold-path bench guard in CI.** `tests/perf/bench_ask_no_context.py`
+pins the four no-context guarantees the doc/code RAG plumbing
+introduced (search_docs / search_code short-circuit, scope-resolver
+micro-cost, ToolBox.schemas() constant time) so future regressions
+don't sneak in unnoticed.
+
 ### 0.12.9 — Multi-profile browse, `/ask`, and AMX Studio launch
 
 AMX is multi-profile end-to-end. Both Studio and the CLI's `/ask` now
