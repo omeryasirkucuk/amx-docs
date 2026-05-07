@@ -66,6 +66,8 @@ Equivalent to passing `--debug` to every command in the session.
 |---|---|---|
 | `AMX_CONFIG_DIR` | `~/.amx` | Where AMX reads / writes `config.yml`, sessions, history file, Chroma index |
 | `AMX_LOG` | `info` | Log level: `debug` / `info` / `warning` / `error` |
+| `AMX_LOG_MAX_BYTES` | `10485760` (10 MB) | Rotating-handler ceiling for `~/.amx/logs/amx.log`. The active log is renamed to `amx.log.1` and a fresh file starts when it exceeds this size. Minimum `1024`. |
+| `AMX_LOG_BACKUP_COUNT` | `5` | How many rotated `amx.log.N` archives to keep alongside the active file. Total disk footprint ≈ `AMX_LOG_MAX_BYTES * (1 + AMX_LOG_BACKUP_COUNT)` ≈ 60 MB by default. Set to `0` to keep one bounded file with no rollovers. |
 | `AMX_NO_COLOR` | unset | If set (any value), disable ANSI color in output |
 | `AMX_NO_KEYRING` | unset | If set, skip OS keychain — store secrets plaintext in `config.yml` |
 | `AMX_NO_NETWORK` | unset | If set, skip the connectivity ping at every `/run` start |

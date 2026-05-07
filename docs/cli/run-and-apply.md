@@ -119,6 +119,41 @@ re-listed at the end:
   Re-run /apply after fixing privileges (the failed rows stay in the queue).
 ```
 
+#### Dry-run preview
+
+`amx /apply --dry-run` (AMX 0.13+) shows the exact `COMMENT ON …`
+statement each pending row would execute without opening a write
+transaction. The pending file is left untouched, so you can re-run
+`/apply` for real after reviewing the preview.
+
+```text
+> amx /analyze apply --dry-run
+Preview pending metadata writes (dry-run)
+
+Pending comments
+  Asset                                  Description
+  sales.customer                         Master customer record …
+  sales.customer.c_customer_sk           Surrogate key generated …
+
+Dry-run: showing the SQL templates for 38 pending comment(s). No changes will be written.
+  [1/38] COMMENT ON TABLE sales.customer IS :cmt
+  [2/38] COMMENT ON COLUMN sales.customer.c_customer_sk IS :cmt
+  …
+
+✓ Dry-run complete: 38 comment(s) previewed. Pending file unchanged.
+  Re-run /analyze apply (without --dry-run) to write.
+```
+
+`:cmt` is the parameter slot the live path binds the comment text
+into — it's printed verbatim so the user-supplied string is never
+inlined into a SQL literal in the preview output. Rows whose asset
+kind the active backend can't accept (e.g. schema comments on
+ClickHouse) surface as `(skipped — backend cannot accept this asset
+kind)`.
+
+The same preview is reachable from Studio via the
+[**Preview SQL** button](studio.md#preview-sql) on the Pending page.
+
 ### 5. The shortcut: `/run-apply`
 
 For one-shot warehouse sweeps where you've already validated the LLM profile:
