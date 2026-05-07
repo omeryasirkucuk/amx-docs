@@ -1,4 +1,4 @@
-# `/setup` and configuration
+# `/setup` & configuration
 
 `/setup` is the interactive first-time configuration wizard. It walks you through three
 profile types — database, LLM, and (optional) data sources — and saves everything to

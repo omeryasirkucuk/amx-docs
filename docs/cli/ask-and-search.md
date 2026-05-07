@@ -1,4 +1,4 @@
-# `/ask` and `/search`
+# `/ask` & `/search`
 
 `/ask` is conversational metadata Q&A grounded in AMX's internal search catalog. You ask
 in natural language; AMX retrieves the most relevant tables / columns / docs / code, and

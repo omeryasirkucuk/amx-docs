@@ -1,4 +1,4 @@
-# `/history` and `/usage`
+# `/history` & `/usage`
 
 Every `/run`, `/run-apply`, `/ask`, and `/apply` lands in the local SQLite store at
 `~/.amx/history.db`. `/history` is the read interface; `/usage` summarises token counts
