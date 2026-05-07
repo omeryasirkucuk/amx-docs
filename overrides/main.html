@@ -1,5 +1,17 @@
 {% extends "base.html" %}
 
+{# Absolute-URL favicon links so search-engine crawlers (Google, Bing) and
+   AI systems (ChatGPT, etc.) pick up the current logo instead of falling
+   back to a stale cached version. The Material theme's `theme.favicon`
+   setting only emits a single relative <link rel="icon">; we add an
+   absolute-URL .ico at the document root because Google's favicon
+   crawler probes /favicon.ico directly. #}
+{% block extrahead %}
+  <link rel="icon" type="image/png" sizes="32x32" href="https://amxcli.com/favicon.png">
+  <link rel="shortcut icon" href="https://amxcli.com/favicon.ico">
+  <link rel="apple-touch-icon" href="https://amxcli.com/favicon.png">
+{% endblock %}
+
 {% block htmltitle %}
   {% if page and page.is_homepage %}
     <title>AMX — Agentic Metadata Extractor</title>
