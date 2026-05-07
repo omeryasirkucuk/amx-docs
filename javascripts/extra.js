@@ -395,3 +395,55 @@ document.addEventListener(
   },
   true
 );
+
+// ── Landing page scroll reveal ─────────────────────────────────
+// Sections fade + slide up when they enter the viewport. The hero
+// itself uses CSS-only staggered keyframes; this only handles
+// subsequent sections. The scroll-down chevron at the bottom of the
+// hero hides itself once the user has scrolled past the hero.
+(function () {
+  if (typeof window === "undefined") return;
+  if (!("IntersectionObserver" in window)) return;
+
+  const init = () => {
+    const targets = document.querySelectorAll(
+      ".amx-landing__section, .amx-landing__why-section .amx-why, .amx-landing__cta-card"
+    );
+    if (!targets.length) return;
+
+    const reveal = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("amx-revealed");
+            reveal.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+    targets.forEach((t) => reveal.observe(t));
+
+    // Hide scroll-down chevron after the user leaves the hero. Toggle
+    // class instead of removing the element so reverse-scroll restores
+    // it without re-running the entry animation.
+    const chevron = document.querySelector(".amx-landing__scroll-down");
+    const hero = document.querySelector(".amx-landing__hero");
+    if (chevron && hero && "IntersectionObserver" in window) {
+      const heroObs = new IntersectionObserver(
+        (entries) => {
+          const e = entries[0];
+          chevron.classList.toggle("amx-landing__scrolled", !e.isIntersecting || e.intersectionRatio < 0.5);
+        },
+        { threshold: [0, 0.5, 1] }
+      );
+      heroObs.observe(hero);
+    }
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();

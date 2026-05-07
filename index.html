@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="AI-powered CLI that documents undocumented database schemas — pulls evidence from the database, your documentation, and your codebase, drafts column descriptions with confidence scores, then walks you through a human review before writing back.">
+        <meta name="description" content="AI-powered CLI that documents undocumented database schemas. Reads your database, docs, and code; drafts column descriptions with confidence scores; lets a human review before anything lands.">
       
       
         <meta name="author" content="Omer Yasir Kucuk">
@@ -15,8 +15,6 @@
         <link rel="canonical" href="https://amxcli.com/">
       
       
-      
-        <link rel="next" href="getting-started/installation/">
       
       
         
@@ -77,11 +75,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#amx-agentic-metadata-extractor" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -128,12 +121,10 @@
       
       
         
-      
-        
           
           
           
-            <a href="getting-started/installation/">Get Started</a>
+            <a href="getting-started/">Get Started</a>
             
           
         
@@ -279,7 +270,9 @@
           
             
               
-              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -306,14 +299,6 @@
 
   
   <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">Get Started</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="getting-started/installation/"
-         >Installation</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="getting-started/quickstart/"
-         >Quick Start</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="getting-started/first-run/"
-         >First Run Walkthrough</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
       <div class="amx-sidebar__group-title">Concepts</div>
       <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="concepts/architecture/"
@@ -452,7 +437,9 @@
             
             
               
-              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" hidden>
                 <div class="md-sidebar__scrollwrap">
                   <div class="md-sidebar__inner">
                     
@@ -463,93 +450,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#try-amx" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Try AMX
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#explore-amx" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Explore AMX
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cli-reference" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CLI reference
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#backends" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Backends
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#operate-amx" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Operate AMX
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#evaluation" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Evaluation
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#project" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Project
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -566,15 +466,87 @@
 
   
                   
+  
 
 
 
-<p><img alt="AMX components flow: Databases, Documents, and Codebase feed into AMX (Profile, RAG, and Code agents), which produces reviewed metadata accessible via Ask Metadata" class="amx-flow-img" src="assets/amx-flow.png" /></p>
-<div class="amx-intro">
-<h1 id="amx-agentic-metadata-extractor">AMX — Agentic Metadata Extractor<a class="headerlink" href="#amx-agentic-metadata-extractor" title="Permanent link">&para;</a></h1>
-<p>AMX (Agentic Metadata Extractor) provides AI-powered guidance and reference for data analysts, data engineers, and data catalog owners working with undocumented database schemas.</p>
-<p>AMX walks your database, reads your documentation and codebase, then drafts a complete description for every table and column, with confidence scores and a human review before anything lands in the live database.</p>
+
+<h1 class="amx-visually-hidden">AMX — Agentic Metadata Extractor</h1>
+
+<div class="amx-landing">
+
+<section class="amx-landing__hero">
+<div class="amx-landing__hero-bg" aria-hidden="true"></div>
+<div class="amx-landing__hero-inner">
+<span class="amx-landing__eyebrow">AGENTIC METADATA EXTRACTOR</span>
+<img src="assets/amx-logo.png" alt="AMX" class="amx-landing__logo" width="406" height="183">
+<p class="amx-landing__tagline">AI-powered CLI that documents undocumented database schemas. Reads your database, docs, and code; drafts column descriptions with confidence scores; lets a human review before anything lands.</p>
+<div class="amx-landing__pitch" role="note">
+<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 1l9 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4zm0 2.18L5 6.3v4.7c0 4.52 2.98 8.69 7 9.93 4.02-1.24 7-5.41 7-9.93V6.3l-7-3.12z"/></svg>
+<span>Runs entirely on your machine or in your cloud. <strong>Self-hosted, on-prem, air-gapped</strong> — bring your own LLM, nothing leaves your perimeter.</span>
 </div>
+<div class="amx-landing__cta-row">
+<a class="amx-landing__btn amx-landing__btn--primary" href="getting-started/">Get Started <span aria-hidden="true">→</span></a>
+<a class="amx-landing__btn amx-landing__btn--ghost" href="https://github.com/omeryasirkucuk/amx" target="_blank" rel="noopener">View on GitHub</a>
+</div>
+<code class="amx-landing__install" title="Click to copy">pip install amx-cli</code>
+<div class="amx-landing__meta">
+<span><span class="amx-landing__meta-dot"></span> 10 database backends</span>
+<span><span class="amx-landing__meta-dot"></span> 8 LLM providers</span>
+<span><span class="amx-landing__meta-dot"></span> Apache-2.0</span>
+</div>
+</div>
+<a href="#three-agents" class="amx-landing__scroll-down" aria-label="Scroll to features">
+<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg>
+</a>
+</section>
+
+<section class="amx-landing__section" id="three-agents">
+<h2 class="amx-landing__h2">Three agents. One review.</h2>
+<p class="amx-landing__lede">Most metadata tools work column-by-column on the schema alone. AMX runs three specialist agents in parallel — across your database, your documentation, and your codebase — and merges the evidence before a human ever sees a draft.</p>
+<img src="assets/amx-flow.png" alt="AMX components flow: Databases, Documents, and Codebase feed into AMX (Profile, RAG, and Code agents), which produces reviewed metadata accessible via Ask Metadata." class="amx-landing__flow">
+<div class="amx-landing__features">
+<div class="amx-landing__feature">
+<div class="amx-landing__feature-pixel" aria-hidden="true"></div>
+<h3>Multi-source evidence</h3>
+<p>The Profile agent walks the schema. The RAG agent reads your documentation. The Code agent traces SQL/Python references. Drafts cite the rows the LLM read, so you never get a fabricated column name back.</p>
+</div>
+<div class="amx-landing__feature">
+<div class="amx-landing__feature-pixel amx-landing__feature-pixel--green" aria-hidden="true"></div>
+<h3>Self-hosted, BYO-LLM</h3>
+<p>Runs entirely in your environment. OpenAI, Anthropic, Gemini, Databricks Serving, Ollama, vLLM, LM Studio — your choice. Schema names, sample values, generated descriptions and the audit trail all stay where you started.</p>
+</div>
+<div class="amx-landing__feature">
+<div class="amx-landing__feature-pixel amx-landing__feature-pixel--blue" aria-hidden="true"></div>
+<h3>Human-in-the-loop</h3>
+<p>Confidence-scored drafts in batches. Review wizard with bulk-accept, then native <code>COMMENT ON</code> write-back to the warehouse you already speak. Whole-warehouse first-pass in minutes, not weeks.</p>
+</div>
+</div>
+</section>
+
+<section class="amx-landing__section amx-landing__demo">
+<h2 class="amx-landing__h2">Two surfaces. One workflow.</h2>
+<p class="amx-landing__lede">Drive AMX from the terminal with slash commands — <code>/setup</code>, <code>/run</code>, <code>/apply</code>, <code>/ask</code> — or open the local Studio for a clickable review. Same runs, same review queue, same audit trail.</p>
+<div class="amx-landing__demos">
+<div class="amx-landing__demo-item">
+<p class="amx-landing__demo-caption"><span class="amx-landing__demo-caption-tag">CLI</span> Interactive session — slash command palette, dynamic config, and the review wizard.</p>
+<div class="amx-landing__demo-frame">
+<div class="amx-landing__demo-chrome" aria-hidden="true"><span></span><span></span><span></span></div>
+<img src="assets/cli-hero.png" alt="AMX interactive session: banner, version, config path, active database and LLM profile, and the slash command palette." class="amx-landing__demo-img">
+</div>
+</div>
+<div class="amx-landing__demo-item">
+<p class="amx-landing__demo-caption"><span class="amx-landing__demo-caption-tag">Studio</span> Local web UI — overview dashboard, recent runs, and the pending review queue.</p>
+<div class="amx-landing__demo-frame">
+<div class="amx-landing__demo-chrome" aria-hidden="true"><span></span><span></span><span></span></div>
+<img src="assets/studio-overview.png" alt="AMX Studio overview: active backend, LLM model, total runs, success rate, and a list of recent runs with status badges." class="amx-landing__demo-img">
+</div>
+</div>
+</div>
+</section>
+
+<section class="amx-landing__section amx-landing__why-section">
+<h2 class="amx-landing__h2">Why AMX</h2>
 <div class="amx-why">
 <div class="amx-why__pain">
 <p><strong>The pain</strong>
@@ -593,183 +565,20 @@ Open a session with <code>/ask</code> and chat with the catalog you just built: 
 AMX runs entirely in your environment. <strong>No SaaS account, no data leaves your network</strong>, bring-your-own-LLM — including local models (Ollama, vLLM, LM Studio). The compliance question collapses to <em>nothing leaves your perimeter</em>: schema names, sample values, generated descriptions, the audit trail — all stay where you started. Released under the <strong><a href="https://github.com/omeryasirkucuk/amx/blob/main/LICENSE">Apache License 2.0</a></strong> — free for any use, including commercial.</p>
 </div>
 </div>
-<p><img alt="AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)" class="amx-hero-img" src="assets/cli-hero.png" /></p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>AMX supports 10 database backends and 8 LLM providers (including <code>databricks_serving</code> as of 0.12.7). The fastest way to evaluate
-is <code>pip install amx-cli</code>, then run <code>amx</code> and walk through the <code>/setup</code>
-wizard. Five minutes from install to your first reviewed description.</p>
+</section>
+
+<section class="amx-landing__section amx-landing__cta">
+<div class="amx-landing__cta-card">
+<h2 class="amx-landing__h2">Five minutes to your first reviewed description.</h2>
+<p class="amx-landing__lede">Install from PyPI, run <code>amx</code>, walk through the <code>/setup</code> wizard. The fastest way to evaluate.</p>
+<code class="amx-landing__install amx-landing__install--lg">pip install amx-cli</code>
+<div class="amx-landing__cta-row">
+<a class="amx-landing__btn amx-landing__btn--primary" href="getting-started/quickstart/">5-minute Quickstart <span aria-hidden="true">→</span></a>
+<a class="amx-landing__btn amx-landing__btn--ghost" href="getting-started/">Read the docs</a>
 </div>
-<h2 id="try-amx">Try AMX<a class="headerlink" href="#try-amx" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="getting-started/installation/"><strong>Install AMX</strong></a></p>
-<p>Install from PyPI with the database backends you need. Optional extras keep the default install lean.</p>
-</li>
-<li>
-<p><a href="getting-started/quickstart/"><strong>5-minute quickstart</strong></a></p>
-<p>Install, configure, run agents, review, apply. The full happy path in one short walkthrough.</p>
-</li>
-<li>
-<p><a href="getting-started/first-run/"><strong>First-run walkthrough</strong></a></p>
-<p>Narrated end-to-end session against a sample SAP schema. Useful before running against production data.</p>
-</li>
-<li>
-<p><a href="cli/doctor/"><strong>Run diagnostics</strong></a></p>
-<p><code>/doctor</code> checks install, config, and connectivity from any shell — even when AMX itself can't start.</p>
-</li>
-</ul>
 </div>
-<h2 id="explore-amx">Explore AMX<a class="headerlink" href="#explore-amx" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="concepts/architecture/"><strong>Architecture</strong></a></p>
-<p>The CLI shell, multi-agent orchestrator, search agent, and storage layer.</p>
-</li>
-<li>
-<p><a href="concepts/agents/"><strong>The three agents</strong></a></p>
-<p>What the Profile, RAG, and Code agents read and how the orchestrator merges them.</p>
-</li>
-<li>
-<p><a href="concepts/universal-metadata/"><strong>Universal Metadata Interface</strong></a></p>
-<p>The backend-neutral entity model that lets ten databases share a single workflow.</p>
-</li>
-<li>
-<p><a href="concepts/human-in-the-loop/"><strong>Human-in-the-loop review</strong></a></p>
-<p>The review wizard, bulk-accept, write-back, and the full audit trail.</p>
-</li>
-</ul>
-</div>
-<h2 id="cli-reference">CLI reference<a class="headerlink" href="#cli-reference" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="cli/overview/"><strong>Slash command map</strong></a></p>
-<p>Every namespace and command, grouped by purpose.</p>
-</li>
-<li>
-<p><a href="cli/run-and-apply/"><strong><code>/run</code> and <code>/apply</code></strong></a></p>
-<p>Run agents, review suggestions, write back to the database.</p>
-</li>
-<li>
-<p><a href="cli/ask-and-search/"><strong><code>/ask</code> and <code>/search</code></strong></a></p>
-<p>Conversational metadata Q&amp;A with grounded retrieval and live verification.</p>
-</li>
-<li>
-<p><a href="cli/studio/"><strong><code>/studio</code></strong></a></p>
-<p>AMX Studio — same review-and-apply workflow on a local web UI: runs, results, pending queue, profile management.</p>
-</li>
-<li>
-<p><a href="cli/history/"><strong><code>/history</code></strong></a></p>
-<p>Run history, comparison across runs, re-evaluation.</p>
-</li>
-<li>
-<p><a href="cli/doctor/"><strong><code>/doctor</code></strong></a></p>
-<p>Install / config / connectivity diagnostics.</p>
-</li>
-<li>
-<p><a href="cli/flags/"><strong>Common flags</strong></a></p>
-<p><code>--db-profile</code>, <code>--llm-profile</code>, <code>--apply</code>, <code>--csv</code>, and the rest.</p>
-</li>
-</ul>
-</div>
-<h2 id="backends">Backends<a class="headerlink" href="#backends" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="backends/"><strong>All backends</strong></a></p>
-<p>Capability matrix and per-backend deep dives.</p>
-</li>
-<li>
-<p><a href="backends/postgresql/"><strong>PostgreSQL</strong></a></p>
-<p>Reference adapter. Standard <code>COMMENT ON …</code> write-back.</p>
-</li>
-<li>
-<p><a href="backends/snowflake/"><strong>Snowflake</strong></a></p>
-<p>Account, warehouse, role; profiling-mode tuning per workload.</p>
-</li>
-<li>
-<p><a href="backends/databricks/"><strong>Databricks</strong></a></p>
-<p>Unity Catalog SQL warehouse, with TLS recovery for corporate networks.</p>
-</li>
-<li>
-<p><a href="backends/bigquery/"><strong>BigQuery</strong></a></p>
-<p>Project + dataset, byte-scan controls for large tables.</p>
-</li>
-<li>
-<p><a href="backends/"><strong>MySQL · Oracle · SQL Server · Redshift · ClickHouse · DuckDB</strong></a></p>
-<p>Six additional backends with first-class object-type listings.</p>
-</li>
-</ul>
-</div>
-<h2 id="operate-amx">Operate AMX<a class="headerlink" href="#operate-amx" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="configuration/config-yml/"><strong>Configuration</strong></a></p>
-<p><code>~/.amx/config.yml</code> schema, env vars, TLS and proxies, profiling modes.</p>
-</li>
-<li>
-<p><a href="llm-providers/"><strong>LLM providers</strong></a></p>
-<p>Setup notes for each supported provider, including Batch mode.</p>
-</li>
-<li>
-<p><a href="data-sources/codebase/"><strong>Data sources</strong></a></p>
-<p>Codebase scans, document RAG, and the search catalog.</p>
-</li>
-<li>
-<p><a href="collaboration/shared-history-store/"><strong>Collaboration</strong></a></p>
-<p>Shared history store, team setup, safety guards.</p>
-</li>
-<li>
-<p><a href="troubleshooting/faq/"><strong>Troubleshooting</strong></a></p>
-<p>FAQ, common errors, and diagnostic recipes.</p>
-</li>
-<li>
-<p><a href="api/"><strong>Python API</strong></a></p>
-<p>Stable <code>amx.core</code> surface for headless use from scripts and notebooks.</p>
-</li>
-</ul>
-</div>
-<h2 id="evaluation">Evaluation<a class="headerlink" href="#evaluation" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="evaluation/comparisons/"><strong>Comparisons</strong></a></p>
-<p>AMX vs Snowflake Cortex, Databricks AI Comments, BigQuery Gemini, Atlan, Collibra, DataHub, OpenMetadata — dimension by dimension, fairly.</p>
-</li>
-<li>
-<p><a href="evaluation/benchmarks/"><strong>Benchmarks</strong></a></p>
-<p>The state of the field, AMX's confidence-band scoring, and the public Databricks-style protocol AMX is preparing.</p>
-</li>
-</ul>
-</div>
-<h2 id="project">Project<a class="headerlink" href="#project" title="Permanent link">&para;</a></h2>
-<div class="grid cards">
-<ul>
-<li>
-<p><a href="changelog/"><strong>Changelog</strong></a></p>
-<p>Release notes for every published version.</p>
-</li>
-<li>
-<p><a href="contributing/"><strong>Contributing</strong></a></p>
-<p>Development setup, branching, commit format, release process. Co-maintainers welcome.</p>
-</li>
-<li>
-<p><a href="about/"><strong>Project team</strong></a></p>
-<p>Maintained by Omer Yasir Kucuk · contributors and sponsors welcome via GitHub.</p>
-</li>
-<li>
-<p><a href="security/"><strong>Security</strong></a></p>
-<p>How to report vulnerabilities. Supported versions and scope.</p>
-</li>
-<li>
-<p><a href="https://github.com/omeryasirkucuk/amx"><strong>GitHub repository</strong></a></p>
-<p>Source code, issue tracker, releases.</p>
-</li>
-</ul>
+</section>
+
 </div>
 
 
@@ -783,6 +592,8 @@ wizard. Five minutes from install to your first reviewed description.</p>
 
 
 
+
+  
 
 
 
