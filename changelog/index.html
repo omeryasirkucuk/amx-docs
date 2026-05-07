@@ -489,6 +489,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0130-doc-code-rag-into-ask-studio-polish-durable-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.13.0 — Doc &amp; code RAG into /ask, Studio polish, durable secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0129-multi-profile-browse-ask-and-amx-studio-launch" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -694,6 +705,75 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0130-doc-code-rag-into-ask-studio-polish-durable-secrets">0.13.0 — Doc &amp; code RAG into <code>/ask</code>, Studio polish, durable secrets<a class="headerlink" href="#0130-doc-code-rag-into-ask-studio-polish-durable-secrets" title="Permanent link">&para;</a></h3>
+<p><code>/ask</code> finally reads the user's documentation and codebase. Two new
+LLM-callable tools (<code>search_docs</code>, <code>search_code</code>) ground answers in
+the doc RAG and the <code>amx_code</code> Chroma index that previous releases
+already built — both surfaces existed in 0.12.x but were never wired
+into the agent loop. When nothing is in scope, the tools short-circuit
+with a structured <code>no_*_for_scope</code> payload so the LLM doesn't
+hallucinate definitions or callsites. Lazy-init keeps the no-context
+<code>/ask</code> path zero-cost.</p>
+<p><strong>Doc/code ↔ DB profile linking.</strong> Each doc or code profile can now
+be linked to one or more DB profiles. <code>/ask</code> running against scope
+<code>{X}</code> only pulls from doc/code profiles whose link list contains <code>X</code>
+(or is empty = global). New CLI commands <code>/doc-link</code>, <code>/code-link</code>,
+<code>/ask-context</code>. Studio's Settings → Docs/Code wizards expose the link
+as a multi-select chip control, and AskChat shows a small <code>📄 N docs ·
+💻 M code</code> rozeti above the scope dropdown so you always know what
+the agent has in its tool window.</p>
+<p><strong>Drag-drop document upload.</strong> Studio's Settings → Docs gets per-card
+and per-wizard drop zones. Files land under
+<code>~/.amx/uploads/&lt;profile&gt;/&lt;sha256&gt;.&lt;ext&gt;</code> with per-file 25 MB and
+per-batch 100 MB caps and idempotent profile-path registration. The
+CLI counterpart <code>/doc-add &lt;profile&gt; &lt;file&gt;...</code> shares the same
+storage module, accept-list, and size guards. Empty-state nudges and
+a small <code>cli_support/hints.py</code> helper point terminal users at the
+visual surface and vice versa.</p>
+<p><strong>Studio Code Search &amp; Code Analyze.</strong> A new <code>Search code</code> box on
+<code>Settings → Code</code> mirrors the docs search (no LLM, just embedding
+similarity over <code>amx_code</code>). Each code-profile row gains an
+<strong>Analyze</strong> button that runs the Code Agent against the cached
+<code>/code-scan</code> and streams per-table progress; the on-disk JSON cache
+shape is byte-identical to what <code>/code-analyze</code> writes from the CLI,
+since both call into the new shared <code>amx/codebase/agent_service.py</code>.
+The CLI gains <code>/code-search</code> for the keyboard-only equivalent.</p>
+<p><strong>Live progress on numeric run-detail pages.</strong> A run still being
+processed by a worker thread now exposes <code>live_job_id</code> on
+<code>GET /api/history/runs/{id}</code>; the run-detail page subscribes to the
+SSE stream and renders a compact activity card above the tabs. The
+live <code>/runs/new-{jobId}</code> view also redirects to the persisted detail
+page as soon as <code>run.created</code> fires, so users gain access to the full
+edit / pick / apply controls immediately instead of waiting for the
+worker to finish.</p>
+<p><strong>Apply path is finally well-behaved on Postgres.</strong> Per-row
+<code>SAVEPOINT</code> isolation in <code>apply_review_results_to_db</code> so one failed
+COMMENT (eg. wrong schema name) no longer cascade-poisons the whole
+batch with <code>InFailedSqlTransaction</code>. The Studio Apply pending queue
+button now pins the worker to the run's own database/catalog instead
+of falling back to the active profile's pinned default — old runs
+that didn't capture scope on the row get an inline database picker
+on the run-detail page.</p>
+<p><strong>Inline scope picker on <code>/runs/new</code>.</strong> Clicking <strong>+ New run</strong> on the
+Runs list without a sidebar-scoped URL now shows a chip-based DB
+profile + database/catalog picker instead of a "no scope selected"
+warning, so a run can start without first navigating through the
+sidebar.</p>
+<p><strong>Keyring references survive reinstalls on every OS.</strong> Previously, a
+single transient keyring backend outage (macOS Keychain ACL miss
+after a binary path change, gnome-keyring / KWallet not running on
+Linux, Credential Manager access denied on Windows) permanently
+deleted the YAML's <code>keyring:</code> pointer because the next <code>cfg.save()</code>
+overwrote it with <code>""</code>. The resolver now leaves unresolved references
+intact, the LLM provider substitutes <code>AMX_LLM_API_KEY</code> for outgoing
+auth, and the DB connector strips them on a <code>replace()</code> copy — so
+the dataclass + YAML keep their pointers and the next process with a
+healthy backend resolves the secret automatically.</p>
+<p><strong>Cold-path bench guard in CI.</strong> <code>tests/perf/bench_ask_no_context.py</code>
+pins the four no-context guarantees the doc/code RAG plumbing
+introduced (search_docs / search_code short-circuit, scope-resolver
+micro-cost, ToolBox.schemas() constant time) so future regressions
+don't sneak in unnoticed.</p>
 <h3 id="0129-multi-profile-browse-ask-and-amx-studio-launch">0.12.9 — Multi-profile browse, <code>/ask</code>, and AMX Studio launch<a class="headerlink" href="#0129-multi-profile-browse-ask-and-amx-studio-launch" title="Permanent link">&para;</a></h3>
 <p>AMX is multi-profile end-to-end. Both Studio and the CLI's <code>/ask</code> now
 operate across every saved DB profile simultaneously — no more switch
@@ -952,7 +1032,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.12.9</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.13.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -972,7 +1052,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.12.9"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.13.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
