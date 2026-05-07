@@ -4,7 +4,7 @@ AMX is a Python package distributed on PyPI.
 
 ## Prerequisites
 
-- **Python 3.10 or newer.** AMX is tested on 3.10, 3.11, and 3.12.
+- **Python 3.10 or newer.** AMX is tested on 3.10, 3.11, 3.12, 3.13, and 3.14.
 - **A database you can connect to.** Any of the [10 supported backends](../backends/index.md).
 - **At least one LLM provider configured.** OpenAI, Anthropic, Gemini, DeepSeek, OpenRouter,
   Ollama, or any OpenAI-compatible local endpoint (vLLM / LM Studio / …).
