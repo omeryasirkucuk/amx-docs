@@ -41,7 +41,9 @@
        For section items, walk down nested children to find the first leaf
        page (so deeply-nested sections like "Reference" still get a URL). #}
     {% macro first_leaf_url(item) -%}
-      {%- if item.is_page and item.url -%}
+      {%- if item.url -%}
+        {#- A page, OR a section whose index page is attached via
+            navigation.indexes (Material exposes it as item.url). -#}
         {{- item.url -}}
       {%- elif item.children -%}
         {%- set found = namespace(u="") -%}
@@ -56,9 +58,9 @@
     {%- endmacro %}
 
     {# Header shows exactly 5 top-level sections.
-       "Home" is the logo target. "Backends" lives in the sidebar (accessible
-       from any backend page or via the home card grid). #}
-    {% set header_skip = ["Home", "Backends"] %}
+       "Backends" lives in the sidebar (accessible from any backend page or
+       via the home card grid). #}
+    {% set header_skip = ["Backends"] %}
     <nav class="amx-nav" aria-label="Primary">
       {% set count = namespace(n=0) %}
       {% for item in nav %}
