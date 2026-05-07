@@ -127,6 +127,21 @@ body, .md-typeset {
   color: var(--text);
   margin: 0 0 20px;
 }
+/* Inline `code` defaults to 13px, which is ~3x smaller than 36px H1 text —
+   so a connector word like "and" between two code spans dwarfs the commands.
+   Scale code spans inside headings so they read as part of the title. */
+.md-typeset h1 code {
+  font-size: 0.78em;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 8px;
+  vertical-align: 2px;
+}
+.md-typeset h2 code {
+  font-size: 0.85em;
+  padding: 3px 10px;
+  border-radius: 6px;
+}
 .md-typeset h2 {
   font-size: 24px;
   font-weight: 600;
