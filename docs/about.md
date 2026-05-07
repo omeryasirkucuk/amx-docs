@@ -60,7 +60,7 @@ undocumented database schemas across the data platforms data engineers actually 
 to day. **Apache 2.0**, free for any use including commercial, with the explicit goal
 of staying community-driven rather than vendor-locked.
 
-- [Read the docs →](index.md)
+- [Read the docs →](getting-started/index.md)
 - [GitHub repo →](https://github.com/omeryasirkucuk/amx) — issues, discussions, releases
 - [PyPI: `pip install amx-cli` →](https://pypi.org/project/amx-cli/)
 - [Comparisons →](evaluation/comparisons.md) and [Benchmarks →](evaluation/benchmarks.md)
