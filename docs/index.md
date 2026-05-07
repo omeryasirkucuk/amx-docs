@@ -1,6 +1,6 @@
 ---
 title: AMX — Agentic Metadata Extractor
-description: AI-powered CLI that documents undocumented database schemas. Reads your database, docs, and code; drafts column descriptions with confidence scores; lets a human review before anything lands.
+description: Every undocumented database has the same problem — nobody knows what anything means. AMX is a self-hosted, agentic CLI that reads your tables, docs, and code together, then drafts evidence-grounded descriptions for every table and column with confidence scores. Whole-warehouse first pass in minutes, not weeks. Human review before anything lands. Nothing leaves your network, bring your own LLM.
 hide:
   - navigation
   - toc
@@ -15,7 +15,7 @@ hide:
 <div class="amx-landing__hero-inner">
 <span class="amx-landing__eyebrow">AGENTIC METADATA EXTRACTOR</span>
 <img src="assets/amx-logo.png" alt="AMX" class="amx-landing__logo" width="406" height="183">
-<p class="amx-landing__tagline">AI-powered CLI that documents undocumented database schemas. Reads your database, docs, and code; drafts column descriptions with confidence scores; lets a human review before anything lands.</p>
+<p class="amx-landing__tagline">Every undocumented database has the same problem: <span class="amx-landing__tagline-mark">nobody knows what anything means</span>. AMX is a <strong>self-hosted, agentic CLI</strong> that reads your tables, docs, and code together, then drafts evidence-grounded descriptions for every table and column with confidence scores — a whole-warehouse first pass in <strong>minutes, not weeks</strong>. You review every suggestion before it lands, with a full audit trail. Nothing leaves your network, bring your own LLM.</p>
 <div class="amx-landing__pitch" role="note">
 <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><path d="M12 1l9 4v6c0 5.55-3.84 10.74-9 12-5.16-1.26-9-6.45-9-12V5l9-4zm0 2.18L5 6.3v4.7c0 4.52 2.98 8.69 7 9.93 4.02-1.24 7-5.41 7-9.93V6.3l-7-3.12z"/></svg>
 <span>Runs entirely on your machine or in your cloud. <strong>Self-hosted, on-prem, air-gapped</strong> — bring your own LLM, nothing leaves your perimeter.</span>
