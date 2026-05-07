@@ -447,3 +447,28 @@ document.addEventListener(
     init();
   }
 })();
+
+// ── Landing back-to-top button ─────────────────────────────────
+// Smooth-scroll to the top of the page on click instead of letting
+// the browser snap there. Element is opt-in via data-amx-scroll-top.
+(function () {
+  if (typeof document === "undefined") return;
+  const init = () => {
+    document.querySelectorAll("[data-amx-scroll-top]").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        const supports = "scrollBehavior" in document.documentElement.style;
+        const opts = supports ? { top: 0, behavior: "smooth" } : { top: 0 };
+        // Material's instant nav is disabled in this site so window.scrollTo
+        // is reliable; fall back to documentElement for older browsers.
+        try { window.scrollTo(opts); }
+        catch { document.documentElement.scrollTop = 0; }
+      });
+    });
+  };
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();

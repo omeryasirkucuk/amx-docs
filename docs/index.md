@@ -102,7 +102,7 @@ AMX runs entirely in your environment. <strong>No SaaS account, no data leaves y
 </div>
 </section>
 
-<section class="amx-landing__section amx-landing__cta">
+<section class="amx-landing__section amx-landing__cta" id="cta">
 <div class="amx-landing__cta-card">
 <h2 class="amx-landing__h2">Five minutes to your first reviewed description.</h2>
 <p class="amx-landing__lede">Install from PyPI, run <code>amx</code>, walk through the <code>/setup</code> wizard. The fastest way to evaluate.</p>
@@ -113,5 +113,11 @@ AMX runs entirely in your environment. <strong>No SaaS account, no data leaves y
 </div>
 </div>
 </section>
+
+<div class="amx-landing__scroll-up-wrap">
+<a class="amx-landing__scroll-up" href="#" aria-label="Back to top" data-amx-scroll-top>
+<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/></svg>
+</a>
+</div>
 
 </div>

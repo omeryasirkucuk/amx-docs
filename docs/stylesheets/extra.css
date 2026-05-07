@@ -1750,6 +1750,52 @@ body:has(#__search:checked) .md-search__inner {
   50%      { transform: translateX(-50%) translateY(7px); }
 }
 
+/* Back-to-top button. Mirrors the hero's down-chevron, but lives in
+   normal flow at the very bottom of the landing — so the user gets a
+   clear, centered exit upward when they've reached the end. */
+.amx-landing__scroll-up-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 0 0 56px;
+}
+
+.md-typeset .amx-landing__scroll-up,
+.amx-landing__scroll-up {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  text-decoration: none;
+  animation: amx-scroll-bounce-up 2.2s ease-in-out infinite;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.md-typeset .amx-landing__scroll-up:hover,
+.amx-landing__scroll-up:hover {
+  color: var(--accent);
+  border-color: rgba(251, 146, 60, 0.5);
+  background: var(--accent-soft);
+}
+
+@keyframes amx-scroll-bounce-up {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amx-landing__scroll-up { animation: none; }
+}
+
+@media (max-width: 600px) {
+  .md-typeset .amx-landing__scroll-up,
+  .amx-landing__scroll-up { width: 36px; height: 36px; }
+  .amx-landing__scroll-up-wrap { padding: 0 0 40px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .amx-landing__hero-inner > *,
   .amx-landing__section,
