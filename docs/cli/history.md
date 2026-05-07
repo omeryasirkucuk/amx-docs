@@ -13,6 +13,10 @@ over a window.
 - App events (profile switches, run status, apply outcomes, …)
 - **All LLM-generated alternatives per column / table per run** — every merged suggestion
   set is saved before human review so you can revisit and change your mind at any time.
+- **Apply events** (`apply_events` table, AMX 0.13+) — one row per successful
+  COMMENT write with the prior text, the new text, the run id, and the
+  user / host / profile. Powers [`/history rollback`](#rollback) and Studio's
+  [Audit page](studio.md#audit-page).
 
 ## `/history` namespace
 
@@ -24,6 +28,7 @@ over a window.
 | `/events [-n N]` | App events (profile switches, run status, apply outcomes, …) |
 | `/results <run_id>` | All saved LLM alternatives for a past run |
 | `/review <run_id>` | Re-evaluate alternatives interactively |
+| `/rollback <run_id>` | Restore the COMMENTs that this run overwrote |
 | `/compare [RUN_IDS…] [flags]` | Pivot runs side-by-side |
 
 ## Re-reviewing past runs
@@ -40,6 +45,77 @@ Useful when:
 - A column you skipped now has clearer evidence (new code / docs ingested since).
 - You want to compare suggestions from two different LLM profiles side-by-side before
   committing.
+
+## `/rollback`
+
+`/history rollback <run_id>` undoes a past `/apply` by restoring the
+COMMENT each affected asset had **immediately before** the run wrote
+to it.
+
+```text
+amx /history rollback 42                # interactive (preview + confirm)
+amx /history rollback 42 --yes          # scripted; skip the prompt
+```
+
+Backed by the `apply_events` audit table — every successful
+COMMENT write records the prior text alongside the new one, so
+rollback restores **whatever was on the asset before**, not just
+"what AMX wrote". The DBA's hand-typed comment, an export-tool's
+default text, a previous AMX run's output — all valid sources to
+roll back to.
+
+### What rollback shows you first
+
+```text
+═══ Rollback run #42 ═══
+Found 3 apply event(s); 3 restorable, 0 skipped (original unknown).
+
+Will restore
+  Asset                                Current (will be replaced)         Restoring to
+  core.transactions.posting            Posting date encoded as YYYY…      Posting date (manual; legacy)
+  core.transactions.amount             Amount in transaction currency…    Total amount in cents
+  core.transactions.eff_dt             Effective date the row landed…     Warehouse arrival date
+
+Restore 3 comment(s) by overwriting current values? [y/N]:
+```
+
+### Skipped rows (`old_comment` unknown)
+
+Some rows surface as **skipped**: the audit row's `old_comment` is
+`NULL`. Two situations produce this:
+
+- The apply ran before the audit log started capturing pre-write
+  values (anything before AMX 0.13).
+- The active backend's adapter doesn't expose a comment-read API,
+  so AMX could not capture the prior text.
+
+Rollback never invents text — skipped rows are reported in the
+summary and left untouched. To recover them, restore from a DB
+backup or rerun the original DBA script.
+
+### Replay order
+
+When a single run wrote to the same asset multiple times (rare but
+possible — e.g. a chained schema → table → column meta-apply),
+rollback replays in **reverse time order**. The last write unwinds
+first so the asset ends up holding whatever it had **before** the
+run started.
+
+### Failure handling
+
+The rollback runs inside one `engine.begin()` transaction.
+Per-row failures are reported but do not abort the rest:
+
+```text
+  ✓ core.transactions.posting
+  ✗ core.transactions.amount: COMMENT requires schema USAGE
+  ✓ core.transactions.eff_dt
+
+⚠ Restored 2 of 3; 1 failed.
+```
+
+The failed rows stay on the run's `apply_events` so a retry after
+fixing the privilege grant resumes from the same audit trail.
 
 ## `/compare`
 

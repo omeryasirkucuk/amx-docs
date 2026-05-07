@@ -54,6 +54,8 @@ laptop while the server runs on a remote box.
 | **Runs** `/runs` | Every `/run` and `/run-apply` invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Compare 2–4 runs side-by-side via the **Compare** button. | `/api/history/runs`, `/api/history/compare` |
 | **Run detail** `/runs/:id` | Live SSE progress while a run streams (sticky banner with elapsed timer + current activity + N/total processed), then a tabbed Summary / Results / Scope / Settings view once the run finishes. Per-row alternatives carousel + skip + custom-edit + restore. | `/api/history/runs/{id}`, `/api/pending/...` |
 | **Ask** `/ask` | Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, and the auto-detected focus profile. | `/api/ask` (SSE), `/api/ask/sessions/...` |
+| **Pending** `/pending` | The review queue waiting for `/apply`. Inline-edit any row, drop or skip individual entries, or **Preview SQL** before writing. (See [Preview SQL](#preview-sql) below.) | `/api/pending/...` |
+| **Audit** `/audit` | Newest-first timeline of every COMMENT successfully written by `/apply`. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See [Audit page](#audit-page) below.) | `/api/history/apply-events` |
 | **Settings** `/settings` | Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. Same fields as `/add-db-profile` / `/add-llm-profile` / `/add-doc-profile` / `/add-code-profile`. | `/api/profiles/...` |
 | **System** `/system` | Doctor checks (re-run, skip-network toggle), per-(provider, model) token usage + cost over today / 24h / 7d / 30d / all, search-catalog status, team history-store enable / disable, and one-click placeholder cleanup. | `/api/doctor`, `/api/usage`, `/api/catalog/status`, `/api/admin/...` |
 
@@ -160,6 +162,63 @@ times you want to fix or draft a single comment without spinning up a full run:
 
 Every generated suggestion still goes through the human-in-the-loop review queue
 — nothing lands in the live database until you accept it.
+
+## Preview SQL
+
+The **Pending** page (`/pending`) ships with a **Preview SQL** button
+next to **Apply**. Clicking it runs the same dry-run path as
+[`amx /analyze apply --dry-run`](run-and-apply.md#dry-run-preview)
+and pops a modal listing the exact `COMMENT ON …` statement each
+queued row would execute:
+
+```text
+public.transactions.posting
+    COMMENT ON COLUMN public.transactions.posting IS :cmt
+
+public.transactions.amount
+    COMMENT ON COLUMN public.transactions.amount IS :cmt
+
+public.transactions
+    (skipped — backend cannot accept this asset kind)
+```
+
+Skipped rows (asset kinds the backend can't accept, e.g. schema
+comments on ClickHouse) are listed separately so you know which
+entries are no-ops before pressing Apply.
+
+The pending file is left untouched; the modal is read-only. Close
+it and click **Apply** to write for real, or edit / drop rows and
+re-preview.
+
+## Audit page
+
+`/audit` is the timeline view of every COMMENT AMX has successfully
+written, newest-first. Each row shows:
+
+- the asset path (`schema.table.column`),
+- the new comment AMX wrote,
+- the prior comment that was overwritten — strikethrough if the
+  asset already had one (so accidental overrides surface
+  immediately),
+- attribution: profile, run id, who applied it (`getpass.getuser()`
+  on the CLI host), and the hostname.
+
+Two filters at the top:
+
+- **Run id** — `42` shows only what run #42 wrote (matches the
+  filter that `/history rollback 42` uses).
+- **DB profile** — `prod_pg` scopes the timeline to that profile so
+  team members on a shared history store see only their domain.
+
+The page polls `/api/history/apply-events` every 30 s plus on
+window focus, so a CLI `/apply` somewhere else is reflected without
+a manual refresh.
+
+`old_comment` strikethroughs make it easy to spot the case the
+audit was designed for: an LLM rewrite landed on top of a DBA's
+hand-written domain note. Click through to
+[`/history rollback`](history.md#rollback) when you want to undo
+the overwrite.
 
 ## Cancelling long-running jobs
 
