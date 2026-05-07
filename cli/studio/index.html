@@ -545,6 +545,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#preview-sql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preview SQL
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#audit-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Audit page
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cancelling-long-running-jobs" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -771,6 +793,16 @@ laptop while the server runs on a remote box.</p>
 <td><code>/api/ask</code> (SSE), <code>/api/ask/sessions/...</code></td>
 </tr>
 <tr>
+<td><strong>Pending</strong> <code>/pending</code></td>
+<td>The review queue waiting for <code>/apply</code>. Inline-edit any row, drop or skip individual entries, or <strong>Preview SQL</strong> before writing. (See <a href="#preview-sql">Preview SQL</a> below.)</td>
+<td><code>/api/pending/...</code></td>
+</tr>
+<tr>
+<td><strong>Audit</strong> <code>/audit</code></td>
+<td>Newest-first timeline of every COMMENT successfully written by <code>/apply</code>. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See <a href="#audit-page">Audit page</a> below.)</td>
+<td><code>/api/history/apply-events</code></td>
+</tr>
+<tr>
 <td><strong>Settings</strong> <code>/settings</code></td>
 <td>Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. Same fields as <code>/add-db-profile</code> / <code>/add-llm-profile</code> / <code>/add-doc-profile</code> / <code>/add-code-profile</code>.</td>
 <td><code>/api/profiles/...</code></td>
@@ -867,6 +899,54 @@ times you want to fix or draft a single comment without spinning up a full run:<
 </ul>
 <p>Every generated suggestion still goes through the human-in-the-loop review queue
 — nothing lands in the live database until you accept it.</p>
+<h2 id="preview-sql">Preview SQL<a class="headerlink" href="#preview-sql" title="Permanent link">&para;</a></h2>
+<p>The <strong>Pending</strong> page (<code>/pending</code>) ships with a <strong>Preview SQL</strong> button
+next to <strong>Apply</strong>. Clicking it runs the same dry-run path as
+<a href="../run-and-apply/#dry-run-preview"><code>amx /analyze apply --dry-run</code></a>
+and pops a modal listing the exact <code>COMMENT ON …</code> statement each
+queued row would execute:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>public.transactions.posting
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    COMMENT ON COLUMN public.transactions.posting IS :cmt
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>public.transactions.amount
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    COMMENT ON COLUMN public.transactions.amount IS :cmt
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>public.transactions
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    (skipped — backend cannot accept this asset kind)
+</span></code></pre></div>
+<p>Skipped rows (asset kinds the backend can't accept, e.g. schema
+comments on ClickHouse) are listed separately so you know which
+entries are no-ops before pressing Apply.</p>
+<p>The pending file is left untouched; the modal is read-only. Close
+it and click <strong>Apply</strong> to write for real, or edit / drop rows and
+re-preview.</p>
+<h2 id="audit-page">Audit page<a class="headerlink" href="#audit-page" title="Permanent link">&para;</a></h2>
+<p><code>/audit</code> is the timeline view of every COMMENT AMX has successfully
+written, newest-first. Each row shows:</p>
+<ul>
+<li>the asset path (<code>schema.table.column</code>),</li>
+<li>the new comment AMX wrote,</li>
+<li>the prior comment that was overwritten — strikethrough if the
+  asset already had one (so accidental overrides surface
+  immediately),</li>
+<li>attribution: profile, run id, who applied it (<code>getpass.getuser()</code>
+  on the CLI host), and the hostname.</li>
+</ul>
+<p>Two filters at the top:</p>
+<ul>
+<li><strong>Run id</strong> — <code>42</code> shows only what run #42 wrote (matches the
+  filter that <code>/history rollback 42</code> uses).</li>
+<li><strong>DB profile</strong> — <code>prod_pg</code> scopes the timeline to that profile so
+  team members on a shared history store see only their domain.</li>
+</ul>
+<p>The page polls <code>/api/history/apply-events</code> every 30 s plus on
+window focus, so a CLI <code>/apply</code> somewhere else is reflected without
+a manual refresh.</p>
+<p><code>old_comment</code> strikethroughs make it easy to spot the case the
+audit was designed for: an LLM rewrite landed on top of a DBA's
+hand-written domain note. Click through to
+<a href="../history/#rollback"><code>/history rollback</code></a> when you want to undo
+the overwrite.</p>
 <h2 id="cancelling-long-running-jobs">Cancelling long-running jobs<a class="headerlink" href="#cancelling-long-running-jobs" title="Permanent link">&para;</a></h2>
 <p><code>/run</code> and <code>/apply</code> jobs run in daemon threads inside the parent CLI process.
 Each carries a <code>threading.Event</code> cancel token plumbed through the orchestrator;
@@ -904,7 +984,7 @@ re-running <code>amx /studio</code>.</p>
 <h3 id="browser-opens-to-a-404-connection-refused">Browser opens to a 404 / "Connection refused"<a class="headerlink" href="#browser-opens-to-a-404-connection-refused" title="Permanent link">&para;</a></h3>
 <p>The server may have failed to bind (port <code>47821</code> busy and the ephemeral fallback
 also fell over). Pass <code>--port</code> to force a different port:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
 </span></code></pre></div>
 <h3 id="amx-studio-auth-is-not-configured-on-every-request">"AMX Studio auth is not configured" on every request<a class="headerlink" href="#amx-studio-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
 <p>The token cookie / <code>localStorage</code> entry was wiped or never captured on this

@@ -512,6 +512,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /rollback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="/rollback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-rollback-shows-you-first" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What rollback shows you first
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#skipped-rows-old_comment-unknown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Skipped rows (old_comment unknown)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replay-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replay order
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failure-handling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failure handling
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#compare" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -632,6 +693,10 @@ over a window.</p>
 <li>App events (profile switches, run status, apply outcomes, …)</li>
 <li><strong>All LLM-generated alternatives per column / table per run</strong> — every merged suggestion
   set is saved before human review so you can revisit and change your mind at any time.</li>
+<li><strong>Apply events</strong> (<code>apply_events</code> table, AMX 0.13+) — one row per successful
+  COMMENT write with the prior text, the new text, the run id, and the
+  user / host / profile. Powers <a href="#rollback"><code>/history rollback</code></a> and Studio's
+  <a href="../studio/#audit-page">Audit page</a>.</li>
 </ul>
 <h2 id="history-namespace"><code>/history</code> namespace<a class="headerlink" href="#history-namespace" title="Permanent link">&para;</a></h2>
 <table>
@@ -667,6 +732,10 @@ over a window.</p>
 <td>Re-evaluate alternatives interactively</td>
 </tr>
 <tr>
+<td><code>/rollback &lt;run_id&gt;</code></td>
+<td>Restore the COMMENTs that this run overwrote</td>
+</tr>
+<tr>
 <td><code>/compare [RUN_IDS…] [flags]</code></td>
 <td>Pivot runs side-by-side</td>
 </tr>
@@ -684,6 +753,60 @@ over a window.</p>
 <li>You want to compare suggestions from two different LLM profiles side-by-side before
   committing.</li>
 </ul>
+<h2 id="rollback"><code>/rollback</code><a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h2>
+<p><code>/history rollback &lt;run_id&gt;</code> undoes a past <code>/apply</code> by restoring the
+COMMENT each affected asset had <strong>immediately before</strong> the run wrote
+to it.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx /history rollback 42                # interactive (preview + confirm)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>amx /history rollback 42 --yes          # scripted; skip the prompt
+</span></code></pre></div>
+<p>Backed by the <code>apply_events</code> audit table — every successful
+COMMENT write records the prior text alongside the new one, so
+rollback restores <strong>whatever was on the asset before</strong>, not just
+"what AMX wrote". The DBA's hand-typed comment, an export-tool's
+default text, a previous AMX run's output — all valid sources to
+roll back to.</p>
+<h3 id="what-rollback-shows-you-first">What rollback shows you first<a class="headerlink" href="#what-rollback-shows-you-first" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>═══ Rollback run #42 ═══
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Found 3 apply event(s); 3 restorable, 0 skipped (original unknown).
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>Will restore
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Asset                                Current (will be replaced)         Restoring to
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  core.transactions.posting            Posting date encoded as YYYY…      Posting date (manual; legacy)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  core.transactions.amount             Amount in transaction currency…    Total amount in cents
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  core.transactions.eff_dt             Effective date the row landed…     Warehouse arrival date
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Restore 3 comment(s) by overwriting current values? [y/N]:
+</span></code></pre></div>
+<h3 id="skipped-rows-old_comment-unknown">Skipped rows (<code>old_comment</code> unknown)<a class="headerlink" href="#skipped-rows-old_comment-unknown" title="Permanent link">&para;</a></h3>
+<p>Some rows surface as <strong>skipped</strong>: the audit row's <code>old_comment</code> is
+<code>NULL</code>. Two situations produce this:</p>
+<ul>
+<li>The apply ran before the audit log started capturing pre-write
+  values (anything before AMX 0.13).</li>
+<li>The active backend's adapter doesn't expose a comment-read API,
+  so AMX could not capture the prior text.</li>
+</ul>
+<p>Rollback never invents text — skipped rows are reported in the
+summary and left untouched. To recover them, restore from a DB
+backup or rerun the original DBA script.</p>
+<h3 id="replay-order">Replay order<a class="headerlink" href="#replay-order" title="Permanent link">&para;</a></h3>
+<p>When a single run wrote to the same asset multiple times (rare but
+possible — e.g. a chained schema → table → column meta-apply),
+rollback replays in <strong>reverse time order</strong>. The last write unwinds
+first so the asset ends up holding whatever it had <strong>before</strong> the
+run started.</p>
+<h3 id="failure-handling">Failure handling<a class="headerlink" href="#failure-handling" title="Permanent link">&para;</a></h3>
+<p>The rollback runs inside one <code>engine.begin()</code> transaction.
+Per-row failures are reported but do not abort the rest:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>  ✓ core.transactions.posting
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ✗ core.transactions.amount: COMMENT requires schema USAGE
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  ✓ core.transactions.eff_dt
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>⚠ Restored 2 of 3; 1 failed.
+</span></code></pre></div>
+<p>The failed rows stay on the run's <code>apply_events</code> so a retry after
+fixing the privilege grant resumes from the same audit trail.</p>
 <h2 id="compare"><code>/compare</code><a class="headerlink" href="#compare" title="Permanent link">&para;</a></h2>
 <p><code>/history compare</code> is the heaviest tool in the namespace — pivots multiple runs side by
 side across four Rich tables:</p>
@@ -752,28 +875,28 @@ under <code>tests/eval/README.md</code>. The keys <code>schema_version</code>, <
 <code>aggregate_metrics</code> are stable.</p>
 <h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
 <p>Compare the last three runs against <code>t001</code>, with diff highlights:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/history compare --last 3 --table t001 --diff
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/history compare --last 3 --table t001 --diff
 </span></code></pre></div>
 <p>Compare two specific run IDs grouped by LLM model:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>/history compare 142 159 --by llm_model
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/history compare 142 159 --by llm_model
 </span></code></pre></div>
 <p>Export to JSON for downstream analysis:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/history compare --last 5 --schema sap_s6p --json /tmp/sap_s6p_runs.json
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/history compare --last 5 --schema sap_s6p --json /tmp/sap_s6p_runs.json
 </span></code></pre></div>
 <h2 id="usage"><code>/usage</code><a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/usage             # last 7 days (default)
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>/usage 24h
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>/usage 30d
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>/usage all
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/usage             # last 7 days (default)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>/usage 24h
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>/usage 30d
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>/usage all
 </span></code></pre></div>
 <p>Reads from <code>~/.amx/history.db</code> only — <strong>no network calls</strong>. The summary breaks down
 prompt and completion tokens per LLM profile and per model, so you can see which models
 your team uses most.</p>
 <h2 id="where-it-lives-on-disk">Where it lives on disk<a class="headerlink" href="#where-it-lives-on-disk" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>~/.amx/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── config.yml
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├── history.db          # SQLite — the table set described above
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>└── logs/amx.log
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>~/.amx/
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>├── config.yml
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├── history.db          # SQLite — the table set described above
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>└── logs/amx.log
 </span></code></pre></div>
 <p>The SQLite schema is part of the public contract — additive migrations within a major
 version, column types and meanings stable. See <a href="../../api/#on-disk-formats">Python API</a>
