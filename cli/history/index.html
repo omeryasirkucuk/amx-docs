@@ -790,10 +790,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tier-2-llm-as-judge-paid-opt-in" class="md-nav__link">
+  <a href="#tier-2-llm-as-judge-opt-in-consumes-tokens-on-the-active-llm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Tier 2 — LLM-as-judge (paid, opt-in)
+        Tier 2 — LLM-as-judge (opt-in, consumes tokens on the active LLM)
       
     </span>
   </a>
@@ -1187,7 +1187,7 @@ the chrF / ROUGE numbers had a real ground truth or fell back to a baseline run.
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli<span class="o">[</span>quality,local-embeddings<span class="o">]</span><span class="w">    </span><span class="c1"># all-MiniLM-L6-v2 default</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli<span class="o">[</span>quality,bertscore<span class="o">]</span><span class="w">           </span><span class="c1"># + BERTScore</span>
 </span></code></pre></div>
-<h4 id="tier-2-llm-as-judge-paid-opt-in">Tier 2 — LLM-as-judge (paid, opt-in)<a class="headerlink" href="#tier-2-llm-as-judge-paid-opt-in" title="Permanent link">&para;</a></h4>
+<h4 id="tier-2-llm-as-judge-opt-in-consumes-tokens-on-the-active-llm">Tier 2 — LLM-as-judge (opt-in, consumes tokens on the active LLM)<a class="headerlink" href="#tier-2-llm-as-judge-opt-in-consumes-tokens-on-the-active-llm" title="Permanent link">&para;</a></h4>
 <p>G-Eval pairwise tournament (Liu et al. 2023; Prometheus 2 — Kim et al. 2024 — uses the
 same evaluator family). For each asset and each pair <code>(run_a, run_b)</code>, the active LLM
 returns:</p>
