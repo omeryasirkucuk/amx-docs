@@ -314,9 +314,19 @@
   </a>
 
   
-  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">Concepts</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+  <div class="amx-sidebar__tree"><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-concepts">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-concepts-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Concepts</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-concepts-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/architecture/"
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/agents/"
@@ -324,9 +334,20 @@
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
-         >Human in the Loop</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">CLI</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         >Human in the Loop</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-cli">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-cli-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>CLI</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-cli-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/overview/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/setup/"
@@ -342,9 +363,20 @@
          href="../../cli/doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/flags/"
-         >Flags</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">Backends</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-backends">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-backends-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Backends</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-backends-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../backends/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../backends/postgresql/"
@@ -366,17 +398,49 @@
          href="../../backends/clickhouse/"
          >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../backends/duckdb/"
-         >DuckDB</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">Guides</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         >DuckDB</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-guides">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-guides-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Guides</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-guides-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/sap-discovery-walkthrough/"
          >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/batch-large-schema/"
-         >Batch Large Schema</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-0">
-      <div class="amx-sidebar__group-title">Reference</div>
-      <div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Configuration</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Batch Large Schema</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-reference">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-reference-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Reference</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-reference-body">
+        <div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-configuration">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-configuration-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Configuration</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-configuration-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../configuration/config-yml/"
          >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../configuration/env-vars/"
@@ -384,9 +448,20 @@
          href="../../configuration/tls-and-proxies/"
          >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../configuration/profiling-modes/"
-         >Profiling modes</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">LLM Providers</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Profiling modes</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-llm-providers">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-llm-providers-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>LLM Providers</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-llm-providers-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/openai/"
@@ -400,39 +475,94 @@
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
-         >Batch mode</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Data Sources</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Batch mode</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-data-sources">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-data-sources-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Data Sources</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-data-sources-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
          href="./"
          aria-current="page">Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../search-catalog/"
-         >Search catalog</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Collaboration</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Search catalog</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-collaboration">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-collaboration-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Collaboration</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-collaboration-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../collaboration/shared-history-store/"
          >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../collaboration/team-setup/"
          >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../collaboration/safety-guards/"
-         >Safety guards</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Evaluation</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Safety guards</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-evaluation">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-evaluation-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Evaluation</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-evaluation-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/benchmarks/"
          >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/comparisons/"
-         >Comparisons</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Troubleshooting</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Comparisons</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-troubleshooting">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-troubleshooting-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Troubleshooting</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-troubleshooting-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../troubleshooting/faq/"
          >FAQ</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../troubleshooting/doctor/"
          >Diagnostics</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../troubleshooting/common-errors/"
-         >Common errors</a></div><div class="amx-sidebar__group amx-sidebar__group--depth-1">
-      <div class="amx-sidebar__group-title">Project</div>
-      <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         >Common errors</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         data-amx-group-key="amx-grp-project">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-project-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Project</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-project-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../api/"
          >Python API</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../api/reference/"
@@ -444,7 +574,9 @@
          href="../../security/"
          >Security</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../changelog/"
-         >Changelog</a></div></div></div>
+         >Changelog</a></div>
+    </div></div>
+    </div></div>
 
 </nav>
                   </div>
