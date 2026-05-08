@@ -137,7 +137,7 @@ To pre-empt the issue on a known-noisy column, add it to the profile-skip list (
 | Symptom | Cause | Fix |
 |---|---|---|
 | `google.api_core.exceptions.PermissionDenied: 403 API key not valid` | Key expired / project disabled | Issue a new key at [aistudio.google.com](https://aistudio.google.com/app/apikey) |
-| `429 RESOURCE_EXHAUSTED: Quota exceeded for quota metric 'Generative Language API'` | Free-tier RPM cap (60 RPM) | Lower `column_batch_size` to 8–10 OR upgrade to a paid tier |
+| `429 RESOURCE_EXHAUSTED: Quota exceeded for quota metric 'Generative Language API'` | Free-tier RPM cap (60 RPM) | Lower `column_batch_size` to 8–10 OR move to a higher quota tier |
 | `400 INVALID_ARGUMENT: User location is not supported for the API use without a billing account.` | Free tier blocked in your region | Attach billing to the Google Cloud project, or use Vertex AI via a service-account JSON instead |
 | Many columns blocked by safety filters | Profiling samples include user-generated text | Add the offending column to `profiling_skip_columns` so its samples never reach the LLM |
 | `400 INVALID_ARGUMENT: Request contains an invalid argument.` | Mixing `column_batch_size: 30+` with `n_alternatives: 5` exceeds the per-request token limit | Lower one or the other; Gemini is forgiving but not unlimited |
