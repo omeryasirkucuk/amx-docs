@@ -472,3 +472,53 @@ document.addEventListener(
     init();
   }
 })();
+
+// ── Sidebar collapsible groups ───────────────────────────────────────
+// Per-group expand state stored in localStorage. On load, the group
+// containing the active page is force-opened (we never hide the page
+// the user is on); other groups fall back to saved state, default closed.
+(function () {
+  const STORAGE_KEY = "amx-sidebar-groups";
+
+  function readState() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function writeState(state) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    catch (e) { /* storage disabled — fine */ }
+  }
+
+  function init() {
+    const groups = document.querySelectorAll(".amx-sidebar__group[data-amx-group-key]");
+    if (!groups.length) return;
+    const state = readState();
+
+    groups.forEach(function (group) {
+      const key = group.dataset.amxGroupKey;
+      const button = group.querySelector(":scope > .amx-sidebar__group-title");
+      const body = group.querySelector(":scope > .amx-sidebar__group-body");
+      if (!button || !body) return;
+
+      const hasActive = !!body.querySelector(".amx-sidebar__link--active");
+      const saved = state[key];
+      const open = hasActive || saved === "open";
+      button.setAttribute("aria-expanded", open ? "true" : "false");
+
+      button.addEventListener("click", function () {
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        const next = !isOpen;
+        button.setAttribute("aria-expanded", next ? "true" : "false");
+        const s = readState();
+        s[key] = next ? "open" : "closed";
+        writeState(s);
+      });
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
