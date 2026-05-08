@@ -1,21 +1,21 @@
 {#-
-  AMX custom left sidebar — Databricks-style flat tree.
+  AMX custom left sidebar — Databricks-style tree with collapsible groups.
 
   Layout:
-    [search box — opens Material's search modal]
     [home link → AMX documentation]
     For each top-level section (skipping Home):
-      [UPPERCASE CATEGORY LABEL]
-      [leaf link]
-      [leaf link]
-      ...
-      For sections that contain sub-sections (e.g. Reference):
-        [SECONDARY UPPERCASE LABEL — sub-section title]
+      [▶ UPPERCASE CATEGORY LABEL]   (button: aria-expanded toggles)
         [leaf link]
         [leaf link]
+        ...
+        For sections that contain sub-sections (e.g. Reference):
+          [▶ SECONDARY UPPERCASE LABEL — sub-section title]
+            [leaf link]
 
-  No expand/collapse. Everything is always visible. Active page is shown
-  with accent text color and a faint background — no thick left border.
+  Each group title is a button with aria-expanded; the expand state is
+  initialized client-side from localStorage, but the group containing the
+  active page is always force-opened. Active page is shown with accent
+  text color and a faint background — no thick left border.
 -#}
 
 {# Recursively render any leaf links under a node, walking through any
@@ -34,14 +34,26 @@
 
 {% macro render_group(section, depth) -%}
   {%- if section.children -%}
-    <div class="amx-sidebar__group amx-sidebar__group--depth-{{ depth }}">
-      <div class="amx-sidebar__group-title">{{ section.title }}</div>
-      {{ render_leaves(section.children, depth) }}
-      {%- for child in section.children -%}
-        {%- if child.is_section and child.children -%}
-          {{ render_group(child, depth + 1) }}
-        {%- endif -%}
-      {%- endfor -%}
+    {%- set group_id = "amx-grp-" ~ section.title|lower|replace(' ', '-')|replace('&', 'and') -%}
+    <div class="amx-sidebar__group amx-sidebar__group--depth-{{ depth }}"
+         data-amx-group-key="{{ group_id }}">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="{{ group_id }}-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>{{ section.title }}</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="{{ group_id }}-body">
+        {{ render_leaves(section.children, depth) }}
+        {%- for child in section.children -%}
+          {%- if child.is_section and child.children -%}
+            {{ render_group(child, depth + 1) }}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     </div>
   {%- endif -%}
 {%- endmacro %}
