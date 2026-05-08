@@ -945,10 +945,17 @@ column). Subsequent syncs only re-embed entries whose names or descriptions chan
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  - sales.customer_address.ca_customer_sk  (column) — FK to sales.customer.
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  - sales.order_address     (table)        — Per-order snapshot; not the source of truth.
 </span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>  - sales.customer          (table)        — Customer master; one current address per customer.
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>[2 profiles · 3.4 s · focus: prod-pg · 6,184 in / 412 out · $0.0029]
 </span></code></pre></div>
 <p>Every <code>/ask</code> answer ends with a <code>Cited:</code> block listing the catalog entries the LLM
-actually used. If the answer doesn't match the cited evidence, you've found a prompt
-or retrieval bug — file it.</p>
+actually used, plus a one-line footer with profile count, latency, the
+auto-detected focus profile, and <strong>per-turn token + USD cost</strong>. If the
+answer doesn't match the cited evidence, you've found a prompt or retrieval
+bug — file it. Cost is computed against the same versioned per-(provider,
+model) pricing table that powers the run cost surfaces; see
+<a href="../studio/#costs-and-pricing">Costs and pricing</a> for overrides and the
+freshness badge.</p>
 <h3 id="3-the-seven-answer-shapes">3. The seven answer shapes<a class="headerlink" href="#3-the-seven-answer-shapes" title="Permanent link">&para;</a></h3>
 <p><code>/ask</code> adapts its answer shape to what the question is asking for. Same syntax —
 <code>/ask &lt;natural-language question&gt;</code> — different output structures:</p>

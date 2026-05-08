@@ -857,8 +857,20 @@ prompts; they reuse the OpenAI client under the hood.</p>
 </tbody>
 </table>
 <p>Numbers are illustrative — actual cost depends on column-name length, sample-value
-length, and the provider's per-token rate at the time. Always run a single-table <code>/run</code>
-first and check the LLM line for <code>tokens in / out</code> before unleashing it on a warehouse.</p>
+length, and the provider's per-token rate at the time.</p>
+<p>AMX no longer makes you guess. Every LLM call reports both <strong>tokens
+and USD</strong> at every surface that triggered it — <code>/run</code>, <code>/run-apply</code>,
+<code>/generate</code>, <code>/ask</code>, the Studio run progress header, and the lifetime
+cost card on the Studio Overview. Cost comes from a versioned
+per-(provider, model) pricing table that AMX caches on disk with a
+freshness timestamp; the Studio top bar shows a pricing-cache
+freshness badge and a one-click refresh button. You can pin a
+<strong>price override</strong> per model from Settings → LLM (an auto-detected
+hint pre-fills the field). Every run row records both the price it
+ran at (frozen) and the price it would cost today (live), so a stale
+price never silently rewrites history. See
+<a href="../cli/studio/#costs-and-pricing">Costs and pricing</a> for the full
+walkthrough.</p>
 <h2 id="setup-walkthroughs">Setup walkthroughs<a class="headerlink" href="#setup-walkthroughs" title="Permanent link">&para;</a></h2>
 <p>Each provider page follows the same template: prerequisites → <code>/add-llm-profile</code>
 walkthrough with verbatim wizard prompts → sample <code>~/.amx/config.yml</code> block → verify

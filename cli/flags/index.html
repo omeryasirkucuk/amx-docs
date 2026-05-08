@@ -628,6 +628,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#repl-only-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REPL-only commands
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#common-combinations" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -861,6 +872,58 @@ have to memorise them per command. Each flag below works on <code>/run</code>, <
 <td>int</td>
 <td>profile default (10)</td>
 <td>Override <code>column_batch_size</code> for one run</td>
+</tr>
+<tr>
+<td><code>--n-alternatives &lt;n&gt;</code></td>
+<td>int (1-5)</td>
+<td>profile default</td>
+<td>On <code>/run</code> and <code>/generate</code>: number of drafts to surface per asset</td>
+</tr>
+<tr>
+<td><code>--verbosity &lt;mode&gt;</code></td>
+<td><code>terse</code>/<code>balanced</code>/<code>verbose</code></td>
+<td><code>balanced</code></td>
+<td>On <code>/run</code> and <code>/generate</code>: target output length</td>
+</tr>
+<tr>
+<td><code>--temperature &lt;f&gt;</code></td>
+<td>float [0.0, 2.0]</td>
+<td>profile default</td>
+<td>Sampling temperature for this command only</td>
+</tr>
+<tr>
+<td><code>--prompt-detail &lt;mode&gt;</code></td>
+<td><code>low</code>/<code>auto</code>/<code>high</code></td>
+<td><code>auto</code></td>
+<td>How much profile/RAG context to feed the LLM</td>
+</tr>
+</tbody>
+</table>
+<h2 id="repl-only-commands">REPL-only commands<a class="headerlink" href="#repl-only-commands" title="Permanent link">&para;</a></h2>
+<p>A few slash commands are not flags but they shape the same dimensions:</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/max-tokens</code></td>
+<td>Show the active LLM profile's per-call output budget</td>
+</tr>
+<tr>
+<td><code>/max-tokens &lt;n&gt;</code></td>
+<td>Set the budget. Reasoning models (Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x) automatically get an additional 32 k reasoning floor on top</td>
+</tr>
+<tr>
+<td><code>/temperature &lt;f&gt;</code></td>
+<td>Show or set the active LLM profile's default temperature</td>
+</tr>
+<tr>
+<td><code>/n-alternatives &lt;n&gt;</code></td>
+<td>Show or set the default number of drafts</td>
 </tr>
 </tbody>
 </table>

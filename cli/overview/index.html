@@ -779,13 +779,18 @@ shortcuts that make day-to-day use fast.</p>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>           ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>           ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  AMX 0.12.7 · Active DB profile: prod-pg · Active LLM profile: openai-prod
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  AMX 0.14.0 · LLM profile: openai-prod · 4 DB profiles configured
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Type /help for commands, /exit to quit.
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>&gt;
 </span></code></pre></div>
-<p>The header line tells you, at a glance, which DB and LLM profile your next command will
-use. If either says <code>none</code>, run <code>/setup</code> (first time) or <code>/use-db</code> / <code>/use-llm</code>.</p>
+<p>The header line tells you the active LLM profile and how many DB
+profiles are configured — DB profiles are no longer "active vs.
+inactive", every saved profile is available to every command (and to
+both Studio sidebar tabs) at the same time. Pass an explicit
+<code>--db-profile</code> to commands that need a specific one, or use the
+multi-profile scope picker in <code>/run</code> and <code>/ask</code>. If the LLM profile
+says <code>none</code>, run <code>/setup</code> (first time) or <code>/use-llm &lt;name&gt;</code>.</p>
 <h3 id="2-discover-commands">2. Discover commands<a class="headerlink" href="#2-discover-commands" title="Permanent link">&para;</a></h3>
 <p>Two interactive ways to learn the command surface:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /help
@@ -797,29 +802,31 @@ use. If either says <code>none</code>, run <code>/setup</code> (first time) or <
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  /code          Code-source management
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  /metadata      Inspect introspection output
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  /run           Run agents on a scope
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  /apply         Write reviewed comments back to the DB
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /search        Catalog search, embedding rebuild, and chat sessions
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /history       Audit trail and run comparison
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /doctor        Diagnostics
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /config        Show or edit ~/.amx/config.yml
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /help, /exit, /clear, /back, /save
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  /generate      Single-shot draft for one asset address
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /rerun         Re-execute one or many run_results rows with original context
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /apply         Write reviewed comments back to the DB
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /max-tokens    Show or set the per-call output budget on the active LLM profile
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /search        Catalog search, embedding rebuild, and chat sessions
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /history       Audit trail and run comparison
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  /doctor        Diagnostics
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  /config        Show or edit ~/.amx/config.yml
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  /help, /exit, /clear, /back, /save
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /db
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Database namespace:
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  /db-profiles            List configured DB profiles
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  /use-db &lt;name&gt;          Set the active DB profile
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  /add-db-profile         Wizard to register a new profile
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  /edit-db-profile &lt;name&gt; Re-run the wizard pre-filled with current values
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  /remove-db-profile      Delete a profile
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  /connect                Test the active connection
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  /schemas                List schemas in the active DB
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  /tables &lt;schema&gt;        List tables in a schema
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  /profile &lt;table&gt;        Run profiling-only on one table
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  /inspect                Server-side counts and stats
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  /history-store          Configure shared history store
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>  /cleanup-placeholders   Clean stale review-queue rows
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  /add-db-profile         Wizard to register a new profile
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  /edit-db-profile &lt;name&gt; Re-run the wizard pre-filled with current values
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  /remove-db-profile      Delete a profile
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>  /connect &lt;name&gt;         Test connection for a specific profile
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>  /schemas &lt;name&gt;         List schemas in a profile
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>  /tables &lt;name&gt; &lt;schema&gt; List tables in a schema
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>  /profile &lt;table&gt;        Run profiling-only on one table
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>  /inspect &lt;name&gt;         Server-side counts and stats for a profile
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  /history-store          Configure shared history store
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  /cleanup-placeholders   Clean stale review-queue rows
 </span></code></pre></div>
 <p>Each top-level letter (e.g. <code>/d</code>, <code>/r</code>) tab-completes the command name; arrow keys walk
 your previous commands.</p>
@@ -850,9 +857,9 @@ exactly where you left off.</p>
 <h3 id="5-get-unstuck">5. Get unstuck<a class="headerlink" href="#5-get-unstuck" title="Permanent link">&para;</a></h3>
 <p>When something doesn't work, the order of escalation is:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /doctor
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.12.0 (config schema v7)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.14.0 (config schema v7)
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>✓ Python runtime — 3.11.5
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>✓ Active DB profile — prod-pg [postgresql] db-prod.../analytics
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>✓ Active LLM profile — openai-prod [openai] gpt-4o
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>✓ Reachable
 </span></code></pre></div>
@@ -887,7 +894,7 @@ for the most-frequently-seen failures.</p>
 <tr>
 <td><code>/llm</code></td>
 <td>LLM profile management</td>
-<td><code>profiles</code>, <code>add-llm-profile</code>, <code>use-llm</code>, <code>use-rag-llm</code>, <code>temperature</code>, <code>n-alternatives</code>, <code>logprob-thresholds</code>, <code>description-verbosity</code></td>
+<td><code>profiles</code>, <code>add-llm-profile</code>, <code>use-llm</code>, <code>use-rag-llm</code>, <code>temperature</code>, <code>max-tokens</code>, <code>n-alternatives</code>, <code>logprob-thresholds</code>, <code>description-verbosity</code></td>
 </tr>
 <tr>
 <td><code>/docs</code></td>
@@ -907,7 +914,7 @@ for the most-frequently-seen failures.</p>
 <tr>
 <td><code>/analyze</code></td>
 <td>Run + apply</td>
-<td><code>/run</code>, <code>/run-apply</code>, <code>/apply</code></td>
+<td><code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/rerun</code>, <code>/apply</code></td>
 </tr>
 <tr>
 <td><code>/search</code></td>
@@ -922,7 +929,7 @@ for the most-frequently-seen failures.</p>
 <tr>
 <td><code>/history</code></td>
 <td>Audit trail + comparison</td>
-<td><code>list</code>, <code>show</code>, <code>stats</code>, <code>events</code>, <code>results</code>, <code>review</code>, <code>compare</code></td>
+<td><code>list</code>, <code>show</code>, <code>stats</code>, <code>events</code>, <code>results</code>, <code>review</code>, <code>compare</code>, <code>rerun</code></td>
 </tr>
 <tr>
 <td><code>/doctor</code></td>

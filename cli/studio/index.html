@@ -672,6 +672,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#costs-and-pricing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Costs and pricing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#re-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-Run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#preview-sql" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -895,44 +917,49 @@ laptop while the server runs on a remote box.</p>
 </thead>
 <tbody>
 <tr>
-<td><strong>Overview</strong> <code>/</code></td>
-<td>Stat cards (active backend, LLM model, total runs, success rate) + Recent runs feed. Tile and row click-throughs jump to Settings or the run detail.</td>
-<td><code>/api/history/stats</code>, <code>/api/history/runs</code></td>
+<td><strong>Landing</strong> <code>/</code></td>
+<td>Calm entry point — hero + product summary + quick links into Browse, Runs, and Ask. Cheap to load on every tab open; navigates to <code>/overview</code> when you want the dashboard.</td>
+<td>static</td>
+</tr>
+<tr>
+<td><strong>Overview</strong> <code>/overview</code></td>
+<td>Lifetime stat cards (total runs, success rate, <strong>lifetime input/output tokens, lifetime USD cost</strong>) + Recent runs feed. Tile and row click-throughs jump to Settings or the run detail. (The legacy <code>/</code> URL redirects here.)</td>
+<td><code>/api/history/stats</code>, <code>/api/usage</code>, <code>/api/history/runs</code></td>
 </tr>
 <tr>
 <td><strong>Browse</strong> <code>/db/:profile/:database/:schema/:table</code> (2-level) and <code>/cat/:profile/:catalog/:schema/:table</code> (3-level)</td>
-<td>Multi-profile asset tree: every saved DB profile is its own expandable row in the sidebar. Walk profile → database/catalog → schema → table; inline-edit any comment or hit <strong>Generate</strong> for one-asset-at-a-time LLM drafting through the same review loop the CLI uses. Two browser tabs on different profiles never collide.</td>
+<td>Multi-profile asset tree: every saved DB profile is its own expandable row in the sidebar with a <strong>search-and-collapse</strong> header above. Walk profile → database/catalog → schema → table; inline-edit any comment or hit <strong>Generate</strong> (which now spawns a background run instead of blocking on an inline LLM call) through the same review loop the CLI uses. Two browser tabs on different profiles never collide.</td>
 <td><code>/api/live/...</code>, <code>/api/comments/...</code>, <code>/api/generate/...</code></td>
 </tr>
 <tr>
 <td><strong>Runs</strong> <code>/runs</code></td>
-<td>Every <code>/run</code> and <code>/run-apply</code> invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Compare 2–4 runs side-by-side via the <strong>Compare</strong> button.</td>
+<td>Every <code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, and Re-Run invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Each Running row has a <strong>Cancel</strong> button. Compare 2–4 runs side-by-side via the <strong>Compare</strong> button — the rebuilt picker surfaces per-row confidence and log-prob, marks winners, and includes a cost row.</td>
 <td><code>/api/history/runs</code>, <code>/api/history/compare</code></td>
 </tr>
 <tr>
 <td><strong>Run detail</strong> <code>/runs/:id</code></td>
-<td>Live SSE progress while a run streams (sticky banner with elapsed timer + current activity + N/total processed), then a tabbed Summary / Results / Scope / Settings view once the run finishes. Per-row alternatives carousel + skip + custom-edit + restore.</td>
-<td><code>/api/history/runs/{id}</code>, <code>/api/pending/...</code></td>
+<td>Live SSE progress while a run streams (sticky banner with elapsed timer, current activity, N/total processed, and <strong>live USD cost</strong> updating per batch), then a tabbed Summary / Results / Scope / Settings view once the run finishes. The Summary tab includes a <strong>Tokens &amp; cost</strong> card and surfaces the LLM <strong>reasoning trace</strong> when the provider returned one. Per-row alternatives carousel + skip + custom-edit + restore. <strong>Re-Run</strong> any row (or a multi-row selection) with the original DB scope, prompt detail, alternatives count, and cached table profile preserved. Already-applied rows can be revised inline; revisions write a new audit entry.</td>
+<td><code>/api/history/runs/{id}</code>, <code>/api/pending/...</code>, <code>/api/rerun</code></td>
 </tr>
 <tr>
 <td><strong>Ask</strong> <code>/ask</code></td>
-<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, and the auto-detected focus profile.</td>
+<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, the auto-detected focus profile, and <strong>per-turn tokens + USD cost</strong>.</td>
 <td><code>/api/ask</code> (SSE), <code>/api/ask/sessions/...</code></td>
 </tr>
 <tr>
 <td><strong>Pending</strong> <code>/pending</code></td>
-<td>The review queue waiting for <code>/apply</code>. Inline-edit any row, drop or skip individual entries, or <strong>Preview SQL</strong> before writing. (See <a href="#preview-sql">Preview SQL</a> below.)</td>
+<td>The review queue waiting for <code>/apply</code>. Inline-edit any row, drop or skip individual entries, or <strong>Preview SQL</strong> before writing. The <strong>Apply pending queue</strong> button opens a confirmation modal showing the row count and target database before any COMMENT lands. (See <a href="#preview-sql">Preview SQL</a> below.)</td>
 <td><code>/api/pending/...</code></td>
 </tr>
 <tr>
 <td><strong>Audit</strong> <code>/audit</code></td>
-<td>Newest-first timeline of every COMMENT successfully written by <code>/apply</code>. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See <a href="#audit-page">Audit page</a> below.)</td>
+<td>Reorganized as a <strong>day-grouped timeline</strong> of every COMMENT successfully written by <code>/apply</code>, with inline before/after diffs and author chips on every row. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See <a href="#audit-page">Audit page</a> below.)</td>
 <td><code>/api/history/apply-events</code></td>
 </tr>
 <tr>
 <td><strong>Settings</strong> <code>/settings</code></td>
-<td>Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. Same fields as <code>/add-db-profile</code> / <code>/add-llm-profile</code> / <code>/add-doc-profile</code> / <code>/add-code-profile</code>.</td>
-<td><code>/api/profiles/...</code></td>
+<td>Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. The LLM wizard pre-fills an <strong>auto-detected price hint</strong> from the live pricing table so an override is a deliberate tweak, not a re-keying chore. Same fields as <code>/add-db-profile</code> / <code>/add-llm-profile</code> / <code>/add-doc-profile</code> / <code>/add-code-profile</code>.</td>
+<td><code>/api/profiles/...</code>, <code>/api/pricing/...</code></td>
 </tr>
 <tr>
 <td><strong>System</strong> <code>/system</code></td>
@@ -942,10 +969,14 @@ laptop while the server runs on a remote box.</p>
 </tbody>
 </table>
 <p>The top bar surfaces the active <strong>LLM profile</strong> as a click-to-switch dropdown
-pill plus a <code>⌘K</code> / <code>Ctrl-K</code> command palette for jumping to any page or quick
-action. (DB profiles are no longer "active vs. inactive" — every saved profile
-shows up as its own expandable row in the sidebar so you can browse all of
-them simultaneously.)</p>
+pill, an always-visible <strong>pricing-cache freshness badge</strong> (with a one-click
+refresh button — the badge turns warm-yellow when the cache is over 24 h
+old), and a <code>⌘K</code> / <code>Ctrl-K</code> command palette for jumping to any page or
+quick action. The brand renders as <strong>AMX Studio</strong> — a pixel mark + text
+wordmark — and the browser tab title is consistent across pages. DB
+profiles are no longer "active vs. inactive": every saved profile shows up
+as its own expandable row in the sidebar so you can browse all of them
+simultaneously.</p>
 <h2 id="multi-profile-browse">Multi-profile browse<a class="headerlink" href="#multi-profile-browse" title="Permanent link">&para;</a></h2>
 <p>The Browse sidebar lists <strong>every saved DB profile</strong> as its own expandable
 top-level row — no "active" / "switch" concept. Click any profile to lazy-load
@@ -1021,11 +1052,51 @@ times you want to fix or draft a single comment without spinning up a full run:<
 <li><strong>Schema page</strong> → "Just this schema" (single LLM call) vs "All tables" (full
   bulk run, redirects to the live run-detail stream).</li>
 <li><strong>Table page</strong> → "Just this table" vs "All columns".</li>
-<li><strong>Column rows</strong> → per-row "Gen" button writes that one column's <code>COMMENT</code> in
-  place.</li>
+<li><strong>Column rows</strong> → per-row <strong>Gen</strong> button. As of 0.14.0 this <strong>spawns a
+  background run</strong> instead of blocking the UI on an inline LLM call — the
+  toolbar shows the new run id and you can navigate away while it works.</li>
 </ul>
 <p>Every generated suggestion still goes through the human-in-the-loop review queue
 — nothing lands in the live database until you accept it.</p>
+<h2 id="costs-and-pricing">Costs and pricing<a class="headerlink" href="#costs-and-pricing" title="Permanent link">&para;</a></h2>
+<p>Every LLM call AMX makes is reported in tokens <strong>and USD</strong> at the surface
+that triggered it:</p>
+<ul>
+<li><strong>Run progress header</strong> — running input tokens, output tokens, and
+  USD cost, updated per batch while the worker is alive.</li>
+<li><strong>Run detail Summary tab</strong> — a <strong>Tokens &amp; cost</strong> card with the
+  per-run total once the run finishes.</li>
+<li><strong>Overview</strong> — lifetime input / output tokens and USD cost across
+  every run on this install.</li>
+<li><strong>Ask</strong> — per-turn cost footer next to the latency and focus chips.</li>
+<li><strong>Compare</strong> — a cost row on the Compare grid so two-run shoot-outs
+  show price as well as quality.</li>
+</ul>
+<p>Pricing comes from a versioned per-(provider, model) table that AMX
+fetches live, caches on disk with a freshness timestamp, and
+auto-refreshes when stale. The top bar shows a <strong>pricing-cache
+freshness badge</strong> that turns warm-yellow when the cache is over 24 h
+old; click the refresh icon next to it to force a re-fetch. Settings →
+LLM lets you pin a per-model <strong>price override</strong> (an auto-detected hint
+pre-fills the field with the current public rate, so an override is a
+deliberate tweak rather than a re-keying chore).</p>
+<p>Every run row records both the price it ran at (frozen) and the price
+it would cost today (live), so a stale price never silently rewrites
+history. The same audit shape powers the legacy <code>/usage</code> rows and the
+Metrics tokens row.</p>
+<h2 id="re-run">Re-Run<a class="headerlink" href="#re-run" title="Permanent link">&para;</a></h2>
+<p>Any persisted result row can be re-executed from the Run detail page.
+Select one or many <code>run_results</code> rows and click <strong>Re-Run</strong> — the
+worker spawns with the original DB scope, prompt detail, alternatives
+count, verbosity, and temperature preserved, plus the cached
+first-run table profile so the re-run skips the introspection cost.
+A re-run produces a new run id of its own, so the original run row,
+its alternatives, and its audit trail all stay intact and the two are
+naturally side-by-side in <strong>Compare</strong>.</p>
+<p>Re-Run is the right tool for the "this column got a great description
+last week, let me try a stronger model" case: pin a different LLM
+profile in the top bar, hit Re-Run, and Compare shows the same asset
+priced and scored against both runs.</p>
 <h2 id="preview-sql">Preview SQL<a class="headerlink" href="#preview-sql" title="Permanent link">&para;</a></h2>
 <p>The <strong>Pending</strong> page (<code>/pending</code>) ships with a <strong>Preview SQL</strong> button
 next to <strong>Apply</strong>. Clicking it runs the same dry-run path as
@@ -1048,16 +1119,16 @@ entries are no-ops before pressing Apply.</p>
 it and click <strong>Apply</strong> to write for real, or edit / drop rows and
 re-preview.</p>
 <h2 id="audit-page">Audit page<a class="headerlink" href="#audit-page" title="Permanent link">&para;</a></h2>
-<p><code>/audit</code> is the timeline view of every COMMENT AMX has successfully
-written, newest-first. Each row shows:</p>
+<p><code>/audit</code> is a <strong>day-grouped timeline</strong> of every COMMENT AMX has
+successfully written, newest-first. Rows are bucketed under day
+headers (Today / Yesterday / dated header) so a long history is easy
+to skim. Each row shows:</p>
 <ul>
 <li>the asset path (<code>schema.table.column</code>),</li>
-<li>the new comment AMX wrote,</li>
-<li>the prior comment that was overwritten — strikethrough if the
-  asset already had one (so accidental overrides surface
-  immediately),</li>
-<li>attribution: profile, run id, who applied it (<code>getpass.getuser()</code>
-  on the CLI host), and the hostname.</li>
+<li>an inline <strong>before → after diff</strong> of the comment text,</li>
+<li>an <strong>author chip</strong> with the username (<code>getpass.getuser()</code> on the
+  CLI host) and hostname,</li>
+<li>attribution: profile and run id.</li>
 </ul>
 <p>Two filters at the top:</p>
 <ul>
@@ -1069,11 +1140,10 @@ written, newest-first. Each row shows:</p>
 <p>The page polls <code>/api/history/apply-events</code> every 30 s plus on
 window focus, so a CLI <code>/apply</code> somewhere else is reflected without
 a manual refresh.</p>
-<p><code>old_comment</code> strikethroughs make it easy to spot the case the
-audit was designed for: an LLM rewrite landed on top of a DBA's
-hand-written domain note. Click through to
-<a href="../history/#rollback"><code>/history rollback</code></a> when you want to undo
-the overwrite.</p>
+<p>The diff view is designed around the case the audit was built for:
+an LLM rewrite landed on top of a DBA's hand-written domain note.
+Click through to <a href="../history/#rollback"><code>/history rollback</code></a> when
+you want to undo the overwrite.</p>
 <h2 id="cancelling-long-running-jobs">Cancelling long-running jobs<a class="headerlink" href="#cancelling-long-running-jobs" title="Permanent link">&para;</a></h2>
 <p><code>/run</code> and <code>/apply</code> jobs run in daemon threads inside the parent CLI process.
 Each carries a <code>threading.Event</code> cancel token plumbed through the orchestrator;

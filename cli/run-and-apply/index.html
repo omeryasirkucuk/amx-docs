@@ -690,10 +690,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-the-shortcut-run-apply" class="md-nav__link">
+  <a href="#5-re-run-a-row-with-the-original-context" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. The shortcut: /run-apply
+        5. Re-Run a row with the original context
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-single-shot-draft-with-generate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Single-shot draft with /generate
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#7-the-shortcut-run-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. The shortcut: /run-apply
       
     </span>
   </a>
@@ -831,14 +853,20 @@ recovers from per-row errors.</p>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[RAG]     no document profile active — skipping
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[Code]    no code profile active — skipping
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>[LLM]     drafting 36 column descriptions in 4 batches ......  in progress
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          batch 1/4: customer (10 cols) ......  ok (3.1 s)
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          batch 2/4: customer (8 cols) .......  ok (2.8 s)
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>          batch 3/4: customer_address (10 cols)  ok (3.0 s)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>          batch 4/4: customer_address (8 cols)   ok (2.6 s)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          batch 1/4: customer (10 cols) ......  ok (3.1 s · 4,212 in / 1,108 out · $0.0084)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          batch 2/4: customer (8 cols) .......  ok (2.8 s · 3,840 in / 982 out  · $0.0076)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>          batch 3/4: customer_address (10 cols)  ok (3.0 s · 4,180 in / 1,054 out · $0.0083)
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>          batch 4/4: customer_address (8 cols)   ok (2.6 s · 3,612 in / 920 out  · $0.0072)
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>✓ /run finished in 14.1 s. 36 columns drafted.
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Confidence: high 24 · medium 9 · low 3
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Review with /run review (or /apply to write back).
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Tokens: 15,844 in / 4,064 out · Cost: $0.0315 (frozen at run-time pricing)
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  Review with /run review (or /apply to write back).
 </span></code></pre></div>
+<p>Per-batch token and USD cost are reported live for every LLM-using step
+(<code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/ask</code>). Cost is computed against the
+versioned per-(provider, model) pricing table AMX caches on disk; see
+<a href="../studio/#costs-and-pricing">Costs and pricing</a> for the full story
+including how to pin a per-model override.</p>
 <h3 id="3-review-with-the-wizard-keystrokes">3. Review with the wizard keystrokes<a class="headerlink" href="#3-review-with-the-wizard-keystrokes" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /run review
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>36 columns drafted · high: 24 · medium: 9 · low: 3
@@ -943,35 +971,104 @@ ClickHouse) surface as <code>(skipped — backend cannot accept this asset
 kind)</code>.</p>
 <p>The same preview is reachable from Studio via the
 <a href="../studio/#preview-sql"><strong>Preview SQL</strong> button</a> on the Pending page.</p>
-<h3 id="5-the-shortcut-run-apply">5. The shortcut: <code>/run-apply</code><a class="headerlink" href="#5-the-shortcut-run-apply" title="Permanent link">&para;</a></h3>
+<h3 id="5-re-run-a-row-with-the-original-context">5. Re-Run a row with the original context<a class="headerlink" href="#5-re-run-a-row-with-the-original-context" title="Permanent link">&para;</a></h3>
+<p>Any persisted row in <code>/history show &lt;run-id&gt;</code> (or any row on Studio's
+Run detail page) can be re-executed against the original DB scope,
+prompt detail, alternatives count, verbosity, temperature, and
+<strong>cached table profile</strong> with <code>/rerun</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /rerun run_2026-05-08_15-44-002 sales.customer.x_legacy_status
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>[Re-Run] resolved scope from run_2026-05-08_15-44-002:
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>         db_profile=prod-pg, prompt_detail=high, n_alternatives=3
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>[Profile] reusing cached table profile (sales.customer)  ✓
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>[LLM]     drafting 1 column description ............  ok (2.4 s · $0.0011)
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>✓ /rerun finished. New run id: run_2026-05-08_18-22-007
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>  Confidence: high 1 · medium 0 · low 0
+</span></code></pre></div>
+<p>Re-Run produces a <strong>new run id</strong> of its own; the original run row,
+its alternatives, and its audit trail all stay intact. The two are
+naturally side-by-side in <code>/compare</code>. Pass a list of <code>&lt;schema&gt;.&lt;table&gt;.&lt;column&gt;</code>
+addresses to re-run multiple rows in one shot.</p>
+<p>The <strong>first-run profile cache</strong> means re-runs skip the introspection
+cost (no new sample query, no second <code>pg_stats</code> lookup), so re-running
+many rows of the same table is cheap.</p>
+<h3 id="6-single-shot-draft-with-generate">6. Single-shot draft with <code>/generate</code><a class="headerlink" href="#6-single-shot-draft-with-generate" title="Permanent link">&para;</a></h3>
+<p>When you want one column drafted without spinning up the full <code>/run</code>
+pipeline, <code>/generate</code> takes a single asset address and returns the
+draft inline:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /generate sales.customer.c_first_name --n-alternatives 3 --verbosity terse
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[LLM] drafting 1 column · prompt_detail=auto · temperature=0.2  ok (1.8 s · $0.0009)
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>draft 1: &quot;Customer&#39;s given name.&quot;
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>draft 2: &quot;First / given name of the customer record.&quot;
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>draft 3: &quot;Given name component of the customer&#39;s full name.&quot;
+</span></code></pre></div>
+<p><code>/generate</code> respects the same flag matrix as <code>/run</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--n-alternatives N</code></td>
+<td>from LLM profile</td>
+<td>Number of drafts to surface (1-5)</td>
+</tr>
+<tr>
+<td><code>--verbosity {terse,balanced,verbose}</code></td>
+<td><code>balanced</code></td>
+<td>Output length target</td>
+</tr>
+<tr>
+<td><code>--temperature F</code></td>
+<td>from LLM profile</td>
+<td>Sampling temperature, <code>[0.0, 2.0]</code></td>
+</tr>
+<tr>
+<td><code>--prompt-detail {low,auto,high}</code></td>
+<td><code>auto</code></td>
+<td>How much profile context to feed the LLM</td>
+</tr>
+</tbody>
+</table>
+<p>The result lands in the review queue with a fresh run id and the
+target database / catalog captured on the run row, so a later
+<code>/rerun</code> reproduces the original scope exactly.</p>
+<p>In Studio, the per-table <strong>Gen</strong> button on Browse pages now uses the
+same path under the hood — it spawns a background run instead of
+blocking the UI on an inline LLM call.</p>
+<h3 id="7-the-shortcut-run-apply">7. The shortcut: <code>/run-apply</code><a class="headerlink" href="#7-the-shortcut-run-apply" title="Permanent link">&para;</a></h3>
 <p>For one-shot warehouse sweeps where you've already validated the LLM profile:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /run-apply --filter &#39;^stg_&#39; --auto-accept-high --apply
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>[scope]  47 staging tables · 1,283 columns
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>[Profile] sampling 5,000 rows ... ok in 18 s
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>[LLM]    drafting 1,283 column descriptions in 64 batches ... ok in 102 s
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>[Review] auto-accepted 1,021 high · 198 medium · skipped 64 low (review later)
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>[Apply]  Write 1,219 comment(s) to db-prod/analytics?
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>         (--apply was passed, skipping confirmation)
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>[1219/1219] ok
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>✓ /run-apply finished in 142 s. Audit trail: run_2026-05-03_15-44-002
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&gt; /run-apply --filter &#39;^stg_&#39; --auto-accept-high --apply
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>[scope]  47 staging tables · 1,283 columns
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>[Profile] sampling 5,000 rows ... ok in 18 s
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>[LLM]    drafting 1,283 column descriptions in 64 batches ... ok in 102 s
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>[Review] auto-accepted 1,021 high · 198 medium · skipped 64 low (review later)
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>[Apply]  Write 1,219 comment(s) to db-prod/analytics?
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>         (--apply was passed, skipping confirmation)
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>[1219/1219] ok
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>✓ /run-apply finished in 142 s. Audit trail: run_2026-05-03_15-44-002
 </span></code></pre></div>
 <p>Re-review the 64 skipped low-confidence rows later with <code>/run review</code>.</p>
 <h2 id="sample-config-defaults-that-act-on-run">Sample config — defaults that act on <code>/run</code><a class="headerlink" href="#sample-config-defaults-that-act-on-run" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="c1"># ...</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="nt">openai-prod</span><span class="p">:</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">    </span><span class="nt">logprob_high</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span>
-</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">    </span><span class="nt">logprob_medium</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.50</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="c1"># ...</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="nt">llm_profiles</span><span class="p">:</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">  </span><span class="nt">openai-prod</span><span class="p">:</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a><span class="w">    </span><span class="nt">logprob_high</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.85</span>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="w">    </span><span class="nt">logprob_medium</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.50</span>
 </span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
