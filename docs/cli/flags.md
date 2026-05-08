@@ -29,6 +29,21 @@ have to memorise them per command. Each flag below works on `/run`, `/apply`,
 | `--limit <n>` | int | — | On `/run`: limit to the first N tables in scope. Useful for incremental runs |
 | `--filter <expr>` | string | — | On `/run`: restrict to tables whose name matches the regex |
 | `--llm-batch-size <n>` | int | profile default (10) | Override `column_batch_size` for one run |
+| `--n-alternatives <n>` | int (1-5) | profile default | On `/run` and `/generate`: number of drafts to surface per asset |
+| `--verbosity <mode>` | `terse`/`balanced`/`verbose` | `balanced` | On `/run` and `/generate`: target output length |
+| `--temperature <f>` | float [0.0, 2.0] | profile default | Sampling temperature for this command only |
+| `--prompt-detail <mode>` | `low`/`auto`/`high` | `auto` | How much profile/RAG context to feed the LLM |
+
+## REPL-only commands
+
+A few slash commands are not flags but they shape the same dimensions:
+
+| Command | Effect |
+|---|---|
+| `/max-tokens` | Show the active LLM profile's per-call output budget |
+| `/max-tokens <n>` | Set the budget. Reasoning models (Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x) automatically get an additional 32 k reasoning floor on top |
+| `/temperature <f>` | Show or set the active LLM profile's default temperature |
+| `/n-alternatives <n>` | Show or set the default number of drafts |
 
 ## Common combinations
 

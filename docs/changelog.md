@@ -8,6 +8,80 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.14.0 — Live cost everywhere, Re-Run, Studio Landing
+
+Every LLM call AMX makes now reports tokens **and USD cost** at every
+surface — `/ask`, `/generate`, the run progress header, the Tokens &
+cost card on the run detail page, the lifetime card on the Studio
+Overview, and a top-bar pricing-cache freshness badge with a one-click
+refresh button. Pricing is fetched live from a versioned per-(provider,
+model) table, cached on disk with a freshness timestamp, and overrideable
+per model from Settings → LLM. Every run records both the price it ran
+at (frozen) and the price it would cost today (live), so a stale price
+never silently rewrites history.
+
+**Re-Run.** A `run_results` row, or a multi-row selection, can now be
+re-executed with the original context preserved — DB scope, prompt
+detail, alternatives count, and the cached first-run table profile are
+reused so a re-run is comparable to its source instead of a fresh shot.
+The introspection cost paid on the first run is amortized across every
+subsequent re-run.
+
+**Studio Landing.** `/` is a calm landing page; the dashboard moved to
+`/overview` (with a redirect from the legacy URL). The sidebar gets a
+DB profile search box and per-profile collapse, so a workspace with
+many profiles stays navigable. The brand renders as "AMX Studio" — a
+pixel mark + text wordmark in the top bar — and the browser tab title
+is consistent across pages.
+
+**Run lifecycle controls.** A running run can be cancelled from both
+the Runs list and the Run detail page. Applying the pending queue
+opens a confirmation modal that names the row count and target
+database. An already-applied row can be revised inline and writes a
+new audit entry. The live `/runs/new-{jobId}` view redirects to the
+persisted detail page as soon as `run.created` fires, so the user
+gains access to the full edit / pick / apply controls immediately.
+
+**Compare rebuild.** New asset picker, surfaces per-row confidence and
+log-prob, marks winners, includes a cost row, and computes overlap
+against the actual same-asset set rather than the union of asset sets
+(which over-stated agreement on partial coverage).
+
+**Audit timeline.** `/audit` is reorganized into day groups with inline
+before/after diffs and author chips, so a row's history is readable at
+a glance. Filters by run id and DB profile still apply on top.
+
+**LLM reasoning trace.** When the provider returns one (Anthropic
+extended thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x), the
+reasoning trace is rendered alongside the answer on the Run detail
+page rather than thrown away.
+
+**`/generate` parity.** Single-shot `/generate` now respects
+`n_alternatives`, `verbosity`, `temperature`, and `prompt_detail` the
+same way the full `/run` path does. The run row captures the target
+database / catalog so a re-run can reproduce the original scope.
+Per-table **Gen** in Studio spawns a background run instead of
+blocking the UI on an inline LLM call.
+
+**`/max-tokens` REPL command** plus raised default `max_tokens`
+ceilings and modernized reasoning-token handling so reasoning models
+get a 32 k reasoning floor on top of the configured output budget.
+
+**Concept cleanup.** The "Active backend" Overview card and the entire
+"Active DB profile" concept are gone. Every saved DB profile is its
+own expandable row in the Browse sidebar; two browser tabs on
+different profiles never collide; and the apply path is pinned to the
+run's own DB scope rather than whatever profile the user happens to
+have selected. The Studio's per-table comment and **Generate**
+buttons all carry the per-page profile so the write lands on the
+right backend.
+
+**Hygiene.** Console no longer leaks Rich markup tags into terminal
+output. `/usage` aggregates every run kind (not just `analyze.run`),
+and `list_recent_runs` pulls `tokens_json` so the aggregation has
+data to sum. Residual Turkish content has been purged from CLI text,
+Studio surfaces, the agent path, and earlier CHANGELOG entries.
+
 ### 0.13.0 — Doc & code RAG into `/ask`, Studio polish, durable secrets
 
 `/ask` finally reads the user's documentation and codebase. Two new
@@ -25,7 +99,7 @@ be linked to one or more DB profiles. `/ask` running against scope
 (or is empty = global). New CLI commands `/doc-link`, `/code-link`,
 `/ask-context`. Studio's Settings → Docs/Code wizards expose the link
 as a multi-select chip control, and AskChat shows a small `📄 N docs ·
-💻 M code` rozeti above the scope dropdown so you always know what
+💻 M code` badge above the scope dropdown so you always know what
 the agent has in its tool window.
 
 **Drag-drop document upload.** Studio's Settings → Docs gets per-card
@@ -149,8 +223,7 @@ message).
 - **CLI Ctrl-C cancels cleanly.** First press sets a `cancel_token`
   the agent loop polls between iterations; second press also raises
   KeyboardInterrupt for stuck socket I/O. The chat surfaces "Cancelled
-  by user." (Turkish: "Soru kullanıcı tarafından iptal edildi.")
-  rather than draining the question to completion.
+  by user." rather than draining the question to completion.
 - **Last/active profile delete.** `/remove-db-profile` and
   `/remove-llm-profile` no longer refuse the only profile — config
   resets to empty, downstream surfaces handle it.

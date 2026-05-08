@@ -28,14 +28,19 @@ You land in the AMX session:
            ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
            ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 
-  AMX 0.12.7 · Active DB profile: prod-pg · Active LLM profile: openai-prod
+  AMX 0.14.0 · LLM profile: openai-prod · 4 DB profiles configured
   Type /help for commands, /exit to quit.
 
 >
 ```
 
-The header line tells you, at a glance, which DB and LLM profile your next command will
-use. If either says `none`, run `/setup` (first time) or `/use-db` / `/use-llm`.
+The header line tells you the active LLM profile and how many DB
+profiles are configured — DB profiles are no longer "active vs.
+inactive", every saved profile is available to every command (and to
+both Studio sidebar tabs) at the same time. Pass an explicit
+`--db-profile` to commands that need a specific one, or use the
+multi-profile scope picker in `/run` and `/ask`. If the LLM profile
+says `none`, run `/setup` (first time) or `/use-llm <name>`.
 
 ### 2. Discover commands
 
@@ -51,7 +56,10 @@ Top-level commands:
   /code          Code-source management
   /metadata      Inspect introspection output
   /run           Run agents on a scope
+  /generate      Single-shot draft for one asset address
+  /rerun         Re-execute one or many run_results rows with original context
   /apply         Write reviewed comments back to the DB
+  /max-tokens    Show or set the per-call output budget on the active LLM profile
   /search        Catalog search, embedding rebuild, and chat sessions
   /session       Manage /ask conversation sessions (list / resume / new / end / scope)
   /studio        Boot AMX Studio (local web UI) on 127.0.0.1
@@ -65,15 +73,14 @@ Top-level commands:
 > /db
 Database namespace:
   /db-profiles            List configured DB profiles
-  /use-db <name>          Set the active DB profile
   /add-db-profile         Wizard to register a new profile
   /edit-db-profile <name> Re-run the wizard pre-filled with current values
   /remove-db-profile      Delete a profile
-  /connect                Test the active connection
-  /schemas                List schemas in the active DB
-  /tables <schema>        List tables in a schema
+  /connect <name>         Test connection for a specific profile
+  /schemas <name>         List schemas in a profile
+  /tables <name> <schema> List tables in a schema
   /profile <table>        Run profiling-only on one table
-  /inspect                Server-side counts and stats
+  /inspect <name>         Server-side counts and stats for a profile
   /history-store          Configure shared history store
   /cleanup-placeholders   Clean stale review-queue rows
 ```
@@ -120,9 +127,9 @@ When something doesn't work, the order of escalation is:
 
 ```text
 > /doctor
-✓ AMX version — 0.12.0 (config schema v7)
+✓ AMX version — 0.14.0 (config schema v7)
 ✓ Python runtime — 3.11.5
-✓ Active DB profile — prod-pg [postgresql] db-prod.../analytics
+✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 ✓ Active LLM profile — openai-prod [openai] gpt-4o
 ✓ Reachable
 ```
@@ -138,14 +145,14 @@ for the most-frequently-seen failures.
 | `/setup` | First-run wizard for DB + LLM | — |
 | `/config` | Show or edit `~/.amx/config.yml` | — |
 | `/db` | Connection & introspection | `profiles`, `add-db-profile`, `edit-db-profile`, `use-db`, `connect`, `schemas`, `tables`, `profile`, `inspect`, `history-store` |
-| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `use-rag-llm`, `temperature`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
+| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `use-rag-llm`, `temperature`, `max-tokens`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
 | `/docs` | RAG document sources | `doc-profiles`, `add-doc-profile`, `scan`, `ingest`, `search-docs`, `doc-analyze` |
 | `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
 | `/metadata` | Inspect introspection cache | — |
-| `/analyze` | Run + apply | `/run`, `/run-apply`, `/apply` |
+| `/analyze` | Run + apply | `/run`, `/run-apply`, `/generate`, `/rerun`, `/apply` |
 | `/search` | Catalog search + chat sessions | `/ask`, `/session list`, `/session resume`, `/session scope`, `/status`, `/sync`, `/rebuild` |
 | `/studio` | AMX Studio — local web UI on `127.0.0.1` | `--port`, `--no-open` |
-| `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare` |
+| `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare`, `rerun` |
 | `/doctor` | Diagnostics | `--skip-network`, `--debug` |
 
 **Tabs group; routing is global.** Every top-level command (including

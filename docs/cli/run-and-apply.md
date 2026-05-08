@@ -53,14 +53,21 @@ Or skip the picker by passing the scope on the command line: `/run sales`,
 [RAG]     no document profile active — skipping
 [Code]    no code profile active — skipping
 [LLM]     drafting 36 column descriptions in 4 batches ......  in progress
-          batch 1/4: customer (10 cols) ......  ok (3.1 s)
-          batch 2/4: customer (8 cols) .......  ok (2.8 s)
-          batch 3/4: customer_address (10 cols)  ok (3.0 s)
-          batch 4/4: customer_address (8 cols)   ok (2.6 s)
+          batch 1/4: customer (10 cols) ......  ok (3.1 s · 4,212 in / 1,108 out · $0.0084)
+          batch 2/4: customer (8 cols) .......  ok (2.8 s · 3,840 in / 982 out  · $0.0076)
+          batch 3/4: customer_address (10 cols)  ok (3.0 s · 4,180 in / 1,054 out · $0.0083)
+          batch 4/4: customer_address (8 cols)   ok (2.6 s · 3,612 in / 920 out  · $0.0072)
 ✓ /run finished in 14.1 s. 36 columns drafted.
   Confidence: high 24 · medium 9 · low 3
+  Tokens: 15,844 in / 4,064 out · Cost: $0.0315 (frozen at run-time pricing)
   Review with /run review (or /apply to write back).
 ```
+
+Per-batch token and USD cost are reported live for every LLM-using step
+(`/run`, `/run-apply`, `/generate`, `/ask`). Cost is computed against the
+versioned per-(provider, model) pricing table AMX caches on disk; see
+[Costs and pricing](studio.md#costs-and-pricing) for the full story
+including how to pin a per-model override.
 
 ### 3. Review with the wizard keystrokes
 
@@ -154,7 +161,65 @@ kind)`.
 The same preview is reachable from Studio via the
 [**Preview SQL** button](studio.md#preview-sql) on the Pending page.
 
-### 5. The shortcut: `/run-apply`
+### 5. Re-Run a row with the original context
+
+Any persisted row in `/history show <run-id>` (or any row on Studio's
+Run detail page) can be re-executed against the original DB scope,
+prompt detail, alternatives count, verbosity, temperature, and
+**cached table profile** with `/rerun`:
+
+```text
+> /rerun run_2026-05-08_15-44-002 sales.customer.x_legacy_status
+[Re-Run] resolved scope from run_2026-05-08_15-44-002:
+         db_profile=prod-pg, prompt_detail=high, n_alternatives=3
+[Profile] reusing cached table profile (sales.customer)  ✓
+[LLM]     drafting 1 column description ............  ok (2.4 s · $0.0011)
+✓ /rerun finished. New run id: run_2026-05-08_18-22-007
+  Confidence: high 1 · medium 0 · low 0
+```
+
+Re-Run produces a **new run id** of its own; the original run row,
+its alternatives, and its audit trail all stay intact. The two are
+naturally side-by-side in `/compare`. Pass a list of `<schema>.<table>.<column>`
+addresses to re-run multiple rows in one shot.
+
+The **first-run profile cache** means re-runs skip the introspection
+cost (no new sample query, no second `pg_stats` lookup), so re-running
+many rows of the same table is cheap.
+
+### 6. Single-shot draft with `/generate`
+
+When you want one column drafted without spinning up the full `/run`
+pipeline, `/generate` takes a single asset address and returns the
+draft inline:
+
+```text
+> /generate sales.customer.c_first_name --n-alternatives 3 --verbosity terse
+[LLM] drafting 1 column · prompt_detail=auto · temperature=0.2  ok (1.8 s · $0.0009)
+
+draft 1: "Customer's given name."
+draft 2: "First / given name of the customer record."
+draft 3: "Given name component of the customer's full name."
+```
+
+`/generate` respects the same flag matrix as `/run`:
+
+| Flag | Default | Effect |
+|---|---|---|
+| `--n-alternatives N` | from LLM profile | Number of drafts to surface (1-5) |
+| `--verbosity {terse,balanced,verbose}` | `balanced` | Output length target |
+| `--temperature F` | from LLM profile | Sampling temperature, `[0.0, 2.0]` |
+| `--prompt-detail {low,auto,high}` | `auto` | How much profile context to feed the LLM |
+
+The result lands in the review queue with a fresh run id and the
+target database / catalog captured on the run row, so a later
+`/rerun` reproduces the original scope exactly.
+
+In Studio, the per-table **Gen** button on Browse pages now uses the
+same path under the hood — it spawns a background run instead of
+blocking the UI on an inline LLM call.
+
+### 7. The shortcut: `/run-apply`
 
 For one-shot warehouse sweeps where you've already validated the LLM profile:
 

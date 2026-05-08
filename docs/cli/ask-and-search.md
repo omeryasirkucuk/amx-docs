@@ -51,11 +51,18 @@ Cited:
   - sales.customer_address.ca_customer_sk  (column) — FK to sales.customer.
   - sales.order_address     (table)        — Per-order snapshot; not the source of truth.
   - sales.customer          (table)        — Customer master; one current address per customer.
+
+[2 profiles · 3.4 s · focus: prod-pg · 6,184 in / 412 out · $0.0029]
 ```
 
 Every `/ask` answer ends with a `Cited:` block listing the catalog entries the LLM
-actually used. If the answer doesn't match the cited evidence, you've found a prompt
-or retrieval bug — file it.
+actually used, plus a one-line footer with profile count, latency, the
+auto-detected focus profile, and **per-turn token + USD cost**. If the
+answer doesn't match the cited evidence, you've found a prompt or retrieval
+bug — file it. Cost is computed against the same versioned per-(provider,
+model) pricing table that powers the run cost surfaces; see
+[Costs and pricing](studio.md#costs-and-pricing) for overrides and the
+freshness badge.
 
 ### 3. The seven answer shapes
 

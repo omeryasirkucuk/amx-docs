@@ -56,8 +56,21 @@ For a typical 47-table / 1,283-column schema, drafting descriptions once:
 | Local `llama3` on a workstation | $0 (bring your own GPU) |
 
 Numbers are illustrative — actual cost depends on column-name length, sample-value
-length, and the provider's per-token rate at the time. Always run a single-table `/run`
-first and check the LLM line for `tokens in / out` before unleashing it on a warehouse.
+length, and the provider's per-token rate at the time.
+
+AMX no longer makes you guess. Every LLM call reports both **tokens
+and USD** at every surface that triggered it — `/run`, `/run-apply`,
+`/generate`, `/ask`, the Studio run progress header, and the lifetime
+cost card on the Studio Overview. Cost comes from a versioned
+per-(provider, model) pricing table that AMX caches on disk with a
+freshness timestamp; the Studio top bar shows a pricing-cache
+freshness badge and a one-click refresh button. You can pin a
+**price override** per model from Settings → LLM (an auto-detected
+hint pre-fills the field). Every run row records both the price it
+ran at (frozen) and the price it would cost today (live), so a stale
+price never silently rewrites history. See
+[Costs and pricing](../cli/studio.md#costs-and-pricing) for the full
+walkthrough.
 
 ## Setup walkthroughs
 
