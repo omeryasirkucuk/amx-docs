@@ -119,8 +119,13 @@ fixing the privilege grant resumes from the same audit trail.
 
 ## `/compare`
 
-`/history compare` is the heaviest tool in the namespace — pivots multiple runs side by
-side across four Rich tables:
+`/history compare` pivots multiple runs side-by-side across four Rich tables — run
+summary, run settings, per-column descriptions, aggregate metrics — and adds an academic
+**Quality metrics** panel that scores actual *correctness* rather than the LLM's
+self-confidence (which `logprob_score` alone measures, with well-known overconfidence
+bias).
+
+### Tables
 
 1. **Run summary** — identity (profiles, model, duration, approval rate). Highlights the
    dimension that varies between runs.
@@ -129,8 +134,37 @@ side across four Rich tables:
 3. **Per-column results** — top description + confidence band + `logprob_score` + tokens.
    Best logprob per row in green.
 4. **Aggregate metrics** — timing + tokens + confidence distribution. Best per row bolded.
+5. **Quality metrics** *(new)* — chrF, ROUGE-L, BERTScore, schema grounding, length
+   appropriateness, type-token ratio, optional embedding agreement and LLM-judge
+   win-rate. See [Quality framework](#quality-metric-framework) below.
 
-### Flags
+### Studio modal
+
+Clicking **Compare** in `amx /studio` opens the picker at `/runs/compare`:
+
+- **Paged picker** — sticky-header page-size selector (10 / 20 / 50 / 100, persisted in
+  `localStorage`), Prev / Next, "Clear selection". Search + kind filters (analyze /
+  rerun / generate / ask) compose with paging.
+- **Modal results** — pick at least 2 runs, click Compare, the comparison opens in a
+  full-width Dialog over the picker. The picker stays visible underneath so you can
+  iterate on the selection. Previous behaviour (result rendered below the picker) was
+  removed in 0.15.
+- **Set baseline** — once a run is picked, a small **Set baseline** button appears next
+  to it. Click to pin that run as the academic ground-truth baseline for reference-based
+  metrics (chrF, ROUGE-L, BERTScore). Click again to unpin. Mirrors `--ground-truth-run`
+  on the CLI.
+- **Run deeper analysis** — the modal footer carries a button that triggers Tier 1
+  (sentence-transformer embeddings + BERTScore when installed) + Tier 2 (LLM-as-judge
+  tournament). A cost-preview Dialog confirms before any LLM token is spent. The result
+  replaces the Tier 0 view in the same modal.
+- **Ask AMX** — modal footer button. Closes the modal and seeds a chat at `/ask` with
+  the comparison context preloaded; the LLM uses the new `compare_runs` tool to fetch
+  detail itself if it needs more.
+- **Download PDF** — landscape A4 dark-themed report, AMX logo on every page,
+  warm-stone palette identical to the modal, `Methods` section with full bibliographic
+  citations. Carries whichever quality tier was active in the modal.
+
+### CLI flags
 
 | Flag | Description |
 |---|---|
@@ -144,30 +178,160 @@ side across four Rich tables:
 | `--csv FILE` | Also write the comparison as CSV |
 | `--md FILE` | Also write as markdown |
 | `--json FILE` | Also write as JSON |
+| `--quality basic\|full\|none` | Quality metric tier (default `basic` = Tier 0) |
+| `--ground-truth-run ID` | Pin one of the runs as the academic baseline |
 
 JSON output pairs cleanly with pandas / Jupyter. The shape is documented in the AMX repo
 under `tests/eval/README.md`. The keys `schema_version`, `run_summary`, `per_column`, and
 `aggregate_metrics` are stable.
 
-### Examples
+### Quality metric framework
 
-Compare the last three runs against `t001`, with diff highlights:
+`/history compare` historically picked a "winner" by highest `logprob_score`. Logprob is
+the LLM's *self-confidence*; it correlates with overconfidence bias and tells you nothing
+about whether the description is actually correct. The Quality framework replaces that
+heuristic with three opt-in tiers of academic metrics drawn from the standard NLG
+evaluation literature.
 
-```text
-/history compare --last 3 --table t001 --diff
+#### Reference resolution waterfall
+
+Reference-based metrics (chrF, ROUGE-L, BERTScore, Levenshtein) need a ground truth.
+AMX walks four sources in order:
+
+1. **User pin** — `--ground-truth-run ID` on the CLI, "Set baseline" radio in Studio.
+2. **Live DB COMMENT** — `COMMENT ON COLUMN` / `COMMENT ON TABLE` from the active DB
+   profile. SQL-standard, the most authoritative ground-truth proxy when the team has
+   already documented the column upstream.
+3. **Catalog applied** — most recent `apply_events` row for the same asset (the last
+   description AMX wrote to the DB).
+4. **None** — reference-based metrics short-circuit cleanly. Reference-free metrics
+   (length, type-token ratio, schema grounding, embedding agreement, LLM judge) still
+   run.
+
+The Studio modal Quality card shows a one-line resolution summary so you know whether
+the reference-based numbers had a real ground truth or fell back to a baseline run.
+
+#### Tier 0 — offline, deterministic, free
+
+Always on with `--quality basic` (default).
+
+| Metric | Reference required | Citation | Library |
+|---|---|---|---|
+| **Length appropriateness** | no | (heuristic) | stdlib |
+| **Type-token ratio (TTR)** | no | Templin 1957 | stdlib |
+| **Schema grounding** | no | Jaccard 1912 token containment | stdlib |
+| **chrF** | yes | Popović 2015 | `sacrebleu` |
+| **ROUGE-L** | yes | Lin 2004 | `rouge-score` |
+| **Levenshtein edit distance** | yes | Levenshtein 1966 | `difflib` |
+
+```sh
+pip install amx-cli[quality]   # sacrebleu + rouge-score
 ```
 
-Compare two specific run IDs grouped by LLM model:
+#### Tier 1 — local sentence embeddings (free, opt-in)
+
+Fired by `--quality full` on the CLI or "Run deeper analysis" in Studio.
+
+- **Embedding agreement matrix** — for each asset, pairwise cosine similarity between
+  the runs' descriptions. High = the run agrees with the consensus; low = outlier.
+- **Semantic schema grounding** — cosine similarity between the description embedding
+  and a synthetic schema-anchor embedding (`table.column (dtype)`).
+- **BERTScore** *(Tier 1.5)* — Zhang et al. 2020. Heavier (~400MB BERT model on first
+  call) but captures paraphrase-aware semantic similarity where chrF / ROUGE only
+  capture lexical overlap. Opt-in via the `bertscore` extra.
+
+```sh
+pip install amx-cli[quality,local-embeddings]    # all-MiniLM-L6-v2 default
+pip install amx-cli[quality,bertscore]           # + BERTScore
+```
+
+#### Tier 2 — LLM-as-judge (paid, opt-in)
+
+G-Eval pairwise tournament (Liu et al. 2023; Prometheus 2 — Kim et al. 2024 — uses the
+same evaluator family). For each asset and each pair `(run_a, run_b)`, the active LLM
+returns:
+
+```json
+{"winner": "A" | "B" | "tie", "reasoning": "<one sentence>", "confidence": 0.0-1.0}
+```
+
+Per-run **win-rate** (`wins / pairings`) is the headline aggregate. Cost is audited as
+a `quality_judge` row in `app_events` (so it shows up in `/usage` aggregates and the
+Studio Audit page) and cached by `(run_a, run_b, asset)` so duplicate calls don't
+re-bill. The compared runs' own `tokens_json` is left untouched — those rows are
+closed historical records of the analyze runs that produced the descriptions.
+
+A typical 50-column × 3-run comparison runs ~150 judge calls; on `gpt-4o-mini` that's
+roughly **$0.01–$0.02**.
+
+### Examples
+
+Compare the last three runs with the default Tier 0 quality panel:
 
 ```text
-/history compare 142 159 --by llm_model
+/history compare --last 3
+```
+
+Pin run 60 as the ground truth and run the full Tier 1+2 pipeline:
+
+```text
+/history compare 58 59 60 --quality full --ground-truth-run 60
 ```
 
 Export to JSON for downstream analysis:
 
 ```text
-/history compare --last 5 --schema sap_s6p --json /tmp/sap_s6p_runs.json
+/history compare --last 5 --schema my_schema --json /tmp/runs.json
 ```
+
+### Ask AMX integration
+
+Natural-language compare via the `compare_runs` LLM tool. Two examples:
+
+```text
+> compare runs 58, 59 — which is more accurate?
+```
+
+The agent calls `compare_runs(run_ids=[58, 59], quality_tier=1)` and explains *why* each
+run wins per metric — not just the numbers. Sample response style:
+
+> #58 wins on schema grounding (0.84 vs 0.52, Jaccard 1912) because its descriptions
+> reference both the column name and dtype, whereas #59 stays generic. #59 wins on chrF
+> (Popović 2015) by a small margin against the live DB COMMENT — closer to the existing
+> wording the team agreed on.
+
+```text
+> I ran analyze on the address table last week — please compare those runs
+```
+
+The agent first calls `list_past_runs(table="address")` to resolve candidate IDs, then
+`compare_runs` with the matching set.
+
+### Academic methods
+
+Bibliographic references for the Quality framework. The Studio modal renders this as a
+collapsed footnote under the Quality card; the PDF report prints it as a `Methods`
+section at the bottom.
+
+- **chrF** — Popović, M. (2015). chrF: character n-gram F-score for automatic MT
+  evaluation. WMT 2015. <https://aclanthology.org/W15-3049/>
+- **ROUGE-L** — Lin, C.-Y. (2004). ROUGE: A Package for Automatic Evaluation of
+  Summaries. ACL workshop. <https://aclanthology.org/W04-1013/>
+- **BERTScore** — Zhang, T., Kishore, V., Wu, F., Weinberger, K. Q., & Artzi, Y. (2020).
+  BERTScore: Evaluating Text Generation with BERT. ICLR 2020.
+  <https://arxiv.org/abs/1904.09675>
+- **G-Eval** — Liu, Y., Iter, D., Xu, Y., Wang, S., Xu, R., & Zhu, C. (2023). G-Eval:
+  NLG Evaluation using GPT-4 with Better Human Alignment. EMNLP 2023.
+  <https://arxiv.org/abs/2303.16634>
+- **Prometheus 2** — Kim, S., Suk, J., Longpre, S., et al. (2024). Prometheus 2: An
+  Open Source Language Model Specialized in Evaluating Other Language Models. EMNLP
+  2024. <https://arxiv.org/abs/2405.01535>
+- **Type-token ratio** — Templin, M. C. (1957). Certain Language Skills in Children.
+  University of Minnesota Press.
+- **Levenshtein distance** — Levenshtein, V. I. (1966). Binary codes capable of
+  correcting deletions, insertions, and reversals. Soviet Physics Doklady, 10(8).
+- **Jaccard similarity (schema grounding)** — Jaccard, P. (1912). The Distribution of
+  the Flora in the Alpine Zone. New Phytologist, 11(2), 37–50.
 
 ## `/usage`
 
