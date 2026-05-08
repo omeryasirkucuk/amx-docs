@@ -243,7 +243,7 @@ pip install amx-cli[quality,local-embeddings]    # all-MiniLM-L6-v2 default
 pip install amx-cli[quality,bertscore]           # + BERTScore
 ```
 
-#### Tier 2 — LLM-as-judge (paid, opt-in)
+#### Tier 2 — LLM-as-judge (opt-in, consumes tokens on the active LLM)
 
 G-Eval pairwise tournament (Liu et al. 2023; Prometheus 2 — Kim et al. 2024 — uses the
 same evaluator family). For each asset and each pair `(run_a, run_b)`, the active LLM

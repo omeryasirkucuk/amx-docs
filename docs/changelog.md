@@ -46,7 +46,7 @@ shipped axes:
   1912 token containment), length appropriateness, type-token
   ratio (Templin 1957). Tier 1 (free, local): pairwise sentence-
   embedding cosine agreement + semantic schema grounding via
-  `sentence-transformers`. Tier 2 (paid, opt-in): G-Eval pairwise
+  `sentence-transformers`. Tier 2 (opt-in, consumes tokens on the active LLM): G-Eval pairwise
   tournament (Liu et al. 2023; Prometheus 2 — Kim et al. 2024).
   Reference resolution waterfall — user pin → live DB
   `COMMENT ON COLUMN` → most-recent applied → none — makes the
@@ -78,7 +78,7 @@ never silently rewrites history.
 re-executed with the original context preserved — DB scope, prompt
 detail, alternatives count, and the cached first-run table profile are
 reused so a re-run is comparable to its source instead of a fresh shot.
-The introspection cost paid on the first run is amortized across every
+The introspection cost absorbed on the first run is amortized across every
 subsequent re-run.
 
 **Studio Landing.** `/` is a calm landing page; the dashboard moved to
