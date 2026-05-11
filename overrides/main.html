@@ -11,6 +11,85 @@
   <link rel="shortcut icon" href="https://amxcli.com/favicon.ico">
   <link rel="apple-touch-icon" href="https://amxcli.com/favicon.png">
   <meta name="yandex-verification" content="89f73bc0a39a325a">
+
+  {# Per-page SEO values; fall back to site defaults. Material exposes
+     page.meta from YAML front-matter, page.canonical_url per page, and
+     page.is_homepage for the landing page. #}
+  {%- if page and not page.is_homepage -%}
+    {%- set _seo_title = page.title ~ " — AMX CLI" -%}
+    {%- set _seo_type  = "article" -%}
+  {%- else -%}
+    {%- set _seo_title = "AMX — Agentic Metadata Extractor" -%}
+    {%- set _seo_type  = "website" -%}
+  {%- endif -%}
+  {%- set _seo_desc  = (page.meta.description if page and page.meta and page.meta.description else config.site_description) -%}
+  {%- set _seo_url   = (page.canonical_url if page and page.canonical_url else config.site_url) -%}
+  {%- set _seo_image = "https://amxcli.com/assets/cli-hero.png" -%}
+
+  {# Open Graph — social shares (Twitter, LinkedIn, Slack, Reddit, HN) and
+     a minor SEO signal. Without these, link previews render blank. #}
+  <meta property="og:type" content="{{ _seo_type }}">
+  <meta property="og:site_name" content="AMX CLI">
+  <meta property="og:title" content="{{ _seo_title }}">
+  <meta property="og:description" content="{{ _seo_desc }}">
+  <meta property="og:url" content="{{ _seo_url }}">
+  <meta property="og:image" content="{{ _seo_image }}">
+  <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
+  <meta property="og:locale" content="en_US">
+
+  {# Twitter Card — summary_large_image renders the hero image at full width. #}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{{ _seo_title }}">
+  <meta name="twitter:description" content="{{ _seo_desc }}">
+  <meta name="twitter:image" content="{{ _seo_image }}">
+
+  {# JSON-LD: SoftwareApplication disambiguates AMX (the CLI) from AMX LLC,
+     NYSE: AMX (América Móvil), AMC AMX, etc. WebSite enables sitelinks
+     search box and reinforces the alternate-name "AMX CLI". #}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AMX",
+    "alternateName": ["AMX CLI", "amx-cli", "Agentic Metadata Extractor"],
+    "applicationCategory": "DeveloperApplication",
+    "applicationSubCategory": "Data Catalog / Metadata Management",
+    "operatingSystem": "macOS, Linux, Windows",
+    "url": "https://amxcli.com/",
+    "downloadUrl": "https://pypi.org/project/amx-cli/",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "description": "{{ config.site_description }}",
+    "author": {
+      "@type": "Person",
+      "name": "Omer Yasir Kucuk",
+      "url": "https://github.com/omeryasirkucuk"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "codeRepository": "https://github.com/omeryasirkucuk/amx",
+    "programmingLanguage": "Python"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "AMX CLI",
+    "alternateName": "AMX — Agentic Metadata Extractor",
+    "url": "https://amxcli.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://amxcli.com/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
 {% endblock %}
 
 {% block htmltitle %}
