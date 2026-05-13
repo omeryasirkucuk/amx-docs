@@ -395,6 +395,8 @@
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/scoping/"
+         >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
          >Human in the Loop</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -416,6 +418,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
@@ -424,6 +428,8 @@
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/restore-config/"
+         >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -479,7 +485,9 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a></div>
+         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/responsive-studio/"
+         >Responsive Studio</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -593,6 +601,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/benchmarks/"
          >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../evaluation/bulk-review/"
+         >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/comparisons/"
          >Comparisons</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
@@ -715,10 +725,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-migrate-existing-local-history-optional" class="md-nav__link">
+  <a href="#2-migrate-local-history-one-shot" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Migrate existing local history (optional)
+        2. Migrate local history (one-shot)
       
     </span>
   </a>
@@ -726,10 +736,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-disable-back-to-local-only" class="md-nav__link">
+  <a href="#3-pull-teammates-rows-into-local-cache" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Disable (back to local-only)
+        3. Pull teammates' rows into local cache
       
     </span>
   </a>
@@ -737,10 +747,32 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-flush-drop-the-tables-entirely-irreversible" class="md-nav__link">
+  <a href="#4-disable-back-to-local-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Flush (drop the tables entirely — irreversible)
+        4. Disable (back to local-only)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-flush-the-dual-write-outbox" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Flush the dual-write outbox
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-dump-the-bootstrap-ddl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Dump the bootstrap DDL
       
     </span>
   </a>
@@ -928,41 +960,65 @@ out of sync.</p>
 </span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
 </span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>✓ History store enabled. Future /run / /apply will write to AMX.amx_history_*.
 </span></code></pre></div>
-<h3 id="2-migrate-existing-local-history-optional">2. Migrate existing local history (optional)<a class="headerlink" href="#2-migrate-existing-local-history-optional" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /history-store migrate
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Found 47 runs in ~/.amx/history.db. Migrate to AMX.amx_history_*? [y/N]: y
+<h3 id="2-migrate-local-history-one-shot">2. Migrate local history (one-shot)<a class="headerlink" href="#2-migrate-local-history-one-shot" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /history-store migrate-from-local
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Found 47 runs in ~/.amx/history.db. Copy to AMX.amx_history_*? [y/N]: y
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>[1/47] run_2026-04-15_09-12-001 ............  ok
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[2/47] run_2026-04-15_10-04-002 ............  ok
 </span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>...
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>[47/47] run_2026-05-03_15-44-002 ............  ok
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>✓ /history-store migrate finished. 47 runs imported.
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>✓ /history-store migrate-from-local finished. 47 runs imported.
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>Local file ~/.amx/history.db kept (not deleted) — remove it manually after verifying.
 </span></code></pre></div>
-<p>The local file is kept on purpose so you can roll back. Verify with <code>/history list</code>,
-then <code>rm ~/.amx/history.db</code> once you're satisfied.</p>
-<h3 id="3-disable-back-to-local-only">3. Disable (back to local-only)<a class="headerlink" href="#3-disable-back-to-local-only" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /history-store disable
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>About to switch back to per-user local file (~/.amx/history.db). Existing rows in
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>AMX.amx_history_* will NOT be deleted; they&#39;re just no longer the active store.
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Proceed? [y/N]: y
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>✓ History store disabled. /history now reads ~/.amx/history.db.
+<p>The copy is <strong>idempotent</strong> — re-running skips rows that already landed in the
+shared schema, so partial failures are safe to retry. The local file is kept
+on purpose; verify with <code>/history list</code>, then <code>rm ~/.amx/history.db</code> once
+you're satisfied.</p>
+<h3 id="3-pull-teammates-rows-into-local-cache">3. Pull teammates' rows into local cache<a class="headerlink" href="#3-pull-teammates-rows-into-local-cache" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /history-store pull-from-shared
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Pulling shared rows newer than 2026-05-03_15-44-002 (your last local row)…
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[1/12] run_2026-05-04_08-10-001 (alice@laptop) ......  ok
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>...
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>[12/12] run_2026-05-12_17-22-004 (bob@desktop) .......  ok
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>✓ /history-store pull-from-shared finished. 12 rows added to local cache.
 </span></code></pre></div>
-<h3 id="4-flush-drop-the-tables-entirely-irreversible">4. Flush (drop the tables entirely — irreversible)<a class="headerlink" href="#4-flush-drop-the-tables-entirely-irreversible" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /history-store flush
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>WARNING: This DROPs AMX.amx_history_runs and AMX.amx_history_results.
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>         All shared run history is lost. There is no undo.
+<p>Use this when you want a <code>/history list</code> that includes teammates' runs even
+when offline. The shared store remains authoritative; the local cache is
+write-through, never write-back.</p>
+<h3 id="4-disable-back-to-local-only">4. Disable (back to local-only)<a class="headerlink" href="#4-disable-back-to-local-only" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /history-store disable
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>About to switch back to per-user local file (~/.amx/history.db). Existing rows in
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>AMX.amx_history_* will NOT be deleted; they&#39;re just no longer the active store.
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Type the schema name (AMX) to confirm: AMX
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>[1/2] DROP TABLE AMX.amx_history_results .....  ok
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>[2/2] DROP TABLE AMX.amx_history_runs ........  ok
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>✓ /history-store flush finished. Schema AMX is intact (drop manually if no longer used).
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Proceed? [y/N]: y
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>✓ History store disabled. /history now reads ~/.amx/history.db.
 </span></code></pre></div>
-<p>The <code>AMX</code> schema itself is left so you can re-enable later with the same name (or
-drop the schema by hand if you're done).</p>
+<h3 id="5-flush-the-dual-write-outbox">5. Flush the dual-write outbox<a class="headerlink" href="#5-flush-the-dual-write-outbox" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /history-store flush-pending
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Outbox depth: 7 rows queued for shared write (last attempt 12m ago).
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>[1/7] run_2026-05-13_14-22-003.results ....  ok
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>[2/7] run_2026-05-13_14-22-003.update  ....  ok
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>...
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>[7/7] run_2026-05-13_14-30-001.results ....  ok
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>✓ /history-store flush-pending finished. Outbox is empty.
+</span></code></pre></div>
+<p><code>flush-pending</code> retries dual-writes that failed at write time (DB unreachable,
+permission blip, etc.) — it does <strong>not</strong> drop any tables. The local SQLite file
+is the source of truth for the outbox queue, so re-running drains whatever is
+queued without re-writing already-mirrored rows.</p>
+<h3 id="6-dump-the-bootstrap-ddl">6. Dump the bootstrap DDL<a class="headerlink" href="#6-dump-the-bootstrap-ddl" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /history-store dump-ddl
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>-- AMX history-store bootstrap DDL (PostgreSQL dialect)
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>CREATE SCHEMA IF NOT EXISTS AMX;
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>CREATE TABLE AMX.amx_history_runs (...);
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>...
+</span></code></pre></div>
+<p>Use this when your DBA needs to pre-create the schema and tables by hand
+(e.g. permissions don't allow AMX itself to <code>CREATE SCHEMA</code>). The DDL is
+dialect-translated for the active DB profile's backend.</p>
 <h2 id="multi-machine-sync-what-to-expect">Multi-machine sync — what to expect<a class="headerlink" href="#multi-machine-sync-what-to-expect" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -993,18 +1049,18 @@ drop the schema by hand if you're done).</p>
 <p>The store doesn't push notifications — it's pull-based. <code>/history list</code> does a SELECT
 each time, so all team members see fresh state on every call.</p>
 <h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db-prod.eu-west-1.rds.amazonaws.com</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx_history_writer</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/prod-pg/password</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="nt">history_store_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="nt">history_store_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-pg</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nt">history_store_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AMX</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db-prod.eu-west-1.rds.amazonaws.com</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx_history_writer</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/prod-pg/password</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="nt">history_store_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="nt">history_store_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-pg</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="nt">history_store_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AMX</span>
 </span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
@@ -1048,9 +1104,14 @@ each time, so all team members see fresh state on every call.</p>
 <td><code>ANALYZE AMX.amx_history_runs; ANALYZE AMX.amx_history_results;</code></td>
 </tr>
 <tr>
-<td><code>/history-store migrate</code> fails partway through</td>
+<td><code>/history-store migrate-from-local</code> fails partway through</td>
 <td>Local SQLite file has a row that violates a NOT NULL constraint in the new schema</td>
 <td>The migration is idempotent; re-run with <code>--skip-errors</code> to skip the bad row, then inspect <code>~/.amx/history.db</code> for the offender</td>
+</tr>
+<tr>
+<td>Outbox depth keeps climbing in <code>/history-store status</code></td>
+<td>Shared DB intermittently unreachable so dual-writes queue without being drained</td>
+<td><code>/history-store flush-pending</code> once the DB is healthy; consider a daemon-side <code>pull-from-shared</code> cron if the gap is persistent</td>
 </tr>
 </tbody>
 </table>

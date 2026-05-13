@@ -93,7 +93,15 @@
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
+         <loc>https://amxcli.com/cli/restore-config/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
          <loc>https://amxcli.com/cli/run-and-apply/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/cli/schedules/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
@@ -126,6 +134,10 @@
     </url>
     <url>
          <loc>https://amxcli.com/concepts/human-in-the-loop/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/concepts/scoping/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
@@ -165,6 +177,10 @@
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
+         <loc>https://amxcli.com/evaluation/bulk-review/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
          <loc>https://amxcli.com/evaluation/comparisons/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
@@ -186,6 +202,10 @@
     </url>
     <url>
          <loc>https://amxcli.com/guides/batch-large-schema/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/guides/responsive-studio/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>

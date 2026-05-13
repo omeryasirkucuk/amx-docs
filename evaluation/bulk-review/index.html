@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/llm-providers/batch-mode/">
+        <link rel="canonical" href="https://amxcli.com/evaluation/bulk-review/">
       
       
-        <link rel="prev" href="../ollama-local/">
+        <link rel="prev" href="../benchmarks/">
       
       
-        <link rel="next" href="../../data-sources/codebase/">
+        <link rel="next" href="../comparisons/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Batch mode - AMX</title>
+        <title>Bulk review - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Batch mode — AMX CLI">
+  <meta property="og:title" content="Bulk review — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/llm-providers/batch-mode/">
+  <meta property="og:url" content="https://amxcli.com/evaluation/bulk-review/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Batch mode — AMX CLI">
+  <meta name="twitter:title" content="Bulk review — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#batch-mode" class="md-skip">
+        <a href="#bulk-review" class="md-skip">
           Skip to content
         </a>
       
@@ -534,20 +534,20 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-llm-providers-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../"
+         href="../../llm-providers/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../openai/"
+         href="../../llm-providers/openai/"
          >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../anthropic/"
+         href="../../llm-providers/anthropic/"
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../gemini/"
+         href="../../llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../databricks-serving/"
+         href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../ollama-local/"
-         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Batch mode</a></div>
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-data-sources">
       <button type="button"
@@ -599,11 +599,11 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-evaluation-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../evaluation/benchmarks/"
-         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../evaluation/bulk-review/"
-         >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../evaluation/comparisons/"
+         href="../benchmarks/"
+         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../comparisons/"
          >Comparisons</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-troubleshooting">
@@ -680,10 +680,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#where-it-lives" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Where it lives
       
     </span>
   </a>
@@ -691,71 +691,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#filter-search-sort-group" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step-by-step">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-enable-batch-mode-for-the-active-llm-profile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Enable batch mode for the active LLM profile
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-submit-a-batch-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Submit a batch /run
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-watch-the-batch-progress" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Watch the batch progress
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-review-and-apply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Review and apply
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cost-time-trade-offs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cost / time trade-offs
+        Filter / search / sort / group
       
     </span>
   </a>
@@ -763,10 +702,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#column-level-review" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
+        Column-level review
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#column_overrides-persistence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        column_overrides persistence
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pagination" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pagination
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#repl-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REPL parity
       
     </span>
   </a>
@@ -778,17 +750,6 @@
     <span class="md-ellipsis">
       
         Verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
       
     </span>
   </a>
@@ -833,12 +794,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>LLM Providers</span>
+            <span>Evaluation</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Batch mode</span>
+      <span>Bulk review</span>
     </div>
   </div>
 
@@ -847,190 +808,127 @@
 
 
 
-<h1 id="batch-mode">Batch mode<a class="headerlink" href="#batch-mode" title="Permanent link">&para;</a></h1>
-<p>For wide schemas, AMX can route a <code>/run</code> through the provider's Batch API instead of
-the live chat API. You pay roughly <strong>half the live-call price</strong> in exchange for an
-asynchronous SLA — the provider returns results within minutes-to-hours instead of
-seconds. This page walks through enabling batch mode, submitting and polling a batch,
-checking provider dashboards for in-flight status, and reviewing the results.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>AMX installed (<code>pip install amx-cli</code>).</li>
-<li>An active LLM profile on a provider that supports batch — currently <strong>OpenAI</strong> and <strong>Anthropic</strong>.</li>
-<li>An active database profile.</li>
-<li>A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.</li>
-</ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-enable-batch-mode-for-the-active-llm-profile">1. Enable batch mode for the active LLM profile<a class="headerlink" href="#1-enable-batch-mode-for-the-active-llm-profile" title="Permanent link">&para;</a></h3>
-<p>Edit <code>~/.amx/config.yml</code> and add <code>batch_mode: true</code> under the LLM profile:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span><span class="w">             </span><span class="c1"># cheap models pair well with batch</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">          </span><span class="c1"># bigger batches = fewer batch jobs</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">      </span><span class="c1"># how often AMX polls the provider</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w">        </span><span class="c1"># 24h timeout (provider SLA)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nt">active_llm_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai-batch</span>
-</span></code></pre></div>
-<p>Then restart AMX — config changes are picked up at session start.</p>
-<h3 id="2-submit-a-batch-run">2. Submit a batch <code>/run</code><a class="headerlink" href="#2-submit-a-batch-run" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /run sales
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[scope] 47 tables · 1,283 columns
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[Profile] sampled scan on 47 tables ... ok in 18.4 s
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[LLM]     submitting OpenAI batch (1,283 columns, 64 requests, est. cost: $1.42)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          → batch id: batch_abc123def456
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          → provider dashboard: https://platform.openai.com/batches/batch_abc123def456
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          → polling every 60 s ...
-</span></code></pre></div>
-<p><code>/run</code> does not block your terminal — you can <code>/exit</code>, restart later, and resume polling
-with <code>/batch resume &lt;batch-id&gt;</code>. The batch id is also written to <code>/history</code> so you can
-look it up via <code>/history list --filter batch</code>.</p>
-<h3 id="3-watch-the-batch-progress">3. Watch the batch progress<a class="headerlink" href="#3-watch-the-batch-progress" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /batch status
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  state: in_progress
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  submitted: 2 min ago
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  requests: 64 total · 28 finished · 36 in-progress · 0 failed
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  est. completion: ~7 min
-</span></code></pre></div>
-<p>Or open the provider dashboard for a UI view:</p>
-<ul>
-<li><strong>OpenAI</strong>: <a href="https://platform.openai.com/batches">platform.openai.com/batches</a> — shows progress, errors, and download links.</li>
-<li><strong>Anthropic</strong>: <a href="https://console.anthropic.com/batches">console.anthropic.com/batches</a>.</li>
-</ul>
-<p>When AMX polls and sees <code>state: completed</code>, it downloads and parses results
-automatically; you'll see a notification at the next prompt:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /batch status
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  state: completed
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  duration: 9 min 12 s
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  requests: 64 total · 64 finished · 0 failed
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  → results merged into review queue: /run review
-</span></code></pre></div>
-<h3 id="4-review-and-apply">4. Review and apply<a class="headerlink" href="#4-review-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /run review
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Review row 1/64 (low confidence): sales.customer.x_legacy_status
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  draft: &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt; A
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>...
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>&gt; /apply
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Write 1,283 comment(s) to db-prod/sales? [y/N]: y
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>... (1,283/1,283 written)
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
-</span></code></pre></div>
-<p>By default AMX walks you through low-confidence rows first; medium and high are
-bulk-accepted unless you pass <code>--review-all</code>.</p>
-<h2 id="cost-time-trade-offs">Cost / time trade-offs<a class="headerlink" href="#cost-time-trade-offs" title="Permanent link">&para;</a></h2>
+<h1 id="bulk-review">Bulk review<a class="headerlink" href="#bulk-review" title="Permanent link">&para;</a></h1>
+<p>A <code>/analyze run</code> against a real warehouse typically produces hundreds of
+candidate descriptions in one go. The bulk review surface is the cluster of
+filters, sort options, and column-level controls that turn that into an
+actually-reviewable list — without forcing the reviewer to scroll a
+several-thousand-row table top-to-bottom.</p>
+<p>This page documents the controls (Studio first, REPL parity below), what
+counts as a "column-level" decision, and how <code>column_overrides</code> keep per-row
+choices durable across re-runs.</p>
+<h2 id="where-it-lives">Where it lives<a class="headerlink" href="#where-it-lives" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Provider price</th>
-<th>Wall time (1,000 cols)</th>
-<th>When to use</th>
+<th>Surface</th>
+<th>Page</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Live (default)</td>
-<td>$1.00 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>~30 s</td>
-<td>Day-to-day single-table runs; iterating on prompts</td>
+<td>Studio</td>
+<td><code>/runs/:id</code> (Results tab) and <code>/pending</code></td>
 </tr>
 <tr>
-<td>Batch</td>
-<td>$0.50 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>5 min – 24 h</td>
-<td>Whole-warehouse drafts; nightly sweeps; CI pipelines</td>
+<td>REPL</td>
+<td><code>/analyze review</code> and <code>/history review &lt;run_id&gt;</code></td>
 </tr>
 </tbody>
 </table>
-<p>Batch is also strictly cheaper than running the live API in parallel up to your tier
-cap — you don't burn rate-limit budget that you might want for ad-hoc <code>/ask</code> queries
-later in the day.</p>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>OpenAI batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
+<h2 id="filter-search-sort-group">Filter / search / sort / group<a class="headerlink" href="#filter-search-sort-group" title="Permanent link">&para;</a></h2>
+<p>The Studio Results tab and the <code>/pending</code> queue both ship the same toolbar:</p>
+<ul>
+<li><strong>Filter — status.</strong> Multi-select chips: Accepted / Pending / Skipped /
+  Edited / Restored. The default is Pending so the reviewer sees only rows
+  that still need a decision.</li>
+<li><strong>Filter — confidence.</strong> High / Medium / Low. Backed by the logprob
+  thresholds (<code>/logprob-thresholds</code>); Low rows are usually where the LLM
+  expects you to step in.</li>
+<li><strong>Filter — kind.</strong> Table / Column / View / Materialized view, so a
+  reviewer can blast through all column rows first and come back to the
+  table-level prose later.</li>
+<li><strong>Search.</strong> Free-text matches the asset path, the candidate description,
+  and any prior comment. The match is fuzzy enough to land on
+  <code>users.created_at</code> when you type <code>created</code>, and tight enough to surface
+  only the relevant rows in a 4,000-row run.</li>
+<li><strong>Sort.</strong> By asset path, by confidence, by alternative count, or by length
+  of the candidate description (useful for spotting truncations).</li>
+<li><strong>Group.</strong> Group rows by schema or by table. Group headers collapse so
+  the reviewer can hide already-reviewed clusters and keep visual scope on
+  the next batch.</li>
+</ul>
+<p>Every filter / sort / group decision is encoded in the URL on the Studio
+side, so a teammate can paste a link to "the Low-confidence rows on
+sales.orders, sorted by description length" and land on the same view.</p>
+<h2 id="column-level-review">Column-level review<a class="headerlink" href="#column-level-review" title="Permanent link">&para;</a></h2>
+<p>Tables are reviewed in two layers:</p>
+<ol>
+<li><strong>The table description.</strong> One row at the top of the table's slice in
+   the Results tab. Same affordances as any other row: accept, edit, skip.</li>
+<li><strong>Each column.</strong> Indented under the table row. Column rows carry the
+   candidate description, confidence pill, and an <strong>alternatives</strong>
+   carousel (<code>/n_alternatives</code>-controlled candidate count). The reviewer
+   picks one with the number key, edits inline, or skips.</li>
+</ol>
+<p>A skip on a single column does <strong>not</strong> invalidate the table description.
+A skip on the table description does <strong>not</strong> invalidate column work below
+it — the orchestrator keeps the two as independent rows in <code>run_results</code>,
+so partial reviews are normal and the Pending queue reflects exactly what
+hasn't been touched.</p>
+<h2 id="column_overrides-persistence"><code>column_overrides</code> persistence<a class="headerlink" href="#column_overrides-persistence" title="Permanent link">&para;</a></h2>
+<p>When a reviewer edits a column inline, AMX records the override in the run
+row's <code>column_overrides</code> field. A subsequent <code>/rerun</code> (or the
+<a href="../../cli/studio/#re-run"><code>Re-Run</code> button</a>) reads the field and skips
+those columns by default — the reviewer's chosen text wins. Pass
+<code>--ignore-overrides</code> to re-draft from scratch when you explicitly want a
+fresh attempt on every column.</p>
+<p>The same field carries forward into <code>/analyze schedule</code> rows: a schedule
+that was added with column-level picks persists the override block, so the
+next fire re-uses it.</p>
+<h2 id="pagination">Pagination<a class="headerlink" href="#pagination" title="Permanent link">&para;</a></h2>
+<p>Studio paginates the Results tab at 100 rows per page; the page-size picker
+goes 25 / 50 / 100 / 250. The pager surfaces total row count and a
+"jump to page" input so a reviewer can resume on page 7 the next morning
+without losing place. URL state again preserves the page across reloads.</p>
+<p><code>/pending</code> paginates the same way; the <strong>Apply pending queue</strong> button
+applies <em>everything that matches the current filters</em> (not just the visible
+page), with a confirmation modal that prints the row count and target DB
+before any COMMENT lands.</p>
+<h2 id="repl-parity">REPL parity<a class="headerlink" href="#repl-parity" title="Permanent link">&para;</a></h2>
+<p><code>/analyze review</code> paginates the same set with <strong>n / p</strong> keys, accepts the
+same status filters via <code>--status</code>, and surfaces the same alternatives
+carousel:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /analyze review --status pending --kind column --limit 50
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>1/2,148  public.users.email      [Low]   2 alt
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  AMX → Email address of the registered user used for transactional notifications.
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  alt 1) Email address of the user account, used for password reset and notifications.
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  alt 2) Contact email captured at sign-up.
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Keys: [a]ccept · [e]dit · [s]kip · [1/2/3] pick alt · [n]ext · [p]rev · [q]uit
 </span></code></pre></div>
-<p>Anthropic batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">anthropic-batch</span><span class="p">:</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropic</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-haiku-3-5-20250101</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/anthropic-batch/api_key</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
-</span></code></pre></div>
+<p><code>/history review &lt;run_id&gt;</code> is the post-hoc equivalent — same UI, but
+re-opens an already-run pass for late edits. Edits there also write to
+<code>column_overrides</code> so the row is durable across re-runs.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
-<li><code>&gt; /llm test</code> — pings the chat API (not the batch API) to confirm credentials. Batch jobs use the same key.</li>
-<li><code>&gt; /batch status</code> — shows in-flight jobs and their state. Empty if no jobs are pending.</li>
-<li>Open the provider dashboard URL printed at submission time — confirms the job is registered server-side.</li>
+<li>In Studio Results, click <strong>Filter → Pending + Low</strong>, <strong>Group by table</strong> —
+   the row count in the page header should drop to "(showing 47 of 2,148)".</li>
+<li>Type a column name into Search; the visible rows narrow without a server
+   round-trip.</li>
+<li>Edit one column, navigate to <code>/runs/:id</code> Scope tab — the column should
+   appear in the <code>column_overrides</code> block.</li>
+<li><code>/rerun &lt;result_id&gt;</code> from the REPL — confirm the column you edited
+   is left alone and only the un-overridden columns get fresh drafts.</li>
 </ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OpenAI batch endpoint not enabled for project</code></td>
-<td>Project hasn't been opted into the Batch API tier</td>
-<td>Enable in <a href="https://platform.openai.com/settings/organization/limits">platform.openai.com/settings/organization/limits</a></td>
-</tr>
-<tr>
-<td>Batch state <code>failed</code> with <code>partial_failure: 12 / 64</code></td>
-<td>Some requests hit the model's per-request token limit</td>
-<td>Lower <code>column_batch_size</code>; <code>/run --recover-batch &lt;batch-id&gt;</code> retries only the failed sub-requests on the live API</td>
-</tr>
-<tr>
-<td>Polling never returns / state stuck on <code>validating</code></td>
-<td>Provider validation queue is backed up (rare)</td>
-<td>Wait; if still stuck after 30 min, cancel via the dashboard and re-submit</td>
-</tr>
-<tr>
-<td><code>batch_max_wait_s</code> exceeded</td>
-<td>Schema is wider than the timeout allows</td>
-<td>Bump <code>batch_max_wait_s</code> to <code>172800</code> (48 h) or split the schema across multiple <code>/run</code> calls</td>
-</tr>
-<tr>
-<td>Anthropic batch job returns half the columns</td>
-<td>Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column</td>
-<td>Confirm <code>column_batch_size</code> is 20+ so you stay under the request cap</td>
-</tr>
-<tr>
-<td>Cost was higher than estimate</td>
-<td>The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included</td>
-<td>Check the dashboard "Costs" view for the actual billed amount</td>
-</tr>
-</tbody>
-</table>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — <code>/run review</code> walks you through batch results once they're back.</li>
-<li><a href="../../guides/batch-large-schema/">Guides: Batch a large schema</a> — full end-to-end procedure with checkpointing across multiple batches.</li>
-<li><a href="../openai/">OpenAI</a> / <a href="../anthropic/">Anthropic</a> — switch the underlying model without re-creating the profile.</li>
+<li><a href="../../concepts/human-in-the-loop/">Human in the loop</a> — why review is the
+  gate every comment goes through.</li>
+<li><a href="../comparisons/">Comparisons</a> — diff a reviewed run against another run.</li>
+<li><a href="../../concepts/scoping/">Multi-profile scoping</a> — the picker that decides
+  what lands in the review queue.</li>
 </ul>
 
 

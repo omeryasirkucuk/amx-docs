@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/llm-providers/batch-mode/">
+        <link rel="canonical" href="https://amxcli.com/cli/restore-config/">
       
       
-        <link rel="prev" href="../ollama-local/">
+        <link rel="prev" href="../doctor/">
       
       
-        <link rel="next" href="../../data-sources/codebase/">
+        <link rel="next" href="../flags/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Batch mode - AMX</title>
+        <title>Restore config - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Batch mode — AMX CLI">
+  <meta property="og:title" content="Restore config — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/llm-providers/batch-mode/">
+  <meta property="og:url" content="https://amxcli.com/cli/restore-config/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Batch mode — AMX CLI">
+  <meta name="twitter:title" content="Restore config — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#batch-mode" class="md-skip">
+        <a href="#restore-config-recover-from-a-bad-config-save" class="md-skip">
           Skip to content
         </a>
       
@@ -222,7 +222,7 @@
           
           
           
-            <a href="../../cli/overview/">CLI</a>
+            <a href="../overview/" class="active">CLI</a>
             
           
         
@@ -242,7 +242,7 @@
           
           
           
-            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            <a href="../../configuration/config-yml/">Reference</a>
             
           
         
@@ -412,25 +412,25 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-cli-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/overview/"
+         href="../overview/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/setup/"
+         href="../setup/"
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/run-and-apply/"
+         href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/schedules/"
+         href="../schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/ask-and-search/"
+         href="../ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/studio/"
+         href="../studio/"
          >Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/history/"
+         href="../history/"
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/doctor/"
-         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/restore-config/"
-         >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/flags/"
+         href="../doctor/"
+         >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
@@ -534,20 +534,20 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-llm-providers-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../"
+         href="../../llm-providers/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../openai/"
+         href="../../llm-providers/openai/"
          >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../anthropic/"
+         href="../../llm-providers/anthropic/"
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../gemini/"
+         href="../../llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../databricks-serving/"
+         href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../ollama-local/"
-         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Batch mode</a></div>
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-data-sources">
       <button type="button"
@@ -691,22 +691,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#backup-rotation-what-amx-writes-for-you" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
+        Backup rotation — what AMX writes for you
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step-by-step">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Usage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Usage">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-enable-batch-mode-for-the-active-llm-profile" class="md-nav__link">
+  <a href="#interactive-picker-default" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Enable batch mode for the active LLM profile
+        Interactive picker (default)
       
     </span>
   </a>
@@ -714,10 +725,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-submit-a-batch-run" class="md-nav__link">
+  <a href="#just-list-no-restore" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Submit a batch /run
+        Just list — no restore
       
     </span>
   </a>
@@ -725,21 +736,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-watch-the-batch-progress" class="md-nav__link">
+  <a href="#restore-an-explicit-file" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Watch the batch progress
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-review-and-apply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Review and apply
+        Restore an explicit file
       
     </span>
   </a>
@@ -748,28 +748,6 @@
         
       </ul>
     </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cost-time-trade-offs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cost / time trade-offs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Sample config
-      
-    </span>
-  </a>
   
 </li>
       
@@ -828,17 +806,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>LLM Providers</span>
+            <span>CLI</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Batch mode</span>
+      <span>Restore config</span>
     </div>
   </div>
 
@@ -847,190 +820,105 @@
 
 
 
-<h1 id="batch-mode">Batch mode<a class="headerlink" href="#batch-mode" title="Permanent link">&para;</a></h1>
-<p>For wide schemas, AMX can route a <code>/run</code> through the provider's Batch API instead of
-the live chat API. You pay roughly <strong>half the live-call price</strong> in exchange for an
-asynchronous SLA — the provider returns results within minutes-to-hours instead of
-seconds. This page walks through enabling batch mode, submitting and polling a batch,
-checking provider dashboards for in-flight status, and reviewing the results.</p>
+<h1 id="restore-config-recover-from-a-bad-config-save"><code>/restore-config</code> — recover from a bad config save<a class="headerlink" href="#restore-config-recover-from-a-bad-config-save" title="Permanent link">&para;</a></h1>
+<p><code>/restore-config</code> is the recovery handle for the rare case where a save
+corrupts <code>~/.amx/config.yml</code> (or its <code>AMX_CONFIG_DIR</code> override). It lists the
+rotated backups AMX writes on every successful save, lets you pick one
+interactively, and restores it. The pre-restore state itself becomes the new
+<code>config.yml.bak.1</code>, so the operation is always reversible.</p>
+<p>This page covers the command's three usage forms and how the rotation pairs
+with the autosave-suspend + shadow-integrity gate that keeps the file from
+going corrupt in the first place — see <a href="../../collaboration/safety-guards/">Safety guards</a>
+for the broader picture.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>).</li>
-<li>An active LLM profile on a provider that supports batch — currently <strong>OpenAI</strong> and <strong>Anthropic</strong>.</li>
-<li>An active database profile.</li>
-<li>A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.</li>
+<li>AMX installed.</li>
+<li>A previous AMX session has run at least one save (so backups exist).</li>
 </ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-enable-batch-mode-for-the-active-llm-profile">1. Enable batch mode for the active LLM profile<a class="headerlink" href="#1-enable-batch-mode-for-the-active-llm-profile" title="Permanent link">&para;</a></h3>
-<p>Edit <code>~/.amx/config.yml</code> and add <code>batch_mode: true</code> under the LLM profile:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span><span class="w">             </span><span class="c1"># cheap models pair well with batch</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">          </span><span class="c1"># bigger batches = fewer batch jobs</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">      </span><span class="c1"># how often AMX polls the provider</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w">        </span><span class="c1"># 24h timeout (provider SLA)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nt">active_llm_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai-batch</span>
+<h2 id="backup-rotation-what-amx-writes-for-you">Backup rotation — what AMX writes for you<a class="headerlink" href="#backup-rotation-what-amx-writes-for-you" title="Permanent link">&para;</a></h2>
+<p>Every successful <code>cfg.save()</code> writes the current file to a numbered backup
+<strong>before</strong> replacing it. AMX keeps five generations:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>~/.amx/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── config.yml          ← live file
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├── config.yml.bak.1    ← most recent prior state
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├── config.yml.bak.2
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>├── config.yml.bak.3
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>├── config.yml.bak.4
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>└── config.yml.bak.5    ← oldest kept
 </span></code></pre></div>
-<p>Then restart AMX — config changes are picked up at session start.</p>
-<h3 id="2-submit-a-batch-run">2. Submit a batch <code>/run</code><a class="headerlink" href="#2-submit-a-batch-run" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /run sales
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[scope] 47 tables · 1,283 columns
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[Profile] sampled scan on 47 tables ... ok in 18.4 s
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[LLM]     submitting OpenAI batch (1,283 columns, 64 requests, est. cost: $1.42)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          → batch id: batch_abc123def456
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          → provider dashboard: https://platform.openai.com/batches/batch_abc123def456
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          → polling every 60 s ...
+<p>Older generations are pruned on each save. The save path is also guarded by a
+<strong>shadow integrity gate</strong>: AMX writes to <code>config.yml.shadow</code>, fsyncs, re-parses
+to confirm the file round-trips through the YAML loader, and only then renames
+shadow → live. A failed parse keeps the live file untouched and surfaces a
+warning instead of silently shipping a broken config.</p>
+<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
+<h3 id="interactive-picker-default">Interactive picker (default)<a class="headerlink" href="#interactive-picker-default" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /restore-config
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Available backups (5 of max 5):
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  config.yml.bak.1 (2026-05-13 14:22:11, 3.4 KB)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  config.yml.bak.2 (2026-05-13 13:08:54, 3.3 KB)
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  config.yml.bak.3 (2026-05-13 11:51:02, 3.3 KB)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  config.yml.bak.4 (2026-05-13 09:17:39, 3.2 KB)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  config.yml.bak.5 (2026-05-12 18:44:08, 3.2 KB)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Restore which backup?
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  [1] config.yml.bak.1 (2026-05-13 14:22:11, 3.4 KB)
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  [2] config.yml.bak.2 (2026-05-13 13:08:54, 3.3 KB)
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  ...
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>&gt; 1
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>✓ Restored ~/.amx/config.yml from config.yml.bak.1
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  (the pre-restore state was rotated to config.yml.bak.1 so this is reversible)
 </span></code></pre></div>
-<p><code>/run</code> does not block your terminal — you can <code>/exit</code>, restart later, and resume polling
-with <code>/batch resume &lt;batch-id&gt;</code>. The batch id is also written to <code>/history</code> so you can
-look it up via <code>/history list --filter batch</code>.</p>
-<h3 id="3-watch-the-batch-progress">3. Watch the batch progress<a class="headerlink" href="#3-watch-the-batch-progress" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /batch status
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  state: in_progress
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  submitted: 2 min ago
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  requests: 64 total · 28 finished · 36 in-progress · 0 failed
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  est. completion: ~7 min
+<h3 id="just-list-no-restore">Just list — no restore<a class="headerlink" href="#just-list-no-restore" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /restore-config --list
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Available backups (5 of max 5):
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  config.yml.bak.1 (2026-05-13 14:22:11, 3.4 KB)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ...
 </span></code></pre></div>
-<p>Or open the provider dashboard for a UI view:</p>
-<ul>
-<li><strong>OpenAI</strong>: <a href="https://platform.openai.com/batches">platform.openai.com/batches</a> — shows progress, errors, and download links.</li>
-<li><strong>Anthropic</strong>: <a href="https://console.anthropic.com/batches">console.anthropic.com/batches</a>.</li>
-</ul>
-<p>When AMX polls and sees <code>state: completed</code>, it downloads and parses results
-automatically; you'll see a notification at the next prompt:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /batch status
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  state: completed
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  duration: 9 min 12 s
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  requests: 64 total · 64 finished · 0 failed
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  → results merged into review queue: /run review
+<p>Use the alias <code>-l</code> if you prefer.</p>
+<h3 id="restore-an-explicit-file">Restore an explicit file<a class="headerlink" href="#restore-an-explicit-file" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /restore-config --from /tmp/known-good-config.yml
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>✓ Restored ~/.amx/config.yml from /tmp/known-good-config.yml
 </span></code></pre></div>
-<h3 id="4-review-and-apply">4. Review and apply<a class="headerlink" href="#4-review-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /run review
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Review row 1/64 (low confidence): sales.customer.x_legacy_status
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  draft: &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt; A
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>...
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>&gt; /apply
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Write 1,283 comment(s) to db-prod/sales? [y/N]: y
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>... (1,283/1,283 written)
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
-</span></code></pre></div>
-<p>By default AMX walks you through low-confidence rows first; medium and high are
-bulk-accepted unless you pass <code>--review-all</code>.</p>
-<h2 id="cost-time-trade-offs">Cost / time trade-offs<a class="headerlink" href="#cost-time-trade-offs" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Mode</th>
-<th>Provider price</th>
-<th>Wall time (1,000 cols)</th>
-<th>When to use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Live (default)</td>
-<td>$1.00 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>~30 s</td>
-<td>Day-to-day single-table runs; iterating on prompts</td>
-</tr>
-<tr>
-<td>Batch</td>
-<td>$0.50 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>5 min – 24 h</td>
-<td>Whole-warehouse drafts; nightly sweeps; CI pipelines</td>
-</tr>
-</tbody>
-</table>
-<p>Batch is also strictly cheaper than running the live API in parallel up to your tier
-cap — you don't burn rate-limit budget that you might want for ad-hoc <code>/ask</code> queries
-later in the day.</p>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>OpenAI batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
-</span></code></pre></div>
-<p>Anthropic batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">anthropic-batch</span><span class="p">:</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropic</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-haiku-3-5-20250101</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/anthropic-batch/api_key</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
-</span></code></pre></div>
+<p>Use this when the backup you want isn't in the rotation (e.g. a file you
+copied out of a previous machine). The aliases <code>-f</code> and <code>--from</code> both work.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>&gt; /llm test</code> — pings the chat API (not the batch API) to confirm credentials. Batch jobs use the same key.</li>
-<li><code>&gt; /batch status</code> — shows in-flight jobs and their state. Empty if no jobs are pending.</li>
-<li>Open the provider dashboard URL printed at submission time — confirms the job is registered server-side.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /config show
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a># Inspect the values you expected from the restored backup.
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&gt; /doctor
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a># Confirm profiles, LLM, and DB connectivity all come back green.
+</span></code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Symptom</th>
-<th>Cause</th>
 <th>Fix</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>OpenAI batch endpoint not enabled for project</code></td>
-<td>Project hasn't been opted into the Batch API tier</td>
-<td>Enable in <a href="https://platform.openai.com/settings/organization/limits">platform.openai.com/settings/organization/limits</a></td>
+<td><code>No rotated config backups found</code></td>
+<td>The rotation only starts after the first <code>save()</code> that follows the introduction of this safety net. Run any command that mutates config (<code>/add-db-profile</code>, <code>/use-llm</code>, <code>/temperature 0.3</code>) to seed the first backup.</td>
 </tr>
 <tr>
-<td>Batch state <code>failed</code> with <code>partial_failure: 12 / 64</code></td>
-<td>Some requests hit the model's per-request token limit</td>
-<td>Lower <code>column_batch_size</code>; <code>/run --recover-batch &lt;batch-id&gt;</code> retries only the failed sub-requests on the live API</td>
+<td><code>Backup file not found: …</code> after <code>--from</code></td>
+<td>Path typo or expansion error. The path is <code>Path(...).expanduser()</code>-resolved; <code>~/Downloads/cfg.yml</code> works, but a shell variable that wasn't substituted (<code>$HOME/...</code>) won't.</td>
 </tr>
 <tr>
-<td>Polling never returns / state stuck on <code>validating</code></td>
-<td>Provider validation queue is backed up (rare)</td>
-<td>Wait; if still stuck after 30 min, cancel via the dashboard and re-submit</td>
+<td>Restore succeeds, but <code>/doctor</code> still reports a missing profile</td>
+<td>The selected backup pre-dates the profile. Pick an older / different generation or use <code>--from</code> to point at a known-good file.</td>
 </tr>
 <tr>
-<td><code>batch_max_wait_s</code> exceeded</td>
-<td>Schema is wider than the timeout allows</td>
-<td>Bump <code>batch_max_wait_s</code> to <code>172800</code> (48 h) or split the schema across multiple <code>/run</code> calls</td>
-</tr>
-<tr>
-<td>Anthropic batch job returns half the columns</td>
-<td>Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column</td>
-<td>Confirm <code>column_batch_size</code> is 20+ so you stay under the request cap</td>
-</tr>
-<tr>
-<td>Cost was higher than estimate</td>
-<td>The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included</td>
-<td>Check the dashboard "Costs" view for the actual billed amount</td>
+<td><code>config.yml.shadow</code> left on disk</td>
+<td>Means the last save aborted between shadow-fsync and rename. Safe to delete; the live file is intact. The same gate also writes a warning into the REPL on the next bootstrap.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — <code>/run review</code> walks you through batch results once they're back.</li>
-<li><a href="../../guides/batch-large-schema/">Guides: Batch a large schema</a> — full end-to-end procedure with checkpointing across multiple batches.</li>
-<li><a href="../openai/">OpenAI</a> / <a href="../anthropic/">Anthropic</a> — switch the underlying model without re-creating the profile.</li>
+<li><a href="../../collaboration/safety-guards/">Safety guards</a> — autosave-suspend, 5-generation rotation, shadow integrity gate, and what each prevents.</li>
+<li><a href="../overview/#the-full-namespace-tree"><code>/config</code></a> — show / edit individual fields instead of rolling the whole file back.</li>
 </ul>
 
 

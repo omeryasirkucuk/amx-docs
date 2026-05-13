@@ -395,6 +395,8 @@
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/scoping/"
+         >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
          >Human in the Loop</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -416,6 +418,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
@@ -424,6 +428,8 @@
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/restore-config/"
+         >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -479,7 +485,9 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a></div>
+         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/responsive-studio/"
+         >Responsive Studio</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -593,6 +601,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/benchmarks/"
          >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../evaluation/bulk-review/"
+         >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/comparisons/"
          >Comparisons</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
@@ -703,10 +713,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-these-three" class="md-nav__link">
+  <a href="#guard-4-config-save-uses-a-shadow-fsync-gate-5-generation-backup" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Why these three
+        Guard 4 — Config save uses a shadow-fsync gate + 5-generation backup
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-these-four" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why these four
       
     </span>
   </a>
@@ -766,9 +787,13 @@
 
 
 <h1 id="safety-guards">Safety guards<a class="headerlink" href="#safety-guards" title="Permanent link">&para;</a></h1>
-<p>Shared mode adds three guards on top of plain dual-writing. They exist because the shared
-store is a multi-engineer surface — a confused session pointer or a typo'd subcommand
-shouldn't be able to corrupt teammates' work.</p>
+<p>Shared mode adds three guards on top of plain dual-writing, and a fourth guard
+protects the per-user <code>~/.amx/config.yml</code> itself from being corrupted by a
+save that races with a concurrent edit. The guards exist because the shared
+store is a multi-engineer surface — a confused session pointer or a typo'd
+subcommand shouldn't be able to corrupt teammates' work — and because a
+single bad config save can otherwise put the local AMX install in a state
+that no command can recover from.</p>
 <h2 id="guard-1-cross-profile-session-resume-is-refused">Guard 1 — Cross-profile session resume is refused<a class="headerlink" href="#guard-1-cross-profile-session-resume-is-refused" title="Permanent link">&para;</a></h2>
 <p><code>/session resume &lt;id&gt;</code> against a session that belongs to a different DB profile is
 <strong>refused with a clear error</strong>.</p>
@@ -810,8 +835,35 @@ which is read-only.</p>
 <li><strong>Diff.</strong> The dual-write coordinator can find the right shared row when later UPDATEs
   fire (e.g. when a run finishes and we update its terminal status).</li>
 </ul>
-<h2 id="why-these-three">Why these three<a class="headerlink" href="#why-these-three" title="Permanent link">&para;</a></h2>
-<p>Shared mode introduces three new failure modes, and each guard maps to one:</p>
+<h2 id="guard-4-config-save-uses-a-shadow-fsync-gate-5-generation-backup">Guard 4 — Config save uses a shadow-fsync gate + 5-generation backup<a class="headerlink" href="#guard-4-config-save-uses-a-shadow-fsync-gate-5-generation-backup" title="Permanent link">&para;</a></h2>
+<p>Every <code>cfg.save()</code> walks the same multi-step path so that a crash or a
+concurrent edit can never leave <code>~/.amx/config.yml</code> in a partially-written
+state:</p>
+<ol>
+<li><strong>Autosave suspend.</strong> Background workers (scheduled runs, the dual-write
+   outbox, doctor probes) are blocked from calling <code>save()</code> while the
+   foreground REPL is mid-edit. Without this, two writers could race and
+   the loser would clobber the winner's diff.</li>
+<li><strong>5-generation rotation.</strong> Before the live file is replaced, the current
+   contents are copied to <code>config.yml.bak.1</code>. The previous backups are
+   renumbered up to <code>.bak.5</code>; anything older is pruned.</li>
+<li><strong>Shadow integrity gate.</strong> New contents are written to
+   <code>config.yml.shadow</code>, fsynced, and re-parsed through the YAML loader. The
+   load must succeed and the resulting object must equal the in-memory
+   model. Only then does <code>shadow → live</code> rename happen. A failed parse keeps
+   the live file untouched and surfaces a warning into the REPL.</li>
+<li><strong><a href="../../cli/restore-config/"><code>/restore-config</code></a></strong> is the recovery handle
+   if every gate above fails (extremely rare — typically an external
+   process deleting the file mid-write). It lists the rotated backups and
+   restores any of them, with the pre-restore state rotated to <code>.bak.1</code>
+   so the operation is reversible.</li>
+</ol>
+<p>This is the gate that PR #360 / #361 / #362 introduced after an
+incident that briefly left a corrupt <code>history.db</code> save path stuck in
+config.</p>
+<h2 id="why-these-four">Why these four<a class="headerlink" href="#why-these-four" title="Permanent link">&para;</a></h2>
+<p>Shared mode introduces three new failure modes, plus one local-machine
+failure mode for config saves. Each guard maps to one:</p>
 <table>
 <thead>
 <tr>
@@ -831,6 +883,10 @@ which is read-only.</p>
 <tr>
 <td>Engineer A's runs and engineer B's runs are indistinguishable in the shared store</td>
 <td>Every row carries attribution</td>
+</tr>
+<tr>
+<td>A concurrent edit or a crash mid-<code>save()</code> leaves <code>~/.amx/config.yml</code> half-written, blocking every subsequent AMX command</td>
+<td>Autosave suspend + 5-generation backup + shadow integrity gate + <code>/restore-config</code></td>
 </tr>
 </tbody>
 </table>

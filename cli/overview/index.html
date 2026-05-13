@@ -395,6 +395,8 @@
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/scoping/"
+         >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
          >Human in the Loop</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -416,6 +418,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/"
@@ -424,6 +428,8 @@
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../restore-config/"
+         >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -479,7 +485,9 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a></div>
+         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/responsive-studio/"
+         >Responsive Studio</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -593,6 +601,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/benchmarks/"
          >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../evaluation/bulk-review/"
+         >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../evaluation/comparisons/"
          >Comparisons</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
@@ -876,7 +886,8 @@ says <code>none</code>, run <code>/setup</code> (first time) or <code>/use-llm &
 </span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /history       Audit trail and run comparison
 </span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  /doctor        Diagnostics
 </span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  /config        Show or edit ~/.amx/config.yml
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  /help, /exit, /clear, /back, /save
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  /restore-config  Recover ~/.amx/config.yml from a rotated backup
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  /help, /exit, /clear, /back, /save
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /db
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Database namespace:
@@ -977,8 +988,8 @@ for the most-frequently-seen failures.</p>
 </tr>
 <tr>
 <td><code>/analyze</code></td>
-<td>Run + apply</td>
-<td><code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/rerun</code>, <code>/apply</code></td>
+<td>Run + apply + schedule</td>
+<td><code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/rerun</code>, <code>/apply</code>, <code>/schedule add|list|show|pause|resume|rm|run-now|status|tick|install-daemon|uninstall-daemon</code></td>
 </tr>
 <tr>
 <td><code>/search</code></td>
@@ -1000,6 +1011,11 @@ for the most-frequently-seen failures.</p>
 <td>Diagnostics</td>
 <td><code>--skip-network</code>, <code>--debug</code></td>
 </tr>
+<tr>
+<td><code>/restore-config</code></td>
+<td>Recover <code>~/.amx/config.yml</code> from a rotated backup</td>
+<td><code>--list</code>, <code>--from &lt;path&gt;</code></td>
+</tr>
 </tbody>
 </table>
 <p><strong>Tabs group; routing is global.</strong> Every top-level command (including
@@ -1019,6 +1035,8 @@ root prompt.</p>
 <li><a href="../../getting-started/quickstart/">Quick start</a> — five-minute walkthrough using PostgreSQL + OpenAI.</li>
 <li><a href="../run-and-apply/">Run &amp; Apply</a> — the heart of the workflow: <code>/run</code>, review wizard, <code>/apply</code>.</li>
 <li><a href="../setup/">Setup wizard</a> — first-time <code>/setup</code> walkthrough.</li>
+<li><a href="../schedules/"><code>/analyze schedule</code></a> — one-shot scheduled metadata runs and daemon controls.</li>
+<li><a href="../restore-config/"><code>/restore-config</code></a> — recover <code>~/.amx/config.yml</code> from a rotated backup.</li>
 <li><a href="../studio/"><code>/studio</code></a> — same workflow on a local web UI (AMX Studio) when you'd rather see everything at once.</li>
 </ul>
 

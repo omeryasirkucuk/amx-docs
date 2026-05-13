@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/llm-providers/batch-mode/">
+        <link rel="canonical" href="https://amxcli.com/cli/schedules/">
       
       
-        <link rel="prev" href="../ollama-local/">
+        <link rel="prev" href="../run-and-apply/">
       
       
-        <link rel="next" href="../../data-sources/codebase/">
+        <link rel="next" href="../ask-and-search/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Batch mode - AMX</title>
+        <title>Schedules - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Batch mode — AMX CLI">
+  <meta property="og:title" content="Schedules — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/llm-providers/batch-mode/">
+  <meta property="og:url" content="https://amxcli.com/cli/schedules/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Batch mode — AMX CLI">
+  <meta name="twitter:title" content="Schedules — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#batch-mode" class="md-skip">
+        <a href="#analyze-schedule-scheduled-runs-reference" class="md-skip">
           Skip to content
         </a>
       
@@ -222,7 +222,7 @@
           
           
           
-            <a href="../../cli/overview/">CLI</a>
+            <a href="../overview/" class="active">CLI</a>
             
           
         
@@ -242,7 +242,7 @@
           
           
           
-            <a href="../../configuration/config-yml/" class="active">Reference</a>
+            <a href="../../configuration/config-yml/">Reference</a>
             
           
         
@@ -412,25 +412,25 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-cli-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/overview/"
+         href="../overview/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/setup/"
+         href="../setup/"
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/run-and-apply/"
-         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/schedules/"
-         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/ask-and-search/"
+         href="../run-and-apply/"
+         >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/studio/"
+         href="../studio/"
          >Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/history/"
+         href="../history/"
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/doctor/"
+         href="../doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/restore-config/"
+         href="../restore-config/"
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../cli/flags/"
+         href="../flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
@@ -534,20 +534,20 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-llm-providers-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../"
+         href="../../llm-providers/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../openai/"
+         href="../../llm-providers/openai/"
          >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../anthropic/"
+         href="../../llm-providers/anthropic/"
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../gemini/"
+         href="../../llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../databricks-serving/"
+         href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../ollama-local/"
-         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Batch mode</a></div>
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-data-sources">
       <button type="button"
@@ -691,71 +691,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#subcommand-table" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step-by-step">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-enable-batch-mode-for-the-active-llm-profile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        1. Enable batch mode for the active LLM profile
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-submit-a-batch-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Submit a batch /run
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-watch-the-batch-progress" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Watch the batch progress
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-review-and-apply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Review and apply
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cost-time-trade-offs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cost / time trade-offs
+        Subcommand table
       
     </span>
   </a>
@@ -763,10 +702,32 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#scope-spec" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
+        Scope spec
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#daemon-vs-manual-tick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Daemon vs manual tick
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#studio-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Studio parity
       
     </span>
   </a>
@@ -828,17 +789,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>LLM Providers</span>
+            <span>CLI</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Batch mode</span>
+      <span>Schedules</span>
     </div>
   </div>
 
@@ -847,190 +803,176 @@
 
 
 
-<h1 id="batch-mode">Batch mode<a class="headerlink" href="#batch-mode" title="Permanent link">&para;</a></h1>
-<p>For wide schemas, AMX can route a <code>/run</code> through the provider's Batch API instead of
-the live chat API. You pay roughly <strong>half the live-call price</strong> in exchange for an
-asynchronous SLA — the provider returns results within minutes-to-hours instead of
-seconds. This page walks through enabling batch mode, submitting and polling a batch,
-checking provider dashboards for in-flight status, and reviewing the results.</p>
+<h1 id="analyze-schedule-scheduled-runs-reference"><code>/analyze schedule</code> — scheduled runs reference<a class="headerlink" href="#analyze-schedule-scheduled-runs-reference" title="Permanent link">&para;</a></h1>
+<p><code>/analyze schedule</code> is the subgroup that owns one-shot scheduled metadata runs:
+the user picks a DB profile + LLM profile + scope + fire time, AMX persists the
+schedule, and a small daemon (or a manual <code>tick</code>) fires it when due. The walkthrough
+for picking a cadence and recovering missed fires lives in
+<a href="../../guides/scheduled-runs/">Scheduled runs</a>; this page is the <strong>subcommand
+reference</strong>.</p>
+<p>Every subcommand is typed inside the AMX REPL, slash-form, exactly the way
+<a href="../run-and-apply/"><code>/analyze run</code></a> and <a href="../run-and-apply/#4-apply-with-apply"><code>/analyze apply</code></a>
+are. There is no top-level <code>amx &lt;cmd&gt;</code> invocation for this group — the namespace
+is REPL-only by design, so tab completion and history pick up every subcommand.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>).</li>
-<li>An active LLM profile on a provider that supports batch — currently <strong>OpenAI</strong> and <strong>Anthropic</strong>.</li>
-<li>An active database profile.</li>
-<li>A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.</li>
+<li>An AMX session (<code>amx</code>).</li>
+<li>At least one DB profile + one LLM profile (<code>/db-profiles</code>, <code>/llm</code>).</li>
+<li>For automatic firing: the AMX scheduler daemon installed
+  (<code>/analyze schedule install-daemon</code>). Manual <code>tick</code> works without the daemon.</li>
 </ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-enable-batch-mode-for-the-active-llm-profile">1. Enable batch mode for the active LLM profile<a class="headerlink" href="#1-enable-batch-mode-for-the-active-llm-profile" title="Permanent link">&para;</a></h3>
-<p>Edit <code>~/.amx/config.yml</code> and add <code>batch_mode: true</code> under the LLM profile:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span><span class="w">             </span><span class="c1"># cheap models pair well with batch</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">          </span><span class="c1"># bigger batches = fewer batch jobs</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">      </span><span class="c1"># how often AMX polls the provider</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w">        </span><span class="c1"># 24h timeout (provider SLA)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nt">active_llm_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai-batch</span>
-</span></code></pre></div>
-<p>Then restart AMX — config changes are picked up at session start.</p>
-<h3 id="2-submit-a-batch-run">2. Submit a batch <code>/run</code><a class="headerlink" href="#2-submit-a-batch-run" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /run sales
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[scope] 47 tables · 1,283 columns
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[Profile] sampled scan on 47 tables ... ok in 18.4 s
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[LLM]     submitting OpenAI batch (1,283 columns, 64 requests, est. cost: $1.42)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          → batch id: batch_abc123def456
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          → provider dashboard: https://platform.openai.com/batches/batch_abc123def456
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          → polling every 60 s ...
-</span></code></pre></div>
-<p><code>/run</code> does not block your terminal — you can <code>/exit</code>, restart later, and resume polling
-with <code>/batch resume &lt;batch-id&gt;</code>. The batch id is also written to <code>/history</code> so you can
-look it up via <code>/history list --filter batch</code>.</p>
-<h3 id="3-watch-the-batch-progress">3. Watch the batch progress<a class="headerlink" href="#3-watch-the-batch-progress" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /batch status
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  state: in_progress
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  submitted: 2 min ago
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  requests: 64 total · 28 finished · 36 in-progress · 0 failed
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  est. completion: ~7 min
-</span></code></pre></div>
-<p>Or open the provider dashboard for a UI view:</p>
-<ul>
-<li><strong>OpenAI</strong>: <a href="https://platform.openai.com/batches">platform.openai.com/batches</a> — shows progress, errors, and download links.</li>
-<li><strong>Anthropic</strong>: <a href="https://console.anthropic.com/batches">console.anthropic.com/batches</a>.</li>
-</ul>
-<p>When AMX polls and sees <code>state: completed</code>, it downloads and parses results
-automatically; you'll see a notification at the next prompt:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /batch status
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  state: completed
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  duration: 9 min 12 s
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  requests: 64 total · 64 finished · 0 failed
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  → results merged into review queue: /run review
-</span></code></pre></div>
-<h3 id="4-review-and-apply">4. Review and apply<a class="headerlink" href="#4-review-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /run review
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Review row 1/64 (low confidence): sales.customer.x_legacy_status
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  draft: &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt; A
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>...
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>&gt; /apply
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Write 1,283 comment(s) to db-prod/sales? [y/N]: y
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>... (1,283/1,283 written)
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
-</span></code></pre></div>
-<p>By default AMX walks you through low-confidence rows first; medium and high are
-bulk-accepted unless you pass <code>--review-all</code>.</p>
-<h2 id="cost-time-trade-offs">Cost / time trade-offs<a class="headerlink" href="#cost-time-trade-offs" title="Permanent link">&para;</a></h2>
+<h2 id="subcommand-table">Subcommand table<a class="headerlink" href="#subcommand-table" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Mode</th>
-<th>Provider price</th>
-<th>Wall time (1,000 cols)</th>
-<th>When to use</th>
+<th>Subcommand</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Live (default)</td>
-<td>$1.00 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>~30 s</td>
-<td>Day-to-day single-table runs; iterating on prompts</td>
+<td><code>/analyze schedule add</code></td>
+<td>Guided wizard. Picks DB profile, LLM profile, scope (all / schemas / tables / columns), and a fire time. Stores the row in <code>~/.amx/history.db</code>.</td>
 </tr>
 <tr>
-<td>Batch</td>
-<td>$0.50 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>5 min – 24 h</td>
-<td>Whole-warehouse drafts; nightly sweeps; CI pipelines</td>
+<td><code>/analyze schedule list</code></td>
+<td>Table listing. Status filters: <code>--status pending|fired|paused|failed</code>. Each row carries <code>id</code>, scope, next-fire timestamp, and last-fire result.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule show &lt;id&gt;</code></td>
+<td>Full record: scope spec, profile pins, prompt detail, alternatives count, last <code>analyze.run</code> row id.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule pause &lt;id&gt;</code></td>
+<td>Mark the schedule as paused. The next <code>tick</code> skips it without dropping the row.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule resume &lt;id&gt;</code></td>
+<td>Inverse of <code>pause</code>. Re-arms the row at the originally scheduled time (no catch-up unless <code>--catch-up</code>).</td>
+</tr>
+<tr>
+<td><code>/analyze schedule rm &lt;id&gt;</code></td>
+<td>Delete the schedule. Past <code>analyze.run</code> rows it produced stay in <code>/history</code>.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule run-now &lt;id&gt;</code></td>
+<td>Fire immediately, regardless of next-fire timestamp. Pass <code>--background</code> to detach from the REPL.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule tick</code></td>
+<td>Engine command — one stateless pass over due rows. Honors <code>AMX_SKIP_BOOTSTRAP_TICK=1</code> when the REPL bootstraps so a fresh shell doesn't fire the queue twice.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule status</code></td>
+<td>Engine command — daemon presence (systemd / launchd / Task Scheduler), missed-fire count, next-fire window.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule install-daemon</code></td>
+<td>Install a per-user daemon. Detects the host OS: launchd plist on macOS, systemd <code>--user</code> unit on Linux, Scheduled Task on Windows. Idempotent — re-running upgrades the unit in place.</td>
+</tr>
+<tr>
+<td><code>/analyze schedule uninstall-daemon</code></td>
+<td>Remove the daemon unit. Existing schedules stay; the next <code>tick</code> is your responsibility.</td>
 </tr>
 </tbody>
 </table>
-<p>Batch is also strictly cheaper than running the live API in parallel up to your tier
-cap — you don't burn rate-limit budget that you might want for ad-hoc <code>/ask</code> queries
-later in the day.</p>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>OpenAI batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
+<h2 id="scope-spec">Scope spec<a class="headerlink" href="#scope-spec" title="Permanent link">&para;</a></h2>
+<p><code>/analyze schedule add</code> writes a compact scope spec that the next <code>tick</code> replays
+verbatim through the orchestrator. The spec mirrors <code>/analyze run</code> exactly:</p>
+<table>
+<thead>
+<tr>
+<th>Spec</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>all</code></td>
+<td>Every schema reachable through the picked DB profile.</td>
+</tr>
+<tr>
+<td><code>schema:public,sales</code></td>
+<td>Only the listed schemas.</td>
+</tr>
+<tr>
+<td><code>table:public.users,sales.orders</code></td>
+<td>Only the listed tables (any schema-qualified pair).</td>
+</tr>
+<tr>
+<td><code>column:public.users.email,public.users.first_name</code></td>
+<td>Only the listed columns.</td>
+</tr>
+</tbody>
+</table>
+<p>The wizard offers the cascading picker (Profile → DB → Schema → Table → Column)
+so you usually don't type the spec by hand — see <a href="../../concepts/scoping/">Multi-profile scoping</a>.</p>
+<h2 id="daemon-vs-manual-tick">Daemon vs manual tick<a class="headerlink" href="#daemon-vs-manual-tick" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /analyze schedule install-daemon
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>✓ launchd plist installed at ~/Library/LaunchAgents/com.amxcli.scheduler.plist
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>✓ Daemon loaded. Next tick in &lt;60s.
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>&gt; /analyze schedule status
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Daemon: loaded (launchd, last tick 14s ago)
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Schedules: 4 active, 0 paused, 1 failed (id 7 — see /analyze schedule show 7)
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Missed fires (closed AMX): 0
 </span></code></pre></div>
-<p>Anthropic batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">anthropic-batch</span><span class="p">:</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropic</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-haiku-3-5-20250101</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/anthropic-batch/api_key</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
-</span></code></pre></div>
+<p>Without the daemon, every <code>tick</code> is your responsibility — either invoke
+<code>/analyze schedule tick</code> manually inside the REPL or wire your own cron.
+The engine is <strong>stateless</strong> between ticks: persistence lives in <code>~/.amx/history.db</code>,
+the tick re-reads the queue on every call, so you can mix daemon and manual ticks
+without double-firing (the row carries an advisory lock for the duration of its
+run).</p>
+<p>When AMX was closed at the scheduled time, the next REPL bootstrap surfaces the
+missed fire — the bootstrap honors <code>AMX_SKIP_BOOTSTRAP_TICK=1</code> if you want a
+shell that opens without firing the catch-up batch.</p>
+<h2 id="studio-parity">Studio parity<a class="headerlink" href="#studio-parity" title="Permanent link">&para;</a></h2>
+<p>Every command on this page has a 1:1 counterpart in
+<a href="../studio/#schedules-and-pricing">AMX Studio → Schedules</a>. The Studio surface
+adds an edit dialog (<code>/runs/schedules</code>), one-click daemon install / uninstall
+buttons, and a live status ticker.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>&gt; /llm test</code> — pings the chat API (not the batch API) to confirm credentials. Batch jobs use the same key.</li>
-<li><code>&gt; /batch status</code> — shows in-flight jobs and their state. Empty if no jobs are pending.</li>
-<li>Open the provider dashboard URL printed at submission time — confirms the job is registered server-side.</li>
-</ol>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /analyze schedule list
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>ID  STATUS   NEXT FIRE              DB        SCOPE
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>1   pending  2026-05-14 03:00 UTC   prod-pg   schema:sales
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>2   pending  2026-05-14 03:00 UTC   prod-pg   table:public.users,public.orders
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>3   paused   —                      analytics column:public.events.payload
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>&gt; /analyze schedule status
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Daemon: loaded · 4 active · next fire in 8h 12m
+</span></code></pre></div>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
 <th>Symptom</th>
-<th>Cause</th>
 <th>Fix</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>OpenAI batch endpoint not enabled for project</code></td>
-<td>Project hasn't been opted into the Batch API tier</td>
-<td>Enable in <a href="https://platform.openai.com/settings/organization/limits">platform.openai.com/settings/organization/limits</a></td>
+<td><code>Daemon: not installed</code> even after install-daemon</td>
+<td>Re-run from a TTY (launchd / systemd refuse to load when stdin isn't a terminal); check the OS-native log (<code>launchctl print user/&lt;uid&gt;/com.amxcli.scheduler</code>).</td>
 </tr>
 <tr>
-<td>Batch state <code>failed</code> with <code>partial_failure: 12 / 64</code></td>
-<td>Some requests hit the model's per-request token limit</td>
-<td>Lower <code>column_batch_size</code>; <code>/run --recover-batch &lt;batch-id&gt;</code> retries only the failed sub-requests on the live API</td>
+<td>Schedule fires twice on the same minute</td>
+<td>Two daemons installed (e.g. via cron <em>and</em> <code>install-daemon</code>). Run <code>/analyze schedule uninstall-daemon</code> and rely on one.</td>
 </tr>
 <tr>
-<td>Polling never returns / state stuck on <code>validating</code></td>
-<td>Provider validation queue is backed up (rare)</td>
-<td>Wait; if still stuck after 30 min, cancel via the dashboard and re-submit</td>
+<td><code>next fire in -3h</code> (past timestamp)</td>
+<td>The host clock drifted or the schedule sat through a long AMX-closed window — <code>/analyze schedule run-now &lt;id&gt;</code> to fire once, then resume.</td>
 </tr>
 <tr>
-<td><code>batch_max_wait_s</code> exceeded</td>
-<td>Schema is wider than the timeout allows</td>
-<td>Bump <code>batch_max_wait_s</code> to <code>172800</code> (48 h) or split the schema across multiple <code>/run</code> calls</td>
-</tr>
-<tr>
-<td>Anthropic batch job returns half the columns</td>
-<td>Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column</td>
-<td>Confirm <code>column_batch_size</code> is 20+ so you stay under the request cap</td>
-</tr>
-<tr>
-<td>Cost was higher than estimate</td>
-<td>The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included</td>
-<td>Check the dashboard "Costs" view for the actual billed amount</td>
+<td>Spec rejected with "unknown column"</td>
+<td>The DB schema drifted since the schedule was added. <code>/analyze schedule show &lt;id&gt;</code> to inspect, <code>rm</code> + re-<code>add</code> to rebuild.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — <code>/run review</code> walks you through batch results once they're back.</li>
-<li><a href="../../guides/batch-large-schema/">Guides: Batch a large schema</a> — full end-to-end procedure with checkpointing across multiple batches.</li>
-<li><a href="../openai/">OpenAI</a> / <a href="../anthropic/">Anthropic</a> — switch the underlying model without re-creating the profile.</li>
+<li><a href="../../guides/scheduled-runs/">Scheduled runs walkthrough</a> — the workflow this reference backs.</li>
+<li><a href="../../concepts/scoping/">Multi-profile scoping</a> — what the cascading picker writes into the scope spec.</li>
+<li><a href="../studio/#schedules-and-pricing">Studio Schedules tab</a> — the same operations in a web UI.</li>
 </ul>
 
 

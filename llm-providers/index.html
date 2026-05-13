@@ -395,6 +395,8 @@
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/scoping/"
+         >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../concepts/human-in-the-loop/"
          >Human in the Loop</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -416,6 +418,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/ask-and-search/"
          >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/studio/"
@@ -424,6 +428,8 @@
          >History</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/doctor/"
          >Doctor</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/restore-config/"
+         >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/flags/"
          >Flags</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -479,7 +485,9 @@
          href="../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/scheduled-runs/"
-         >Scheduled Runs</a></div>
+         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../guides/responsive-studio/"
+         >Responsive Studio</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -593,6 +601,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../evaluation/benchmarks/"
          >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../evaluation/bulk-review/"
+         >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../evaluation/comparisons/"
          >Comparisons</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
@@ -696,6 +706,17 @@
     <span class="md-ellipsis">
       
         Generation defaults that apply across all providers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reasoning-models-output-budgeting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reasoning models — output budgeting
       
     </span>
   </a>
@@ -884,6 +905,28 @@ prompts; they reuse the OpenAI client under the hood.</p>
 <li><code>logprob_high: 0.85</code> / <code>logprob_medium: 0.50</code> — confidence thresholds for the <code>high</code> / <code>medium</code> / <code>low</code> buckets. See <code>/logprob-thresholds</code>.</li>
 </ul>
 <p>Per-provider tuning notes live on each provider's page.</p>
+<h2 id="reasoning-models-output-budgeting">Reasoning models — output budgeting<a class="headerlink" href="#reasoning-models-output-budgeting" title="Permanent link">&para;</a></h2>
+<p>Reasoning routes (OpenAI <code>o</code>-series and <code>gpt-5</code> reasoning variants, Anthropic
+extended thinking on Claude Sonnet / Opus 4, DeepSeek-reasoner, and OpenRouter
+thinking variants like Kimi K2.x, Qwen3-thinking, and GLM-4.6-thinking) can
+spend the entire <code>max_tokens</code> budget on internal reasoning, leaving the
+visible answer empty with <code>finish_reason=length</code>. To keep the answer slot
+viable, AMX:</p>
+<ol>
+<li><strong>Floors</strong> the output budget for reasoning routes at <strong>32 768 tokens</strong>
+   (<code>_DEFAULT_REASONING_FLOOR</code>). Override with the <code>AMX_LLM_MIN_MAX_TOKENS</code>
+   env var if you've tuned a specific model.</li>
+<li><strong>Auto-retries</strong> once at <code>max_tokens × 4</code> (capped at <strong>131 072 tokens</strong>,
+   <code>_REASONING_AUTO_RETRY_CAP</code>) when a reasoning call returns 0 visible
+   characters and <code>finish_reason=length</code>. The retry only fires for reasoning
+   routes; standard chat models keep the user's <code>max_tokens</code> as-is.</li>
+<li><strong>Passes through <code>reasoning_effort</code></strong> to OpenAI / OpenRouter so a higher
+   effort can be selected per LLM profile (<code>/llm</code> wizard).</li>
+</ol>
+<p>The visible reasoning text — Anthropic <code>thinking</code> blocks, DeepSeek's
+<code>reasoning_content</code> — is exposed as the <strong>Reasoning trace</strong> card on the
+Studio Run detail Summary tab when the provider returns one, so the floor
+buys you a useful answer <strong>and</strong> an inspectable thought trail.</p>
 <h2 id="costing-rule-of-thumb">Costing rule of thumb<a class="headerlink" href="#costing-rule-of-thumb" title="Permanent link">&para;</a></h2>
 <p>For a typical 47-table / 1,283-column schema, drafting descriptions once:</p>
 <table>
