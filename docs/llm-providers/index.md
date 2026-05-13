@@ -42,6 +42,30 @@ The wizard sets these once per profile (you can edit later in `~/.amx/config.yml
 
 Per-provider tuning notes live on each provider's page.
 
+## Reasoning models — output budgeting
+
+Reasoning routes (OpenAI `o`-series and `gpt-5` reasoning variants, Anthropic
+extended thinking on Claude Sonnet / Opus 4, DeepSeek-reasoner, and OpenRouter
+thinking variants like Kimi K2.x, Qwen3-thinking, and GLM-4.6-thinking) can
+spend the entire `max_tokens` budget on internal reasoning, leaving the
+visible answer empty with `finish_reason=length`. To keep the answer slot
+viable, AMX:
+
+1. **Floors** the output budget for reasoning routes at **32 768 tokens**
+   (`_DEFAULT_REASONING_FLOOR`). Override with the `AMX_LLM_MIN_MAX_TOKENS`
+   env var if you've tuned a specific model.
+2. **Auto-retries** once at `max_tokens × 4` (capped at **131 072 tokens**,
+   `_REASONING_AUTO_RETRY_CAP`) when a reasoning call returns 0 visible
+   characters and `finish_reason=length`. The retry only fires for reasoning
+   routes; standard chat models keep the user's `max_tokens` as-is.
+3. **Passes through `reasoning_effort`** to OpenAI / OpenRouter so a higher
+   effort can be selected per LLM profile (`/llm` wizard).
+
+The visible reasoning text — Anthropic `thinking` blocks, DeepSeek's
+`reasoning_content` — is exposed as the **Reasoning trace** card on the
+Studio Run detail Summary tab when the provider returns one, so the floor
+buys you a useful answer **and** an inspectable thought trail.
+
 ## Costing rule of thumb
 
 For a typical 47-table / 1,283-column schema, drafting descriptions once:

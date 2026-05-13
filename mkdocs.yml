@@ -131,15 +131,18 @@ nav:
       - Architecture: concepts/architecture.md
       - Agents: concepts/agents.md
       - Universal Metadata: concepts/universal-metadata.md
+      - Multi-profile scoping: concepts/scoping.md
       - Human in the Loop: concepts/human-in-the-loop.md
   - CLI:
       - Overview: cli/overview.md
       - Setup: cli/setup.md
       - Run & Apply: cli/run-and-apply.md
+      - Schedules: cli/schedules.md
       - Ask & Search: cli/ask-and-search.md
       - Studio: cli/studio.md
       - History: cli/history.md
       - Doctor: cli/doctor.md
+      - Restore config: cli/restore-config.md
       - Flags: cli/flags.md
   - Backends:
       - Overview: backends/index.md
@@ -157,6 +160,7 @@ nav:
       - SAP Discovery: guides/sap-discovery-walkthrough.md
       - Batch Large Schema: guides/batch-large-schema.md
       - Scheduled Runs: guides/scheduled-runs.md
+      - Responsive Studio: guides/responsive-studio.md
   - Reference:
       - Configuration:
           - config.yml: configuration/config-yml.md
@@ -181,6 +185,7 @@ nav:
           - Safety guards: collaboration/safety-guards.md
       - Evaluation:
           - Benchmarks: evaluation/benchmarks.md
+          - Bulk review: evaluation/bulk-review.md
           - Comparisons: evaluation/comparisons.md
       - Troubleshooting:
           - FAQ: troubleshooting/faq.md

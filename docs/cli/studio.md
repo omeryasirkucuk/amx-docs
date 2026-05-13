@@ -59,6 +59,8 @@ laptop while the server runs on a remote box.
 | **Audit** `/audit` | Reorganized as a **day-grouped timeline** of every COMMENT successfully written by `/apply`, with inline before/after diffs and author chips on every row. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See [Audit page](#audit-page) below.) | `/api/history/apply-events` |
 | **Settings** `/settings` | Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. The LLM wizard pre-fills an **auto-detected price hint** from the live pricing table so an override is a deliberate tweak, not a re-keying chore. Same fields as `/add-db-profile` / `/add-llm-profile` / `/add-doc-profile` / `/add-code-profile`. | `/api/profiles/...`, `/api/pricing/...` |
 | **System** `/system` | Doctor checks (re-run, skip-network toggle), per-(provider, model) token usage + cost over today / 24h / 7d / 30d / all, search-catalog status, team history-store enable / disable, and one-click placeholder cleanup. | `/api/doctor`, `/api/usage`, `/api/catalog/status`, `/api/admin/...` |
+| **Schedules** `/runs/schedules` | Scheduled-run manager — list, add (cascading scope picker: Profile → DB → Schema → Table → Column), edit dialog, pause / resume / delete, run-now, and one-click **Install daemon** / **Uninstall daemon** buttons that call `/analyze schedule install-daemon` on the host. Live status ticker surfaces the next-fire window and any catch-up surfaces from a previously-closed AMX session. | `/api/schedules`, `/api/schedules/daemon` |
+| **Pricing** `/pricing` | Token / USD cost estimator for the active LLM profile. Pulls the cached pricing table the rest of Studio uses, lets you sketch a what-if run (rows × columns × profiling mode) and shows the projected spend before you commit. Useful for sizing a whole-warehouse drafting pass before you press **Generate**. | `/api/pricing`, `/api/usage` |
 
 The top bar surfaces the active **LLM profile** as a click-to-switch dropdown
 pill, an always-visible **pricing-cache freshness badge** (with a one-click
@@ -345,6 +347,39 @@ AMX Studio reuses `DatabaseConnector.test_connection_result()`, so the same
 TLS setup as the CLI applies. Set `tls_no_verify=true` (or pin a
 `tls_trusted_ca_file`) on the profile from Settings, then click **Test** again.
 
+## Schedules and Pricing
+
+The **Schedules** tab (`/runs/schedules`) is the Studio counterpart to
+[`/analyze schedule`](schedules.md). Every CLI subcommand has a 1:1
+control here:
+
+| CLI | Studio control |
+|---|---|
+| `/analyze schedule add` | **+ New schedule** button → cascading picker (Profile → DB → Schema → Table → Column) → fire-time field. |
+| `/analyze schedule list` | The main list. Filter chips for `pending` / `paused` / `failed`. |
+| `/analyze schedule show` | Click a row to open the detail drawer. |
+| `/analyze schedule pause` / `resume` / `rm` | Inline row actions. |
+| `/analyze schedule run-now` | **Run now** button — `--background` is the default; you can navigate away while it works. |
+| `/analyze schedule install-daemon` / `uninstall-daemon` | One-click **Install daemon** / **Uninstall daemon** at the top of the page. Status badge surfaces launchd / systemd / Task Scheduler health. |
+| `/analyze schedule status` | The live ticker at the top of the page (auto-refreshes every 30 s plus on window focus). |
+
+The **Pricing** tab (`/pricing`) is the cost-estimation surface. Pick a
+DB profile and a target scope, sketch the run size (rows × columns × profiling
+mode), and the page shows projected tokens / USD before you commit. The
+same pricing table that powers the per-run cost rows and the Studio top-bar
+**pricing-cache freshness badge** drives the estimate, so the projection
+agrees with what `/run` will actually report.
+
+## Phone-first shell
+
+AMX Studio renders on phone and tablet without a separate build. The
+shell stacks every multi-column layout on narrow viewports (Sessions
+above Ask chat, Schedules as a one-card-per-row list, sidebar moves to
+an off-canvas drawer behind the hamburger). The patterns contributors
+use to keep this coherent — `sm:` / `md:` / `lg:` prefixes for grids,
+`min-w-0` on grid children, `hideOnMobile` on DataTable columns, mobile-safe
+dialogs — live in [Responsive Studio](../guides/responsive-studio.md).
+
 ## What's next
 
 - [`/run` and `/apply`](run-and-apply.md) — same workflow, REPL-flavoured.
@@ -352,3 +387,6 @@ TLS setup as the CLI applies. Set `tls_no_verify=true` (or pin a
   AMX Studio's Ask tab wraps.
 - [Human-in-the-loop review](../concepts/human-in-the-loop.md) — what the
   Pending queue actually does and why every Generate goes through it.
+- [`/analyze schedule`](schedules.md) — the CLI side of the Schedules tab.
+- [Responsive Studio](../guides/responsive-studio.md) — what works on phone
+  and the contributor pattern that keeps the shell coherent.

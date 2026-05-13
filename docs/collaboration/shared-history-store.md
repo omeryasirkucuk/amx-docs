@@ -89,25 +89,42 @@ Proceed? [y/N]: y
 ✓ History store enabled. Future /run / /apply will write to AMX.amx_history_*.
 ```
 
-### 2. Migrate existing local history (optional)
+### 2. Migrate local history (one-shot)
 
 ```text
-> /history-store migrate
-Found 47 runs in ~/.amx/history.db. Migrate to AMX.amx_history_*? [y/N]: y
+> /history-store migrate-from-local
+Found 47 runs in ~/.amx/history.db. Copy to AMX.amx_history_*? [y/N]: y
 
 [1/47] run_2026-04-15_09-12-001 ............  ok
 [2/47] run_2026-04-15_10-04-002 ............  ok
 ...
 [47/47] run_2026-05-03_15-44-002 ............  ok
-✓ /history-store migrate finished. 47 runs imported.
+✓ /history-store migrate-from-local finished. 47 runs imported.
 
 Local file ~/.amx/history.db kept (not deleted) — remove it manually after verifying.
 ```
 
-The local file is kept on purpose so you can roll back. Verify with `/history list`,
-then `rm ~/.amx/history.db` once you're satisfied.
+The copy is **idempotent** — re-running skips rows that already landed in the
+shared schema, so partial failures are safe to retry. The local file is kept
+on purpose; verify with `/history list`, then `rm ~/.amx/history.db` once
+you're satisfied.
 
-### 3. Disable (back to local-only)
+### 3. Pull teammates' rows into local cache
+
+```text
+> /history-store pull-from-shared
+Pulling shared rows newer than 2026-05-03_15-44-002 (your last local row)…
+[1/12] run_2026-05-04_08-10-001 (alice@laptop) ......  ok
+...
+[12/12] run_2026-05-12_17-22-004 (bob@desktop) .......  ok
+✓ /history-store pull-from-shared finished. 12 rows added to local cache.
+```
+
+Use this when you want a `/history list` that includes teammates' runs even
+when offline. The shared store remains authoritative; the local cache is
+write-through, never write-back.
+
+### 4. Disable (back to local-only)
 
 ```text
 > /history-store disable
@@ -118,22 +135,37 @@ Proceed? [y/N]: y
 ✓ History store disabled. /history now reads ~/.amx/history.db.
 ```
 
-### 4. Flush (drop the tables entirely — irreversible)
+### 5. Flush the dual-write outbox
 
 ```text
-> /history-store flush
-WARNING: This DROPs AMX.amx_history_runs and AMX.amx_history_results.
-         All shared run history is lost. There is no undo.
+> /history-store flush-pending
+Outbox depth: 7 rows queued for shared write (last attempt 12m ago).
 
-Type the schema name (AMX) to confirm: AMX
-
-[1/2] DROP TABLE AMX.amx_history_results .....  ok
-[2/2] DROP TABLE AMX.amx_history_runs ........  ok
-✓ /history-store flush finished. Schema AMX is intact (drop manually if no longer used).
+[1/7] run_2026-05-13_14-22-003.results ....  ok
+[2/7] run_2026-05-13_14-22-003.update  ....  ok
+...
+[7/7] run_2026-05-13_14-30-001.results ....  ok
+✓ /history-store flush-pending finished. Outbox is empty.
 ```
 
-The `AMX` schema itself is left so you can re-enable later with the same name (or
-drop the schema by hand if you're done).
+`flush-pending` retries dual-writes that failed at write time (DB unreachable,
+permission blip, etc.) — it does **not** drop any tables. The local SQLite file
+is the source of truth for the outbox queue, so re-running drains whatever is
+queued without re-writing already-mirrored rows.
+
+### 6. Dump the bootstrap DDL
+
+```text
+> /history-store dump-ddl
+-- AMX history-store bootstrap DDL (PostgreSQL dialect)
+CREATE SCHEMA IF NOT EXISTS AMX;
+CREATE TABLE AMX.amx_history_runs (...);
+...
+```
+
+Use this when your DBA needs to pre-create the schema and tables by hand
+(e.g. permissions don't allow AMX itself to `CREATE SCHEMA`). The DDL is
+dialect-translated for the active DB profile's backend.
 
 ## Multi-machine sync — what to expect
 
@@ -179,7 +211,8 @@ history_store_schema: AMX
 | Two machines see different rows for the same run | One machine has `history_store_enabled: false` and is using the local file | `> /config show | grep history_store` on both; ensure both are `true` and pointing at the same profile |
 | `permission denied for relation amx_history_results` mid-`/apply` | DB user has SELECT but not INSERT/UPDATE on the audit tables | `GRANT INSERT, UPDATE ON AMX.amx_history_* TO <user>;` |
 | Slow `/history list` on a large team (1000+ runs) | Index missing or stale stats | `ANALYZE AMX.amx_history_runs; ANALYZE AMX.amx_history_results;` |
-| `/history-store migrate` fails partway through | Local SQLite file has a row that violates a NOT NULL constraint in the new schema | The migration is idempotent; re-run with `--skip-errors` to skip the bad row, then inspect `~/.amx/history.db` for the offender |
+| `/history-store migrate-from-local` fails partway through | Local SQLite file has a row that violates a NOT NULL constraint in the new schema | The migration is idempotent; re-run with `--skip-errors` to skip the bad row, then inspect `~/.amx/history.db` for the offender |
+| Outbox depth keeps climbing in `/history-store status` | Shared DB intermittently unreachable so dual-writes queue without being drained | `/history-store flush-pending` once the DB is healthy; consider a daemon-side `pull-from-shared` cron if the gap is persistent |
 
 ## What's next
 

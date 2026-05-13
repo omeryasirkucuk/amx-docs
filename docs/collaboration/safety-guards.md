@@ -1,8 +1,12 @@
 # Safety guards
 
-Shared mode adds three guards on top of plain dual-writing. They exist because the shared
-store is a multi-engineer surface — a confused session pointer or a typo'd subcommand
-shouldn't be able to corrupt teammates' work.
+Shared mode adds three guards on top of plain dual-writing, and a fourth guard
+protects the per-user `~/.amx/config.yml` itself from being corrupted by a
+save that races with a concurrent edit. The guards exist because the shared
+store is a multi-engineer surface — a confused session pointer or a typo'd
+subcommand shouldn't be able to corrupt teammates' work — and because a
+single bad config save can otherwise put the local AMX install in a state
+that no command can recover from.
 
 ## Guard 1 — Cross-profile session resume is refused
 
@@ -52,15 +56,45 @@ This means:
 - **Diff.** The dual-write coordinator can find the right shared row when later UPDATEs
   fire (e.g. when a run finishes and we update its terminal status).
 
-## Why these three
+## Guard 4 — Config save uses a shadow-fsync gate + 5-generation backup
 
-Shared mode introduces three new failure modes, and each guard maps to one:
+Every `cfg.save()` walks the same multi-step path so that a crash or a
+concurrent edit can never leave `~/.amx/config.yml` in a partially-written
+state:
+
+1. **Autosave suspend.** Background workers (scheduled runs, the dual-write
+   outbox, doctor probes) are blocked from calling `save()` while the
+   foreground REPL is mid-edit. Without this, two writers could race and
+   the loser would clobber the winner's diff.
+2. **5-generation rotation.** Before the live file is replaced, the current
+   contents are copied to `config.yml.bak.1`. The previous backups are
+   renumbered up to `.bak.5`; anything older is pruned.
+3. **Shadow integrity gate.** New contents are written to
+   `config.yml.shadow`, fsynced, and re-parsed through the YAML loader. The
+   load must succeed and the resulting object must equal the in-memory
+   model. Only then does `shadow → live` rename happen. A failed parse keeps
+   the live file untouched and surfaces a warning into the REPL.
+4. **[`/restore-config`](../cli/restore-config.md)** is the recovery handle
+   if every gate above fails (extremely rare — typically an external
+   process deleting the file mid-write). It lists the rotated backups and
+   restores any of them, with the pre-restore state rotated to `.bak.1`
+   so the operation is reversible.
+
+This is the gate that PR #360 / #361 / #362 introduced after an
+incident that briefly left a corrupt `history.db` save path stuck in
+config.
+
+## Why these four
+
+Shared mode introduces three new failure modes, plus one local-machine
+failure mode for config saves. Each guard maps to one:
 
 | Failure | Guard |
 |---|---|
 | Engineer A's session memory bleeds into engineer B's catalog because of a typo'd `/session resume` | Cross-profile session resume refused |
 | Engineer A runs `Disable` thinking it just turns off shared mode for one run; in fact it stops dual-writing for everyone using their workstation | Picker confirms destructive actions |
 | Engineer A's runs and engineer B's runs are indistinguishable in the shared store | Every row carries attribution |
+| A concurrent edit or a crash mid-`save()` leaves `~/.amx/config.yml` half-written, blocking every subsequent AMX command | Autosave suspend + 5-generation backup + shadow integrity gate + `/restore-config` |
 
 ## What is NOT guarded
 
