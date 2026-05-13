@@ -836,7 +836,9 @@ body:has(#__search:checked) .md-search__inner {
   margin-top: 16px;
 }
 
-/* Uppercase muted category label, rendered as a toggle button */
+/* Uppercase category label, rendered as a toggle button. Parents in
+   the tree are darker and slightly larger than leaves so the hierarchy
+   reads at a glance. */
 .amx-sidebar__group-title {
   display: flex;
   align-items: center;
@@ -847,16 +849,16 @@ body:has(#__search:checked) .md-search__inner {
   appearance: none;
   cursor: pointer;
   font-family: inherit;
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 800;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--text);
   padding: 14px 20px 6px;
   line-height: 1.4;
   text-align: left;
 }
-.amx-sidebar__group-title:hover { color: var(--text-muted); }
+.amx-sidebar__group-title:hover { color: var(--accent); }
 .amx-sidebar__group-title:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: -2px;
@@ -881,10 +883,20 @@ body:has(#__search:checked) .md-search__inner {
   display: block;
 }
 
+/* Nested section title (e.g. CONFIGURATION under REFERENCE) — one step
+   smaller than its parent, slightly less bold, and indented past its
+   parent's content column. */
 .amx-sidebar__group--depth-1 > .amx-sidebar__group-title {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 10px 20px 4px 32px;
+  color: var(--text-muted);
+}
+.amx-sidebar__group--depth-2 > .amx-sidebar__group-title {
   font-size: 10px;
-  padding: 10px 20px 4px 28px;
-  color: var(--text-faint);
+  font-weight: 700;
+  padding: 8px 20px 4px 44px;
+  color: var(--text-muted);
 }
 
 /* ── Leaf links ────────────────────────────────────── */
@@ -912,11 +924,12 @@ body:has(#__search:checked) .md-search__inner {
   font-weight: 500;
 }
 
-/* Nested links sit deeper (mirrors --group-title indent) */
-.amx-sidebar__link--depth-0 { padding-left: 20px; }
-.amx-sidebar__link--depth-1 { padding-left: 28px; }
-.amx-sidebar__link--depth-2 { padding-left: 36px; }
-.amx-sidebar__link--depth-3 { padding-left: 44px; }
+/* Nested links sit deeper than their parent group title so the
+   tree visibly nests instead of flattening at the title's column. */
+.amx-sidebar__link--depth-0 { padding-left: 32px; }
+.amx-sidebar__link--depth-1 { padding-left: 44px; }
+.amx-sidebar__link--depth-2 { padding-left: 56px; }
+.amx-sidebar__link--depth-3 { padding-left: 68px; }
 
 
 /* ───────────── Right TOC — 220px, sticky, ≥1280px only ───────────── */
