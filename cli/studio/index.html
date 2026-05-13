@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../../configuration/config-yml/">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
@@ -680,242 +731,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#where-to-read-more" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#quick-start" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Quick start
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-in-the-ui" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's in the UI
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#multi-profile-browse" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Multi-profile browse
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#chat-scope-and-focus" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Chat scope and focus
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#generate-descriptions-from-any-page" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Generate descriptions from any page
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#costs-and-pricing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Costs and pricing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#re-run" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Re-Run
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#preview-sql" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Preview SQL
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#audit-page" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Audit page
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cancelling-long-running-jobs" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cancelling long-running jobs
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#security-model" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Security model
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Security model">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#whats-not-exposed" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's not exposed
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Troubleshooting">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#browser-opens-to-a-404-connection-refused" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Browser opens to a 404 / "Connection refused"
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#amx-studio-auth-is-not-configured-on-every-request" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        "AMX Studio auth is not configured" on every request
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ask-returns-search-catalog-isnt-initialised-yet" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        /ask returns "Search catalog isn't initialised yet"
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#pending-queue-is-empty-but-i-just-approved-rows" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Pending queue is empty but I just approved rows
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#connection-test-on-a-databricks-profile-fails-with-a-tls-error" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Connection-test on a Databricks profile fails with a TLS error
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#schedules-and-pricing" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Schedules and Pricing
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#phone-first-shell" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Phone-first shell
+        Where to read more
       
     </span>
   </a>
@@ -971,405 +790,47 @@
 
 <h1 id="studio-local-amx-web-ui-amx-studio"><code>/studio</code> — local AMX web UI (AMX Studio)<a class="headerlink" href="#studio-local-amx-web-ui-amx-studio" title="Permanent link">&para;</a></h1>
 <p><code>/studio</code> boots <strong>AMX Studio</strong> on <code>127.0.0.1:&lt;port&gt;</code>, generates a one-shot
-bearer token, and opens your default browser at the token-protected URL. It's the
-same review-and-apply workflow you get in the REPL — runs, results, the pending
-queue, the <code>/ask</code> chat, and full DB / LLM / Docs / Code profile management — but
-on a denser surface where you can see everything at once.</p>
-<p>The CLI command is <code>amx /studio</code> (slash form, used inside the AMX REPL) and
-<code>amx studio</code> (Click subcommand, used from a fresh shell). Both run the same
-<code>amx.web.launch_studio</code> entry point.</p>
-<p><img alt="AMX Studio Overview page — sidebar with active SAP profile and schemas, four stat cards (active backend, LLM model, total runs, success rate), and a Recent runs feed with four Schema description rows" src="../../assets/studio-overview.png" /></p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>AMX installed (<code>pip install amx-cli</code>). AMX Studio ships <strong>inside</strong> the
-  <code>amx-cli</code> wheel — there is no separate package to install and no Node toolchain
-  required.</li>
-<li>A modern browser (Chrome, Firefox, Safari, or Edge).</li>
-<li>An active DB and LLM profile, or a clean install ready for the in-browser
-  <code>/setup</code> wizard.</li>
-</ul>
-<h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx<span class="w"> </span>/studio
+bearer token, and opens your default browser at the token-protected URL.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /studio
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>✓ AMX Studio booting on http://127.0.0.1:47821
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>✓ Opening browser…
 </span></code></pre></div>
-<p>Or as a top-level shell command:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx<span class="w"> </span>studio
-</span></code></pre></div>
-<p>The default port is <strong>47821</strong>. Pass <code>--port &lt;n&gt;</code> to pin a specific port, or
-<code>--no-open</code> to skip the auto-launch when running over SSH.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8080</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--no-open
-</span></code></pre></div>
-<p>The launcher prints the token-protected URL — copy it into a browser on the same
-machine if <code>--no-open</code> was used, or use a tunneling tool to reach it from a
-laptop while the server runs on a remote box.</p>
-<h2 id="whats-in-the-ui">What's in the UI<a class="headerlink" href="#whats-in-the-ui" title="Permanent link">&para;</a></h2>
+<p>Flags:</p>
 <table>
 <thead>
 <tr>
-<th>Page</th>
-<th>What it does</th>
-<th>Backed by</th>
+<th>Flag</th>
+<th>Effect</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Landing</strong> <code>/</code></td>
-<td>Calm entry point — hero + product summary + quick links into Browse, Runs, and Ask. Cheap to load on every tab open; navigates to <code>/overview</code> when you want the dashboard.</td>
-<td>static</td>
+<td><code>--port N</code></td>
+<td>Bind on port <code>N</code> instead of <code>47821</code></td>
 </tr>
 <tr>
-<td><strong>Overview</strong> <code>/overview</code></td>
-<td>Lifetime stat cards (total runs, success rate, <strong>lifetime input/output tokens, lifetime USD cost</strong>) + Recent runs feed. Tile and row click-throughs jump to Settings or the run detail. (The legacy <code>/</code> URL redirects here.)</td>
-<td><code>/api/history/stats</code>, <code>/api/usage</code>, <code>/api/history/runs</code></td>
-</tr>
-<tr>
-<td><strong>Browse</strong> <code>/db/:profile/:database/:schema/:table</code> (2-level) and <code>/cat/:profile/:catalog/:schema/:table</code> (3-level)</td>
-<td>Multi-profile asset tree: every saved DB profile is its own expandable row in the sidebar with a <strong>search-and-collapse</strong> header above. Walk profile → database/catalog → schema → table; inline-edit any comment or hit <strong>Generate</strong> (which now spawns a background run instead of blocking on an inline LLM call) through the same review loop the CLI uses. Two browser tabs on different profiles never collide.</td>
-<td><code>/api/live/...</code>, <code>/api/comments/...</code>, <code>/api/generate/...</code></td>
-</tr>
-<tr>
-<td><strong>Runs</strong> <code>/runs</code></td>
-<td>Every <code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, and Re-Run invocation, filterable by status (Succeeded / Failed / Running / Cancelled) and sortable by Started. Each Running row has a <strong>Cancel</strong> button. Compare 2–4 runs side-by-side via the <strong>Compare</strong> button — the rebuilt picker surfaces per-row confidence and log-prob, marks winners, and includes a cost row.</td>
-<td><code>/api/history/runs</code>, <code>/api/history/compare</code></td>
-</tr>
-<tr>
-<td><strong>Run detail</strong> <code>/runs/:id</code></td>
-<td>Live SSE progress while a run streams (sticky banner with elapsed timer, current activity, N/total processed, and <strong>live USD cost</strong> updating per batch), then a tabbed Summary / Results / Scope / Settings view once the run finishes. The Summary tab includes a <strong>Tokens &amp; cost</strong> card and surfaces the LLM <strong>reasoning trace</strong> when the provider returned one. Per-row alternatives carousel + skip + custom-edit + restore. <strong>Re-Run</strong> any row (or a multi-row selection) with the original DB scope, prompt detail, alternatives count, and cached table profile preserved. Already-applied rows can be revised inline; revisions write a new audit entry.</td>
-<td><code>/api/history/runs/{id}</code>, <code>/api/pending/...</code>, <code>/api/rerun</code></td>
-</tr>
-<tr>
-<td><strong>Ask</strong> <code>/ask</code></td>
-<td>Streaming chat with the AMX search agent — reasoning + tool calls + grounded answer, with a sessions sidebar, end-session control, and a multi-profile scope dropdown above the textarea (sticky per chat). Each turn shows an answer footer with profile count, latency, the auto-detected focus profile, and <strong>per-turn tokens + USD cost</strong>.</td>
-<td><code>/api/ask</code> (SSE), <code>/api/ask/sessions/...</code></td>
-</tr>
-<tr>
-<td><strong>Pending</strong> <code>/pending</code></td>
-<td>The review queue waiting for <code>/apply</code>. Inline-edit any row, drop or skip individual entries, or <strong>Preview SQL</strong> before writing. The <strong>Apply pending queue</strong> button opens a confirmation modal showing the row count and target database before any COMMENT lands. (See <a href="#preview-sql">Preview SQL</a> below.)</td>
-<td><code>/api/pending/...</code></td>
-</tr>
-<tr>
-<td><strong>Audit</strong> <code>/audit</code></td>
-<td>Reorganized as a <strong>day-grouped timeline</strong> of every COMMENT successfully written by <code>/apply</code>, with inline before/after diffs and author chips on every row. Filter by run id or DB profile; each row shows who applied it, on which host, and what the prior text was so you can spot accidental overrides. (See <a href="#audit-page">Audit page</a> below.)</td>
-<td><code>/api/history/apply-events</code></td>
-</tr>
-<tr>
-<td><strong>Settings</strong> <code>/settings</code></td>
-<td>Tabbed profile management for DB / LLM / Docs / Code — list, activate, edit, delete, plus the full per-backend wizards (PostgreSQL, Snowflake, Databricks, BigQuery, MySQL, Oracle, SQL Server, Redshift, ClickHouse, DuckDB) and per-provider LLM wizards. The LLM wizard pre-fills an <strong>auto-detected price hint</strong> from the live pricing table so an override is a deliberate tweak, not a re-keying chore. Same fields as <code>/add-db-profile</code> / <code>/add-llm-profile</code> / <code>/add-doc-profile</code> / <code>/add-code-profile</code>.</td>
-<td><code>/api/profiles/...</code>, <code>/api/pricing/...</code></td>
-</tr>
-<tr>
-<td><strong>System</strong> <code>/system</code></td>
-<td>Doctor checks (re-run, skip-network toggle), per-(provider, model) token usage + cost over today / 24h / 7d / 30d / all, search-catalog status, team history-store enable / disable, and one-click placeholder cleanup.</td>
-<td><code>/api/doctor</code>, <code>/api/usage</code>, <code>/api/catalog/status</code>, <code>/api/admin/...</code></td>
-</tr>
-<tr>
-<td><strong>Schedules</strong> <code>/runs/schedules</code></td>
-<td>Scheduled-run manager — list, add (cascading scope picker: Profile → DB → Schema → Table → Column), edit dialog, pause / resume / delete, run-now, and one-click <strong>Install daemon</strong> / <strong>Uninstall daemon</strong> buttons that call <code>/analyze schedule install-daemon</code> on the host. Live status ticker surfaces the next-fire window and any catch-up surfaces from a previously-closed AMX session.</td>
-<td><code>/api/schedules</code>, <code>/api/schedules/daemon</code></td>
-</tr>
-<tr>
-<td><strong>Pricing</strong> <code>/pricing</code></td>
-<td>Token / USD cost estimator for the active LLM profile. Pulls the cached pricing table the rest of Studio uses, lets you sketch a what-if run (rows × columns × profiling mode) and shows the projected spend before you commit. Useful for sizing a whole-warehouse drafting pass before you press <strong>Generate</strong>.</td>
-<td><code>/api/pricing</code>, <code>/api/usage</code></td>
+<td><code>--no-open</code></td>
+<td>Don't auto-open the browser. AMX prints the URL and token to paste in</td>
 </tr>
 </tbody>
 </table>
-<p>The top bar surfaces the active <strong>LLM profile</strong> as a click-to-switch dropdown
-pill, an always-visible <strong>pricing-cache freshness badge</strong> (with a one-click
-refresh button — the badge turns warm-yellow when the cache is over 24 h
-old), and a <code>⌘K</code> / <code>Ctrl-K</code> command palette for jumping to any page or
-quick action. The brand renders as <strong>AMX Studio</strong> — a pixel mark + text
-wordmark — and the browser tab title is consistent across pages. DB
-profiles are no longer "active vs. inactive": every saved profile shows up
-as its own expandable row in the sidebar so you can browse all of them
-simultaneously.</p>
-<h2 id="multi-profile-browse">Multi-profile browse<a class="headerlink" href="#multi-profile-browse" title="Permanent link">&para;</a></h2>
-<p>The Browse sidebar lists <strong>every saved DB profile</strong> as its own expandable
-top-level row — no "active" / "switch" concept. Click any profile to lazy-load
-its catalogs / databases; expand a database/catalog to see its schemas; expand
-a schema to see its assets. The sidebar uses indent + typography to keep the
-hierarchy scannable when several profiles are open at once: profile rows are
-uppercase + bold, database/catalog rows are normal weight, schemas are dimmer
-small-caps, tables are the dimmest at the bottom.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>DB PROFILES
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>─────────────────────────────────
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>▾ LOCAL-PG                      ← profile (uppercase, bold)
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    ▾ appdb                     ← database (normal weight)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>        ▾ public                ← schema (12px, dim)
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>              users             ← table (11px, dimmer)
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>              orders
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>        ▸ analytics
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    ▸ reporting
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>▸ SNOWFLAKE-PROD
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>▸ DATABRICKS-STG
-</span></code></pre></div>
-<p><strong>Per-tab scope.</strong> URLs encode the full scope — <code>/db/:profile/:database/...</code>
-for 2-level backends (Postgres, MySQL, …) and <code>/cat/:profile/:catalog/...</code>
-for 3-level (Databricks Unity Catalog, BigQuery). Two browser tabs on
-different profiles never bleed state into each other; an inline comment
-edited on profile X writes to profile X's backend, regardless of what
-some other tab is viewing.</p>
-<p><strong>Per-row Gen still works.</strong> Inline-edit and the per-asset / per-row
-"Generate description" buttons on Database / Schema / Table pages all
-carry the page's profile through to the backend, so multi-profile users
-can draft one comment at a time across any number of profiles without a
-profile switch in between.</p>
-<h2 id="chat-scope-and-focus">Chat scope and focus<a class="headerlink" href="#chat-scope-and-focus" title="Permanent link">&para;</a></h2>
-<p>The Ask page (<code>/ask</code>) inherits the multi-profile model. Above the question
-textarea: a <strong>scope dropdown</strong> with multi-select checkboxes. Default is "All
-profiles" (every saved DB profile in scope); select individual profiles to
-narrow <code>/ask</code>'s retrieval to just those. The selection is <strong>sticky per chat
-session</strong> — picks persist within the chat and reset only when you start a
-new chat with <strong>+ New</strong>.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Scope: [▾ All profiles (5)        ]  [● Ask]
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>        ─────────────────────────
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>        ☑  All profiles
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>        ─────────────────────────
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>        ☐  SAP
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>        ☐  WAREHOUSE
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>        ☐  ANALYTICS
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>        ☐  RAW
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>        ☐  REPORTING
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>        ─────────────────────────
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>        Focus: WAREHOUSE (auto)
-</span></code></pre></div>
-<p>The <strong>Focus</strong> line at the bottom of the dropdown surfaces an auto-detected
-conversation focus — when ≥60% of profile mentions in the last 3 assistant
-turns point at one profile, the system prompt nudges the model to default
-to it for ambiguous questions. The user can still ask explicit cross-profile
-questions ("compare across all profiles", "is this in any other profile")
-and the model switches context smoothly.</p>
-<p>Each assistant turn carries a small footer below the answer:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>2 profiles · 3.4s · focus: warehouse
-</span></code></pre></div>
-<p>— the scope used, wall-clock latency, and (when applicable) the
-auto-detected focus, so users can spot a slow profile or a misaligned focus
-at a glance. Per-tool latency is also recorded internally for debugging.</p>
-<p>CLI parity: the same sticky-scope / focus / latency machinery powers
-<code>/ask</code> in the REPL — see <a href="../ask-and-search/#4-ask-across-multiple-db-profiles">Ask &amp; Search</a>
-for the matching <code>/use-db</code> / <code>--db-profile</code> / <code>/session scope</code> flows.</p>
-<h2 id="generate-descriptions-from-any-page">Generate descriptions from any page<a class="headerlink" href="#generate-descriptions-from-any-page" title="Permanent link">&para;</a></h2>
-<p>Bulk runs (the canonical <code>/run</code> path) stay the right tool when you want to fill
-in many assets at once. The Browse pages add a one-asset-at-a-time path for the
-times you want to fix or draft a single comment without spinning up a full run:</p>
+<p>Both <code>/studio</code> (REPL slash command) and <code>amx studio</code> (Click subcommand
+from a shell) call the same <code>amx.web.launch_studio</code> entry point.</p>
+<p><img alt="AMX Studio Overview page" src="../../assets/studio-overview.png" /></p>
+<h2 id="where-to-read-more">Where to read more<a class="headerlink" href="#where-to-read-more" title="Permanent link">&para;</a></h2>
+<p>The full Studio reference lives in its own section:</p>
 <ul>
-<li><strong>Database page</strong> → "Generate description" button writes the database / catalog
-  comment directly.</li>
-<li><strong>Schema page</strong> → "Just this schema" (single LLM call) vs "All tables" (full
-  bulk run, redirects to the live run-detail stream).</li>
-<li><strong>Table page</strong> → "Just this table" vs "All columns".</li>
-<li><strong>Column rows</strong> → per-row <strong>Gen</strong> button. As of 0.14.0 this <strong>spawns a
-  background run</strong> instead of blocking the UI on an inline LLM call — the
-  toolbar shows the new run id and you can navigate away while it works.</li>
+<li><a href="../../studio/">Studio overview</a> — security model, responsive
+  patterns, launch flags</li>
+<li><a href="../../studio/#whats-where">Browse, Runs, Run detail, Compare, Ask, Pending, Audit, Settings,
+  System, Schedules, Pricing, DB cache, Keyboard</a>
+  — per-page walkthroughs</li>
 </ul>
-<p>Every generated suggestion still goes through the human-in-the-loop review queue
-— nothing lands in the live database until you accept it.</p>
-<h2 id="costs-and-pricing">Costs and pricing<a class="headerlink" href="#costs-and-pricing" title="Permanent link">&para;</a></h2>
-<p>Every LLM call AMX makes is reported in tokens <strong>and USD</strong> at the surface
-that triggered it:</p>
-<ul>
-<li><strong>Run progress header</strong> — running input tokens, output tokens, and
-  USD cost, updated per batch while the worker is alive.</li>
-<li><strong>Run detail Summary tab</strong> — a <strong>Tokens &amp; cost</strong> card with the
-  per-run total once the run finishes.</li>
-<li><strong>Overview</strong> — lifetime input / output tokens and USD cost across
-  every run on this install.</li>
-<li><strong>Ask</strong> — per-turn cost footer next to the latency and focus chips.</li>
-<li><strong>Compare</strong> — a cost row on the Compare grid so two-run shoot-outs
-  show price as well as quality.</li>
-</ul>
-<p>Pricing comes from a versioned per-(provider, model) table that AMX
-fetches live, caches on disk with a freshness timestamp, and
-auto-refreshes when stale. The top bar shows a <strong>pricing-cache
-freshness badge</strong> that turns warm-yellow when the cache is over 24 h
-old; click the refresh icon next to it to force a re-fetch. Settings →
-LLM lets you pin a per-model <strong>price override</strong> (an auto-detected hint
-pre-fills the field with the current public rate, so an override is a
-deliberate tweak rather than a re-keying chore).</p>
-<p>Every run row records both the price it ran at (frozen) and the price
-it would cost today (live), so a stale price never silently rewrites
-history. The same audit shape powers the legacy <code>/usage</code> rows and the
-Metrics tokens row.</p>
-<h2 id="re-run">Re-Run<a class="headerlink" href="#re-run" title="Permanent link">&para;</a></h2>
-<p>Any persisted result row can be re-executed from the Run detail page.
-Select one or many <code>run_results</code> rows and click <strong>Re-Run</strong> — the
-worker spawns with the original DB scope, prompt detail, alternatives
-count, verbosity, and temperature preserved, plus the cached
-first-run table profile so the re-run skips the introspection cost.
-A re-run produces a new run id of its own, so the original run row,
-its alternatives, and its audit trail all stay intact and the two are
-naturally side-by-side in <strong>Compare</strong>.</p>
-<p>Re-Run is the right tool for the "this column got a great description
-last week, let me try a stronger model" case: pin a different LLM
-profile in the top bar, hit Re-Run, and Compare shows the same asset
-priced and scored against both runs.</p>
-<h2 id="preview-sql">Preview SQL<a class="headerlink" href="#preview-sql" title="Permanent link">&para;</a></h2>
-<p>The <strong>Pending</strong> page (<code>/pending</code>) ships with a <strong>Preview SQL</strong> button
-next to <strong>Apply</strong>. Clicking it runs the same dry-run path as
-<a href="../run-and-apply/#dry-run-preview"><code>amx /analyze apply --dry-run</code></a>
-and pops a modal listing the exact <code>COMMENT ON …</code> statement each
-queued row would execute:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>public.transactions.posting
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    COMMENT ON COLUMN public.transactions.posting IS :cmt
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>public.transactions.amount
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    COMMENT ON COLUMN public.transactions.amount IS :cmt
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>public.transactions
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    (skipped — backend cannot accept this asset kind)
-</span></code></pre></div>
-<p>Skipped rows (asset kinds the backend can't accept, e.g. schema
-comments on ClickHouse) are listed separately so you know which
-entries are no-ops before pressing Apply.</p>
-<p>The pending file is left untouched; the modal is read-only. Close
-it and click <strong>Apply</strong> to write for real, or edit / drop rows and
-re-preview.</p>
-<h2 id="audit-page">Audit page<a class="headerlink" href="#audit-page" title="Permanent link">&para;</a></h2>
-<p><code>/audit</code> is a <strong>day-grouped timeline</strong> of every COMMENT AMX has
-successfully written, newest-first. Rows are bucketed under day
-headers (Today / Yesterday / dated header) so a long history is easy
-to skim. Each row shows:</p>
-<ul>
-<li>the asset path (<code>schema.table.column</code>),</li>
-<li>an inline <strong>before → after diff</strong> of the comment text,</li>
-<li>an <strong>author chip</strong> with the username (<code>getpass.getuser()</code> on the
-  CLI host) and hostname,</li>
-<li>attribution: profile and run id.</li>
-</ul>
-<p>Two filters at the top:</p>
-<ul>
-<li><strong>Run id</strong> — <code>42</code> shows only what run #42 wrote (matches the
-  filter that <code>/history rollback 42</code> uses).</li>
-<li><strong>DB profile</strong> — <code>prod_pg</code> scopes the timeline to that profile so
-  team members on a shared history store see only their domain.</li>
-</ul>
-<p>The page polls <code>/api/history/apply-events</code> every 30 s plus on
-window focus, so a CLI <code>/apply</code> somewhere else is reflected without
-a manual refresh.</p>
-<p>The diff view is designed around the case the audit was built for:
-an LLM rewrite landed on top of a DBA's hand-written domain note.
-Click through to <a href="../history/#rollback"><code>/history rollback</code></a> when
-you want to undo the overwrite.</p>
-<h2 id="cancelling-long-running-jobs">Cancelling long-running jobs<a class="headerlink" href="#cancelling-long-running-jobs" title="Permanent link">&para;</a></h2>
-<p><code>/run</code> and <code>/apply</code> jobs run in daemon threads inside the parent CLI process.
-Each carries a <code>threading.Event</code> cancel token plumbed through the orchestrator;
-clicking <strong>Cancel</strong> on the progress card sets the token and the loop bails
-between rows.</p>
-<p><code>/apply</code> cancellation <strong>commits whatever was already written</strong> — matching the
-CLI's <kbd>Ctrl-C</kbd> behaviour. The transaction boundary is per-row, so
-partial work is never rolled back to spare you a multi-minute redo.</p>
-<p>In-flight LLM HTTP calls cannot be killed mid-flight (provider SDKs don't expose
-cancellation), so cancellation latency is "one tool/agent step" — typically a
-few seconds.</p>
-<h2 id="security-model">Security model<a class="headerlink" href="#security-model" title="Permanent link">&para;</a></h2>
-<p>AMX Studio binds <strong>only</strong> to <code>127.0.0.1</code> — never <code>0.0.0.0</code>. On top of
-loopback isolation, every API call carries a one-shot bearer token generated
-fresh per <code>/studio</code> invocation. The SPA captures the token from <code>?t=…</code> on
-first load, stashes it in <code>localStorage</code> (key <code>amx.studio.token</code>), and strips
-it from the URL bar so it doesn't end up in browser history.</p>
-<p>EventSource clients (the SSE streams behind <code>/ask</code>, <code>/run</code>, and <code>/apply</code>)
-re-attach the token via <code>?t=…</code> because browsers don't allow custom headers on
-<code>EventSource</code>.</p>
-<p>You can rotate the token by stopping the server (<kbd>Ctrl-C</kbd>) and
-re-running <code>amx /studio</code>.</p>
-<h3 id="whats-not-exposed">What's not exposed<a class="headerlink" href="#whats-not-exposed" title="Permanent link">&para;</a></h3>
-<ul>
-<li>The JSON API does not include <code>/docs</code> or <code>/redoc</code>. The OpenAPI surface stays
-  internal so AMX Studio doesn't accidentally expose your AMX configuration
-  to anyone who happened to grab the token.</li>
-<li>Static asset routes (<code>/</code>, <code>/assets/*</code>) are unauthenticated by design — they
-  only ship the SPA bundle, not data.</li>
-<li>Secret fields (<code>password</code>, <code>access_token</code>, <code>api_key</code>) are masked as <code>********</code>
-  in every response. PUT bodies treat the placeholder as "leave the existing
-  value alone" so editing one field on a profile doesn't blank the secret.</li>
-</ul>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<h3 id="browser-opens-to-a-404-connection-refused">Browser opens to a 404 / "Connection refused"<a class="headerlink" href="#browser-opens-to-a-404-connection-refused" title="Permanent link">&para;</a></h3>
-<p>The server may have failed to bind (port <code>47821</code> busy and the ephemeral fallback
-also fell over). Pass <code>--port</code> to force a different port:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>amx<span class="w"> </span>/studio<span class="w"> </span>--port<span class="w"> </span><span class="m">8765</span>
-</span></code></pre></div>
-<h3 id="amx-studio-auth-is-not-configured-on-every-request">"AMX Studio auth is not configured" on every request<a class="headerlink" href="#amx-studio-auth-is-not-configured-on-every-request" title="Permanent link">&para;</a></h3>
-<p>The token cookie / <code>localStorage</code> entry was wiped or never captured on this
-browser. Re-launch <code>amx /studio</code> and let the launcher re-open the browser
-with a fresh <code>?t=…</code> URL.</p>
-<h3 id="ask-returns-search-catalog-isnt-initialised-yet"><code>/ask</code> returns "Search catalog isn't initialised yet"<a class="headerlink" href="#ask-returns-search-catalog-isnt-initialised-yet" title="Permanent link">&para;</a></h3>
-<p>Run <code>/sync</code> (or <code>/run</code> once) to populate the SQLite-backed catalog. AMX Studio
-reuses the same store the CLI's <code>/ask</code> uses, so a sync from either side
-surfaces immediately.</p>
-<h3 id="pending-queue-is-empty-but-i-just-approved-rows">Pending queue is empty but I just approved rows<a class="headerlink" href="#pending-queue-is-empty-but-i-just-approved-rows" title="Permanent link">&para;</a></h3>
-<p>AMX Studio reads <code>~/.amx/pending_metadata.json</code>. If you're on shared-mode
-history, the queue is still local-only by design (write-back is per-machine).</p>
-<h3 id="connection-test-on-a-databricks-profile-fails-with-a-tls-error">Connection-test on a Databricks profile fails with a TLS error<a class="headerlink" href="#connection-test-on-a-databricks-profile-fails-with-a-tls-error" title="Permanent link">&para;</a></h3>
-<p>AMX Studio reuses <code>DatabaseConnector.test_connection_result()</code>, so the same
-TLS setup as the CLI applies. Set <code>tls_no_verify=true</code> (or pin a
-<code>tls_trusted_ca_file</code>) on the profile from Settings, then click <strong>Test</strong> again.</p>
-<h2 id="schedules-and-pricing">Schedules and Pricing<a class="headerlink" href="#schedules-and-pricing" title="Permanent link">&para;</a></h2>
-<p>The <strong>Schedules</strong> tab (<code>/runs/schedules</code>) is the Studio counterpart to
-<a href="../schedules/"><code>/analyze schedule</code></a>. Every CLI subcommand has a 1:1
-control here:</p>
-<table>
-<thead>
-<tr>
-<th>CLI</th>
-<th>Studio control</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>/analyze schedule add</code></td>
-<td><strong>+ New schedule</strong> button → cascading picker (Profile → DB → Schema → Table → Column) → fire-time field.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule list</code></td>
-<td>The main list. Filter chips for <code>pending</code> / <code>paused</code> / <code>failed</code>.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule show</code></td>
-<td>Click a row to open the detail drawer.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule pause</code> / <code>resume</code> / <code>rm</code></td>
-<td>Inline row actions.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule run-now</code></td>
-<td><strong>Run now</strong> button — <code>--background</code> is the default; you can navigate away while it works.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule install-daemon</code> / <code>uninstall-daemon</code></td>
-<td>One-click <strong>Install daemon</strong> / <strong>Uninstall daemon</strong> at the top of the page. Status badge surfaces launchd / systemd / Task Scheduler health.</td>
-</tr>
-<tr>
-<td><code>/analyze schedule status</code></td>
-<td>The live ticker at the top of the page (auto-refreshes every 30 s plus on window focus).</td>
-</tr>
-</tbody>
-</table>
-<p>The <strong>Pricing</strong> tab (<code>/pricing</code>) is the cost-estimation surface. Pick a
-DB profile and a target scope, sketch the run size (rows × columns × profiling
-mode), and the page shows projected tokens / USD before you commit. The
-same pricing table that powers the per-run cost rows and the Studio top-bar
-<strong>pricing-cache freshness badge</strong> drives the estimate, so the projection
-agrees with what <code>/run</code> will actually report.</p>
-<h2 id="phone-first-shell">Phone-first shell<a class="headerlink" href="#phone-first-shell" title="Permanent link">&para;</a></h2>
-<p>AMX Studio renders on phone and tablet without a separate build. The
-shell stacks every multi-column layout on narrow viewports (Sessions
-above Ask chat, Schedules as a one-card-per-row list, sidebar moves to
-an off-canvas drawer behind the hamburger). The patterns contributors
-use to keep this coherent — <code>sm:</code> / <code>md:</code> / <code>lg:</code> prefixes for grids,
-<code>min-w-0</code> on grid children, <code>hideOnMobile</code> on DataTable columns, mobile-safe
-dialogs — live in <a href="../../guides/responsive-studio/">Responsive Studio</a>.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../run-and-apply/"><code>/run</code> and <code>/apply</code></a> — same workflow, REPL-flavoured.</li>
-<li><a href="../ask-and-search/"><code>/ask</code> and <code>/search</code></a> — the conversational surface that
-  AMX Studio's Ask tab wraps.</li>
-<li><a href="../../concepts/human-in-the-loop/">Human-in-the-loop review</a> — what the
-  Pending queue actually does and why every Generate goes through it.</li>
-<li><a href="../schedules/"><code>/analyze schedule</code></a> — the CLI side of the Schedules tab.</li>
-<li><a href="../../guides/responsive-studio/">Responsive Studio</a> — what works on phone
-  and the contributor pattern that keeps the shell coherent.</li>
+<li><a href="../../studio/">Studio index</a> — every Studio page in one map.</li>
+<li><a href="../../guides/responsive-studio/">Responsive Studio</a> — the mobile
+  pattern catalogue.</li>
 </ul>
 
 

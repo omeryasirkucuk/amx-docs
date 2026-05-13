@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://amxcli.com/configuration/config-yml/">
       
       
-        <link rel="prev" href="../../guides/responsive-studio/">
+        <link rel="prev" href="../../guides/scheduled-runs/">
       
       
         <link rel="next" href="../env-vars/">
@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="./" class="active">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
@@ -861,7 +912,7 @@
 <h1 id="amxconfigyml"><code>~/.amx/config.yml</code><a class="headerlink" href="#amxconfigyml" title="Permanent link">&para;</a></h1>
 <p>AMX persists profiles and settings to <code>~/.amx/config.yml</code>. The file is part of the
 public surface — you can hand-edit it, version it, and template it with environment
-variables. This page walks through the schema (currently <code>schema_version: 7</code>), shows a
+variables. This page walks through the schema (currently <code>schema_version: 2</code>), shows a
 fully-annotated example covering every supported field, and lists the operations AMX
 performs on the file under the hood.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
@@ -888,7 +939,7 @@ on the next AMX start (or <code>&gt; /config reload</code> from inside an active
 schema version header.</p>
 <h3 id="2-inspect-what-got-written">2. Inspect what got written<a class="headerlink" href="#2-inspect-what-got-written" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /config show
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>schema_version: 7
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>schema_version: 2
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>db_profiles:
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  default:
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    backend: postgresql
@@ -926,7 +977,7 @@ Add them by hand under the relevant profile.</p>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="c1"># Schema version. AMX migrates older files forward automatically; if this</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># is newer than the AMX binary you&#39;re running, AMX refuses to start so a</span>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># downgrade can&#39;t silently corrupt fields it doesn&#39;t know about.</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">schema_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">schema_version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 </span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
 </span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># ─────────────────────────────────────────────────────────────────────</span>
 </span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># Single-DB shortcut. `db:` (without -profiles) is treated as the</span>
@@ -1166,7 +1217,7 @@ Add them by hand under the relevant profile.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>ConfigSchemaTooNewError: file is schema_version 8, this AMX is at 7</code></td>
+<td><code>ConfigSchemaTooNewError: file is schema_version 3, this AMX is at 2</code></td>
 <td>YAML written by a newer AMX version</td>
 <td>Upgrade AMX (<code>pip install -U amx-cli</code>) or downgrade the file</td>
 </tr>

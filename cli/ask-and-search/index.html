@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../../configuration/config-yml/">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
@@ -1028,7 +1079,7 @@ auto-detected focus profile, and <strong>per-turn token + USD cost</strong>. If 
 answer doesn't match the cited evidence, you've found a prompt or retrieval
 bug — file it. Cost is computed against the same versioned per-(provider,
 model) pricing table that powers the run cost surfaces; see
-<a href="../studio/#costs-and-pricing">Costs and pricing</a> for overrides and the
+<a href="../../studio/pricing/">Costs and pricing</a> for overrides and the
 freshness badge.</p>
 <h3 id="3-the-seven-answer-shapes">3. The seven answer shapes<a class="headerlink" href="#3-the-seven-answer-shapes" title="Permanent link">&para;</a></h3>
 <p><code>/ask</code> adapts its answer shape to what the question is asking for. Same syntax —
@@ -1185,7 +1236,7 @@ in one chat without disturbing the global default:</p>
 </span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&gt; /session scope clear                   # back to config default
 </span></code></pre></div>
 <p>The Studio side has the equivalent control as a multi-select dropdown above
-the Ask textarea — see <a href="../studio/#chat-scope-and-focus">Studio</a>.</p>
+the Ask textarea — see <a href="../../studio/ask/">Studio → Ask</a>.</p>
 <h3 id="5-manage-chat-sessions">5. Manage chat sessions<a class="headerlink" href="#5-manage-chat-sessions" title="Permanent link">&para;</a></h3>
 <p>Every <code>/ask</code> turn lives in a chat session that AMX persists to
 <code>~/.amx/history.db</code>. Resume past sessions to continue a conversation —

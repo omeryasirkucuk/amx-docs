@@ -89,6 +89,10 @@
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
+         <loc>https://amxcli.com/cli/metadata/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
          <loc>https://amxcli.com/cli/overview/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
@@ -233,7 +237,15 @@
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
+         <loc>https://amxcli.com/llm-providers/deepseek/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
          <loc>https://amxcli.com/llm-providers/gemini/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/llm-providers/kimi/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>
@@ -242,6 +254,70 @@
     </url>
     <url>
          <loc>https://amxcli.com/llm-providers/openai/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/llm-providers/openrouter/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/ask/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/audit/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/browse/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/compare/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/db-cache/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/keyboard/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/overview/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/pending/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/pricing/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/run-detail/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/runs/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/schedules/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/settings/</loc>
+         <lastmod>2026-05-13</lastmod>
+    </url>
+    <url>
+         <loc>https://amxcli.com/studio/system/</loc>
          <lastmod>2026-05-13</lastmod>
     </url>
     <url>

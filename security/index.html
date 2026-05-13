@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../configuration/config-yml/" class="active">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../llm-providers/batch-mode/"
@@ -810,11 +861,15 @@ receives security fixes; older releases are best-effort.</p>
 </thead>
 <tbody>
 <tr>
-<td>0.12.x</td>
+<td>0.14.x</td>
 <td><img alt="✅" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/2705.svg" title=":white_check_mark:" /></td>
 </tr>
 <tr>
-<td>&lt; 0.12</td>
+<td>0.13.x</td>
+<td><img alt="⚠" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/26a0.svg" title=":warning:" /> best-effort</td>
+</tr>
+<tr>
+<td>&lt; 0.13</td>
 <td><img alt="❌" class="twemoji" src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@16.0.1/assets/svg/274c.svg" title=":x:" /> (upgrade)</td>
 </tr>
 </tbody>

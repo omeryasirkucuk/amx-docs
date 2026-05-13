@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../../configuration/config-yml/">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
@@ -771,6 +822,111 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="The full namespace tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#root-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root commands
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#db-database-profiles-connections-introspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /db — database profiles, connections, introspection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-llm-profiles-and-tuning" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /llm — LLM profiles and tuning
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docs-document-sources-for-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /docs — document sources for RAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-codebase-sources-for-rag" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /code — codebase sources for RAG
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadata-universal-metadata-editing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /metadata — universal metadata editing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze-runs-apply-schedules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /analyze — runs, apply, schedules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#search-catalog-search-sessions-evidence" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /search — catalog search, sessions, evidence
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#history-runs-results-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /history — runs, results, comparison
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -932,7 +1088,7 @@ exactly where you left off.</p>
 <h3 id="5-get-unstuck">5. Get unstuck<a class="headerlink" href="#5-get-unstuck" title="Permanent link">&para;</a></h3>
 <p>When something doesn't work, the order of escalation is:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /doctor
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.14.0 (config schema v7)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.14.0 (config schema v2)
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>✓ Python runtime — 3.11.5
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>✓ Active LLM profile — openai-prod [openai] gpt-4o
@@ -942,88 +1098,482 @@ exactly where you left off.</p>
 command's <code>--debug</code> flag) for verbose tracing. See <a href="../../troubleshooting/common-errors/">Common errors</a>
 for the most-frequently-seen failures.</p>
 <h2 id="the-full-namespace-tree">The full namespace tree<a class="headerlink" href="#the-full-namespace-tree" title="Permanent link">&para;</a></h2>
+<p>Every user-facing command in the CLI is grouped by namespace below. Tabs <em>group</em>
+related commands for discovery — routing is global, so any command dispatches
+from any tab. <code>/session list</code> typed inside <code>/db</code> works exactly the same as from
+the root prompt.</p>
+<h3 id="root-commands">Root commands<a class="headerlink" href="#root-commands" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
-<th>Namespace</th>
+<th>Command</th>
 <th>Purpose</th>
-<th>Sub-commands (subset)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>/setup</code></td>
-<td>First-run wizard for DB + LLM</td>
-<td>—</td>
+<td>First-run wizard for DB + LLM (+ optional doc/code) profiles</td>
 </tr>
 <tr>
 <td><code>/config</code></td>
 <td>Show or edit <code>~/.amx/config.yml</code></td>
-<td>—</td>
-</tr>
-<tr>
-<td><code>/db</code></td>
-<td>Connection &amp; introspection</td>
-<td><code>profiles</code>, <code>add-db-profile</code>, <code>edit-db-profile</code>, <code>use-db</code>, <code>connect</code>, <code>schemas</code>, <code>tables</code>, <code>profile</code>, <code>inspect</code>, <code>history-store</code></td>
-</tr>
-<tr>
-<td><code>/llm</code></td>
-<td>LLM profile management</td>
-<td><code>profiles</code>, <code>add-llm-profile</code>, <code>use-llm</code>, <code>use-rag-llm</code>, <code>temperature</code>, <code>max-tokens</code>, <code>n-alternatives</code>, <code>logprob-thresholds</code>, <code>description-verbosity</code></td>
-</tr>
-<tr>
-<td><code>/docs</code></td>
-<td>RAG document sources</td>
-<td><code>doc-profiles</code>, <code>add-doc-profile</code>, <code>scan</code>, <code>ingest</code>, <code>search-docs</code>, <code>doc-analyze</code></td>
-</tr>
-<tr>
-<td><code>/code</code></td>
-<td>Codebase scan + RAG</td>
-<td><code>code-profiles</code>, <code>code-scan</code>, <code>code-analyze</code></td>
-</tr>
-<tr>
-<td><code>/metadata</code></td>
-<td>Inspect introspection cache</td>
-<td>—</td>
-</tr>
-<tr>
-<td><code>/analyze</code></td>
-<td>Run + apply + schedule</td>
-<td><code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/rerun</code>, <code>/apply</code>, <code>/schedule add|list|show|pause|resume|rm|run-now|status|tick|install-daemon|uninstall-daemon</code></td>
-</tr>
-<tr>
-<td><code>/search</code></td>
-<td>Catalog search + chat sessions</td>
-<td><code>/ask</code>, <code>/session list</code>, <code>/session resume</code>, <code>/session scope</code>, <code>/status</code>, <code>/sync</code>, <code>/rebuild</code></td>
 </tr>
 <tr>
 <td><code>/studio</code></td>
-<td>AMX Studio — local web UI on <code>127.0.0.1</code></td>
-<td><code>--port</code>, <code>--no-open</code></td>
-</tr>
-<tr>
-<td><code>/history</code></td>
-<td>Audit trail + comparison</td>
-<td><code>list</code>, <code>show</code>, <code>stats</code>, <code>events</code>, <code>results</code>, <code>review</code>, <code>compare</code>, <code>rerun</code></td>
+<td>Launch AMX Studio (local web UI on <code>127.0.0.1</code>). Flags: <code>--port</code>, <code>--no-open</code></td>
 </tr>
 <tr>
 <td><code>/doctor</code></td>
-<td>Diagnostics</td>
-<td><code>--skip-network</code>, <code>--debug</code></td>
+<td>Diagnostics. Flags: <code>--skip-network</code>, <code>--debug</code></td>
 </tr>
 <tr>
 <td><code>/restore-config</code></td>
-<td>Recover <code>~/.amx/config.yml</code> from a rotated backup</td>
-<td><code>--list</code>, <code>--from &lt;path&gt;</code></td>
+<td>Recover <code>~/.amx/config.yml</code> from a rotated backup. Flags: <code>--list</code>, <code>--from &lt;path&gt;</code></td>
+</tr>
+<tr>
+<td><code>/help</code>, <code>/exit</code>, <code>/clear</code>, <code>/back</code>, <code>/save</code></td>
+<td>REPL built-ins</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Tabs group; routing is global.</strong> Every top-level command (including
-<code>/session</code>, <code>/studio</code>, <code>/setup</code>, <code>/config</code>, <code>/doctor</code>, <code>/compare</code>,
-<code>/history-store</code>) dispatches from any tab — namespaces are about <em>discovering</em>
-related commands together, not about <em>gating</em> their availability. Type
-<code>/session list</code> while inside <code>/db</code> and it works exactly the same as from the
-root prompt.</p>
+<h3 id="db-database-profiles-connections-introspection"><code>/db</code> — database profiles, connections, introspection<a class="headerlink" href="#db-database-profiles-connections-introspection" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/db-profiles</code></td>
+<td>List configured DB profiles</td>
+</tr>
+<tr>
+<td><code>/add-db-profile</code></td>
+<td>Wizard to register a new profile</td>
+</tr>
+<tr>
+<td><code>/edit-db-profile [&lt;name&gt;]</code></td>
+<td>Re-run the wizard pre-filled with current values</td>
+</tr>
+<tr>
+<td><code>/remove-db-profile &lt;name&gt;</code></td>
+<td>Delete a profile</td>
+</tr>
+<tr>
+<td><code>/use-db &lt;profile&gt; [&lt;profile&gt;…]</code></td>
+<td>Switch active DB scope; accepts multiple profiles for multi-profile <code>/ask</code>, <code>/run</code>, <code>/sync</code></td>
+</tr>
+<tr>
+<td><code>/connect</code></td>
+<td>Test connectivity for the active profile (Databricks: triggers Unity Catalog picker)</td>
+</tr>
+<tr>
+<td><code>/schemas</code></td>
+<td>List schemas reachable in the active profile</td>
+</tr>
+<tr>
+<td><code>/tables [&lt;schema&gt;]</code></td>
+<td>List tables/views/materialized views in a schema</td>
+</tr>
+<tr>
+<td><code>/profile [&lt;schema&gt;] [&lt;table&gt;]</code></td>
+<td>Profile a single table (stats, types, samples)</td>
+</tr>
+<tr>
+<td><code>/inspect [&lt;profile&gt;]</code></td>
+<td>Full backend diagnostic (capabilities, visible schemas, table counts)</td>
+</tr>
+<tr>
+<td><code>/profiling [full\|sampled\|metadata] [max_rows] [sample_size]</code></td>
+<td>Configure profiling guardrails per profile</td>
+</tr>
+<tr>
+<td><code>/tls [on\|off] [ca_path\|clear]</code></td>
+<td>Show / configure Databricks TLS settings</td>
+</tr>
+<tr>
+<td><code>/history-store</code></td>
+<td>Configure shared run-history backend (<code>status</code>, <code>enable</code>, <code>disable</code>, <code>migrate-from-local</code>, <code>flush-pending</code>, <code>dump-ddl</code>)</td>
+</tr>
+<tr>
+<td><code>/cleanup-placeholders [&lt;schema&gt;]</code></td>
+<td>Remove auto-inference placeholder comments from the live DB</td>
+</tr>
+<tr>
+<td><code>/cache-show [--profile=X] [--database=Y]</code></td>
+<td>Display the metadata cache contents</td>
+</tr>
+<tr>
+<td><code>/cache-stats</code></td>
+<td>Aggregate cache metrics (rows, oldest fetch, % expired)</td>
+</tr>
+<tr>
+<td><code>/cache-clear [--profile=X] [--database=Y] [--type=schemas\|columns\|catalog\|all] [--force]</code></td>
+<td>Flush cache rows</td>
+</tr>
+</tbody>
+</table>
+<h3 id="llm-llm-profiles-and-tuning"><code>/llm</code> — LLM profiles and tuning<a class="headerlink" href="#llm-llm-profiles-and-tuning" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/llm-profiles</code></td>
+<td>List configured LLM profiles</td>
+</tr>
+<tr>
+<td><code>/use-llm &lt;name&gt;</code></td>
+<td>Switch the active LLM profile</td>
+</tr>
+<tr>
+<td><code>/use-rag-llm [&lt;name&gt;\|none]</code></td>
+<td>Pin a different LLM profile to the RAG agent (or clear the override)</td>
+</tr>
+<tr>
+<td><code>/add-llm-profile</code></td>
+<td>Wizard to register a new LLM profile</td>
+</tr>
+<tr>
+<td><code>/remove-llm-profile &lt;name&gt;</code></td>
+<td>Delete an LLM profile</td>
+</tr>
+<tr>
+<td><code>/temperature [0.0–2.0]</code></td>
+<td>Show / set sampling temperature on the active profile</td>
+</tr>
+<tr>
+<td><code>/max-tokens [N]</code></td>
+<td>Show / set output-token budget (reasoning models keep their 32 768 floor)</td>
+</tr>
+<tr>
+<td><code>/n-alternatives [1–5]</code></td>
+<td>Number of alternative descriptions per column</td>
+</tr>
+<tr>
+<td><code>/prompt-detail [minimal\|standard\|detailed\|full]</code></td>
+<td>System-prompt detail level</td>
+</tr>
+<tr>
+<td><code>/description-verbosity [brief\|detailed\|comprehensive\|exhaustive]</code></td>
+<td>Output description length</td>
+</tr>
+<tr>
+<td><code>/logprob-thresholds [high] [med]</code></td>
+<td>Confidence thresholds (defaults: high=0.85, medium=0.50)</td>
+</tr>
+<tr>
+<td><code>/llm-batch-size [N]</code></td>
+<td>Columns per LLM call</td>
+</tr>
+<tr>
+<td><code>/batch-context-columns [off\|all\|N]</code></td>
+<td>Extra non-batch column names to include in each batch</td>
+</tr>
+<tr>
+<td><code>/cost [&lt;input&gt; &lt;output&gt;\|reset]</code></td>
+<td>Override per-1M-token cost for the active profile</td>
+</tr>
+<tr>
+<td><code>/refresh-prices</code></td>
+<td>Re-fetch LLM pricing from LiteLLM + OpenRouter (24 h cache)</td>
+</tr>
+<tr>
+<td><code>/style [wizard\|set\|show\|clear\|on\|off]</code></td>
+<td>Reference-table attachment for description style matching</td>
+</tr>
+</tbody>
+</table>
+<h3 id="docs-document-sources-for-rag"><code>/docs</code> — document sources for RAG<a class="headerlink" href="#docs-document-sources-for-rag" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/doc-profiles</code></td>
+<td>List configured doc profiles</td>
+</tr>
+<tr>
+<td><code>/doc-files [&lt;name&gt;]</code></td>
+<td>Show files staged under a profile</td>
+</tr>
+<tr>
+<td><code>/use-doc &lt;name&gt;</code></td>
+<td>Switch the active doc profile</td>
+</tr>
+<tr>
+<td><code>/add-doc-profile</code></td>
+<td>Create / update a doc profile</td>
+</tr>
+<tr>
+<td><code>/remove-doc-profile &lt;name&gt;</code></td>
+<td>Delete a doc profile</td>
+</tr>
+<tr>
+<td><code>/doc-link &lt;doc-profile&gt; [--db NAME…] [--clear]</code></td>
+<td>Link a doc profile to one or more DB profiles</td>
+</tr>
+<tr>
+<td><code>/doc-add &lt;profile&gt; &lt;file&gt;… [--no-ingest]</code></td>
+<td>Copy files into <code>~/.amx/uploads/&lt;profile&gt;/</code></td>
+</tr>
+<tr>
+<td><code>/scan [--doc-profile NAME] [paths…]</code></td>
+<td>Scan documents into the index</td>
+</tr>
+<tr>
+<td><code>/ingest [--doc-profile NAME] [--refresh] [paths…]</code></td>
+<td>Ingest scanned documents (embed + persist)</td>
+</tr>
+<tr>
+<td><code>/search-docs &lt;text&gt;</code></td>
+<td>Similarity search over the doc index (no LLM, embedding-only)</td>
+</tr>
+<tr>
+<td><code>/doc-analyze [TABLE…]</code></td>
+<td>Run the RAG agent standalone</td>
+</tr>
+<tr>
+<td><code>/export-doc-report [FILE]</code></td>
+<td>Export a doc-RAG summary to Markdown</td>
+</tr>
+</tbody>
+</table>
+<h3 id="code-codebase-sources-for-rag"><code>/code</code> — codebase sources for RAG<a class="headerlink" href="#code-codebase-sources-for-rag" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/code-profiles</code></td>
+<td>List configured code profiles</td>
+</tr>
+<tr>
+<td><code>/use-code &lt;name&gt;</code></td>
+<td>Switch the active code profile</td>
+</tr>
+<tr>
+<td><code>/add-code-profile</code></td>
+<td>Create / update a code profile</td>
+</tr>
+<tr>
+<td><code>/remove-code-profile &lt;name&gt;</code></td>
+<td>Delete a code profile</td>
+</tr>
+<tr>
+<td><code>/code-link &lt;code-profile&gt; [--db NAME…] [--clear]</code></td>
+<td>Link a code profile to one or more DB profiles</td>
+</tr>
+<tr>
+<td><code>/code-scan [path] [--code-profile NAME]</code></td>
+<td>Scan a codebase and persist the index</td>
+</tr>
+<tr>
+<td><code>/code-search &lt;text&gt; [--code-profile NAME]</code></td>
+<td>Similarity search over the code index</td>
+</tr>
+<tr>
+<td><code>/code-refresh</code></td>
+<td>Clear cache + rebuild the semantic code index</td>
+</tr>
+<tr>
+<td><code>/code-results</code></td>
+<td>Show last cached scan results</td>
+</tr>
+<tr>
+<td><code>/code-analyze [TABLE…]</code></td>
+<td>Run the Code Agent standalone</td>
+</tr>
+<tr>
+<td><code>/export-code-report [FILE]</code></td>
+<td>Export the scan report to Markdown</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metadata-universal-metadata-editing"><code>/metadata</code> — universal metadata editing<a class="headerlink" href="#metadata-universal-metadata-editing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/inspect [&lt;schema&gt;] [&lt;table&gt;]</code></td>
+<td>Inspect current metadata</td>
+</tr>
+<tr>
+<td><code>/monitor [&lt;schema&gt;]</code></td>
+<td>Show metadata coverage</td>
+</tr>
+<tr>
+<td><code>/edit [db][.schema[.table[.column]]]</code></td>
+<td>Edit wizard, or direct path editor</td>
+</tr>
+</tbody>
+</table>
+<p><code>/manual</code> is an alias for <code>/metadata</code>.</p>
+<h3 id="analyze-runs-apply-schedules"><code>/analyze</code> — runs, apply, schedules<a class="headerlink" href="#analyze-runs-apply-schedules" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/run [ASSET…] [--schema…] [--apply] [--db-profile NAME…]</code></td>
+<td>Run agents over a scope (database / schema / asset / column)</td>
+</tr>
+<tr>
+<td><code>/run-apply [ASSET…] [--schema…] [--table…]</code></td>
+<td>Run + apply in one shot</td>
+</tr>
+<tr>
+<td><code>/apply</code></td>
+<td>Write pending comments to the database</td>
+</tr>
+<tr>
+<td><code>/generate &lt;address&gt;</code></td>
+<td>Single-shot draft for one asset address</td>
+</tr>
+<tr>
+<td><code>/rerun &lt;run_id&gt;[.schema.table.column]</code></td>
+<td>Re-execute a result row with original scope, profile cache, and prompt detail preserved</td>
+</tr>
+<tr>
+<td><code>/review [&lt;run_id&gt;] [--filter REGEX] [--sort KEY] [--group-by schema\|table] [--only-unreviewed] [--only-low-conf]</code></td>
+<td>Review suggestions with filtering / sorting</td>
+</tr>
+<tr>
+<td><code>/schedule add\|list\|show\|pause\|resume\|rm\|run-now\|tick\|status\|install-daemon\|uninstall-daemon</code></td>
+<td>Scheduled-run management</td>
+</tr>
+</tbody>
+</table>
+<h3 id="search-catalog-search-sessions-evidence"><code>/search</code> — catalog search, sessions, evidence<a class="headerlink" href="#search-catalog-search-sessions-evidence" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/ask</code></td>
+<td>Ask a metadata question (supports <code>--db-profile NAME</code> for multi-DB, <code>--actions</code> for follow-up execution)</td>
+</tr>
+<tr>
+<td><code>/session list\|resume &lt;id&gt;\|new\|end\|scope [profiles]</code></td>
+<td>Manage <code>/ask</code> conversation sessions</td>
+</tr>
+<tr>
+<td><code>/status</code></td>
+<td>Show catalog / index status</td>
+</tr>
+<tr>
+<td><code>/sources</code></td>
+<td>Show evidence sources and settings</td>
+</tr>
+<tr>
+<td><code>/ask-context</code></td>
+<td>Show which doc / code profiles <code>/ask</code> will use for the current DB scope</td>
+</tr>
+<tr>
+<td><code>/config [key] [value]</code></td>
+<td>Show / set search-scoped config</td>
+</tr>
+<tr>
+<td><code>/embeddings [minilm\|openai\|local] [model]</code></td>
+<td>Show / change the embedding provider</td>
+</tr>
+<tr>
+<td><code>/sync [--db-profile NAME…]</code></td>
+<td>Sync DB structure / comments and code evidence into the index</td>
+</tr>
+<tr>
+<td><code>/rebuild</code></td>
+<td>Rebuild search state and vector index</td>
+</tr>
+<tr>
+<td><code>/find-columns</code></td>
+<td>Find columns by name / pattern</td>
+</tr>
+<tr>
+<td><code>/join-candidates</code></td>
+<td>Find joinable tables across profiles</td>
+</tr>
+<tr>
+<td><code>/explain</code></td>
+<td>Explain an entity</td>
+</tr>
+<tr>
+<td><code>/explain-table</code></td>
+<td>Explain a table</td>
+</tr>
+</tbody>
+</table>
+<h3 id="history-runs-results-comparison"><code>/history</code> — runs, results, comparison<a class="headerlink" href="#history-runs-results-comparison" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/list [-n N] [--include-asks]</code></td>
+<td>List recent runs</td>
+</tr>
+<tr>
+<td><code>/show &lt;run_id&gt;</code></td>
+<td>Show one run payload</td>
+</tr>
+<tr>
+<td><code>/stats</code></td>
+<td>Aggregate run / event metrics</td>
+</tr>
+<tr>
+<td><code>/events [-n N]</code></td>
+<td>Recent app events</td>
+</tr>
+<tr>
+<td><code>/results &lt;run_id&gt;</code></td>
+<td>Show saved LLM alternatives</td>
+</tr>
+<tr>
+<td><code>/review &lt;run_id&gt; [--unevaluated-only] [--apply]</code></td>
+<td>Re-evaluate alternatives</td>
+</tr>
+<tr>
+<td><code>/rollback &lt;run_id&gt;</code></td>
+<td>Undo an <code>/apply</code>, restoring the prior comment text</td>
+</tr>
+<tr>
+<td><code>/compare [--last N] [run_ids…] [--schema SCHEMA] [--table TABLE] [--by DIMENSION]</code></td>
+<td>Compare past runs side-by-side</td>
+</tr>
+</tbody>
+</table>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /help</code> — full command list, grouped by namespace.</li>

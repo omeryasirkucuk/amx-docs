@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../config-yml/" class="active">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../llm-providers/batch-mode/"
@@ -790,6 +841,28 @@
     <span class="md-ellipsis">
       
         LLM provider keys
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#llm-behaviour-reasoning-models-timeouts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LLM behaviour (reasoning models, timeouts)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloud-specific-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloud-specific authentication
       
     </span>
   </a>
@@ -1050,6 +1123,36 @@ on disk); AMX picks the values up from env at session start.</p>
 <td>unset</td>
 <td>Default profile name to use when none is active (rare; useful in CI)</td>
 </tr>
+<tr>
+<td><code>AMX_DEBUG</code></td>
+<td>unset</td>
+<td>If set to <code>1</code>, show full tracebacks on errors. Equivalent to passing <code>--debug</code></td>
+</tr>
+<tr>
+<td><code>AMX_NO_BANNER</code></td>
+<td>unset</td>
+<td>If set, suppress the AMX startup banner (useful for scripted invocations)</td>
+</tr>
+<tr>
+<td><code>AMX_THEME</code></td>
+<td>auto-detected</td>
+<td>Terminal color theme override (<code>dark</code> / <code>light</code>). AMX otherwise sniffs the terminal background</td>
+</tr>
+<tr>
+<td><code>AMX_AUTO_INSTALL</code></td>
+<td>unset</td>
+<td>If set, auto-install optional dependencies (DB drivers, LLM SDKs) on first use without prompting</td>
+</tr>
+<tr>
+<td><code>AMX_SKIP_BOOTSTRAP_TICK</code></td>
+<td>unset</td>
+<td>If set, skip the scheduled-runs tick at startup. Used by CI and scripted invocations to avoid kicking off background work</td>
+</tr>
+<tr>
+<td><code>AMX_SKIP_DRIFT_PROBE</code></td>
+<td>unset</td>
+<td>If set, skip the metadata-drift probe at startup</td>
+</tr>
 </tbody>
 </table>
 <h3 id="database-secrets-override-per-profile-values">Database secrets (override per-profile values)<a class="headerlink" href="#database-secrets-override-per-profile-values" title="Permanent link">&para;</a></h3>
@@ -1144,6 +1247,60 @@ on disk); AMX picks the values up from env at session start.</p>
 <td><code>DEEPSEEK_API_KEY</code></td>
 <td>DeepSeek</td>
 </tr>
+<tr>
+<td><code>AMX_LLM_API_KEY</code></td>
+<td>Fallback LLM API key — used by the active LLM profile when its <code>api_key</code> is blank and no provider-specific env var is set. Useful in environments where you can only inject one secret</td>
+</tr>
+</tbody>
+</table>
+<h3 id="llm-behaviour-reasoning-models-timeouts">LLM behaviour (reasoning models, timeouts)<a class="headerlink" href="#llm-behaviour-reasoning-models-timeouts" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMX_LLM_MIN_MAX_TOKENS</code></td>
+<td><code>32768</code></td>
+<td>Output-token floor for recognised reasoning routes (Kimi K2.x, Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, OpenRouter thinking variants). Bump this if a reasoning model keeps hitting the ceiling. See <a href="../../llm-providers/#reasoning-models">LLM Providers</a></td>
+</tr>
+<tr>
+<td><code>AMX_LLM_TIMEOUT_SEC</code></td>
+<td>provider default</td>
+<td>Request timeout (seconds) for outgoing LLM calls. Raise it on slow networks; lower it to bail out faster on a stuck model</td>
+</tr>
+<tr>
+<td><code>AMX_REASONING_EFFORT</code></td>
+<td><code>low</code> for OpenRouter, model default elsewhere</td>
+<td>Reasoning effort level (<code>minimal</code> / <code>low</code> / <code>medium</code> / <code>high</code>). Only takes effect on routes that accept <code>reasoning.effort</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cloud-specific-authentication">Cloud-specific authentication<a class="headerlink" href="#cloud-specific-authentication" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AMX_AZURE_CLIENT_ID</code> / <code>AMX_AZURE_CLIENT_SECRET</code> / <code>AMX_AZURE_TENANT_ID</code></td>
+<td>Azure service-principal credentials, used when an LLM or DB profile points at an Azure-hosted endpoint that requires AAD auth</td>
+</tr>
+<tr>
+<td><code>AMX_GOOGLE_SERVICE_ACCOUNT_JSON</code></td>
+<td>Path <strong>or</strong> inline JSON for a Google Cloud service account (BigQuery, Gemini). Takes precedence over <code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+</tr>
+<tr>
+<td><code>AMX_GOOGLE_OAUTH_TOKEN_JSON</code></td>
+<td>Path <strong>or</strong> inline JSON for a Google OAuth user-token file. Used when service-account auth isn't an option</td>
+</tr>
 </tbody>
 </table>
 <h3 id="tls-proxy">TLS / proxy<a class="headerlink" href="#tls-proxy" title="Permanent link">&para;</a></h3>
@@ -1170,6 +1327,18 @@ on disk); AMX picks the values up from env at session start.</p>
 <tr>
 <td><code>SSL_CERT_FILE</code></td>
 <td>Same as above; some libraries prefer this name</td>
+</tr>
+<tr>
+<td><code>AMX_CA_BUNDLE</code></td>
+<td>AMX-specific CA bundle path. Takes precedence over <code>REQUESTS_CA_BUNDLE</code> for AMX's own HTTPS clients</td>
+</tr>
+<tr>
+<td><code>AMX_INSECURE_SSL</code></td>
+<td>If <code>1</code>, disable SSL verification globally (development only — never set in production)</td>
+</tr>
+<tr>
+<td><code>AMX_DATABRICKS_TRUSTED_CA_FILE</code> / <code>DATABRICKS_TRUSTED_CA_FILE</code></td>
+<td>CA bundle path used by the Databricks adapter. <code>AMX_*</code> form takes precedence</td>
 </tr>
 <tr>
 <td><code>AMX_DBX_TLS_NO_VERIFY</code></td>

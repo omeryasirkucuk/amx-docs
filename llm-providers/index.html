@@ -228,6 +228,15 @@
         
       
         
+          
+          
+          
+            <a href="../studio/">Studio</a>
+            
+          
+        
+      
+        
       
         
           
@@ -238,13 +247,6 @@
           
         
       
-        
-          
-          
-          
-            <a href="../configuration/config-yml/" class="active">Reference</a>
-            
-          
         
       
     </nav>
@@ -418,6 +420,8 @@
          >Setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/run-and-apply/"
          >Run & Apply</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../cli/metadata/"
+         >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/schedules/"
          >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/ask-and-search/"
@@ -432,6 +436,49 @@
          >Restore config</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../cli/flags/"
          >Flags</a></div>
+    </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
+         data-amx-group-key="amx-grp-studio">
+      <button type="button"
+              class="amx-sidebar__group-title"
+              aria-expanded="false"
+              aria-controls="amx-grp-studio-body">
+        <svg class="amx-sidebar__chevron" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M5.5 3.5L10.5 8l-5 4.5V3.5z"/>
+        </svg>
+        <span>Studio</span>
+      </button>
+      <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/"
+         >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/overview/"
+         >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/runs/"
+         >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/run-detail/"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/compare/"
+         >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/ask/"
+         >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/pending/"
+         >Pending</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/audit/"
+         >Audit</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/settings/"
+         >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/system/"
+         >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/schedules/"
+         >Schedules</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/pricing/"
+         >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/db-cache/"
+         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/keyboard/"
+         >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-backends">
       <button type="button"
@@ -485,9 +532,7 @@
          href="../guides/batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/scheduled-runs/"
-         >Scheduled Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../guides/responsive-studio/"
-         >Responsive Studio</a></div>
+         >Scheduled Runs</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-reference">
       <button type="button"
@@ -544,6 +589,12 @@
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="deepseek/"
+         >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="openrouter/"
+         >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="kimi/"
+         >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="ollama-local/"
          >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="batch-mode/"
@@ -713,7 +764,7 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reasoning-models-output-budgeting" class="md-nav__link">
+  <a href="#reasoning-models" class="md-nav__link">
     <span class="md-ellipsis">
       
         Reasoning models — output budgeting
@@ -824,6 +875,9 @@ the right one for your workload.</p>
 <li><strong>On-prem / air-gapped</strong> → <a href="ollama-local/">Ollama and local</a>. Llama-3 / Qwen / DeepSeek work; logprob calibration is per-model.</li>
 </ul>
 <h2 id="provider-matrix">Provider matrix<a class="headerlink" href="#provider-matrix" title="Permanent link">&para;</a></h2>
+<p>AMX ships with <strong>9 provider keys</strong>: 6 hosted (OpenAI, Anthropic, Gemini,
+Databricks Serving, OpenRouter, DeepSeek) and 3 keyless / self-hosted
+(Ollama, local-via-LiteLLM, Kimi).</p>
 <table>
 <thead>
 <tr>
@@ -869,20 +923,20 @@ the right one for your workload.</p>
 <td>Databricks PAT</td>
 </tr>
 <tr>
-<td>OpenRouter</td>
-<td>provider/model id</td>
-<td>Varies (markup)</td>
-<td>varies</td>
+<td><a href="openrouter/">OpenRouter</a></td>
+<td><code>provider/model</code> id</td>
+<td>Varies (small markup over upstream)</td>
+<td>varies (per-route)</td>
 <td>✗</td>
 <td><code>sk-or-…</code></td>
 </tr>
 <tr>
-<td>DeepSeek</td>
+<td><a href="deepseek/">DeepSeek</a></td>
 <td><code>deepseek-chat</code></td>
 <td>Very low</td>
 <td>✓ native</td>
 <td>✗</td>
-<td>API key</td>
+<td><code>sk-…</code></td>
 </tr>
 <tr>
 <td><a href="ollama-local/">Ollama / local</a></td>
@@ -892,10 +946,19 @@ the right one for your workload.</p>
 <td>✗</td>
 <td>optional</td>
 </tr>
+<tr>
+<td><a href="kimi/">Kimi</a></td>
+<td><code>moonshot-v1-8k</code> / <code>kimi-k2-thinking</code></td>
+<td>Low–Mid (reasoning-heavy)</td>
+<td>varies</td>
+<td>✗</td>
+<td>API key</td>
+</tr>
 </tbody>
 </table>
-<p><code>OpenRouter</code> and <code>Kimi</code> are routed through OpenAI-compatible HTTPS — see the wizard
-prompts; they reuse the OpenAI client under the hood.</p>
+<p><code>Kimi</code> and <code>local</code> are routed through OpenAI-compatible HTTPS endpoints
+and reuse the OpenAI client under the hood. <code>OpenRouter</code> is a routing
+layer — every key it supports translates to one of the providers above.</p>
 <h2 id="generation-defaults-that-apply-across-all-providers">Generation defaults that apply across all providers<a class="headerlink" href="#generation-defaults-that-apply-across-all-providers" title="Permanent link">&para;</a></h2>
 <p>The wizard sets these once per profile (you can edit later in <code>~/.amx/config.yml</code>):</p>
 <ul>
@@ -905,7 +968,7 @@ prompts; they reuse the OpenAI client under the hood.</p>
 <li><code>logprob_high: 0.85</code> / <code>logprob_medium: 0.50</code> — confidence thresholds for the <code>high</code> / <code>medium</code> / <code>low</code> buckets. See <code>/logprob-thresholds</code>.</li>
 </ul>
 <p>Per-provider tuning notes live on each provider's page.</p>
-<h2 id="reasoning-models-output-budgeting">Reasoning models — output budgeting<a class="headerlink" href="#reasoning-models-output-budgeting" title="Permanent link">&para;</a></h2>
+<h2 id="reasoning-models">Reasoning models — output budgeting<a class="headerlink" href="#reasoning-models" title="Permanent link">&para;</a></h2>
 <p>Reasoning routes (OpenAI <code>o</code>-series and <code>gpt-5</code> reasoning variants, Anthropic
 extended thinking on Claude Sonnet / Opus 4, DeepSeek-reasoner, and OpenRouter
 thinking variants like Kimi K2.x, Qwen3-thinking, and GLM-4.6-thinking) can
@@ -976,8 +1039,9 @@ freshness badge and a one-click refresh button. You can pin a
 hint pre-fills the field). Every run row records both the price it
 ran at (frozen) and the price it would cost today (live), so a stale
 price never silently rewrites history. See
-<a href="../cli/studio/#costs-and-pricing">Costs and pricing</a> for the full
-walkthrough.</p>
+<a href="../studio/pricing/">Studio → Pricing</a> for the pricing browser and
+<a href="../studio/system/#token-usage">Studio → System → Token usage</a> for
+the windowed breakdown.</p>
 <h2 id="setup-walkthroughs">Setup walkthroughs<a class="headerlink" href="#setup-walkthroughs" title="Permanent link">&para;</a></h2>
 <p>Each provider page follows the same template: prerequisites → <code>/add-llm-profile</code>
 walkthrough with verbatim wizard prompts → sample <code>~/.amx/config.yml</code> block → verify
@@ -987,6 +1051,9 @@ steps → troubleshooting table → what to read next.</p>
 <li><a href="anthropic/">Anthropic</a> — Claude model selection, extended thinking.</li>
 <li><a href="gemini/">Gemini</a> — model picks, safety-filter handling.</li>
 <li><a href="databricks-serving/">Databricks Serving</a> — Foundation Models or custom serving endpoints; same workspace as your data.</li>
+<li><a href="deepseek/">DeepSeek</a> — cheap, native logprobs, optional reasoning route.</li>
+<li><a href="openrouter/">OpenRouter</a> — multi-model router, one key for many providers.</li>
+<li><a href="kimi/">Kimi</a> — Moonshot's K2.x reasoning models.</li>
 <li><a href="ollama-local/">Ollama and local</a> — on-prem / air-gapped setup.</li>
 <li><a href="batch-mode/">Batch mode</a> — async / cheap drafts via OpenAI / Anthropic batch APIs.</li>
 </ul>
