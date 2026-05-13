@@ -16,7 +16,7 @@ over a window.
 - **Apply events** (`apply_events` table, AMX 0.13+) — one row per successful
   COMMENT write with the prior text, the new text, the run id, and the
   user / host / profile. Powers [`/history rollback`](#rollback) and Studio's
-  [Audit page](studio.md#audit-page).
+  [Audit page](../studio/audit.md).
 
 ## `/history` namespace
 

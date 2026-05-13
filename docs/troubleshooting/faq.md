@@ -58,13 +58,18 @@ the API key is invalid, the endpoint is unreachable, or the model is deactivated
 ### `/run` returned 0 visible characters and used all output tokens
 
 This is the reasoning-route token-budget exhaustion message. The model burned the whole
-budget on internal thinking. AMX now auto-raises `max_tokens` to 16384 for recognised
-reasoning routes, but if you see this, your model isn't recognised. Set the env var
-manually:
+budget on internal thinking. AMX auto-raises `max_tokens` to a 32 768-token floor for
+recognised reasoning routes (Kimi K2.x, Claude extended-thinking, GPT-5 / o-series,
+DeepSeek-reasoner, OpenRouter thinking variants), but if you see this, your model isn't
+recognised. Override the floor manually:
 
 ```bash
-export AMX_LLM_MIN_MAX_TOKENS=16384
+export AMX_LLM_MIN_MAX_TOKENS=65536
 ```
+
+Use a larger value if the model keeps hitting the ceiling. See
+[LLM Providers — Reasoning models](../llm-providers/index.md) for the full list of
+recognised reasoning routes.
 
 ### `finish_reason=length` on every column
 

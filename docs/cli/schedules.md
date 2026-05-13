@@ -77,7 +77,7 @@ shell that opens without firing the catch-up batch.
 ## Studio parity
 
 Every command on this page has a 1:1 counterpart in
-[AMX Studio → Schedules](studio.md#schedules-and-pricing). The Studio surface
+[AMX Studio → Schedules](../studio/schedules.md). The Studio surface
 adds an edit dialog (`/runs/schedules`), one-click daemon install / uninstall
 buttons, and a live status ticker.
 
@@ -107,4 +107,4 @@ Daemon: loaded · 4 active · next fire in 8h 12m
 
 - [Scheduled runs walkthrough](../guides/scheduled-runs.md) — the workflow this reference backs.
 - [Multi-profile scoping](../concepts/scoping.md) — what the cascading picker writes into the scope spec.
-- [Studio Schedules tab](studio.md#schedules-and-pricing) — the same operations in a web UI.
+- [Studio Schedules tab](../studio/schedules.md) — the same operations in a web UI.

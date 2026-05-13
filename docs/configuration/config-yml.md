@@ -2,7 +2,7 @@
 
 AMX persists profiles and settings to `~/.amx/config.yml`. The file is part of the
 public surface — you can hand-edit it, version it, and template it with environment
-variables. This page walks through the schema (currently `schema_version: 7`), shows a
+variables. This page walks through the schema (currently `schema_version: 2`), shows a
 fully-annotated example covering every supported field, and lists the operations AMX
 performs on the file under the hood.
 
@@ -41,7 +41,7 @@ schema version header.
 
 ```text
 > /config show
-schema_version: 7
+schema_version: 2
 db_profiles:
   default:
     backend: postgresql
@@ -89,7 +89,7 @@ db_profiles:
 # Schema version. AMX migrates older files forward automatically; if this
 # is newer than the AMX binary you're running, AMX refuses to start so a
 # downgrade can't silently corrupt fields it doesn't know about.
-schema_version: 7
+schema_version: 2
 
 # ─────────────────────────────────────────────────────────────────────
 # Single-DB shortcut. `db:` (without -profiles) is treated as the
@@ -255,7 +255,7 @@ history_store_schema: AMX
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `ConfigSchemaTooNewError: file is schema_version 8, this AMX is at 7` | YAML written by a newer AMX version | Upgrade AMX (`pip install -U amx-cli`) or downgrade the file |
+| `ConfigSchemaTooNewError: file is schema_version 3, this AMX is at 2` | YAML written by a newer AMX version | Upgrade AMX (`pip install -U amx-cli`) or downgrade the file |
 | Secrets visible in plain text | `keyring://` resolution failed (no OS keychain available) | Either install a keychain backend (`secretstorage` on Linux) or accept plaintext + `chmod 600 ~/.amx/config.yml` |
 | `unknown field 'foo' in profile 'bar'` | Hand-edit added a typo | Run `> /config validate` to surface the offending key |
 | Edits don't take effect | AMX caches at start; `/config reload` not run | `> /config reload` (or restart AMX) |

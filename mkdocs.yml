@@ -120,6 +120,7 @@ plugins:
 
 not_in_nav: |
   index.md
+  guides/responsive-studio.md
 
 nav:
   - Get Started:
@@ -137,6 +138,7 @@ nav:
       - Overview: cli/overview.md
       - Setup: cli/setup.md
       - Run & Apply: cli/run-and-apply.md
+      - Metadata: cli/metadata.md
       - Schedules: cli/schedules.md
       - Ask & Search: cli/ask-and-search.md
       - Studio: cli/studio.md
@@ -144,6 +146,22 @@ nav:
       - Doctor: cli/doctor.md
       - Restore config: cli/restore-config.md
       - Flags: cli/flags.md
+  - Studio:
+      - studio/index.md
+      - Overview: studio/overview.md
+      - Browse: studio/browse.md
+      - Runs: studio/runs.md
+      - Run detail: studio/run-detail.md
+      - Compare: studio/compare.md
+      - Ask: studio/ask.md
+      - Pending: studio/pending.md
+      - Audit: studio/audit.md
+      - Settings: studio/settings.md
+      - System: studio/system.md
+      - Schedules: studio/schedules.md
+      - Pricing: studio/pricing.md
+      - DB cache: studio/db-cache.md
+      - Keyboard: studio/keyboard.md
   - Backends:
       - Overview: backends/index.md
       - PostgreSQL: backends/postgresql.md
@@ -160,7 +178,6 @@ nav:
       - SAP Discovery: guides/sap-discovery-walkthrough.md
       - Batch Large Schema: guides/batch-large-schema.md
       - Scheduled Runs: guides/scheduled-runs.md
-      - Responsive Studio: guides/responsive-studio.md
   - Reference:
       - Configuration:
           - config.yml: configuration/config-yml.md
@@ -173,6 +190,9 @@ nav:
           - Anthropic: llm-providers/anthropic.md
           - Gemini: llm-providers/gemini.md
           - Databricks Serving: llm-providers/databricks-serving.md
+          - DeepSeek: llm-providers/deepseek.md
+          - OpenRouter: llm-providers/openrouter.md
+          - Kimi: llm-providers/kimi.md
           - Ollama and local: llm-providers/ollama-local.md
           - Batch mode: llm-providers/batch-mode.md
       - Data Sources:

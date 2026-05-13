@@ -72,6 +72,12 @@ Equivalent to passing `--debug` to every command in the session.
 | `AMX_NO_KEYRING` | unset | If set, skip OS keychain — store secrets plaintext in `config.yml` |
 | `AMX_NO_NETWORK` | unset | If set, skip the connectivity ping at every `/run` start |
 | `AMX_PROFILE_DEFAULT` | unset | Default profile name to use when none is active (rare; useful in CI) |
+| `AMX_DEBUG` | unset | If set to `1`, show full tracebacks on errors. Equivalent to passing `--debug` |
+| `AMX_NO_BANNER` | unset | If set, suppress the AMX startup banner (useful for scripted invocations) |
+| `AMX_THEME` | auto-detected | Terminal color theme override (`dark` / `light`). AMX otherwise sniffs the terminal background |
+| `AMX_AUTO_INSTALL` | unset | If set, auto-install optional dependencies (DB drivers, LLM SDKs) on first use without prompting |
+| `AMX_SKIP_BOOTSTRAP_TICK` | unset | If set, skip the scheduled-runs tick at startup. Used by CI and scripted invocations to avoid kicking off background work |
+| `AMX_SKIP_DRIFT_PROBE` | unset | If set, skip the metadata-drift probe at startup |
 
 ### Database secrets (override per-profile values)
 
@@ -100,6 +106,23 @@ Equivalent to passing `--debug` to every command in the session.
 | `GOOGLE_API_KEY` / `GEMINI_API_KEY` | Used by the Gemini provider |
 | `OPENROUTER_API_KEY` | OpenRouter |
 | `DEEPSEEK_API_KEY` | DeepSeek |
+| `AMX_LLM_API_KEY` | Fallback LLM API key — used by the active LLM profile when its `api_key` is blank and no provider-specific env var is set. Useful in environments where you can only inject one secret |
+
+### LLM behaviour (reasoning models, timeouts)
+
+| Variable | Default | What it does |
+|---|---|---|
+| `AMX_LLM_MIN_MAX_TOKENS` | `32768` | Output-token floor for recognised reasoning routes (Kimi K2.x, Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, OpenRouter thinking variants). Bump this if a reasoning model keeps hitting the ceiling. See [LLM Providers](../llm-providers/index.md#reasoning-models) |
+| `AMX_LLM_TIMEOUT_SEC` | provider default | Request timeout (seconds) for outgoing LLM calls. Raise it on slow networks; lower it to bail out faster on a stuck model |
+| `AMX_REASONING_EFFORT` | `low` for OpenRouter, model default elsewhere | Reasoning effort level (`minimal` / `low` / `medium` / `high`). Only takes effect on routes that accept `reasoning.effort` |
+
+### Cloud-specific authentication
+
+| Variable | What it does |
+|---|---|
+| `AMX_AZURE_CLIENT_ID` / `AMX_AZURE_CLIENT_SECRET` / `AMX_AZURE_TENANT_ID` | Azure service-principal credentials, used when an LLM or DB profile points at an Azure-hosted endpoint that requires AAD auth |
+| `AMX_GOOGLE_SERVICE_ACCOUNT_JSON` | Path **or** inline JSON for a Google Cloud service account (BigQuery, Gemini). Takes precedence over `GOOGLE_APPLICATION_CREDENTIALS` |
+| `AMX_GOOGLE_OAUTH_TOKEN_JSON` | Path **or** inline JSON for a Google OAuth user-token file. Used when service-account auth isn't an option |
 
 ### TLS / proxy
 
@@ -109,6 +132,9 @@ Equivalent to passing `--debug` to every command in the session.
 | `NO_PROXY` | Standard exclusion list |
 | `REQUESTS_CA_BUNDLE` | CA bundle for HTTPS calls (LLM providers, Databricks, BigQuery) |
 | `SSL_CERT_FILE` | Same as above; some libraries prefer this name |
+| `AMX_CA_BUNDLE` | AMX-specific CA bundle path. Takes precedence over `REQUESTS_CA_BUNDLE` for AMX's own HTTPS clients |
+| `AMX_INSECURE_SSL` | If `1`, disable SSL verification globally (development only — never set in production) |
+| `AMX_DATABRICKS_TRUSTED_CA_FILE` / `DATABRICKS_TRUSTED_CA_FILE` | CA bundle path used by the Databricks adapter. `AMX_*` form takes precedence |
 | `AMX_DBX_TLS_NO_VERIFY` | If set, disable TLS verification on Databricks (insecure debug) |
 
 ### Oracle thick mode

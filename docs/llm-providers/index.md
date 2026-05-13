@@ -18,18 +18,24 @@ Use this short decision tree before reaching for any specific page:
 
 ## Provider matrix
 
+AMX ships with **9 provider keys**: 6 hosted (OpenAI, Anthropic, Gemini,
+Databricks Serving, OpenRouter, DeepSeek) and 3 keyless / self-hosted
+(Ollama, local-via-LiteLLM, Kimi).
+
 | Provider | Default model | Cost lens | Logprobs | Batch API | Key file |
 |---|---|---|---|---|---|
 | [OpenAI](openai.md) | `gpt-4o` | Mid (cheap with `mini`) | ✓ native | ✓ ([batch](batch-mode.md)) | `sk-…` |
 | [Anthropic](anthropic.md) | `claude-sonnet-4-20250514` | Mid–High | ✓ derived | ✓ ([batch](batch-mode.md)) | `sk-ant-…` |
 | [Gemini](gemini.md) | `gemini-2.0-flash` | Low | ✓ native | ✗ in AMX yet | `AIza…` |
 | [Databricks Serving](databricks-serving.md) | `databricks-meta-llama-3-1-70b-instruct` | Bills against your Databricks workspace | varies (per-endpoint) | ✗ | Databricks PAT |
-| OpenRouter | provider/model id | Varies (markup) | varies | ✗ | `sk-or-…` |
-| DeepSeek | `deepseek-chat` | Very low | ✓ native | ✗ | API key |
+| [OpenRouter](openrouter.md) | `provider/model` id | Varies (small markup over upstream) | varies (per-route) | ✗ | `sk-or-…` |
+| [DeepSeek](deepseek.md) | `deepseek-chat` | Very low | ✓ native | ✗ | `sk-…` |
 | [Ollama / local](ollama-local.md) | `llama3` | Free (compute is yours) | varies | ✗ | optional |
+| [Kimi](kimi.md) | `moonshot-v1-8k` / `kimi-k2-thinking` | Low–Mid (reasoning-heavy) | varies | ✗ | API key |
 
-`OpenRouter` and `Kimi` are routed through OpenAI-compatible HTTPS — see the wizard
-prompts; they reuse the OpenAI client under the hood.
+`Kimi` and `local` are routed through OpenAI-compatible HTTPS endpoints
+and reuse the OpenAI client under the hood. `OpenRouter` is a routing
+layer — every key it supports translates to one of the providers above.
 
 ## Generation defaults that apply across all providers
 
@@ -42,7 +48,7 @@ The wizard sets these once per profile (you can edit later in `~/.amx/config.yml
 
 Per-provider tuning notes live on each provider's page.
 
-## Reasoning models — output budgeting
+## Reasoning models — output budgeting {#reasoning-models}
 
 Reasoning routes (OpenAI `o`-series and `gpt-5` reasoning variants, Anthropic
 extended thinking on Claude Sonnet / Opus 4, DeepSeek-reasoner, and OpenRouter
@@ -93,8 +99,9 @@ freshness badge and a one-click refresh button. You can pin a
 hint pre-fills the field). Every run row records both the price it
 ran at (frozen) and the price it would cost today (live), so a stale
 price never silently rewrites history. See
-[Costs and pricing](../cli/studio.md#costs-and-pricing) for the full
-walkthrough.
+[Studio → Pricing](../studio/pricing.md) for the pricing browser and
+[Studio → System → Token usage](../studio/system.md#token-usage) for
+the windowed breakdown.
 
 ## Setup walkthroughs
 
@@ -106,6 +113,9 @@ steps → troubleshooting table → what to read next.
 - [Anthropic](anthropic.md) — Claude model selection, extended thinking.
 - [Gemini](gemini.md) — model picks, safety-filter handling.
 - [Databricks Serving](databricks-serving.md) — Foundation Models or custom serving endpoints; same workspace as your data.
+- [DeepSeek](deepseek.md) — cheap, native logprobs, optional reasoning route.
+- [OpenRouter](openrouter.md) — multi-model router, one key for many providers.
+- [Kimi](kimi.md) — Moonshot's K2.x reasoning models.
 - [Ollama and local](ollama-local.md) — on-prem / air-gapped setup.
 - [Batch mode](batch-mode.md) — async / cheap drafts via OpenAI / Anthropic batch APIs.
 
