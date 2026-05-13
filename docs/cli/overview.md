@@ -128,7 +128,7 @@ When something doesn't work, the order of escalation is:
 
 ```text
 > /doctor
-✓ AMX version — 0.14.0 (config schema v7)
+✓ AMX version — 0.14.0 (config schema v2)
 ✓ Python runtime — 3.11.5
 ✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 ✓ Active LLM profile — openai-prod [openai] gpt-4o
@@ -141,28 +141,150 @@ for the most-frequently-seen failures.
 
 ## The full namespace tree
 
-| Namespace | Purpose | Sub-commands (subset) |
-|---|---|---|
-| `/setup` | First-run wizard for DB + LLM | — |
-| `/config` | Show or edit `~/.amx/config.yml` | — |
-| `/db` | Connection & introspection | `profiles`, `add-db-profile`, `edit-db-profile`, `use-db`, `connect`, `schemas`, `tables`, `profile`, `inspect`, `history-store` |
-| `/llm` | LLM profile management | `profiles`, `add-llm-profile`, `use-llm`, `use-rag-llm`, `temperature`, `max-tokens`, `n-alternatives`, `logprob-thresholds`, `description-verbosity` |
-| `/docs` | RAG document sources | `doc-profiles`, `add-doc-profile`, `scan`, `ingest`, `search-docs`, `doc-analyze` |
-| `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
-| `/metadata` | Inspect introspection cache | — |
-| `/analyze` | Run + apply + schedule | `/run`, `/run-apply`, `/generate`, `/rerun`, `/apply`, `/schedule add|list|show|pause|resume|rm|run-now|status|tick|install-daemon|uninstall-daemon` |
-| `/search` | Catalog search + chat sessions | `/ask`, `/session list`, `/session resume`, `/session scope`, `/status`, `/sync`, `/rebuild` |
-| `/studio` | AMX Studio — local web UI on `127.0.0.1` | `--port`, `--no-open` |
-| `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare`, `rerun` |
-| `/doctor` | Diagnostics | `--skip-network`, `--debug` |
-| `/restore-config` | Recover `~/.amx/config.yml` from a rotated backup | `--list`, `--from <path>` |
+Every user-facing command in the CLI is grouped by namespace below. Tabs *group*
+related commands for discovery — routing is global, so any command dispatches
+from any tab. `/session list` typed inside `/db` works exactly the same as from
+the root prompt.
 
-**Tabs group; routing is global.** Every top-level command (including
-`/session`, `/studio`, `/setup`, `/config`, `/doctor`, `/compare`,
-`/history-store`) dispatches from any tab — namespaces are about *discovering*
-related commands together, not about *gating* their availability. Type
-`/session list` while inside `/db` and it works exactly the same as from the
-root prompt.
+### Root commands
+
+| Command | Purpose |
+|---|---|
+| `/setup` | First-run wizard for DB + LLM (+ optional doc/code) profiles |
+| `/config` | Show or edit `~/.amx/config.yml` |
+| `/studio` | Launch AMX Studio (local web UI on `127.0.0.1`). Flags: `--port`, `--no-open` |
+| `/doctor` | Diagnostics. Flags: `--skip-network`, `--debug` |
+| `/restore-config` | Recover `~/.amx/config.yml` from a rotated backup. Flags: `--list`, `--from <path>` |
+| `/help`, `/exit`, `/clear`, `/back`, `/save` | REPL built-ins |
+
+### `/db` — database profiles, connections, introspection
+
+| Command | Purpose |
+|---|---|
+| `/db-profiles` | List configured DB profiles |
+| `/add-db-profile` | Wizard to register a new profile |
+| `/edit-db-profile [<name>]` | Re-run the wizard pre-filled with current values |
+| `/remove-db-profile <name>` | Delete a profile |
+| `/use-db <profile> [<profile>…]` | Switch active DB scope; accepts multiple profiles for multi-profile `/ask`, `/run`, `/sync` |
+| `/connect` | Test connectivity for the active profile (Databricks: triggers Unity Catalog picker) |
+| `/schemas` | List schemas reachable in the active profile |
+| `/tables [<schema>]` | List tables/views/materialized views in a schema |
+| `/profile [<schema>] [<table>]` | Profile a single table (stats, types, samples) |
+| `/inspect [<profile>]` | Full backend diagnostic (capabilities, visible schemas, table counts) |
+| `/profiling [full\|sampled\|metadata] [max_rows] [sample_size]` | Configure profiling guardrails per profile |
+| `/tls [on\|off] [ca_path\|clear]` | Show / configure Databricks TLS settings |
+| `/history-store` | Configure shared run-history backend (`status`, `enable`, `disable`, `migrate-from-local`, `flush-pending`, `dump-ddl`) |
+| `/cleanup-placeholders [<schema>]` | Remove auto-inference placeholder comments from the live DB |
+| `/cache-show [--profile=X] [--database=Y]` | Display the metadata cache contents |
+| `/cache-stats` | Aggregate cache metrics (rows, oldest fetch, % expired) |
+| `/cache-clear [--profile=X] [--database=Y] [--type=schemas\|columns\|catalog\|all] [--force]` | Flush cache rows |
+
+### `/llm` — LLM profiles and tuning
+
+| Command | Purpose |
+|---|---|
+| `/llm-profiles` | List configured LLM profiles |
+| `/use-llm <name>` | Switch the active LLM profile |
+| `/use-rag-llm [<name>\|none]` | Pin a different LLM profile to the RAG agent (or clear the override) |
+| `/add-llm-profile` | Wizard to register a new LLM profile |
+| `/remove-llm-profile <name>` | Delete an LLM profile |
+| `/temperature [0.0–2.0]` | Show / set sampling temperature on the active profile |
+| `/max-tokens [N]` | Show / set output-token budget (reasoning models keep their 32 768 floor) |
+| `/n-alternatives [1–5]` | Number of alternative descriptions per column |
+| `/prompt-detail [minimal\|standard\|detailed\|full]` | System-prompt detail level |
+| `/description-verbosity [brief\|detailed\|comprehensive\|exhaustive]` | Output description length |
+| `/logprob-thresholds [high] [med]` | Confidence thresholds (defaults: high=0.85, medium=0.50) |
+| `/llm-batch-size [N]` | Columns per LLM call |
+| `/batch-context-columns [off\|all\|N]` | Extra non-batch column names to include in each batch |
+| `/cost [<input> <output>\|reset]` | Override per-1M-token cost for the active profile |
+| `/refresh-prices` | Re-fetch LLM pricing from LiteLLM + OpenRouter (24 h cache) |
+| `/style [wizard\|set\|show\|clear\|on\|off]` | Reference-table attachment for description style matching |
+
+### `/docs` — document sources for RAG
+
+| Command | Purpose |
+|---|---|
+| `/doc-profiles` | List configured doc profiles |
+| `/doc-files [<name>]` | Show files staged under a profile |
+| `/use-doc <name>` | Switch the active doc profile |
+| `/add-doc-profile` | Create / update a doc profile |
+| `/remove-doc-profile <name>` | Delete a doc profile |
+| `/doc-link <doc-profile> [--db NAME…] [--clear]` | Link a doc profile to one or more DB profiles |
+| `/doc-add <profile> <file>… [--no-ingest]` | Copy files into `~/.amx/uploads/<profile>/` |
+| `/scan [--doc-profile NAME] [paths…]` | Scan documents into the index |
+| `/ingest [--doc-profile NAME] [--refresh] [paths…]` | Ingest scanned documents (embed + persist) |
+| `/search-docs <text>` | Similarity search over the doc index (no LLM, embedding-only) |
+| `/doc-analyze [TABLE…]` | Run the RAG agent standalone |
+| `/export-doc-report [FILE]` | Export a doc-RAG summary to Markdown |
+
+### `/code` — codebase sources for RAG
+
+| Command | Purpose |
+|---|---|
+| `/code-profiles` | List configured code profiles |
+| `/use-code <name>` | Switch the active code profile |
+| `/add-code-profile` | Create / update a code profile |
+| `/remove-code-profile <name>` | Delete a code profile |
+| `/code-link <code-profile> [--db NAME…] [--clear]` | Link a code profile to one or more DB profiles |
+| `/code-scan [path] [--code-profile NAME]` | Scan a codebase and persist the index |
+| `/code-search <text> [--code-profile NAME]` | Similarity search over the code index |
+| `/code-refresh` | Clear cache + rebuild the semantic code index |
+| `/code-results` | Show last cached scan results |
+| `/code-analyze [TABLE…]` | Run the Code Agent standalone |
+| `/export-code-report [FILE]` | Export the scan report to Markdown |
+
+### `/metadata` — universal metadata editing
+
+| Command | Purpose |
+|---|---|
+| `/inspect [<schema>] [<table>]` | Inspect current metadata |
+| `/monitor [<schema>]` | Show metadata coverage |
+| `/edit [db][.schema[.table[.column]]]` | Edit wizard, or direct path editor |
+
+`/manual` is an alias for `/metadata`.
+
+### `/analyze` — runs, apply, schedules
+
+| Command | Purpose |
+|---|---|
+| `/run [ASSET…] [--schema…] [--apply] [--db-profile NAME…]` | Run agents over a scope (database / schema / asset / column) |
+| `/run-apply [ASSET…] [--schema…] [--table…]` | Run + apply in one shot |
+| `/apply` | Write pending comments to the database |
+| `/generate <address>` | Single-shot draft for one asset address |
+| `/rerun <run_id>[.schema.table.column]` | Re-execute a result row with original scope, profile cache, and prompt detail preserved |
+| `/review [<run_id>] [--filter REGEX] [--sort KEY] [--group-by schema\|table] [--only-unreviewed] [--only-low-conf]` | Review suggestions with filtering / sorting |
+| `/schedule add\|list\|show\|pause\|resume\|rm\|run-now\|tick\|status\|install-daemon\|uninstall-daemon` | Scheduled-run management |
+
+### `/search` — catalog search, sessions, evidence
+
+| Command | Purpose |
+|---|---|
+| `/ask` | Ask a metadata question (supports `--db-profile NAME` for multi-DB, `--actions` for follow-up execution) |
+| `/session list\|resume <id>\|new\|end\|scope [profiles]` | Manage `/ask` conversation sessions |
+| `/status` | Show catalog / index status |
+| `/sources` | Show evidence sources and settings |
+| `/ask-context` | Show which doc / code profiles `/ask` will use for the current DB scope |
+| `/config [key] [value]` | Show / set search-scoped config |
+| `/embeddings [minilm\|openai\|local] [model]` | Show / change the embedding provider |
+| `/sync [--db-profile NAME…]` | Sync DB structure / comments and code evidence into the index |
+| `/rebuild` | Rebuild search state and vector index |
+| `/find-columns` | Find columns by name / pattern |
+| `/join-candidates` | Find joinable tables across profiles |
+| `/explain` | Explain an entity |
+| `/explain-table` | Explain a table |
+
+### `/history` — runs, results, comparison
+
+| Command | Purpose |
+|---|---|
+| `/list [-n N] [--include-asks]` | List recent runs |
+| `/show <run_id>` | Show one run payload |
+| `/stats` | Aggregate run / event metrics |
+| `/events [-n N]` | Recent app events |
+| `/results <run_id>` | Show saved LLM alternatives |
+| `/review <run_id> [--unevaluated-only] [--apply]` | Re-evaluate alternatives |
+| `/rollback <run_id>` | Undo an `/apply`, restoring the prior comment text |
+| `/compare [--last N] [run_ids…] [--schema SCHEMA] [--table TABLE] [--by DIMENSION]` | Compare past runs side-by-side |
 
 ## Verify
 

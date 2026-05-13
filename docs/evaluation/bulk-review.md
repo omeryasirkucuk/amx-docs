@@ -65,7 +65,7 @@ hasn't been touched.
 
 When a reviewer edits a column inline, AMX records the override in the run
 row's `column_overrides` field. A subsequent `/rerun` (or the
-[`Re-Run` button](../cli/studio.md#re-run)) reads the field and skips
+[`Re-Run` button](../studio/run-detail.md)) reads the field and skips
 those columns by default — the reviewer's chosen text wins. Pass
 `--ignore-overrides` to re-draft from scratch when you explicitly want a
 fresh attempt on every column.

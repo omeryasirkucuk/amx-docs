@@ -8,60 +8,6 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
-### 0.15.0 — Compare 2.0: paged picker, modal results, PDF export, Ask AMX, academic quality metrics
-
-The `/history compare` flow that pivots multiple runs side-by-side got
-the largest single-release overhaul of the project so far. Five
-shipped axes:
-
-- **Paged picker (Studio).** The `/runs/compare` page now pages with a
-  sticky-header page-size selector (10 / 20 / 50 / 100, persisted in
-  `localStorage`), Prev / Next, and a Clear selection link. Search
-  and kind filters compose with paging. The picker fetch limit grew
-  50 → 200 so paging actually has depth.
-- **Modal results (Studio).** Comparison no longer falls off the
-  bottom of the picker page — it opens in a full-width Dialog over
-  the picker, so the picker stays visible underneath. The modal
-  carries Close / Ask AMX / Run deeper analysis / Download PDF
-  buttons in the footer.
-- **UI-quality PDF export.** New `Download PDF` button generates a
-  landscape A4 dark-themed report with the AMX logo on every page,
-  warm-stone palette identical to the modal, status pills, amber
-  inset-ring winner highlight, and a Methods footer with full
-  bibliographic citations. Server-side WeasyPrint renders the
-  template; AMX auto-detects the Homebrew prefix on macOS so a
-  plain `brew install pango cairo` is enough — no env-var setup.
-- **Ask AMX integration.** The new `compare_runs` LLM tool lets
-  `/ask` answer "compare runs 58, 59" or "I ran on the address
-  table — compare those" without bouncing the user back to the
-  Compare page. The Studio modal also has an Ask AMX button that
-  closes the modal and seeds a chat with the comparison context.
-  CLI `/history compare` ends with a numbered prompt — `1) Ask
-  AMX about this comparison · 2) Done` — that routes through the
-  same path as the typed `/search ask` command.
-- **Academic Quality framework.** Replaces the "winner = highest
-  logprob" heuristic with three opt-in tiers of academic
-  text-quality metrics. Tier 0 (default, free, offline): chrF
-  (Popović 2015), ROUGE-L (Lin 2004), schema grounding (Jaccard
-  1912 token containment), length appropriateness, type-token
-  ratio (Templin 1957). Tier 1 (free, local): pairwise sentence-
-  embedding cosine agreement + semantic schema grounding via
-  `sentence-transformers`. Tier 2 (opt-in, consumes tokens on the active LLM): G-Eval pairwise
-  tournament (Liu et al. 2023; Prometheus 2 — Kim et al. 2024).
-  Reference resolution waterfall — user pin → live DB
-  `COMMENT ON COLUMN` → most-recent applied → none — makes the
-  reference-based metrics short-circuit cleanly when no ground
-  truth exists. Full walkthrough on the
-  [`/history compare`](cli/history.md#compare) page.
-
-Optional extras for the metric tiers:
-
-```sh
-pip install amx-cli[quality]                    # Tier 0 (sacrebleu + rouge-score)
-pip install amx-cli[quality,local-embeddings]   # + Tier 1
-pip install amx-cli[quality,bertscore]          # + Tier 1.5 BERTScore
-```
-
 ### 0.14.0 — Live cost everywhere, Re-Run, Studio Landing
 
 Every LLM call AMX makes now reports tokens **and USD cost** at every

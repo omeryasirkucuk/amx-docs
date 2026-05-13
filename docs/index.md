@@ -27,7 +27,7 @@ hide:
 <code class="amx-landing__install" title="Click to copy">pip install amx-cli</code>
 <div class="amx-landing__meta">
 <span><span class="amx-landing__meta-dot"></span> 10 database backends</span>
-<span><span class="amx-landing__meta-dot"></span> 8 LLM providers</span>
+<span><span class="amx-landing__meta-dot"></span> 9 LLM providers</span>
 <span><span class="amx-landing__meta-dot"></span> Apache-2.0</span>
 </div>
 </div>

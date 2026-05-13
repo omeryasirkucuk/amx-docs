@@ -66,7 +66,7 @@ Or skip the picker by passing the scope on the command line: `/run sales`,
 Per-batch token and USD cost are reported live for every LLM-using step
 (`/run`, `/run-apply`, `/generate`, `/ask`). Cost is computed against the
 versioned per-(provider, model) pricing table AMX caches on disk; see
-[Costs and pricing](studio.md#costs-and-pricing) for the full story
+[Costs and pricing](../studio/pricing.md) for the full story
 including how to pin a per-model override.
 
 ### 3. Review with the wizard keystrokes
@@ -159,7 +159,7 @@ ClickHouse) surface as `(skipped — backend cannot accept this asset
 kind)`.
 
 The same preview is reachable from Studio via the
-[**Preview SQL** button](studio.md#preview-sql) on the Pending page.
+[**Preview SQL** button](../studio/pending.md) on the Pending page.
 
 ### 5. Re-Run a row with the original context
 

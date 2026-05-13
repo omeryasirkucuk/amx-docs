@@ -61,7 +61,7 @@ auto-detected focus profile, and **per-turn token + USD cost**. If the
 answer doesn't match the cited evidence, you've found a prompt or retrieval
 bug — file it. Cost is computed against the same versioned per-(provider,
 model) pricing table that powers the run cost surfaces; see
-[Costs and pricing](studio.md#costs-and-pricing) for overrides and the
+[Costs and pricing](../studio/pricing.md) for overrides and the
 freshness badge.
 
 ### 3. The seven answer shapes
@@ -259,7 +259,7 @@ in one chat without disturbing the global default:
 ```
 
 The Studio side has the equivalent control as a multi-select dropdown above
-the Ask textarea — see [Studio](studio.md#chat-scope-and-focus).
+the Ask textarea — see [Studio → Ask](../studio/ask.md).
 
 ### 5. Manage chat sessions
 
