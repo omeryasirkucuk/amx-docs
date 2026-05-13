@@ -66,6 +66,7 @@ Top-level commands:
   /history       Audit trail and run comparison
   /doctor        Diagnostics
   /config        Show or edit ~/.amx/config.yml
+  /restore-config  Recover ~/.amx/config.yml from a rotated backup
   /help, /exit, /clear, /back, /save
 ```
 
@@ -149,11 +150,12 @@ for the most-frequently-seen failures.
 | `/docs` | RAG document sources | `doc-profiles`, `add-doc-profile`, `scan`, `ingest`, `search-docs`, `doc-analyze` |
 | `/code` | Codebase scan + RAG | `code-profiles`, `code-scan`, `code-analyze` |
 | `/metadata` | Inspect introspection cache | — |
-| `/analyze` | Run + apply | `/run`, `/run-apply`, `/generate`, `/rerun`, `/apply` |
+| `/analyze` | Run + apply + schedule | `/run`, `/run-apply`, `/generate`, `/rerun`, `/apply`, `/schedule add|list|show|pause|resume|rm|run-now|status|tick|install-daemon|uninstall-daemon` |
 | `/search` | Catalog search + chat sessions | `/ask`, `/session list`, `/session resume`, `/session scope`, `/status`, `/sync`, `/rebuild` |
 | `/studio` | AMX Studio — local web UI on `127.0.0.1` | `--port`, `--no-open` |
 | `/history` | Audit trail + comparison | `list`, `show`, `stats`, `events`, `results`, `review`, `compare`, `rerun` |
 | `/doctor` | Diagnostics | `--skip-network`, `--debug` |
+| `/restore-config` | Recover `~/.amx/config.yml` from a rotated backup | `--list`, `--from <path>` |
 
 **Tabs group; routing is global.** Every top-level command (including
 `/session`, `/studio`, `/setup`, `/config`, `/doctor`, `/compare`,
@@ -173,4 +175,6 @@ root prompt.
 - [Quick start](../getting-started/quickstart.md) — five-minute walkthrough using PostgreSQL + OpenAI.
 - [Run & Apply](run-and-apply.md) — the heart of the workflow: `/run`, review wizard, `/apply`.
 - [Setup wizard](setup.md) — first-time `/setup` walkthrough.
+- [`/analyze schedule`](schedules.md) — one-shot scheduled metadata runs and daemon controls.
+- [`/restore-config`](restore-config.md) — recover `~/.amx/config.yml` from a rotated backup.
 - [`/studio`](studio.md) — same workflow on a local web UI (AMX Studio) when you'd rather see everything at once.
