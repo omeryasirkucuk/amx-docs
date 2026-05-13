@@ -156,6 +156,7 @@ nav:
   - Guides:
       - SAP Discovery: guides/sap-discovery-walkthrough.md
       - Batch Large Schema: guides/batch-large-schema.md
+      - Scheduled Runs: guides/scheduled-runs.md
   - Reference:
       - Configuration:
           - config.yml: configuration/config-yml.md
