@@ -9,6 +9,19 @@ This guide covers what scheduled runs are, how they fire when AMX is
 closed, how to set up the always-on daemon, and how to ask the Ask
 agent about your upcoming plans.
 
+## Quick orientation
+
+Schedules live under the **analyze** tab in both surfaces:
+
+* **CLI REPL:** open `amx`, then every command is typed at the
+  `[ ROOT ]` prompt as `/analyze schedule <verb>`. Examples below.
+* **Studio:** Open the **Runs** page, click **Schedules** in the
+  page actions. The dedicated screen at `/runs/schedules` mirrors
+  the CLI.
+
+There is **no `amx schedule …` shell-style invocation** — every
+method lives under a tab and is invoked from inside the REPL.
+
 ## Mental model
 
 A scheduled run is a small record that carries:
@@ -30,14 +43,14 @@ plan, not a rhythm.
 ## The catch-up contract
 
 AMX is an invocation-based developer tool. It is not always running.
-When you create a schedule the CLI shows:
+When you create a schedule, AMX shows:
 
 ```
 Heads-up: AMX is invocation-based — it isn't always running.
 For this schedule to fire on time, EITHER keep AMX/Studio open at
 that moment, OR enable the background daemon now:
 
-    amx scheduler install-daemon
+    /analyze schedule install-daemon
 
 Without the daemon, if AMX is closed at fire time, this schedule will
 be surfaced as 'missed' the next time you open AMX, and you can run
@@ -50,7 +63,7 @@ This is the explicit contract:
   AMX is closed.
 * **Daemon not installed** → the next time you open AMX (CLI or
   Studio) the bootstrap pass surfaces missed schedules in a banner
-  pointing you at `amx schedule list`. Nothing is silently lost.
+  pointing you at `/analyze schedule list`. Nothing is silently lost.
 
 The same pass also recovers any in-flight runs that were interrupted
 (process killed, machine slept, network dropped). They get marked
@@ -59,17 +72,50 @@ exceeded)" so you see the gap in your run history.
 
 ## Creating a schedule
 
-### From the CLI
+### From the CLI REPL
 
-```bash
-amx schedule add \
-  --name "End of quarter refresh" \
-  --at "2026-12-31 09:00" \
-  --tz "Europe/Istanbul" \
-  --db prod_sf \
-  --scope "schema:public,staging" \
-  --llm claude \
-  --strategy auto
+```text
+$ amx
+[ ROOT ]  db  metadata  docs  llm  code  analyze  search  history
+
+> /analyze schedule add
+Schedule name: Quarterly refresh
+Fire time (local, YYYY-MM-DD HH:MM): 2026-12-31 09:00
+Timezone (IANA) [Europe/Istanbul]:
+
+Available DB profile:
+  [1] prod_sf  (current)
+  [2] staging
+Pick a DB profile (number or name) [prod_sf]: 1
+
+Available LLM profile:
+  [1] claude
+  [2] gpt-5.5
+Pick a LLM profile (number or name) [claude]: 1
+
+Scope mode (all, schemas, tables) [all]: schemas
+
+Available schemas (comma-separated indices or names):
+  [1] public
+  [2] staging
+Pick schemas: 1,2
+
+Review strategy (auto, manual) [auto]:
+Schedule #7 created…
+```
+
+Every flag is optional — supply them on one line for a non-interactive
+create:
+
+```
+> /analyze schedule add \
+    --name "End of quarter refresh" \
+    --at "2026-12-31 09:00" \
+    --tz "Europe/Istanbul" \
+    --db prod_sf \
+    --scope "schema:public,staging" \
+    --llm claude \
+    --strategy auto
 ```
 
 `--scope` accepts:
@@ -82,30 +128,38 @@ amx schedule add \
 
 ### From Studio
 
-Open `/schedules` in Studio. The **New schedule** form mirrors the CLI:
+Open **Runs → Schedules**. The **New schedule** dialog mirrors the
+CLI wizard with picker-driven inputs:
 
-* Datetime input with an IANA timezone field — your browser timezone
-  is the default.
-* `db_profile` / `llm_profile` text fields.
-* Same `schema:…` / `table:…` / `all` scope syntax.
-* Review-strategy dropdown (`auto` / `manual`).
+* **DB profile** dropdown — pre-populated from your saved profiles.
+* **LLM profile** dropdown — same.
+* **Scope mode** dropdown:
+    * `All schemas in this DB` — no further input needed.
+    * `Specific schemas` — checkbox list pulled live from the chosen DB.
+    * `Specific tables` — pick a schema on the left, tick tables on the
+      right; repeat for each schema you want to include.
+* **Fire time** datetime picker + IANA timezone field (defaults to
+  your browser timezone).
+* Review strategy dropdown (`auto` / `manual`).
 
 The same heads-up message appears below the form.
 
 ## Managing schedules
 
-| Command                                | Effect |
-|----------------------------------------|--------|
-| `amx schedule list`                    | Active entries (pending / paused / missed / running). |
-| `amx schedule list --past`             | Completed / failed / cancelled history. |
-| `amx schedule list --all`              | Everything. |
-| `amx schedule show <id>`               | Full JSON detail for one schedule. |
-| `amx schedule pause <id>`              | Pause a pending schedule. |
-| `amx schedule resume <id>`             | Re-enable a paused schedule. |
-| `amx schedule rm <id> [-y]`            | Hard delete + audit event. |
-| `amx schedule run-now <id>`            | Fire immediately (regardless of `fire_at_utc`). |
+In the CLI REPL:
 
-Studio's `/schedules` page exposes the same actions as inline buttons
+| Command                                       | Effect |
+|-----------------------------------------------|--------|
+| `/analyze schedule list`                      | Active entries (pending / paused / missed / running). |
+| `/analyze schedule list --past`               | Completed / failed / cancelled history. |
+| `/analyze schedule list --all`                | Everything. |
+| `/analyze schedule show <id>`                 | Full JSON detail for one schedule. |
+| `/analyze schedule pause <id>`                | Pause a pending schedule. |
+| `/analyze schedule resume <id>`               | Re-enable a paused schedule. |
+| `/analyze schedule rm <id> [-y]`              | Hard delete + audit event. |
+| `/analyze schedule run-now <id>`              | Fire immediately (regardless of `fire_at_utc`). |
+
+Studio's Schedules page exposes the same actions as inline buttons
 on each row.
 
 ## The daemon
@@ -115,32 +169,32 @@ AMX is closed.
 
 ### macOS
 
-```bash
-amx scheduler install-daemon
+```text
+> /analyze schedule install-daemon
 ```
 
 Writes a `launchd` plist (one per `AMX_CONFIG_DIR`, so prod and dev
 coexist), loads it via `launchctl`, and points its stdout/stderr at
 `$AMX_CONFIG_DIR/logs/scheduler.log`. Every minute the daemon runs
-`amx scheduler tick --silent`, which fires any schedule whose
+`/analyze schedule tick --silent`, which fires any schedule whose
 `fire_at_utc` has elapsed.
 
 To check it:
 
-```bash
-amx scheduler status
+```text
+> /analyze schedule status
 ```
 
 To remove it:
 
-```bash
-amx scheduler uninstall-daemon
+```text
+> /analyze schedule uninstall-daemon
 ```
 
 ### Linux
 
 The Linux path installs a per-user systemd `.service` + `.timer`
-under `~/.config/systemd/user/`. Same `--silent tick` cadence; same
+under `~/.config/systemd/user/`. Same minute cadence; same
 status / uninstall commands.
 
 ### Windows
@@ -163,14 +217,14 @@ prints one line:
 
 ```
 ⚠️ 1 interrupted run recovered (marked failed); 2 schedules missed
-while AMX was closed. Run `amx schedule list` to review.
+while AMX was closed. Run `/analyze schedule list` to review.
 ```
 
 From there:
 
-* `amx schedule list` shows missed entries with status `missed`.
-* `amx schedule run-now <id>` fires one immediately.
-* `amx schedule rm <id>` discards it.
+* `/analyze schedule list` shows missed entries with status `missed`.
+* `/analyze schedule run-now <id>` fires one immediately.
+* `/analyze schedule rm <id>` discards it.
 
 In Studio the same banner appears at the top of the Schedules page,
 and missed entries are tagged with the orange `Missed` chip.
@@ -186,16 +240,16 @@ The Ask agent has two read-only tools backed by the same data:
 
 Both are read-only. The agent never creates, edits, pauses, or
 deletes schedules — those actions stay on the Schedules page and the
-`amx schedule` CLI.
+`/analyze schedule` REPL commands.
 
 ## Troubleshooting
 
 **The schedule fired but the run is empty.**
 The initial Orchestrator integration is a no-op stub that creates
 the `analysis_runs` row, links it to the schedule, and immediately
-completes. The full per-table run is a follow-up wired into a later
-release; until then the schedule's lifecycle exists end-to-end but
-no metadata is written.
+completes. The full per-table run is wired into a later release; until
+then the schedule's lifecycle exists end-to-end but no metadata is
+written.
 
 **The schedule fires too late.**
 Without the daemon, AMX has to be open at fire time. With the daemon,
