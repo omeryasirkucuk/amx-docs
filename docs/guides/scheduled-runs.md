@@ -1,0 +1,215 @@
+# Scheduled runs
+
+AMX can hold a one-shot metadata run for you and fire it at a specific
+future moment in the timezone you choose. This is useful for running
+heavy discovery off-hours, coordinating a refresh with downstream
+consumers, or simply not having to remember.
+
+This guide covers what scheduled runs are, how they fire when AMX is
+closed, how to set up the always-on daemon, and how to ask the Ask
+agent about your upcoming plans.
+
+## Mental model
+
+A scheduled run is a small record that carries:
+
+| Field            | Meaning |
+|------------------|---------|
+| `name`           | Human-readable label, e.g. `Quarterly meta refresh`. |
+| `fire_at_utc`    | Canonical fire time in UTC. |
+| `fire_at_tz`     | The IANA timezone you picked. Used for display + DST. |
+| `db_profile`     | Which database profile the run targets. |
+| `scope_json`     | High-level scope (`schemas`, `tables`, or `all`). Resolved live against the DB at fire time, so new tables under a scheduled schema are picked up automatically; missing entities surface as a clean failure with `last_error` populated. |
+| `llm_profile`    | Which LLM profile to use. |
+| `review_strategy`| `auto` or `manual`. |
+
+Schedules are **one-shot**: they fire once and then sit as a historical
+record. There is no recurring-cron grammar — metadata discovery is a
+plan, not a rhythm.
+
+## The catch-up contract
+
+AMX is an invocation-based developer tool. It is not always running.
+When you create a schedule the CLI shows:
+
+```
+Heads-up: AMX is invocation-based — it isn't always running.
+For this schedule to fire on time, EITHER keep AMX/Studio open at
+that moment, OR enable the background daemon now:
+
+    amx scheduler install-daemon
+
+Without the daemon, if AMX is closed at fire time, this schedule will
+be surfaced as 'missed' the next time you open AMX, and you can run
+it then.
+```
+
+This is the explicit contract:
+
+* **Daemon installed** → schedules fire exactly on time, even while
+  AMX is closed.
+* **Daemon not installed** → the next time you open AMX (CLI or
+  Studio) the bootstrap pass surfaces missed schedules in a banner
+  pointing you at `amx schedule list`. Nothing is silently lost.
+
+The same pass also recovers any in-flight runs that were interrupted
+(process killed, machine slept, network dropped). They get marked
+`failed` with reason "Recovered stale running run (heartbeat threshold
+exceeded)" so you see the gap in your run history.
+
+## Creating a schedule
+
+### From the CLI
+
+```bash
+amx schedule add \
+  --name "End of quarter refresh" \
+  --at "2026-12-31 09:00" \
+  --tz "Europe/Istanbul" \
+  --db prod_sf \
+  --scope "schema:public,staging" \
+  --llm claude \
+  --strategy auto
+```
+
+`--scope` accepts:
+
+| Form                   | Meaning |
+|------------------------|---------|
+| `schema:a,b`           | One run covering every table under schemas `a` and `b`. |
+| `table:s.t1,s.t2`      | One run covering specific `schema.table` pairs. |
+| `all`                  | Everything visible to the active profile. |
+
+### From Studio
+
+Open `/schedules` in Studio. The **New schedule** form mirrors the CLI:
+
+* Datetime input with an IANA timezone field — your browser timezone
+  is the default.
+* `db_profile` / `llm_profile` text fields.
+* Same `schema:…` / `table:…` / `all` scope syntax.
+* Review-strategy dropdown (`auto` / `manual`).
+
+The same heads-up message appears below the form.
+
+## Managing schedules
+
+| Command                                | Effect |
+|----------------------------------------|--------|
+| `amx schedule list`                    | Active entries (pending / paused / missed / running). |
+| `amx schedule list --past`             | Completed / failed / cancelled history. |
+| `amx schedule list --all`              | Everything. |
+| `amx schedule show <id>`               | Full JSON detail for one schedule. |
+| `amx schedule pause <id>`              | Pause a pending schedule. |
+| `amx schedule resume <id>`             | Re-enable a paused schedule. |
+| `amx schedule rm <id> [-y]`            | Hard delete + audit event. |
+| `amx schedule run-now <id>`            | Fire immediately (regardless of `fire_at_utc`). |
+
+Studio's `/schedules` page exposes the same actions as inline buttons
+on each row.
+
+## The daemon
+
+The opt-in background daemon is the only way to fire schedules while
+AMX is closed.
+
+### macOS
+
+```bash
+amx scheduler install-daemon
+```
+
+Writes a `launchd` plist (one per `AMX_CONFIG_DIR`, so prod and dev
+coexist), loads it via `launchctl`, and points its stdout/stderr at
+`$AMX_CONFIG_DIR/logs/scheduler.log`. Every minute the daemon runs
+`amx scheduler tick --silent`, which fires any schedule whose
+`fire_at_utc` has elapsed.
+
+To check it:
+
+```bash
+amx scheduler status
+```
+
+To remove it:
+
+```bash
+amx scheduler uninstall-daemon
+```
+
+### Linux
+
+The Linux path installs a per-user systemd `.service` + `.timer`
+under `~/.config/systemd/user/`. Same `--silent tick` cadence; same
+status / uninstall commands.
+
+### Windows
+
+Windows is not currently supported for the daemon. Scheduled runs
+still work whenever AMX or Studio is open (catch-up). For always-on
+scheduling, use AMX on macOS or Linux.
+
+### Multiple AMX installs on one machine
+
+The daemon's launchd label / systemd unit name is derived from
+`AMX_CONFIG_DIR`. Prod (`~/.amx`) registers as `com.amx.scheduler`;
+a dev install (`AMX_CONFIG_DIR=~/.amx-dev`) registers as
+`com.amx-dev.scheduler`. They don't collide, so you can run both.
+
+## Missed and interrupted runs
+
+When you open AMX (or Studio) after a closure, the bootstrap pass
+prints one line:
+
+```
+⚠️ 1 interrupted run recovered (marked failed); 2 schedules missed
+while AMX was closed. Run `amx schedule list` to review.
+```
+
+From there:
+
+* `amx schedule list` shows missed entries with status `missed`.
+* `amx schedule run-now <id>` fires one immediately.
+* `amx schedule rm <id>` discards it.
+
+In Studio the same banner appears at the top of the Schedules page,
+and missed entries are tagged with the orange `Missed` chip.
+
+## Asking the agent
+
+The Ask agent has two read-only tools backed by the same data:
+
+| Tool                 | Use it when |
+|----------------------|-------------|
+| `list_schedules`     | "What scheduled runs do I have coming up?" / "Did I miss anything yesterday?" |
+| `get_schedule(id)`   | "Tell me everything about schedule #7." / "Did last week's run for prod succeed?" |
+
+Both are read-only. The agent never creates, edits, pauses, or
+deletes schedules — those actions stay on the Schedules page and the
+`amx schedule` CLI.
+
+## Troubleshooting
+
+**The schedule fired but the run is empty.**
+The initial Orchestrator integration is a no-op stub that creates
+the `analysis_runs` row, links it to the schedule, and immediately
+completes. The full per-table run is a follow-up wired into a later
+release; until then the schedule's lifecycle exists end-to-end but
+no metadata is written.
+
+**The schedule fires too late.**
+Without the daemon, AMX has to be open at fire time. With the daemon,
+the cadence is ~60 seconds — a schedule's fire may be observed up to
+one tick interval late on average.
+
+**The schedule failed with `Schema 'public' not found`.**
+The scope is resolved against the live DB at fire time, not at
+creation time. If the schema or table was renamed / dropped between
+create and fire, the schedule fails fast and `last_error` names the
+missing entity. Edit the schedule (only allowed while pending or
+paused) and re-arm.
+
+**Two AMX installs are stepping on each other.**
+Each install reads `AMX_CONFIG_DIR`. Use `amx` for prod
+(`~/.amx`) and `amx-dev` for dev (`~/.amx-dev`). The daemon label
+derives from this so the OS keeps them separate.
