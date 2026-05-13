@@ -670,6 +670,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#quick-orientation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick orientation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#mental-model" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -704,10 +715,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#from-the-cli" class="md-nav__link">
+  <a href="#from-the-cli-repl" class="md-nav__link">
     <span class="md-ellipsis">
       
-        From the CLI
+        From the CLI REPL
       
     </span>
   </a>
@@ -879,6 +890,17 @@ consumers, or simply not having to remember.</p>
 <p>This guide covers what scheduled runs are, how they fire when AMX is
 closed, how to set up the always-on daemon, and how to ask the Ask
 agent about your upcoming plans.</p>
+<h2 id="quick-orientation">Quick orientation<a class="headerlink" href="#quick-orientation" title="Permanent link">&para;</a></h2>
+<p>Schedules live under the <strong>analyze</strong> tab in both surfaces:</p>
+<ul>
+<li><strong>CLI REPL:</strong> open <code>amx</code>, then every command is typed at the
+  <code>[ ROOT ]</code> prompt as <code>/analyze schedule &lt;verb&gt;</code>. Examples below.</li>
+<li><strong>Studio:</strong> Open the <strong>Runs</strong> page, click <strong>Schedules</strong> in the
+  page actions. The dedicated screen at <code>/runs/schedules</code> mirrors
+  the CLI.</li>
+</ul>
+<p>There is <strong>no <code>amx schedule …</code> shell-style invocation</strong> — every
+method lives under a tab and is invoked from inside the REPL.</p>
 <h2 id="mental-model">Mental model<a class="headerlink" href="#mental-model" title="Permanent link">&para;</a></h2>
 <p>A scheduled run is a small record that carries:</p>
 <table>
@@ -924,12 +946,12 @@ record. There is no recurring-cron grammar — metadata discovery is a
 plan, not a rhythm.</p>
 <h2 id="the-catch-up-contract">The catch-up contract<a class="headerlink" href="#the-catch-up-contract" title="Permanent link">&para;</a></h2>
 <p>AMX is an invocation-based developer tool. It is not always running.
-When you create a schedule the CLI shows:</p>
+When you create a schedule, AMX shows:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Heads-up: AMX is invocation-based — it isn&#39;t always running.
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>For this schedule to fire on time, EITHER keep AMX/Studio open at
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>that moment, OR enable the background daemon now:
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    amx scheduler install-daemon
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    /analyze schedule install-daemon
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Without the daemon, if AMX is closed at fire time, this schedule will
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>be surfaced as &#39;missed&#39; the next time you open AMX, and you can run
@@ -941,22 +963,52 @@ When you create a schedule the CLI shows:</p>
   AMX is closed.</li>
 <li><strong>Daemon not installed</strong> → the next time you open AMX (CLI or
   Studio) the bootstrap pass surfaces missed schedules in a banner
-  pointing you at <code>amx schedule list</code>. Nothing is silently lost.</li>
+  pointing you at <code>/analyze schedule list</code>. Nothing is silently lost.</li>
 </ul>
 <p>The same pass also recovers any in-flight runs that were interrupted
 (process killed, machine slept, network dropped). They get marked
 <code>failed</code> with reason "Recovered stale running run (heartbeat threshold
 exceeded)" so you see the gap in your run history.</p>
 <h2 id="creating-a-schedule">Creating a schedule<a class="headerlink" href="#creating-a-schedule" title="Permanent link">&para;</a></h2>
-<h3 id="from-the-cli">From the CLI<a class="headerlink" href="#from-the-cli" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx<span class="w"> </span>schedule<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--name<span class="w"> </span><span class="s2">&quot;End of quarter refresh&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span>--at<span class="w"> </span><span class="s2">&quot;2026-12-31 09:00&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span>--tz<span class="w"> </span><span class="s2">&quot;Europe/Istanbul&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span>--db<span class="w"> </span>prod_sf<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span>--scope<span class="w"> </span><span class="s2">&quot;schema:public,staging&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span>--llm<span class="w"> </span>claude<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span>--strategy<span class="w"> </span>auto
+<h3 id="from-the-cli-repl">From the CLI REPL<a class="headerlink" href="#from-the-cli-repl" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>$ amx
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[ ROOT ]  db  metadata  docs  llm  code  analyze  search  history
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt; /analyze schedule add
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Schedule name: Quarterly refresh
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>Fire time (local, YYYY-MM-DD HH:MM): 2026-12-31 09:00
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Timezone (IANA) [Europe/Istanbul]:
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Available DB profile:
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>  [1] prod_sf  (current)
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  [2] staging
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>Pick a DB profile (number or name) [prod_sf]: 1
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>Available LLM profile:
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>  [1] claude
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>  [2] gpt-5.5
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>Pick a LLM profile (number or name) [claude]: 1
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>Scope mode (all, schemas, tables) [all]: schemas
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>Available schemas (comma-separated indices or names):
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>  [1] public
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>  [2] staging
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>Pick schemas: 1,2
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>Review strategy (auto, manual) [auto]:
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>Schedule #7 created…
+</span></code></pre></div>
+<p>Every flag is optional — supply them on one line for a non-interactive
+create:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /analyze schedule add \
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    --name &quot;End of quarter refresh&quot; \
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    --at &quot;2026-12-31 09:00&quot; \
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    --tz &quot;Europe/Istanbul&quot; \
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    --db prod_sf \
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    --scope &quot;schema:public,staging&quot; \
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>    --llm claude \
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    --strategy auto
 </span></code></pre></div>
 <p><code>--scope</code> accepts:</p>
 <table>
@@ -982,16 +1034,25 @@ exceeded)" so you see the gap in your run history.</p>
 </tbody>
 </table>
 <h3 id="from-studio">From Studio<a class="headerlink" href="#from-studio" title="Permanent link">&para;</a></h3>
-<p>Open <code>/schedules</code> in Studio. The <strong>New schedule</strong> form mirrors the CLI:</p>
+<p>Open <strong>Runs → Schedules</strong>. The <strong>New schedule</strong> dialog mirrors the
+CLI wizard with picker-driven inputs:</p>
 <ul>
-<li>Datetime input with an IANA timezone field — your browser timezone
-  is the default.</li>
-<li><code>db_profile</code> / <code>llm_profile</code> text fields.</li>
-<li>Same <code>schema:…</code> / <code>table:…</code> / <code>all</code> scope syntax.</li>
-<li>Review-strategy dropdown (<code>auto</code> / <code>manual</code>).</li>
+<li><strong>DB profile</strong> dropdown — pre-populated from your saved profiles.</li>
+<li><strong>LLM profile</strong> dropdown — same.</li>
+<li><strong>Scope mode</strong> dropdown:<ul>
+<li><code>All schemas in this DB</code> — no further input needed.</li>
+<li><code>Specific schemas</code> — checkbox list pulled live from the chosen DB.</li>
+<li><code>Specific tables</code> — pick a schema on the left, tick tables on the
+  right; repeat for each schema you want to include.</li>
+</ul>
+</li>
+<li><strong>Fire time</strong> datetime picker + IANA timezone field (defaults to
+  your browser timezone).</li>
+<li>Review strategy dropdown (<code>auto</code> / <code>manual</code>).</li>
 </ul>
 <p>The same heads-up message appears below the form.</p>
 <h2 id="managing-schedules">Managing schedules<a class="headerlink" href="#managing-schedules" title="Permanent link">&para;</a></h2>
+<p>In the CLI REPL:</p>
 <table>
 <thead>
 <tr>
@@ -1001,61 +1062,61 @@ exceeded)" so you see the gap in your run history.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>amx schedule list</code></td>
+<td><code>/analyze schedule list</code></td>
 <td>Active entries (pending / paused / missed / running).</td>
 </tr>
 <tr>
-<td><code>amx schedule list --past</code></td>
+<td><code>/analyze schedule list --past</code></td>
 <td>Completed / failed / cancelled history.</td>
 </tr>
 <tr>
-<td><code>amx schedule list --all</code></td>
+<td><code>/analyze schedule list --all</code></td>
 <td>Everything.</td>
 </tr>
 <tr>
-<td><code>amx schedule show &lt;id&gt;</code></td>
+<td><code>/analyze schedule show &lt;id&gt;</code></td>
 <td>Full JSON detail for one schedule.</td>
 </tr>
 <tr>
-<td><code>amx schedule pause &lt;id&gt;</code></td>
+<td><code>/analyze schedule pause &lt;id&gt;</code></td>
 <td>Pause a pending schedule.</td>
 </tr>
 <tr>
-<td><code>amx schedule resume &lt;id&gt;</code></td>
+<td><code>/analyze schedule resume &lt;id&gt;</code></td>
 <td>Re-enable a paused schedule.</td>
 </tr>
 <tr>
-<td><code>amx schedule rm &lt;id&gt; [-y]</code></td>
+<td><code>/analyze schedule rm &lt;id&gt; [-y]</code></td>
 <td>Hard delete + audit event.</td>
 </tr>
 <tr>
-<td><code>amx schedule run-now &lt;id&gt;</code></td>
+<td><code>/analyze schedule run-now &lt;id&gt;</code></td>
 <td>Fire immediately (regardless of <code>fire_at_utc</code>).</td>
 </tr>
 </tbody>
 </table>
-<p>Studio's <code>/schedules</code> page exposes the same actions as inline buttons
+<p>Studio's Schedules page exposes the same actions as inline buttons
 on each row.</p>
 <h2 id="the-daemon">The daemon<a class="headerlink" href="#the-daemon" title="Permanent link">&para;</a></h2>
 <p>The opt-in background daemon is the only way to fire schedules while
 AMX is closed.</p>
 <h3 id="macos">macOS<a class="headerlink" href="#macos" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>amx<span class="w"> </span>scheduler<span class="w"> </span>install-daemon
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /analyze schedule install-daemon
 </span></code></pre></div>
 <p>Writes a <code>launchd</code> plist (one per <code>AMX_CONFIG_DIR</code>, so prod and dev
 coexist), loads it via <code>launchctl</code>, and points its stdout/stderr at
 <code>$AMX_CONFIG_DIR/logs/scheduler.log</code>. Every minute the daemon runs
-<code>amx scheduler tick --silent</code>, which fires any schedule whose
+<code>/analyze schedule tick --silent</code>, which fires any schedule whose
 <code>fire_at_utc</code> has elapsed.</p>
 <p>To check it:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx<span class="w"> </span>scheduler<span class="w"> </span>status
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /analyze schedule status
 </span></code></pre></div>
 <p>To remove it:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>amx<span class="w"> </span>scheduler<span class="w"> </span>uninstall-daemon
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /analyze schedule uninstall-daemon
 </span></code></pre></div>
 <h3 id="linux">Linux<a class="headerlink" href="#linux" title="Permanent link">&para;</a></h3>
 <p>The Linux path installs a per-user systemd <code>.service</code> + <code>.timer</code>
-under <code>~/.config/systemd/user/</code>. Same <code>--silent tick</code> cadence; same
+under <code>~/.config/systemd/user/</code>. Same minute cadence; same
 status / uninstall commands.</p>
 <h3 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">&para;</a></h3>
 <p>Windows is not currently supported for the daemon. Scheduled runs
@@ -1069,14 +1130,14 @@ a dev install (<code>AMX_CONFIG_DIR=~/.amx-dev</code>) registers as
 <h2 id="missed-and-interrupted-runs">Missed and interrupted runs<a class="headerlink" href="#missed-and-interrupted-runs" title="Permanent link">&para;</a></h2>
 <p>When you open AMX (or Studio) after a closure, the bootstrap pass
 prints one line:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>⚠️ 1 interrupted run recovered (marked failed); 2 schedules missed
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>while AMX was closed. Run `amx schedule list` to review.
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>⚠️ 1 interrupted run recovered (marked failed); 2 schedules missed
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>while AMX was closed. Run `/analyze schedule list` to review.
 </span></code></pre></div>
 <p>From there:</p>
 <ul>
-<li><code>amx schedule list</code> shows missed entries with status <code>missed</code>.</li>
-<li><code>amx schedule run-now &lt;id&gt;</code> fires one immediately.</li>
-<li><code>amx schedule rm &lt;id&gt;</code> discards it.</li>
+<li><code>/analyze schedule list</code> shows missed entries with status <code>missed</code>.</li>
+<li><code>/analyze schedule run-now &lt;id&gt;</code> fires one immediately.</li>
+<li><code>/analyze schedule rm &lt;id&gt;</code> discards it.</li>
 </ul>
 <p>In Studio the same banner appears at the top of the Schedules page,
 and missed entries are tagged with the orange <code>Missed</code> chip.</p>
@@ -1102,14 +1163,14 @@ and missed entries are tagged with the orange <code>Missed</code> chip.</p>
 </table>
 <p>Both are read-only. The agent never creates, edits, pauses, or
 deletes schedules — those actions stay on the Schedules page and the
-<code>amx schedule</code> CLI.</p>
+<code>/analyze schedule</code> REPL commands.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <p><strong>The schedule fired but the run is empty.</strong>
 The initial Orchestrator integration is a no-op stub that creates
 the <code>analysis_runs</code> row, links it to the schedule, and immediately
-completes. The full per-table run is a follow-up wired into a later
-release; until then the schedule's lifecycle exists end-to-end but
-no metadata is written.</p>
+completes. The full per-table run is wired into a later release; until
+then the schedule's lifecycle exists end-to-end but no metadata is
+written.</p>
 <p><strong>The schedule fires too late.</strong>
 Without the daemon, AMX has to be open at fire time. With the daemon,
 the cadence is ~60 seconds — a schedule's fire may be observed up to
