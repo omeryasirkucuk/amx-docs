@@ -92,6 +92,9 @@ Once you have at least one LLM profile, manage them per-namespace:
 /llm-profiles            # list
 /use-llm openai_main     # switch active
 /temperature 0.7         # update active profile temperature
+/n-alternatives 3        # number of drafts per column (1–5)
+/alternatives-mode lexical    # semantic | lexical — see Concepts → Alternatives mode
+/confidence-signal logprob    # self_consistency | logprob | self_decl | judge | none
 /language en             # generated metadata language for /run and /run-apply
 ```
 
