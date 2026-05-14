@@ -97,6 +97,35 @@ indices (`0`, `1`, …). When `--mode` is omitted the CLI defaults to
 the parent run's `alternatives_mode` so a follow-up exploration
 stays consistent.
 
+## Where variations appear on the page
+
+Two surfaces, both backed by the same `parent_run_id` /
+`seed_alternative_id` columns:
+
+**On the parent run's detail page** — below the v1 results table,
+an *Other versions* card lists every Variations / Re-Run descendant
+as a collapsible group. The newest descendant is auto-expanded; older
+versions stay collapsed by default so the user can fall back to v1
+without scrolling. Each card header shows the version label
+(`v2`, `v3`, …), the kind (`Variations` / `Re-Run`), a clickable link
+to the descendant run, the seed alternative letter (Variations only),
+the diversity mode, the effective LLM model, and the row count. The
+group expands to show the verbatim seed text + every per-asset row
+with its A/B/C alternatives. The version labels are computed
+server-side on `GET /api/runs/{id}/results?include_descendants=true`
+so they stay stable across reloads.
+
+**On the descendant run's own detail page** — a lineage chip
+renders directly under the status row, before the scope chip. For
+Variations: `From run #N · seed: <letter> "<seed text truncated to
+60 chars>"`. For Re-Run: `Re-run of run #N`. The chip is clickable
+and navigates back to the parent run.
+
+A secondary line under the tab strip on the parent run reads
+`Showing N original · M variations / re-runs` so the count badge on
+the Results tab (which counts only the run's direct rows) stays
+unambiguous.
+
 ## What gets persisted
 
 Every Variations run creates:
