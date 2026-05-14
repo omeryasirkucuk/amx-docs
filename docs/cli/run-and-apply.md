@@ -195,37 +195,20 @@ The **first-run profile cache** means re-runs skip the introspection
 cost (no new sample query, no second `pg_stats` lookup), so re-running
 many rows of the same table is cheap.
 
-### 6. Single-shot draft with `/generate`
+### 6. Single-shot generation (Studio only)
 
-When you want one column drafted without spinning up the full `/run`
-pipeline, `/generate` takes a single asset address and returns the
-draft inline:
+For drafting a single column without spinning up the full `/run`
+pipeline, use the per-table **Gen** button on Studio's Browse pages.
+It posts to `POST /api/generate/column` (or `/table`, `/schema`) and
+spawns a background run that lands in the review queue with a fresh
+run id, the target database / catalog captured on the run row, and
+the full alternatives carousel populated. A later `/rerun` reproduces
+the original scope exactly.
 
-```text
-> /generate sales.customer.c_first_name --n-alternatives 3 --verbosity terse
-[LLM] drafting 1 column · prompt_detail=auto · temperature=0.2  ok (1.8 s · $0.0009)
-
-draft 1: "Customer's given name."
-draft 2: "First / given name of the customer record."
-draft 3: "Given name component of the customer's full name."
-```
-
-`/generate` respects the same flag matrix as `/run`:
-
-| Flag | Default | Effect |
-|---|---|---|
-| `--n-alternatives N` | from LLM profile | Number of drafts to surface (1-5) |
-| `--verbosity {terse,balanced,verbose}` | `balanced` | Output length target |
-| `--temperature F` | from LLM profile | Sampling temperature, `[0.0, 2.0]` |
-| `--prompt-detail {low,auto,high}` | `auto` | How much profile context to feed the LLM |
-
-The result lands in the review queue with a fresh run id and the
-target database / catalog captured on the run row, so a later
-`/rerun` reproduces the original scope exactly.
-
-In Studio, the per-table **Gen** button on Browse pages now uses the
-same path under the hood — it spawns a background run instead of
-blocking the UI on an inline LLM call.
+Single-shot generation is intentionally a Studio-only surface today —
+the CLI doesn't expose a `/generate` REPL command. Use `/run` with a
+narrow `--table` / `--columns` scope when you need single-asset
+generation from the terminal.
 
 ### 7. The shortcut: `/run-apply`
 

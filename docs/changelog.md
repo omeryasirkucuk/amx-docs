@@ -8,6 +8,35 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### CLI override picker parity
+
+The CLI's interactive `/run` override gate ("Override LLM settings for
+this run? [y/N]") now exposes the **alternatives_mode** and
+**confidence_signal** rows, reaching parity with Studio's RunNew →
+Advanced LLM settings panel. The picker:
+
+- Skips the `alternatives_mode` row when the effective
+  `n_alternatives` is 1 (mirrors Studio's tile-disabled rule).
+- Always prompts for `confidence_signal` — single-answer runs still
+  surface a band.
+- Writes the chosen values to a derived `LLMConfig` for the run only;
+  `~/.amx/config.yml` is never written.
+- Lands the effective values in `analysis_runs.settings_json` so
+  `/history show <run>` can explain after the fact why a given run
+  produced what it produced.
+
+Per-run CLI flags (`--alternatives-mode`, `--confidence-signal`)
+remain deliberately out of scope: the picker is the interactive
+parity surface; non-interactive `/run` invocations stay fully
+profile-driven so `config.yml` is the single source of truth for
+scripted runs. See the new design note on
+[Alternatives mode → Override per run](concepts/alternatives-mode.md#override-per-run).
+
+The `cli/run-and-apply.md` page also drops the misleading
+`/generate` REPL section — single-shot generation is a Studio-only
+path (`POST /api/generate/column` etc.); the documented CLI flags
+never existed.
+
 ### Docs — Alternatives mode + Confidence signals
 
 Two new Concepts pages cover features that were under-documented:

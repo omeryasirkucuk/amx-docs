@@ -250,10 +250,31 @@ dropdown. Five options: `self_consistency`, `logprob`, `self_decl`,
 
 ### Per-run override
 
-Studio's RunNew form includes a **Confidence signal** override row
-under Advanced LLM settings. The CLI does not yet expose a per-run
-flag; change the profile setting with `/confidence-signal`, run,
-switch back if needed.
+**Studio**: RunNew → **Advanced LLM settings** → **Confidence signal**
+override row. Five options match the profile-level dropdown:
+`self_consistency`, `logprob`, `self_decl`, `judge`, `none`.
+
+**CLI**: `/run` opens an interactive override gate before starting
+the analysis. Answer `y` to "Override LLM settings for this run?
+[y/N]" and the picker walks through every LLM knob including the
+**Confidence signal** row under the "Alternatives diversity:"
+section. Press Enter to keep the saved profile's value; type a
+different choice to use it for this run only. The picker writes the
+overrides to a derived `LLMConfig` for the run; the saved profile on
+disk is never touched.
+
+See [Alternatives mode → Override per run](alternatives-mode.md#override-per-run)
+for the full picker transcript.
+
+!!! note "Design: no CLI per-run flags"
+    The CLI deliberately does not expose `--confidence-signal` (or
+    `--alternatives-mode`, `--temperature`, etc.) as flags on `/run`.
+    The interactive picker is the parity surface with Studio; flags
+    would weaken the scripted-reproducibility contract — a
+    `config.yml` plus a non-interactive `/run` produces deterministic
+    output regardless of shell or environment. Non-TTY invocations
+    short-circuit past the gate, so CI / pipes never stall on a
+    missed prompt.
 
 ## A reader's checklist
 

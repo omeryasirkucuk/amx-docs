@@ -118,13 +118,57 @@ RunNew → expand **Advanced LLM settings** → the **Alternatives
 diversity mode** override row. Pick `semantic` or `lexical` — the
 header tag of the resulting run carries the chosen mode.
 
-### CLI
+### CLI — interactive picker
 
-The CLI does not yet expose a per-run flag for `alternatives_mode`.
-The pattern matches the rest of the LLM-profile knobs (`n_alternatives`,
-`confidence_signal` etc. are also profile-level only on the CLI):
-change the profile setting with `/alternatives-mode`, run, then
-switch back if needed.
+`/run` opens an interactive override gate before starting the
+analysis:
+
+```text
+> /run
+Override LLM settings for this run? [y/N]: y
+Generation (Enter to keep current):
+  Temperature (0.0-2.0) [0.2]:
+  Max output tokens [16384]:
+  Alternatives (1-5) [3]:
+  Column batch size [10]:
+  Prompt detail [standard]:
+  Description verbosity [brief]:
+  Thinking budget (Anthropic reasoning, 0 = off) [1024]:
+Alternatives diversity (Enter to keep current):
+  Alternatives mode [semantic]: lexical
+  Confidence signal [self_consistency]:
+Confidence thresholds (token probability 0.0-1.0):
+  High threshold [0.85]:
+  Medium threshold [0.50]:
+Cost overrides (USD per 1M tokens, '-' to clear):
+  Custom input cost [-]:
+  Custom output cost [-]:
+Applied per-run overrides: alternatives_mode=lexical
+```
+
+Press Enter on any row to keep the saved profile's value. The
+**Alternatives mode** row is skipped when the effective
+`n_alternatives` for the run is 1 — single-answer runs have no
+DESCRIPTION_2..N to differentiate, so the choice is meaningless.
+
+The chosen values land in a derived `LLMConfig` for the duration of
+the run only; `~/.amx/config.yml` is never written. After the run
+completes, the saved profile is back in effect for the next `/run`.
+
+!!! note "Design: no CLI per-run flags"
+    The CLI deliberately does **not** expose `--alternatives-mode`
+    (or `--confidence-signal`, `--temperature`, etc.) as flags on
+    `/run`. The interactive picker is the parity surface with
+    Studio's *Advanced LLM settings* panel; flags would re-open the
+    reproducibility question we've already decided against:
+    a `config.yml` plus a non-interactive `/run` produces
+    deterministic output, no matter what shell is invoking it.
+    
+    Scripted, non-interactive `/run` invocations short-circuit past
+    the gate (no TTY → no prompt). The only tactical exception is
+    `/rerun --temperature`, which exists to nudge a single re-run's
+    diversity without touching the saved profile or running the
+    whole bulk-analysis again.
 
 ## How the mode surfaces in results
 
