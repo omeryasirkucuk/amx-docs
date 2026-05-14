@@ -461,6 +461,8 @@
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../studio/variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/compare/"
          >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/ask/"
@@ -745,6 +747,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#variations-seeded-re-run-per-run-model-selector" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Variations: seeded re-run + per-run model selector
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#re-run-modal-full-llm-override-parity-with-runnew" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Re-Run modal: full LLM override parity with RunNew
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#cli-override-picker-parity" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -994,6 +1018,81 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="variations-seeded-re-run-per-run-model-selector">Variations: seeded re-run + per-run model selector<a class="headerlink" href="#variations-seeded-re-run-per-run-model-selector" title="Permanent link">&para;</a></h3>
+<p>Studio's run-detail page now renders a ✨ trigger next to every
+alternative in the <strong>Results</strong> tab. Click it to open the <strong>Variations
+modal</strong>: the chosen alternative is shown read-only as the seed, a
+top-level radio picks between <code>semantic</code> (paraphrase the seed) and
+<code>lexical</code> (share vocabulary with the seed, allow meaning to drift),
+and the existing <strong>Advanced LLM settings</strong> disclosure exposes every
+LLM knob with the diversity-mode row suppressed because mode lives
+at the top-level. Submit → a worker thread fires; the new
+<code>run_results</code> row carries five new audit columns
+(<code>seed_alternative_id</code>, <code>seed_alternative_text</code>, <code>parent_run_id</code>,
+<code>model</code>, <code>provider</code>) so <code>/history show &lt;run&gt;</code> and Studio can trace
+the seed lineage and the effective LLM identity per row. The seed
+text is filtered back out of the alternatives list before
+persistence.</p>
+<p>The same Advanced LLM settings block grows a <strong>per-run profile
+selector</strong> at the top of the Generation section. Pick a different
+saved profile to swap the whole <code>provider</code> / <code>model</code> / <code>api_key</code> /
+<code>api_base</code> bundle for this single run only — per-knob overrides
+(temperature, max tokens, …) layer on top. Profiles on disk are
+never mutated. Profiles whose API key isn't configured surface a
+<code>no key</code> suffix in the picker and the submit button disables with
+an inline pointer to Settings → LLM. The Advanced block also gates
+<code>thinking_budget</code> and the <code>logprob_*</code> rows on whether the
+<code>(provider, model)</code> pair actually supports those knobs — the
+capability table now lives centrally at <code>amx/llm/capabilities.py</code>
+and ships through <code>GET /api/llm/capabilities</code>.</p>
+<p>CLI parity: <code>/variations &lt;result_id&gt; &lt;letter&gt;</code> mirrors the modal
+flow (<code>A</code> / zero-based index both accepted, <code>--mode</code>,
+<code>--instructions</code>, <code>--temperature</code>). When <code>--mode</code> is omitted the
+CLI defaults to the parent run's <code>alternatives_mode</code> so a follow-up
+exploration stays consistent.</p>
+<p>Backend: new <code>POST /api/runs/variations</code> endpoint (separate from
+<code>/rerun-item</code> because the wire shape differs: <code>result_id</code> +
+<code>alternative_index</code> + <code>seed_text</code> + top-level <code>mode</code> instead of
+<code>result_ids</code>). <code>LLMOverrides.profile</code> lets callers swap the whole
+saved-profile bundle atomically; unknown profile names degrade
+safely to the active profile. The profiles router exposes
+<code>has_credentials</code> with a lazy in-process cache: literal keys take a
+fast path with no keyring lookup; <code>keyring:</code> references resolve once
+per <code>(profile, ref)</code> pair and are invalidated on profile mutation.
+<code>GET /api/runs/{id}/results?include_descendants=true</code> returns the
+descendant Variations + Re-Run tree (Variations recurse three
+levels, Re-Run one) — wired ahead of the upcoming inline-nested
+run-detail display.</p>
+<h3 id="re-run-modal-full-llm-override-parity-with-runnew">Re-Run modal: full LLM override parity with RunNew<a class="headerlink" href="#re-run-modal-full-llm-override-parity-with-runnew" title="Permanent link">&para;</a></h3>
+<p>Studio's <strong>Re-Run modal</strong> (asset-row ↻ and the multi-select batch
+re-run that reuses the same modal) now mounts the same <strong>Advanced
+LLM settings</strong> form block as RunNew. Every knob exposed on RunNew is
+exposable on Re-Run: temperature, max output tokens, alternatives
+per column, column batch size, prompt detail, description verbosity,
+confidence signal, alternatives diversity mode (disabled when
+alternatives per column is 1), thinking budget, plus the confidence
+thresholds (high / medium) and cost overrides.</p>
+<p>Resolution semantics match RunNew: each field shows the active
+profile's value as a hint, edits become per-run overrides only, the
+<strong>Reset to profile defaults</strong> link rewinds in one click, and the
+saved LLM profile on disk is never mutated. Batch re-run notes that
+defaults reflect your active LLM profile and overrides apply
+uniformly to all selected items.</p>
+<p>Backend: <code>POST /api/runs/rerun-item</code> now accepts an <code>llm_overrides</code>
+field with the same shape as <code>LLMOverrides</code> on <code>/api/runs</code>; the
+legacy <code>temperature_override</code> shim stays for one release so
+in-flight Studio bundles don't break. The orchestrator's
+<code>_llm_for_rerun</code> adopts the immutable <code>dataclasses.replace</code> pattern
+used by <code>/api/runs</code>. New rerun runs persist the effective LLM config
+in <code>analysis_runs.settings_json</code> so <code>/history show &lt;run&gt;</code> reports
+what actually ran.</p>
+<p>CLI parity exception: the CLI does not expose per-run
+<code>/rerun --alternatives-mode</code> (or <code>--confidence-signal</code>, etc.). The
+single tactical exception is <code>/rerun --temperature</code> for diversity
+nudges. The full override surface on the CLI side lives in the
+interactive picker on <code>/run</code>. Documented on
+<a href="../studio/run-detail/#rerun">Studio run detail</a> and
+<a href="../concepts/alternatives-mode/">Concepts → Alternatives mode</a>.</p>
 <h3 id="cli-override-picker-parity">CLI override picker parity<a class="headerlink" href="#cli-override-picker-parity" title="Permanent link">&para;</a></h3>
 <p>The CLI's interactive <code>/run</code> override gate ("Override LLM settings for
 this run? [y/N]") now exposes the <strong>alternatives_mode</strong> and

@@ -463,6 +463,8 @@
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../compare/"
          >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask/"
@@ -903,6 +905,15 @@ back to the database.</p>
 </table>
 <p>A search box above the table filters by asset path or description.</p>
 <p>Below the table, a summary line: <code>N pending rows waiting for approval</code>.</p>
+<p><strong>One entry per asset.</strong> Triggering Re-Run or Variations on a
+column that already has a queued pick replaces the prior entry —
+the queue holds at most one entry per
+<code>(schema, table, column, asset_kind)</code>. The Studio's run-detail
+page reflects this with a cross-version lock: while v2 holds the
+queue entry for an asset, v1's alternative buttons are
+non-clickable. The descendant-aware <em>Apply pending queue (N)</em>
+counter on the run-detail page tallies entries on v2 / v3 rows
+too, so picks on any version contribute to the count.</p>
 <h2 id="toolbar-actions">Toolbar actions<a class="headerlink" href="#toolbar-actions" title="Permanent link">&para;</a></h2>
 <h3 id="preview-sql">Preview SQL<a class="headerlink" href="#preview-sql" title="Permanent link">&para;</a></h3>
 <p>Opens a read-only modal showing the exact <code>COMMENT ON …</code> / <code>ALTER</code> /

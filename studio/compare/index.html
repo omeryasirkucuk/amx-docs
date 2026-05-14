@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://amxcli.com/studio/compare/">
       
       
-        <link rel="prev" href="../run-detail/">
+        <link rel="prev" href="../variations/">
       
       
         <link rel="next" href="../ask/">
@@ -462,7 +462,9 @@
          href="../runs/"
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-detail/"
-         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
          aria-current="page">Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../ask/"
@@ -777,6 +779,23 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Per-column comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#stacked-versions-per-cell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stacked versions per cell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -911,6 +930,30 @@ any of the selected runs. Columns are arranged left-to-right by run:</p>
 </table>
 <p>Cells are clickable — drill into the corresponding <a href="../run-detail/">Run detail</a>
 row, or edit inline.</p>
+<h4 id="stacked-versions-per-cell">Stacked versions per cell<a class="headerlink" href="#stacked-versions-per-cell" title="Permanent link">&para;</a></h4>
+<p>When a run had Re-Run or Variations triggered against one of its
+assets, the descendant rows render <strong>inline under the v1 cell</strong> in
+the same column. The v1 description shows first with a small <code>v1</code>
+chip; v2 / v3 / … descendants stack below it with a left-border
+accent and their own <code>v2</code> / <code>v3</code> chip. A descendant whose
+<code>alternatives_mode</code> is <code>lexical</code> carries a compact <code>L</code> chip
+(tooltip: <em>lexical — same vocabulary, distinct candidate
+meaning</em>); <code>semantic</code> carries an <code>S</code> chip (tooltip: <em>semantic —
+paraphrase of the seed</em>). The seed text is also surfaced on the
+chip tooltip for Variations descendants so you can see at a glance
+which alternative the variation was anchored on.</p>
+<p>Per-version mode chips inline beneath the cell describe each
+descendant's own mode. The mode chip in the column header above
+continues to reflect the parent run's v1 mode — descendant modes
+can diverge from the parent (a <code>semantic</code> run can spawn a
+<code>lexical</code> variation), and the per-version chips make that
+divergence visible without you having to navigate into the
+descendant run.</p>
+<p>The winner ring (the highlighted cell with the highest logprob)
+still compares v1's logprob across runs; descendants are
+peer-rendered to v1 rather than competing for the winner
+highlight. See <a href="../variations/">Variations</a> for how descendants
+are generated.</p>
 <h2 id="ask-amx-hand-off">Ask AMX hand-off<a class="headerlink" href="#ask-amx-hand-off" title="Permanent link">&para;</a></h2>
 <p>The <strong>Ask AMX</strong> button above the grid closes the comparison and opens
 <a href="../ask/"><code>/ask</code></a> with a pre-seeded prompt that names the selected runs.

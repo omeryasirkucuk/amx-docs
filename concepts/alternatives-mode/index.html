@@ -463,6 +463,8 @@
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/compare/"
          >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/ask/"
@@ -819,10 +821,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#studio_1" class="md-nav__link">
+  <a href="#studio-runnew" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Studio
+        Studio — RunNew
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#studio-re-run-modal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Studio — Re-Run modal
       
     </span>
   </a>
@@ -850,6 +863,17 @@
     <span class="md-ellipsis">
       
         How the mode surfaces in results
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hard-guarantee-on-n" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hard guarantee on N
       
     </span>
   </a>
@@ -1019,10 +1043,20 @@ has no effect on a single-answer profile).</p>
 <h2 id="override-per-run">Override per run<a class="headerlink" href="#override-per-run" title="Permanent link">&para;</a></h2>
 <p>The mode can be overridden for a single run without mutating the saved
 profile.</p>
-<h3 id="studio_1">Studio<a class="headerlink" href="#studio_1" title="Permanent link">&para;</a></h3>
+<h3 id="studio-runnew">Studio — RunNew<a class="headerlink" href="#studio-runnew" title="Permanent link">&para;</a></h3>
 <p>RunNew → expand <strong>Advanced LLM settings</strong> → the <strong>Alternatives
 diversity mode</strong> override row. Pick <code>semantic</code> or <code>lexical</code> — the
 header tag of the resulting run carries the chosen mode.</p>
+<h3 id="studio-re-run-modal">Studio — Re-Run modal<a class="headerlink" href="#studio-re-run-modal" title="Permanent link">&para;</a></h3>
+<p>The Re-Run modal (asset-row ↻ and the multi-select batch re-run that
+shares the same modal) exposes the same override surface as RunNew.
+Open the modal → expand <strong>Advanced LLM settings</strong> → the
+<strong>Alternatives diversity mode</strong> row. The whole Advanced block is the
+same component as RunNew's, so every other knob (n_alternatives,
+temperature, confidence_signal, prompt_detail, …) is available too.
+When <strong>N &gt; 1</strong> items are selected the modal notes that defaults
+reflect your active LLM profile and overrides apply uniformly to all
+selected items.</p>
 <h3 id="cli-interactive-picker">CLI — interactive picker<a class="headerlink" href="#cli-interactive-picker" title="Permanent link">&para;</a></h3>
 <p><code>/run</code> opens an interactive override gate before starting the
 analysis:</p>
@@ -1078,9 +1112,39 @@ whole bulk-analysis again.</p>
   <code>ColumnSuggestionCard</code>.</li>
 <li><strong>Run compare page</strong> — once per run, beside the run id in the
   column header. Lets you tell at a glance which run used which mode
-  when comparing.</li>
+  when comparing. Descendant rows (v2 / v3 from Re-Run or
+  Variations) get their own per-version <code>S</code> / <code>L</code> chip stacked
+  below the v1 cell so divergence between parent and descendant
+  modes is visible inline. See
+  <a href="../../studio/compare/#stacked-versions-per-cell">Compare — Stacked versions per cell</a>.</li>
+<li><strong>Ask agent</strong> — the <code>describe_run</code> tool returns
+  <code>alternatives_mode</code> on each result plus a <code>variations[]</code> block
+  carrying the mode of every descendant. The agent is taught the
+  same <code>semantic</code> (paraphrase) vs <code>lexical</code> (distinct candidate
+  meaning) contract used here, so it can answer "evaluate the
+  variations" with the right vocabulary and, for lexical
+  variations, name the candidate meaning each version proposes.
+  See <a href="../../studio/ask/#asking-about-variations-and-mode">Ask — Asking about variations and mode</a>.</li>
 </ul>
 <p>The CLI's <code>/history show &lt;run&gt;</code> includes the mode in the row dump.</p>
+<h2 id="hard-guarantee-on-n">Hard guarantee on N<a class="headerlink" href="#hard-guarantee-on-n" title="Permanent link">&para;</a></h2>
+<p><code>n_alternatives</code> is a contract, not a target: every persisted row
+carries exactly that many entries regardless of how the model
+behaves. When the model under-produces (returns N - 1, or echoes
+the seed in Variations mode), the agent makes one <strong>top-up
+continuation call</strong> asking for the missing slots. If the retry
+still falls short, the row is padded with FALLBACK placeholder
+strings to reach N as a final safety net.</p>
+<p>The mechanism writes <code>production_warning</code> on the resulting
+<code>run_results</code> row with a short audit string when fallback padding
+fired, e.g. <code>produced 2 of 3 requested (retry got 0, fallback
+padded 1)</code>. The Studio run-detail page surfaces this as a ⚠ chip
+on the affected row; the FALLBACK entries themselves render with
+placeholder text so a reviewer can spot them, edit inline, or
+trigger Re-Run with a different model.</p>
+<p>The guarantee applies to every LLM call across the system —
+<code>/run</code>, <code>/rerun</code>, and Variations all go through the same
+top-up + pad logic.</p>
 <h2 id="where-to-next">Where to next<a class="headerlink" href="#where-to-next" title="Permanent link">&para;</a></h2>
 <ul>
 <li><a href="../../configuration/config-yml/">config.yml reference</a> —

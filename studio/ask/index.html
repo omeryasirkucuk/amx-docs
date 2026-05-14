@@ -463,6 +463,8 @@
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../compare/"
          >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
@@ -780,6 +782,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#asking-about-variations-and-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asking about variations and mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#answer-footer" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -917,6 +930,33 @@ right RAG profiles are linked.</p>
 <li>Result preview (truncated to a few lines)</li>
 <li>Citations, when present, as a collapsible block</li>
 </ul>
+<h3 id="asking-about-variations-and-mode">Asking about variations and mode<a class="headerlink" href="#asking-about-variations-and-mode" title="Permanent link">&para;</a></h3>
+<p><code>describe_run</code> returns each result row with <code>alternatives_mode</code> at
+the top level and a <code>variations[]</code> array of v2 / v3+ descendants
+for that asset. Each variation entry carries its own <code>mode</code>
+(<code>semantic</code> / <code>lexical</code>), the <code>seed_alternative_text</code> the user
+picked, the <code>descendant_run_id</code>, and the variation's own
+alternatives. The agent is taught the <code>semantic</code> vs <code>lexical</code>
+contract: <code>semantic</code> means paraphrase of the seed (same factual
+content, different surface form); <code>lexical</code> means re-use of the
+seed's vocabulary with a distinct candidate meaning a reviewer
+can tell apart. Example prompts:</p>
+<ul>
+<li><em>"What variations did we try for <code>public.country.abbreviation</code>
+  in run #99 — were they semantic or lexical?"</em></li>
+<li><em>"Evaluate the lexical variations on <code>sales.orders.status</code> in
+  run #142 and name the distinct candidate meaning each version
+  proposes."</em></li>
+<li><em>"Compare v1 and v2 of <code>users.email_status</code> in run #67 — what
+  changed and what does the mode imply about the agent's
+  reasoning?"</em></li>
+</ul>
+<p>For Re-Run descendants the <code>seed_alternative_text</code> is null (Re-Run
+regenerates from scratch rather than anchoring on a seed); the
+agent still surfaces <code>kind: "rerun"</code> and the descendant's mode so
+you can reason about diversity decisions across versions. See
+<a href="../variations/">Variations</a> and
+<a href="../../concepts/alternatives-mode/">Alternatives diversity mode</a>.</p>
 <h3 id="answer-footer">Answer footer<a class="headerlink" href="#answer-footer" title="Permanent link">&para;</a></h3>
 <p>Below each assistant turn:</p>
 <p><code>N profiles · X.Ys · focus: WAREHOUSE · 1 234 tokens · $0.0042</code></p>

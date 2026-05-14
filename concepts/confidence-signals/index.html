@@ -463,6 +463,8 @@
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../studio/variations/"
+         >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/compare/"
          >Compare</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../studio/ask/"
@@ -1237,9 +1239,15 @@ profile and applies to every subsequent <code>/run</code>.</p>
 dropdown. Five options: <code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>,
 <code>judge</code>, <code>none</code>. Save persists the change.</p>
 <h3 id="per-run-override">Per-run override<a class="headerlink" href="#per-run-override" title="Permanent link">&para;</a></h3>
-<p><strong>Studio</strong>: RunNew → <strong>Advanced LLM settings</strong> → <strong>Confidence signal</strong>
-override row. Five options match the profile-level dropdown:
-<code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>, <code>judge</code>, <code>none</code>.</p>
+<p><strong>Studio — RunNew</strong>: RunNew → <strong>Advanced LLM settings</strong> →
+<strong>Confidence signal</strong> override row. Five options match the
+profile-level dropdown: <code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>,
+<code>judge</code>, <code>none</code>.</p>
+<p><strong>Studio — Re-Run modal</strong>: the same <strong>Advanced LLM settings</strong> block
+is mounted on the Re-Run modal (asset-row ↻ and multi-select batch
+re-run), so a re-run can pick a different signal than the original
+run without leaving the modal. The override applies uniformly when
+the modal is opened against multiple targets.</p>
 <p><strong>CLI</strong>: <code>/run</code> opens an interactive override gate before starting
 the analysis. Answer <code>y</code> to "Override LLM settings for this run?
 [y/N]" and the picker walks through every LLM knob including the
