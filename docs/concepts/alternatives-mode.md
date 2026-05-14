@@ -112,11 +112,23 @@ has no effect on a single-answer profile).
 The mode can be overridden for a single run without mutating the saved
 profile.
 
-### Studio
+### Studio — RunNew
 
 RunNew → expand **Advanced LLM settings** → the **Alternatives
 diversity mode** override row. Pick `semantic` or `lexical` — the
 header tag of the resulting run carries the chosen mode.
+
+### Studio — Re-Run modal
+
+The Re-Run modal (asset-row ↻ and the multi-select batch re-run that
+shares the same modal) exposes the same override surface as RunNew.
+Open the modal → expand **Advanced LLM settings** → the
+**Alternatives diversity mode** row. The whole Advanced block is the
+same component as RunNew's, so every other knob (n_alternatives,
+temperature, confidence_signal, prompt_detail, …) is available too.
+When **N > 1** items are selected the modal notes that defaults
+reflect your active LLM profile and overrides apply uniformly to all
+selected items.
 
 ### CLI — interactive picker
 
@@ -180,9 +192,43 @@ Every result row carries the mode it was generated under in
   `ColumnSuggestionCard`.
 * **Run compare page** — once per run, beside the run id in the
   column header. Lets you tell at a glance which run used which mode
-  when comparing.
+  when comparing. Descendant rows (v2 / v3 from Re-Run or
+  Variations) get their own per-version `S` / `L` chip stacked
+  below the v1 cell so divergence between parent and descendant
+  modes is visible inline. See
+  [Compare — Stacked versions per cell](../studio/compare.md#stacked-versions-per-cell).
+* **Ask agent** — the `describe_run` tool returns
+  `alternatives_mode` on each result plus a `variations[]` block
+  carrying the mode of every descendant. The agent is taught the
+  same `semantic` (paraphrase) vs `lexical` (distinct candidate
+  meaning) contract used here, so it can answer "evaluate the
+  variations" with the right vocabulary and, for lexical
+  variations, name the candidate meaning each version proposes.
+  See [Ask — Asking about variations and mode](../studio/ask.md#asking-about-variations-and-mode).
 
 The CLI's `/history show <run>` includes the mode in the row dump.
+
+## Hard guarantee on N
+
+`n_alternatives` is a contract, not a target: every persisted row
+carries exactly that many entries regardless of how the model
+behaves. When the model under-produces (returns N - 1, or echoes
+the seed in Variations mode), the agent makes one **top-up
+continuation call** asking for the missing slots. If the retry
+still falls short, the row is padded with FALLBACK placeholder
+strings to reach N as a final safety net.
+
+The mechanism writes `production_warning` on the resulting
+`run_results` row with a short audit string when fallback padding
+fired, e.g. `produced 2 of 3 requested (retry got 0, fallback
+padded 1)`. The Studio run-detail page surfaces this as a ⚠ chip
+on the affected row; the FALLBACK entries themselves render with
+placeholder text so a reviewer can spot them, edit inline, or
+trigger Re-Run with a different model.
+
+The guarantee applies to every LLM call across the system —
+`/run`, `/rerun`, and Variations all go through the same
+top-up + pad logic.
 
 ## Where to next
 

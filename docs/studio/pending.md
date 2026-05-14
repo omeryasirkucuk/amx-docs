@@ -21,6 +21,16 @@ A search box above the table filters by asset path or description.
 
 Below the table, a summary line: `N pending rows waiting for approval`.
 
+**One entry per asset.** Triggering Re-Run or Variations on a
+column that already has a queued pick replaces the prior entry —
+the queue holds at most one entry per
+`(schema, table, column, asset_kind)`. The Studio's run-detail
+page reflects this with a cross-version lock: while v2 holds the
+queue entry for an asset, v1's alternative buttons are
+non-clickable. The descendant-aware *Apply pending queue (N)*
+counter on the run-detail page tallies entries on v2 / v3 rows
+too, so picks on any version contribute to the count.
+
 ## Toolbar actions
 
 ### Preview SQL

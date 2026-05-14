@@ -74,6 +74,29 @@ Expandable per-row sections show alternatives (with a one-click "promote"
 button on each), citations with snippet previews, the model's reasoning,
 and the version history when this row has been re-run.
 
+**Production warning chip.** When the LLM under-produced the
+configured `n_alternatives` and the agent had to top-up retry
+and / or pad with FALLBACK strings to reach the target count,
+the row carries a ⚠ chip reading e.g.
+`produced 2 of 3 requested (retry got 0, fallback padded 1)`.
+The FALLBACK entries render with placeholder text so you can
+spot them and either accept the partial set, edit the chosen
+description inline, or trigger Re-Run with a different model.
+See [Alternatives diversity mode — hard guarantee on N](../concepts/alternatives-mode.md#hard-guarantee-on-n)
+for the mechanism.
+
+### Variations from an alternative ✨
+
+Every alternative on a multi-alt row carries a small ✨ trigger next
+to its confidence badge. Click it to open the
+[Variations](variations.md) modal — the chosen alternative is used as
+a seed, and the new run is anchored on it under either `semantic`
+(paraphrase) or `lexical` (shared vocabulary) mode. The new run
+appears in `/history`; the source row carries an audit pointer back
+to the seed via `parent_run_id` + `seed_alternative_id`. The trigger
+is hidden when the row has fewer than two alternatives — nothing to
+vary around.
+
 ### Scope
 
 JSON editor showing the scope the run was submitted with — useful when
@@ -88,18 +111,75 @@ conditions unless explicitly overridden.
 
 ## ReRun
 
-Multi-select one or more rows → click **Re-Run** in the toolbar. The
-dialog lets you adjust:
+Single-item: click the ↻ button on a row. Multi-select: tick one or
+more rows → click **Re-Run** in the toolbar. The dialog opens with:
 
-- Verbosity
-- Temperature
-- Alternatives count
-- Free-text instructions
+- **Additional instructions** — a free-text addendum appended to
+  the original prompt so the re-run sees the original DB / docs /
+  code inputs *plus* your guidance.
+- **Advanced LLM settings** (collapsed by default) — the same
+  override panel that RunNew exposes. Edit any field to override
+  the active LLM profile for this re-run only; leave a field at
+  the profile default to inherit it. Fields exposed:
 
-The original DB scope, database / catalog, prompt detail, and the
-**cached first-run table profile** are all reused, so the rerun is
+  - Generation: temperature, max output tokens, alternatives per
+    column, column batch size, prompt detail, description
+    verbosity, confidence signal, alternatives diversity mode
+    (disabled when alternatives per column is 1), thinking budget.
+  - Confidence thresholds: high, medium.
+  - Cost overrides: input USD / 1M, output USD / 1M.
+
+  See [Alternatives mode](../concepts/alternatives-mode.md) and
+  [Confidence signals](../concepts/confidence-signals.md) for what
+  each knob does.
+
+When N > 1 items are selected the modal notes that defaults reflect
+your active LLM profile and overrides apply uniformly to all
+selected items.
+
+The **Reset to profile defaults** link (visible once you've changed
+at least one field) rewinds every Advanced field to the profile's
+saved value in one click.
+
+The original DB scope, database / catalog, and the **cached
+first-run table profile** are all reused, so the re-run is
 comparable to its source rather than a fresh shot. Cost amortises
-across re-runs because the profiling step doesn't repeat.
+across re-runs because the profiling step doesn't repeat. The saved
+LLM profile on disk is never mutated — the override only affects
+this single re-run job.
+
+### Pending queue handoff
+
+The new v2/v3 row lands in the pending queue automatically with
+its top alternative pre-picked, so a click on any of its
+alternative buttons routes through the existing patch / apply
+path:
+
+- **Auto-seed.** Top alternative becomes the chosen description.
+  Swap to another with one click.
+- **Per-asset supersede.** The new row replaces any prior pending
+  entry on the same `(schema, table, column, asset_kind)` — the
+  queue never holds two competing picks for the same column.
+- **Cross-version mutual exclusion.** Earlier versions of the
+  same asset go non-clickable while the latest holds the queue
+  entry; the tooltip points you at where to deselect first.
+- **Apply count.** The Apply pending queue CTA and the *N queued*
+  header tally entries on v2/v3 rows too, so a pick on any
+  descendant updates the count immediately.
+
+Variations behaves identically; the two paths share the same
+queue helper. See [Variations — Pending queue integration](variations.md#pending-queue-integration)
+and [Pending queue](pending.md) for the full lifecycle.
+
+**CLI parity exception.** The CLI does not expose a per-run
+`/rerun --alternatives-mode` (or `--confidence-signal`, etc.). The
+single tactical exception is `/rerun --temperature` for diversity
+nudges. The full override surface on the CLI side lives in the
+interactive picker on `/run`; see
+[CLI run-and-apply](../cli/run-and-apply.md). This asymmetry is
+deliberate — scripted CLI invocations stay reproducible from
+`config.yml` alone, while Studio's modal-based override is the
+experimentation surface.
 
 ## Pinned cells
 
