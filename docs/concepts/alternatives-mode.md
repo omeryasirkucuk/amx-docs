@@ -112,11 +112,23 @@ has no effect on a single-answer profile).
 The mode can be overridden for a single run without mutating the saved
 profile.
 
-### Studio
+### Studio — RunNew
 
 RunNew → expand **Advanced LLM settings** → the **Alternatives
 diversity mode** override row. Pick `semantic` or `lexical` — the
 header tag of the resulting run carries the chosen mode.
+
+### Studio — Re-Run modal
+
+The Re-Run modal (asset-row ↻ and the multi-select batch re-run that
+shares the same modal) exposes the same override surface as RunNew.
+Open the modal → expand **Advanced LLM settings** → the
+**Alternatives diversity mode** row. The whole Advanced block is the
+same component as RunNew's, so every other knob (n_alternatives,
+temperature, confidence_signal, prompt_detail, …) is available too.
+When **N > 1** items are selected the modal notes that defaults
+reflect your active LLM profile and overrides apply uniformly to all
+selected items.
 
 ### CLI — interactive picker
 

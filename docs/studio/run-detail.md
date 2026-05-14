@@ -88,18 +88,52 @@ conditions unless explicitly overridden.
 
 ## ReRun
 
-Multi-select one or more rows → click **Re-Run** in the toolbar. The
-dialog lets you adjust:
+Single-item: click the ↻ button on a row. Multi-select: tick one or
+more rows → click **Re-Run** in the toolbar. The dialog opens with:
 
-- Verbosity
-- Temperature
-- Alternatives count
-- Free-text instructions
+- **Additional instructions** — a free-text addendum appended to
+  the original prompt so the re-run sees the original DB / docs /
+  code inputs *plus* your guidance.
+- **Advanced LLM settings** (collapsed by default) — the same
+  override panel that RunNew exposes. Edit any field to override
+  the active LLM profile for this re-run only; leave a field at
+  the profile default to inherit it. Fields exposed:
 
-The original DB scope, database / catalog, prompt detail, and the
-**cached first-run table profile** are all reused, so the rerun is
+  - Generation: temperature, max output tokens, alternatives per
+    column, column batch size, prompt detail, description
+    verbosity, confidence signal, alternatives diversity mode
+    (disabled when alternatives per column is 1), thinking budget.
+  - Confidence thresholds: high, medium.
+  - Cost overrides: input USD / 1M, output USD / 1M.
+
+  See [Alternatives mode](../concepts/alternatives-mode.md) and
+  [Confidence signals](../concepts/confidence-signals.md) for what
+  each knob does.
+
+When N > 1 items are selected the modal notes that defaults reflect
+your active LLM profile and overrides apply uniformly to all
+selected items.
+
+The **Reset to profile defaults** link (visible once you've changed
+at least one field) rewinds every Advanced field to the profile's
+saved value in one click.
+
+The original DB scope, database / catalog, and the **cached
+first-run table profile** are all reused, so the re-run is
 comparable to its source rather than a fresh shot. Cost amortises
-across re-runs because the profiling step doesn't repeat.
+across re-runs because the profiling step doesn't repeat. The saved
+LLM profile on disk is never mutated — the override only affects
+this single re-run job.
+
+**CLI parity exception.** The CLI does not expose a per-run
+`/rerun --alternatives-mode` (or `--confidence-signal`, etc.). The
+single tactical exception is `/rerun --temperature` for diversity
+nudges. The full override surface on the CLI side lives in the
+interactive picker on `/run`; see
+[CLI run-and-apply](../cli/run-and-apply.md). This asymmetry is
+deliberate — scripted CLI invocations stay reproducible from
+`config.yml` alone, while Studio's modal-based override is the
+experimentation surface.
 
 ## Pinned cells
 

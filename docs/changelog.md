@@ -8,6 +8,41 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### Re-Run modal: full LLM override parity with RunNew
+
+Studio's **Re-Run modal** (asset-row ↻ and the multi-select batch
+re-run that reuses the same modal) now mounts the same **Advanced
+LLM settings** form block as RunNew. Every knob exposed on RunNew is
+exposable on Re-Run: temperature, max output tokens, alternatives
+per column, column batch size, prompt detail, description verbosity,
+confidence signal, alternatives diversity mode (disabled when
+alternatives per column is 1), thinking budget, plus the confidence
+thresholds (high / medium) and cost overrides.
+
+Resolution semantics match RunNew: each field shows the active
+profile's value as a hint, edits become per-run overrides only, the
+**Reset to profile defaults** link rewinds in one click, and the
+saved LLM profile on disk is never mutated. Batch re-run notes that
+defaults reflect your active LLM profile and overrides apply
+uniformly to all selected items.
+
+Backend: `POST /api/runs/rerun-item` now accepts an `llm_overrides`
+field with the same shape as `LLMOverrides` on `/api/runs`; the
+legacy `temperature_override` shim stays for one release so
+in-flight Studio bundles don't break. The orchestrator's
+`_llm_for_rerun` adopts the immutable `dataclasses.replace` pattern
+used by `/api/runs`. New rerun runs persist the effective LLM config
+in `analysis_runs.settings_json` so `/history show <run>` reports
+what actually ran.
+
+CLI parity exception: the CLI does not expose per-run
+`/rerun --alternatives-mode` (or `--confidence-signal`, etc.). The
+single tactical exception is `/rerun --temperature` for diversity
+nudges. The full override surface on the CLI side lives in the
+interactive picker on `/run`. Documented on
+[Studio run detail](studio/run-detail.md#rerun) and
+[Concepts → Alternatives mode](concepts/alternatives-mode.md).
+
 ### CLI override picker parity
 
 The CLI's interactive `/run` override gate ("Override LLM settings for

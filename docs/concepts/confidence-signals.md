@@ -250,9 +250,16 @@ dropdown. Five options: `self_consistency`, `logprob`, `self_decl`,
 
 ### Per-run override
 
-**Studio**: RunNew → **Advanced LLM settings** → **Confidence signal**
-override row. Five options match the profile-level dropdown:
-`self_consistency`, `logprob`, `self_decl`, `judge`, `none`.
+**Studio — RunNew**: RunNew → **Advanced LLM settings** →
+**Confidence signal** override row. Five options match the
+profile-level dropdown: `self_consistency`, `logprob`, `self_decl`,
+`judge`, `none`.
+
+**Studio — Re-Run modal**: the same **Advanced LLM settings** block
+is mounted on the Re-Run modal (asset-row ↻ and multi-select batch
+re-run), so a re-run can pick a different signal than the original
+run without leaving the modal. The override applies uniformly when
+the modal is opened against multiple targets.
 
 **CLI**: `/run` opens an interactive override gate before starting
 the analysis. Answer `y` to "Override LLM settings for this run?
