@@ -1237,10 +1237,30 @@ profile and applies to every subsequent <code>/run</code>.</p>
 dropdown. Five options: <code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>,
 <code>judge</code>, <code>none</code>. Save persists the change.</p>
 <h3 id="per-run-override">Per-run override<a class="headerlink" href="#per-run-override" title="Permanent link">&para;</a></h3>
-<p>Studio's RunNew form includes a <strong>Confidence signal</strong> override row
-under Advanced LLM settings. The CLI does not yet expose a per-run
-flag; change the profile setting with <code>/confidence-signal</code>, run,
-switch back if needed.</p>
+<p><strong>Studio</strong>: RunNew → <strong>Advanced LLM settings</strong> → <strong>Confidence signal</strong>
+override row. Five options match the profile-level dropdown:
+<code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>, <code>judge</code>, <code>none</code>.</p>
+<p><strong>CLI</strong>: <code>/run</code> opens an interactive override gate before starting
+the analysis. Answer <code>y</code> to "Override LLM settings for this run?
+[y/N]" and the picker walks through every LLM knob including the
+<strong>Confidence signal</strong> row under the "Alternatives diversity:"
+section. Press Enter to keep the saved profile's value; type a
+different choice to use it for this run only. The picker writes the
+overrides to a derived <code>LLMConfig</code> for the run; the saved profile on
+disk is never touched.</p>
+<p>See <a href="../alternatives-mode/#override-per-run">Alternatives mode → Override per run</a>
+for the full picker transcript.</p>
+<div class="admonition note">
+<p class="admonition-title">Design: no CLI per-run flags</p>
+<p>The CLI deliberately does not expose <code>--confidence-signal</code> (or
+<code>--alternatives-mode</code>, <code>--temperature</code>, etc.) as flags on <code>/run</code>.
+The interactive picker is the parity surface with Studio; flags
+would weaken the scripted-reproducibility contract — a
+<code>config.yml</code> plus a non-interactive <code>/run</code> produces deterministic
+output regardless of shell or environment. Non-TTY invocations
+short-circuit past the gate, so CI / pipes never stall on a
+missed prompt.</p>
+</div>
 <h2 id="a-readers-checklist">A reader's checklist<a class="headerlink" href="#a-readers-checklist" title="Permanent link">&para;</a></h2>
 <p>You're not expected to know how the scorers work to interpret the
 output. The mental model is:</p>

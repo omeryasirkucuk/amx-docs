@@ -745,6 +745,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#cli-override-picker-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI override picker parity
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#docs-alternatives-mode-confidence-signals" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -983,6 +994,32 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="cli-override-picker-parity">CLI override picker parity<a class="headerlink" href="#cli-override-picker-parity" title="Permanent link">&para;</a></h3>
+<p>The CLI's interactive <code>/run</code> override gate ("Override LLM settings for
+this run? [y/N]") now exposes the <strong>alternatives_mode</strong> and
+<strong>confidence_signal</strong> rows, reaching parity with Studio's RunNew →
+Advanced LLM settings panel. The picker:</p>
+<ul>
+<li>Skips the <code>alternatives_mode</code> row when the effective
+  <code>n_alternatives</code> is 1 (mirrors Studio's tile-disabled rule).</li>
+<li>Always prompts for <code>confidence_signal</code> — single-answer runs still
+  surface a band.</li>
+<li>Writes the chosen values to a derived <code>LLMConfig</code> for the run only;
+  <code>~/.amx/config.yml</code> is never written.</li>
+<li>Lands the effective values in <code>analysis_runs.settings_json</code> so
+  <code>/history show &lt;run&gt;</code> can explain after the fact why a given run
+  produced what it produced.</li>
+</ul>
+<p>Per-run CLI flags (<code>--alternatives-mode</code>, <code>--confidence-signal</code>)
+remain deliberately out of scope: the picker is the interactive
+parity surface; non-interactive <code>/run</code> invocations stay fully
+profile-driven so <code>config.yml</code> is the single source of truth for
+scripted runs. See the new design note on
+<a href="../concepts/alternatives-mode/#override-per-run">Alternatives mode → Override per run</a>.</p>
+<p>The <code>cli/run-and-apply.md</code> page also drops the misleading
+<code>/generate</code> REPL section — single-shot generation is a Studio-only
+path (<code>POST /api/generate/column</code> etc.); the documented CLI flags
+never existed.</p>
 <h3 id="docs-alternatives-mode-confidence-signals">Docs — Alternatives mode + Confidence signals<a class="headerlink" href="#docs-alternatives-mode-confidence-signals" title="Permanent link">&para;</a></h3>
 <p>Two new Concepts pages cover features that were under-documented:</p>
 <ul>

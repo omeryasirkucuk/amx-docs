@@ -830,10 +830,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#cli_1" class="md-nav__link">
+  <a href="#cli-interactive-picker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI
+        CLI — interactive picker
       
     </span>
   </a>
@@ -1023,12 +1023,52 @@ profile.</p>
 <p>RunNew → expand <strong>Advanced LLM settings</strong> → the <strong>Alternatives
 diversity mode</strong> override row. Pick <code>semantic</code> or <code>lexical</code> — the
 header tag of the resulting run carries the chosen mode.</p>
-<h3 id="cli_1">CLI<a class="headerlink" href="#cli_1" title="Permanent link">&para;</a></h3>
-<p>The CLI does not yet expose a per-run flag for <code>alternatives_mode</code>.
-The pattern matches the rest of the LLM-profile knobs (<code>n_alternatives</code>,
-<code>confidence_signal</code> etc. are also profile-level only on the CLI):
-change the profile setting with <code>/alternatives-mode</code>, run, then
-switch back if needed.</p>
+<h3 id="cli-interactive-picker">CLI — interactive picker<a class="headerlink" href="#cli-interactive-picker" title="Permanent link">&para;</a></h3>
+<p><code>/run</code> opens an interactive override gate before starting the
+analysis:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /run
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Override LLM settings for this run? [y/N]: y
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Generation (Enter to keep current):
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  Temperature (0.0-2.0) [0.2]:
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  Max output tokens [16384]:
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  Alternatives (1-5) [3]:
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  Column batch size [10]:
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  Prompt detail [standard]:
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  Description verbosity [brief]:
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Thinking budget (Anthropic reasoning, 0 = off) [1024]:
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>Alternatives diversity (Enter to keep current):
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  Alternatives mode [semantic]: lexical
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  Confidence signal [self_consistency]:
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>Confidence thresholds (token probability 0.0-1.0):
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  High threshold [0.85]:
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  Medium threshold [0.50]:
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>Cost overrides (USD per 1M tokens, &#39;-&#39; to clear):
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  Custom input cost [-]:
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  Custom output cost [-]:
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>Applied per-run overrides: alternatives_mode=lexical
+</span></code></pre></div>
+<p>Press Enter on any row to keep the saved profile's value. The
+<strong>Alternatives mode</strong> row is skipped when the effective
+<code>n_alternatives</code> for the run is 1 — single-answer runs have no
+DESCRIPTION_2..N to differentiate, so the choice is meaningless.</p>
+<p>The chosen values land in a derived <code>LLMConfig</code> for the duration of
+the run only; <code>~/.amx/config.yml</code> is never written. After the run
+completes, the saved profile is back in effect for the next <code>/run</code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Design: no CLI per-run flags</p>
+<p>The CLI deliberately does <strong>not</strong> expose <code>--alternatives-mode</code>
+(or <code>--confidence-signal</code>, <code>--temperature</code>, etc.) as flags on
+<code>/run</code>. The interactive picker is the parity surface with
+Studio's <em>Advanced LLM settings</em> panel; flags would re-open the
+reproducibility question we've already decided against:
+a <code>config.yml</code> plus a non-interactive <code>/run</code> produces
+deterministic output, no matter what shell is invoking it.</p>
+<p>Scripted, non-interactive <code>/run</code> invocations short-circuit past
+the gate (no TTY → no prompt). The only tactical exception is
+<code>/rerun --temperature</code>, which exists to nudge a single re-run's
+diversity without touching the saved profile or running the
+whole bulk-analysis again.</p>
+</div>
 <h2 id="how-the-mode-surfaces-in-results">How the mode surfaces in results<a class="headerlink" href="#how-the-mode-surfaces-in-results" title="Permanent link">&para;</a></h2>
 <p>Every result row carries the mode it was generated under in
 <code>run_results.alternatives_mode</code>. Studio surfaces this as a small
