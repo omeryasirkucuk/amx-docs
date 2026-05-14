@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/llm-providers/batch-mode/">
+        <link rel="canonical" href="https://amxcli.com/concepts/confidence-signals/">
       
       
-        <link rel="prev" href="../ollama-local/">
+        <link rel="prev" href="../alternatives-mode/">
       
       
-        <link rel="next" href="../../data-sources/codebase/">
+        <link rel="next" href="../universal-metadata/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Batch mode - AMX</title>
+        <title>Confidence signals - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Batch mode — AMX CLI">
+  <meta property="og:title" content="Confidence signals — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/llm-providers/batch-mode/">
+  <meta property="og:url" content="https://amxcli.com/concepts/confidence-signals/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Batch mode — AMX CLI">
+  <meta name="twitter:title" content="Confidence signals — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#batch-mode" class="md-skip">
+        <a href="#confidence-signals" class="md-skip">
           Skip to content
         </a>
       
@@ -213,7 +213,7 @@
           
           
           
-            <a href="../../concepts/architecture/">Concepts</a>
+            <a href="../architecture/" class="active">Concepts</a>
             
           
         
@@ -391,19 +391,19 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-concepts-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/architecture/"
+         href="../architecture/"
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/agents/"
+         href="../agents/"
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/alternatives-mode/"
-         >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/confidence-signals/"
-         >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/universal-metadata/"
+         href="../alternatives-mode/"
+         >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/scoping/"
+         href="../scoping/"
          >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/human-in-the-loop/"
+         href="../human-in-the-loop/"
          >Human in the Loop</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-cli">
@@ -583,26 +583,26 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-llm-providers-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../"
+         href="../../llm-providers/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../openai/"
+         href="../../llm-providers/openai/"
          >OpenAI</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../anthropic/"
+         href="../../llm-providers/anthropic/"
          >Anthropic</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../gemini/"
+         href="../../llm-providers/gemini/"
          >Gemini</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../databricks-serving/"
+         href="../../llm-providers/databricks-serving/"
          >Databricks Serving</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../deepseek/"
+         href="../../llm-providers/deepseek/"
          >DeepSeek</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../openrouter/"
+         href="../../llm-providers/openrouter/"
          >OpenRouter</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../kimi/"
+         href="../../llm-providers/kimi/"
          >Kimi</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../ollama-local/"
-         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Batch mode</a></div>
+         href="../../llm-providers/ollama-local/"
+         >Ollama and local</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../llm-providers/batch-mode/"
+         >Batch mode</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-data-sources">
       <button type="button"
@@ -735,10 +735,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#how-to-read-a-score-in-30-seconds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        How to read a score in 30 seconds
       
     </span>
   </a>
@@ -746,22 +746,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#why-we-expose-more-than-one-scorer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
+        Why we expose more than one scorer
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step-by-step">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-five-available-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five available signals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The five available signals">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-enable-batch-mode-for-the-active-llm-profile" class="md-nav__link">
+  <a href="#self_consistency-sc-default" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Enable batch mode for the active LLM profile
+        self_consistency (SC) — default
       
     </span>
   </a>
@@ -769,10 +780,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-submit-a-batch-run" class="md-nav__link">
+  <a href="#logprob-lp" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Submit a batch /run
+        logprob (LP)
       
     </span>
   </a>
@@ -780,10 +791,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-watch-the-batch-progress" class="md-nav__link">
+  <a href="#self_decl-sd" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Watch the batch progress
+        self_decl (SD)
       
     </span>
   </a>
@@ -791,10 +802,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-review-and-apply" class="md-nav__link">
+  <a href="#judge-ju" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Review and apply
+        judge (JU)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#none" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        none
       
     </span>
   </a>
@@ -807,10 +829,127 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cost-time-trade-offs" class="md-nav__link">
+  <a href="#bands-and-thresholds" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cost / time trade-offs
+        Bands and thresholds
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bands and thresholds">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#per-mode-band-expectations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-mode band expectations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-signals-show-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where signals show up
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where signals show up">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-pick-the-active-signal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to pick the active signal
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to pick the active signal">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cli_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#studio_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Studio
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-run-override" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-run override
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#a-readers-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A reader's checklist
       
     </span>
   </a>
@@ -818,43 +957,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#where-to-next" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's next
+        Where to next
       
     </span>
   </a>
@@ -883,17 +989,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>LLM Providers</span>
+            <span>Concepts</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Batch mode</span>
+      <span>Confidence signals</span>
     </div>
   </div>
 
@@ -902,190 +1003,266 @@
 
 
 
-<h1 id="batch-mode">Batch mode<a class="headerlink" href="#batch-mode" title="Permanent link">&para;</a></h1>
-<p>For wide schemas, AMX can route a <code>/run</code> through the provider's Batch API instead of
-the live chat API. You pay roughly <strong>half the live-call price</strong> in exchange for an
-asynchronous SLA — the provider returns results within minutes-to-hours instead of
-seconds. This page walks through enabling batch mode, submitting and polling a batch,
-checking provider dashboards for in-flight status, and reviewing the results.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h1 id="confidence-signals">Confidence signals<a class="headerlink" href="#confidence-signals" title="Permanent link">&para;</a></h1>
+<p>Every alternative that AMX produces carries a per-alternative
+<strong>confidence score</strong> — a small green / orange / red pill on each row
+that tells you how strongly the system believes in that particular
+candidate. The score is what powers the <code>HIGH / MED / LOW</code> bands you
+see in the CLI's progress output and in every Studio results panel.</p>
+<p>The signal that drives the score is configurable. Different scorers
+catch different failure modes, cost different amounts of tokens, and
+need different things from your LLM provider — so AMX exposes the
+choice on each LLM profile.</p>
+<h2 id="how-to-read-a-score-in-30-seconds">How to read a score in 30 seconds<a class="headerlink" href="#how-to-read-a-score-in-30-seconds" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>).</li>
-<li>An active LLM profile on a provider that supports batch — currently <strong>OpenAI</strong> and <strong>Anthropic</strong>.</li>
-<li>An active database profile.</li>
-<li>A schema with enough columns to benefit from batch — anything under ~50 columns is faster (and not meaningfully cheaper) on the live API.</li>
+<li><strong>HIGH</strong> (<code>green</code>) — the system found strong agreement on this
+  alternative. Safe to auto-apply when you trust the rest of the
+  evidence (column name, samples, comments).</li>
+<li><strong>MED</strong> (<code>orange</code>) — tie-breaker territory. Worth reviewing
+  manually; the model wasn't confident enough to put this one above
+  the rest.</li>
+<li><strong>LOW</strong> (<code>red</code>) — the system disagrees with itself. Do <strong>not</strong>
+  auto-apply this row; either pick a different alternative, refine
+  the prompt, or rerun the column with more context.</li>
 </ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-enable-batch-mode-for-the-active-llm-profile">1. Enable batch mode for the active LLM profile<a class="headerlink" href="#1-enable-batch-mode-for-the-active-llm-profile" title="Permanent link">&para;</a></h3>
-<p>Edit <code>~/.amx/config.yml</code> and add <code>batch_mode: true</code> under the LLM profile:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span><span class="w">             </span><span class="c1"># cheap models pair well with batch</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="nt">temperature</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">n_alternatives</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span><span class="w">          </span><span class="c1"># bigger batches = fewer batch jobs</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span><span class="w">      </span><span class="c1"># how often AMX polls the provider</span>
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span><span class="w">        </span><span class="c1"># 24h timeout (provider SLA)</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="nt">active_llm_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai-batch</span>
-</span></code></pre></div>
-<p>Then restart AMX — config changes are picked up at session start.</p>
-<h3 id="2-submit-a-batch-run">2. Submit a batch <code>/run</code><a class="headerlink" href="#2-submit-a-batch-run" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /run sales
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[scope] 47 tables · 1,283 columns
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[Profile] sampled scan on 47 tables ... ok in 18.4 s
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[LLM]     submitting OpenAI batch (1,283 columns, 64 requests, est. cost: $1.42)
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>          → batch id: batch_abc123def456
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>          → provider dashboard: https://platform.openai.com/batches/batch_abc123def456
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>          → polling every 60 s ...
-</span></code></pre></div>
-<p><code>/run</code> does not block your terminal — you can <code>/exit</code>, restart later, and resume polling
-with <code>/batch resume &lt;batch-id&gt;</code>. The batch id is also written to <code>/history</code> so you can
-look it up via <code>/history list --filter batch</code>.</p>
-<h3 id="3-watch-the-batch-progress">3. Watch the batch progress<a class="headerlink" href="#3-watch-the-batch-progress" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /batch status
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  state: in_progress
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  submitted: 2 min ago
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  requests: 64 total · 28 finished · 36 in-progress · 0 failed
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  est. completion: ~7 min
-</span></code></pre></div>
-<p>Or open the provider dashboard for a UI view:</p>
+<p>Bands are computed from a single numeric score in the range
+<code>[0.0, 1.0]</code> using two thresholds on the profile
+(<code>confidence.bands.high</code>, <code>confidence.bands.med</code> — default
+<code>0.75</code> / <code>0.50</code>). Tune them if your domain needs stricter or looser
+gating.</p>
+<h2 id="why-we-expose-more-than-one-scorer">Why we expose more than one scorer<a class="headerlink" href="#why-we-expose-more-than-one-scorer" title="Permanent link">&para;</a></h2>
+<p>There is no single "right" way to score an alternative — each scorer
+is a different lens:</p>
 <ul>
-<li><strong>OpenAI</strong>: <a href="https://platform.openai.com/batches">platform.openai.com/batches</a> — shows progress, errors, and download links.</li>
-<li><strong>Anthropic</strong>: <a href="https://console.anthropic.com/batches">console.anthropic.com/batches</a>.</li>
+<li>Some scorers (<code>self_consistency</code>) embed the alternatives and check
+  how clustered they are; cheap, runs locally, works with any
+  provider.</li>
+<li>Some scorers (<code>logprob</code>) ask the LLM provider to return per-token
+  probabilities — accurate but only available on providers that
+  expose log-probabilities.</li>
+<li>Some scorers (<code>self_decl</code>, <code>judge</code>) consume extra LLM tokens for a
+  stronger answer; you pay for that signal.</li>
 </ul>
-<p>When AMX polls and sees <code>state: completed</code>, it downloads and parses results
-automatically; you'll see a notification at the next prompt:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /batch status
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>batch_abc123def456 [openai/gpt-4o-mini]
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  state: completed
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  duration: 9 min 12 s
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  requests: 64 total · 64 finished · 0 failed
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  → results merged into review queue: /run review
+<p>AMX lets you pick one per profile so you can match the scorer to your
+provider, budget, and trust requirements.</p>
+<h2 id="the-five-available-signals">The five available signals<a class="headerlink" href="#the-five-available-signals" title="Permanent link">&para;</a></h2>
+<p>The active signal is set via <code>LLMConfig.confidence_signal</code> in the
+profile. Valid values: <code>self_consistency</code> (default), <code>logprob</code>,
+<code>self_decl</code>, <code>judge</code>, <code>none</code>.</p>
+<h3 id="self_consistency-sc-default"><code>self_consistency</code> (SC) — default<a class="headerlink" href="#self_consistency-sc-default" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What it measures</strong>: how close each alternative is, in meaning, to
+  the other <code>N-1</code> alternatives generated for the same column.</li>
+<li><strong>How it's computed</strong>: AMX embeds every alternative with a local
+  sentence-transformer (<code>all-MiniLM-L6-v2</code>, ~80 MB, CPU-friendly,
+  deterministic offline) and scores each one as its <strong>mean cosine
+  similarity to the other alternatives</strong>. The "centroid" cluster
+  receives high scores; an outlier alternative receives a low score.</li>
+<li><strong>Score range</strong>: <code>0.0</code> (totally dissimilar) → <code>1.0</code> (identical).</li>
+<li><strong>Interpretation</strong>: high SC = the LLM produced a tight cluster of
+  paraphrases for this column. Low SC on one alternative = that one
+  disagrees with the others. Read alongside the
+  <a href="../alternatives-mode/"><code>alternatives_mode</code></a>: semantic mode is
+  <em>expected</em> to produce high SC across all alternatives (they're all
+  paraphrases of the same meaning); lexical mode is <em>expected</em> to
+  produce more spread (alternatives carry different candidate
+  meanings).</li>
+<li><strong>Cost</strong>: zero LLM tokens. Local embedding only. Works with any
+  provider.</li>
+<li><strong>Needs</strong>: <code>n_alternatives &gt;= 2</code>. With <code>N == 1</code> AMX falls back to a
+  degenerate <code>1.0</code> so downstream math stays well-defined.</li>
+<li><strong>Source</strong>: <code>amx/llm/confidence/self_consistency.py</code>.</li>
+</ul>
+<h3 id="logprob-lp"><code>logprob</code> (LP)<a class="headerlink" href="#logprob-lp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What it measures</strong>: how confident the LLM itself was when it
+  generated each alternative's tokens.</li>
+<li><strong>How it's computed</strong>: AMX asks the provider to return per-token
+  log-probabilities for the generated response, identifies the span
+  of tokens that belongs to each <code>DESCRIPTION_i</code>, and averages /
+  normalises the log-probability over that span.</li>
+<li><strong>Score range</strong>: a normalised <code>[0.0, 1.0]</code> derived from the raw
+  log-prob via <code>confidence.logprob_high</code> and <code>logprob_medium</code>
+  thresholds. Closer to <code>1.0</code> = the model was very confident; closer
+  to <code>0.0</code> = it was guessing.</li>
+<li><strong>Interpretation</strong>: HIGH means the LLM saw a low-entropy
+  distribution at every step of the answer — its next-token choice
+  was rarely close to a tie. LOW means it was hopping between
+  candidates as it wrote, which usually means the column name + samples
+  didn't give it a clear signal.</li>
+<li><strong>Cost</strong>: zero extra LLM tokens. But many providers do NOT expose
+  log-probs (Anthropic, most Bedrock paths, Vertex sometimes). When
+  the provider doesn't return them, AMX records <code>None</code> and the
+  signal degrades to "unavailable" on that row.</li>
+<li><strong>Needs</strong>: provider with log-probs. Set
+  <code>LLMConfig.force_logprobs: true</code> to require the provider call to
+  include them.</li>
+<li><strong>Source</strong>: <code>amx/llm/confidence/logprob_span.py</code>.</li>
+</ul>
+<h3 id="self_decl-sd"><code>self_decl</code> (SD)<a class="headerlink" href="#self_decl-sd" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What it measures</strong>: the LLM's <em>own</em> self-reported confidence per
+  alternative.</li>
+<li><strong>How it's computed</strong>: AMX appends a <code>CONFIDENCE_i: &lt;HIGH|MED|LOW&gt;</code>
+  line to the prompt after every <code>DESCRIPTION_i:</code> slot. The model
+  answers a band directly; AMX maps the bands to numeric scores
+  (<code>HIGH=0.9</code>, <code>MED=0.6</code>, <code>LOW=0.3</code>).</li>
+<li><strong>Score range</strong>: a discrete <code>{0.3, 0.6, 0.9}</code> derived from the
+  emitted band. The continuous-looking pill in Studio rounds the
+  emitted band into the corresponding numeric.</li>
+<li><strong>Interpretation</strong>: subjective. The model's self-assessment isn't
+  always calibrated — it can be over-confident on plausible-looking
+  but wrong descriptions. Treat as a <em>second opinion</em> alongside
+  another signal, not as ground truth.</li>
+<li><strong>Cost</strong>: small. One extra line per alternative in the prompt and
+  one in the response — typically &lt;50 tokens per column.</li>
+<li><strong>Source</strong>: <code>amx/llm/confidence/self_declaration.py</code>.</li>
+</ul>
+<h3 id="judge-ju"><code>judge</code> (JU)<a class="headerlink" href="#judge-ju" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What it measures</strong>: a <em>separate</em> LLM call ranks the <code>N</code>
+  alternatives best-to-worst, given the same evidence the original
+  generation saw.</li>
+<li><strong>How it's computed</strong>: after the per-agent merge, AMX issues one
+  additional <code>chat.completions</code> call asking the model to score the
+  generated alternatives. The scores are normalised to <code>[0.0, 1.0]</code>.</li>
+<li><strong>Score range</strong>: <code>[0.0, 1.0]</code>.</li>
+<li><strong>Interpretation</strong>: high score = the judge LLM agreed this is the
+  most defensible interpretation. Lower scores expose alternatives
+  the judge would not choose. Useful when you want a fully
+  LLM-driven ranking signal and don't trust embedding-only proxies.</li>
+<li><strong>Cost</strong>: roughly <strong>doubles</strong> the per-suggestion token spend on
+  the active LLM. Use sparingly — typically only on small scopes you
+  want a second opinion on.</li>
+<li><strong>Source</strong>: <code>amx/llm/confidence/judge.py</code>.</li>
+</ul>
+<h3 id="none"><code>none</code><a class="headerlink" href="#none" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>What it measures</strong>: nothing. Per-alternative scoring is disabled.</li>
+<li><strong>Interpretation</strong>: every alternative renders without a confidence
+  pill. Use this when you only care about <code>DESCRIPTION_1</code> and don't
+  need any ranking inside the alternates list.</li>
+<li><strong>Cost</strong>: zero tokens, zero local compute.</li>
+</ul>
+<h2 id="bands-and-thresholds">Bands and thresholds<a class="headerlink" href="#bands-and-thresholds" title="Permanent link">&para;</a></h2>
+<p>Every numeric score is bucketed into a band using the profile's
+threshold pair:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">llm</span><span class="p">:</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="nt">confidence</span><span class="p">:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">bands</span><span class="p">:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">      </span><span class="nt">high</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.75</span><span class="w">    </span><span class="c1"># score &gt;= 0.75  → HIGH (green)</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">      </span><span class="nt">med</span><span class="p">:</span><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">0.50</span><span class="w">    </span><span class="c1"># score &gt;= 0.50  → MED  (orange)</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">                    </span><span class="c1"># score &lt;  0.50  → LOW  (red)</span>
 </span></code></pre></div>
-<h3 id="4-review-and-apply">4. Review and apply<a class="headerlink" href="#4-review-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /run review
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Review row 1/64 (low confidence): sales.customer.x_legacy_status
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  draft: &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>&gt; A
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>...
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>&gt; /apply
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>Write 1,283 comment(s) to db-prod/sales? [y/N]: y
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>... (1,283/1,283 written)
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
-</span></code></pre></div>
-<p>By default AMX walks you through low-confidence rows first; medium and high are
-bulk-accepted unless you pass <code>--review-all</code>.</p>
-<h2 id="cost-time-trade-offs">Cost / time trade-offs<a class="headerlink" href="#cost-time-trade-offs" title="Permanent link">&para;</a></h2>
+<p>Defaults are conservative — most production runs leave them
+unchanged. If you find too many rows are landing as <code>MED</code> and you'd
+rather see them auto-applied, raise <code>high</code>; if you find AMX is
+auto-applying rows you would have flagged, lower <code>high</code> (or raise the
+band thresholds for the SC scorer specifically).</p>
+<h3 id="per-mode-band-expectations">Per-mode band expectations<a class="headerlink" href="#per-mode-band-expectations" title="Permanent link">&para;</a></h3>
+<p>Once you pick an
+<a href="../alternatives-mode/"><code>alternatives_mode</code></a>, the <em>expected</em> SC
+distribution shifts. AMX includes a runtime guardrail
+(<code>amx/agents/_mode_guardrail.py</code>) that warns when the observed
+distribution looks inverted relative to the mode:</p>
 <table>
 <thead>
 <tr>
 <th>Mode</th>
-<th>Provider price</th>
-<th>Wall time (1,000 cols)</th>
-<th>When to use</th>
+<th>Expected mean SC</th>
+<th>Guardrail warns when</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Live (default)</td>
-<td>$1.00 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>~30 s</td>
-<td>Day-to-day single-table runs; iterating on prompts</td>
+<td><code>semantic</code></td>
+<td>High &amp; clustered (alternatives are paraphrases of the same meaning)</td>
+<td>mean SC drops below <code>0.65</code> — likely the LLM produced meaning-shifted alternates despite the paraphrase directive</td>
 </tr>
 <tr>
-<td>Batch</td>
-<td>$0.50 / 1k cols at <code>gpt-4o-mini</code></td>
-<td>5 min – 24 h</td>
-<td>Whole-warehouse drafts; nightly sweeps; CI pipelines</td>
+<td><code>lexical</code></td>
+<td>Moderate / spread (alternatives carry candidate meanings)</td>
+<td>mean SC climbs above <code>0.85</code> — likely the LLM collapsed into paraphrases despite the lexical directive</td>
 </tr>
 </tbody>
 </table>
-<p>Batch is also strictly cheaper than running the live API in parallel up to your tier
-cap — you don't burn rate-limit budget that you might want for ad-hoc <code>/ask</code> queries
-later in the day.</p>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>OpenAI batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">openai-batch</span><span class="p">:</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpt-4o-mini</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/openai-batch/api_key</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
+<p>The guardrail logs a structured warning
+(<code>alternatives_mode_inversion_suspect</code>) per affected asset. It does
+not stop the run; it surfaces the asset id, the observed mean SC, and
+the per-alternative scores so a reviewer can drill in.</p>
+<h2 id="where-signals-show-up">Where signals show up<a class="headerlink" href="#where-signals-show-up" title="Permanent link">&para;</a></h2>
+<h3 id="cli">CLI<a class="headerlink" href="#cli" title="Permanent link">&para;</a></h3>
+<p>The <code>/run</code> progress output prints a summary line per stage:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>✓ table: orders                Confidence: high 24 · med 9 · low 3
 </span></code></pre></div>
-<p>Anthropic batch:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">llm_profiles</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">anthropic-batch</span><span class="p">:</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">provider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropic</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude-haiku-3-5-20250101</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/anthropic-batch/api_key</span>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">column_batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">batch_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">batch_poll_interval_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">60</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">batch_max_wait_s</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">86400</span>
+<p>In the interactive review wizard, every row carries the band glyph
+(✓ for HIGH, ◐ for MED, ◇ for LOW) and the alternative pills carry
+their per-alternative band:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Latitude   ✓ high   accepted   logprob 1.000   SC: HIGH 0.79
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  A · Geographic latitude coordinate that specifies the …   SC: HIGH 0.79
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  B · North-south angular coordinate defining the geographic …   SC: HIGH 0.78
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  C · Decimal latitude value indicating the north-south …   SC: HIGH 0.76
 </span></code></pre></div>
-<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>&gt; /llm test</code> — pings the chat API (not the batch API) to confirm credentials. Batch jobs use the same key.</li>
-<li><code>&gt; /batch status</code> — shows in-flight jobs and their state. Empty if no jobs are pending.</li>
-<li>Open the provider dashboard URL printed at submission time — confirms the job is registered server-side.</li>
-</ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OpenAI batch endpoint not enabled for project</code></td>
-<td>Project hasn't been opted into the Batch API tier</td>
-<td>Enable in <a href="https://platform.openai.com/settings/organization/limits">platform.openai.com/settings/organization/limits</a></td>
-</tr>
-<tr>
-<td>Batch state <code>failed</code> with <code>partial_failure: 12 / 64</code></td>
-<td>Some requests hit the model's per-request token limit</td>
-<td>Lower <code>column_batch_size</code>; <code>/run --recover-batch &lt;batch-id&gt;</code> retries only the failed sub-requests on the live API</td>
-</tr>
-<tr>
-<td>Polling never returns / state stuck on <code>validating</code></td>
-<td>Provider validation queue is backed up (rare)</td>
-<td>Wait; if still stuck after 30 min, cancel via the dashboard and re-submit</td>
-</tr>
-<tr>
-<td><code>batch_max_wait_s</code> exceeded</td>
-<td>Schema is wider than the timeout allows</td>
-<td>Bump <code>batch_max_wait_s</code> to <code>172800</code> (48 h) or split the schema across multiple <code>/run</code> calls</td>
-</tr>
-<tr>
-<td>Anthropic batch job returns half the columns</td>
-<td>Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column</td>
-<td>Confirm <code>column_batch_size</code> is 20+ so you stay under the request cap</td>
-</tr>
-<tr>
-<td>Cost was higher than estimate</td>
-<td>The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included</td>
-<td>Check the dashboard "Costs" view for the actual billed amount</td>
-</tr>
-</tbody>
-</table>
-<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p>The <code>/history show &lt;run&gt;</code> dump includes the score columns
+(<code>confidence</code>, <code>logprob_score</code>, <code>alternatives_json</code>).</p>
+<h3 id="studio">Studio<a class="headerlink" href="#studio" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — <code>/run review</code> walks you through batch results once they're back.</li>
-<li><a href="../../guides/batch-large-schema/">Guides: Batch a large schema</a> — full end-to-end procedure with checkpointing across multiple batches.</li>
-<li><a href="../openai/">OpenAI</a> / <a href="../anthropic/">Anthropic</a> — switch the underlying model without re-creating the profile.</li>
+<li><strong>Run detail</strong> — the column card shows the chosen alternative's
+  band as a pill, the raw logprob, and the
+  <a href="../alternatives-mode/"><code>alternatives_mode</code></a> chip. Each alternative
+  in the carousel carries its own per-alternative score pill
+  (<code>SC: HIGH 0.79</code>).</li>
+<li><strong>Run compare</strong> — every cell stacks <code>DESCRIPTION_1..N</code> with one
+  badge per alternative, so you can compare two runs' scores
+  side-by-side. The column header carries the run's
+  <code>alternatives_mode</code> chip.</li>
+<li><strong>Pending</strong> — the review queue shows the band on every row so you
+  can pick what to apply without leaving the page.</li>
+</ul>
+<h2 id="how-to-pick-the-active-signal">How to pick the active signal<a class="headerlink" href="#how-to-pick-the-active-signal" title="Permanent link">&para;</a></h2>
+<p>The signal lives on the LLM profile alongside <code>n_alternatives</code> and
+<code>alternatives_mode</code>. Default for new profiles is <code>self_consistency</code>.</p>
+<h3 id="cli_1">CLI<a class="headerlink" href="#cli_1" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>amx
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;<span class="w"> </span>/llm
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>&gt;<span class="w"> </span>/confidence-signal<span class="w">                    </span><span class="c1"># show current</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>&gt;<span class="w"> </span>/confidence-signal<span class="w"> </span>logprob<span class="w">            </span><span class="c1"># switch</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>&gt;<span class="w"> </span>/confidence-signal<span class="w"> </span>none<span class="w">               </span><span class="c1"># disable scoring</span>
+</span></code></pre></div>
+<p>The change persists in <code>~/.amx/config.yml</code> under the active LLM
+profile and applies to every subsequent <code>/run</code>.</p>
+<h3 id="studio_1">Studio<a class="headerlink" href="#studio_1" title="Permanent link">&para;</a></h3>
+<p>Settings → <strong>LLM</strong> → click the profile → <strong>Confidence signal</strong>
+dropdown. Five options: <code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>,
+<code>judge</code>, <code>none</code>. Save persists the change.</p>
+<h3 id="per-run-override">Per-run override<a class="headerlink" href="#per-run-override" title="Permanent link">&para;</a></h3>
+<p>Studio's RunNew form includes a <strong>Confidence signal</strong> override row
+under Advanced LLM settings. The CLI does not yet expose a per-run
+flag; change the profile setting with <code>/confidence-signal</code>, run,
+switch back if needed.</p>
+<h2 id="a-readers-checklist">A reader's checklist<a class="headerlink" href="#a-readers-checklist" title="Permanent link">&para;</a></h2>
+<p>You're not expected to know how the scorers work to interpret the
+output. The mental model is:</p>
+<ol>
+<li><strong>HIGH on every alternative + tight pack</strong> → confident parse;
+   pick whichever DESCRIPTION_1 reads best.</li>
+<li><strong>HIGH on one, LOW on the rest</strong> → that one alternative is the
+   clear winner.</li>
+<li><strong>All MED, similar scores</strong> → the LLM thinks they're all
+   plausible. Pick by hand or rerun with more context.</li>
+<li><strong>All LOW</strong> → the column is hard. Either provide a document
+   profile, a code profile, or a more descriptive column name and
+   rerun.</li>
+</ol>
+<h2 id="where-to-next">Where to next<a class="headerlink" href="#where-to-next" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../configuration/config-yml/">config.yml reference</a> — the LLM
+  profile schema with every confidence-related field.</li>
+<li><a href="../alternatives-mode/">Alternatives mode</a> — the diversity dimension
+  that shapes what the SC band actually means in a given run.</li>
+<li><a href="../../cli/run-and-apply/">Run &amp; Apply</a> — how the bands surface in
+  the review wizard and on <code>--apply</code>.</li>
 </ul>
 
 

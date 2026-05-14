@@ -393,6 +393,10 @@
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../concepts/agents/"
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/alternatives-mode/"
+         >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../concepts/confidence-signals/"
+         >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../concepts/scoping/"
@@ -741,6 +745,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#docs-alternatives-mode-confidence-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docs — Alternatives mode + Confidence signals
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0140-live-cost-everywhere-re-run-studio-landing" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -968,6 +983,29 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="docs-alternatives-mode-confidence-signals">Docs — Alternatives mode + Confidence signals<a class="headerlink" href="#docs-alternatives-mode-confidence-signals" title="Permanent link">&para;</a></h3>
+<p>Two new Concepts pages cover features that were under-documented:</p>
+<ul>
+<li><strong><a href="../concepts/alternatives-mode/">Alternatives mode</a></strong> explains the
+  <code>semantic</code> vs <code>lexical</code> diversity dimension on every LLM profile.
+  Includes the Definition 1 wording (semantic = paraphrase / same
+  meaning, different words; lexical = shared vocabulary / shifted
+  meaning), worked examples per mode, profile + per-run set
+  instructions for CLI and Studio, and where the
+  <code>[Semantic]</code> / <code>[Lexical]</code> badge surfaces in results.</li>
+<li><strong><a href="../concepts/confidence-signals/">Confidence signals</a></strong> documents
+  the five scorers (<code>self_consistency</code>, <code>logprob</code>, <code>self_decl</code>,
+  <code>judge</code>, <code>none</code>) end-to-end: what each one measures, how it's
+  computed at a high level, the score range, how to read the HIGH /
+  MED / LOW bands, and the per-<code>alternatives_mode</code> expected SC
+  distribution that AMX's runtime guardrail watches. Includes a
+  short "how to read the score" guide for non-ML-literate readers.</li>
+</ul>
+<p><a href="../configuration/config-yml/"><code>config.yml</code></a> gains the
+<code>alternatives_mode</code> and <code>confidence_signal</code> rows in the LLM-profile
+example and a cross-link block after it.
+<a href="../cli/run-and-apply/">Run &amp; Apply</a>, <a href="../cli/setup/">Setup</a>, and
+<a href="../studio/settings/">Studio Settings</a> cross-link into the new pages.</p>
 <h3 id="0140-live-cost-everywhere-re-run-studio-landing">0.14.0 — Live cost everywhere, Re-Run, Studio Landing<a class="headerlink" href="#0140-live-cost-everywhere-re-run-studio-landing" title="Permanent link">&para;</a></h3>
 <p>Every LLM call AMX makes now reports tokens <strong>and USD cost</strong> at every
 surface — <code>/ask</code>, <code>/generate</code>, the run progress header, the Tokens &amp;

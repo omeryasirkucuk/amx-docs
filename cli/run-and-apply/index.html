@@ -395,6 +395,10 @@
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/agents/"
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/alternatives-mode/"
+         >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/confidence-signals/"
+         >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/scoping/"
@@ -987,6 +991,13 @@ recovers from per-row errors.</p>
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Tokens: 15,844 in / 4,064 out · Cost: $0.0315 (frozen at run-time pricing)
 </span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  Review with /run review (or /apply to write back).
 </span></code></pre></div>
+<p>The <code>Confidence: high N · medium N · low N</code> line is bucketed from the
+per-alternative scorer set on the active LLM profile
+(<code>confidence_signal</code>). The default is <code>self_consistency</code>; see
+<a href="../../concepts/confidence-signals/">Confidence signals</a> for the four
+other scorers and how to read each band. The character of the
+generated alternatives is in turn shaped by <code>alternatives_mode</code> —
+<a href="../../concepts/alternatives-mode/">paraphrases vs shared-vocabulary candidate meanings</a>.</p>
 <p>Per-batch token and USD cost are reported live for every LLM-using step
 (<code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/ask</code>). Cost is computed against the
 versioned per-(provider, model) pricing table AMX caches on disk; see

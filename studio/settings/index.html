@@ -395,6 +395,10 @@
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/agents/"
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/alternatives-mode/"
+         >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/confidence-signals/"
+         >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/scoping/"
@@ -877,6 +881,20 @@ cache, surfaced in <a href="../pricing/">Pricing</a>).</p>
 <li>Model dropdown — populated from the provider's offerings, or a
   free-text field</li>
 <li>API-key / base-URL fields appropriate for the provider</li>
+<li><strong>Alternatives per column</strong> slider (1–5) — how many candidate
+  descriptions the LLM emits per column.</li>
+<li><strong>Alternatives diversity mode</strong> segmented control — choose whether
+  those candidates are paraphrases (<code>semantic</code>) or
+  shared-vocabulary candidate meanings (<code>lexical</code>). Disabled when
+  alternatives per column is 1. See
+  <a href="../../concepts/alternatives-mode/">Alternatives mode</a> for the full
+  reference and worked examples.</li>
+<li><strong>Confidence signal</strong> dropdown — which per-alternative scorer
+  drives the HIGH / MED / LOW pill on each row:
+  <code>self_consistency</code> (default), <code>logprob</code>, <code>self_decl</code>, <code>judge</code>,
+  <code>none</code>. See <a href="../../concepts/confidence-signals/">Confidence signals</a>
+  for what each one measures, score ranges, and how to tune the
+  bands.</li>
 <li>Optional per-model price override — pre-filled with the auto-detected
   public rate, so an override is a deliberate tweak rather than a
   re-keying chore</li>
