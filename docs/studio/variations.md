@@ -102,18 +102,21 @@ stays consistent.
 Two surfaces, both backed by the same `parent_run_id` /
 `seed_alternative_id` columns:
 
-**On the parent run's detail page** — below the v1 results table,
-an *Other versions* card lists every Variations / Re-Run descendant
-as a collapsible group. The newest descendant is auto-expanded; older
-versions stay collapsed by default so the user can fall back to v1
-without scrolling. Each card header shows the version label
-(`v2`, `v3`, …), the kind (`Variations` / `Re-Run`), a clickable link
-to the descendant run, the seed alternative letter (Variations only),
-the diversity mode, the effective LLM model, and the row count. The
-group expands to show the verbatim seed text + every per-asset row
-with its A/B/C alternatives. The version labels are computed
-server-side on `GET /api/runs/{id}/results?include_descendants=true`
-so they stay stable across reloads.
+**On the parent run's detail page** — each asset card body now
+stacks its v1 alternatives followed by every Variations / Re-Run
+descendant as a `v2`, `v3`, … collapsible group inside the *same*
+card. v1 alternatives stay expanded; the newest descendant is also
+expanded; older versions start collapsed so the user can fall back
+to v1 instantly without scrolling between separate cards. Each
+descendant group header shows the version label, the kind
+(`variations of <letter>` or `re-run`), a clickable link to the
+descendant run, the diversity mode, and the effective LLM model.
+The body expands to show the verbatim seed text (for Variations)
+plus the descendant's A/B/C alternatives labeled `A1`/`A2`/`A3`
+when seeded so the lineage from v1.A to v2.A1/A2/A3 is visible at
+a glance. Version labels are computed server-side on
+`GET /api/runs/{id}/results?include_descendants=true` so they stay
+stable across reloads.
 
 **On the descendant run's own detail page** — a lineage chip
 renders directly under the status row, before the scope chip. For
