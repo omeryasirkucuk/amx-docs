@@ -8,6 +8,56 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### Variations: seeded re-run + per-run model selector
+
+Studio's run-detail page now renders a ✨ trigger next to every
+alternative in the **Results** tab. Click it to open the **Variations
+modal**: the chosen alternative is shown read-only as the seed, a
+top-level radio picks between `semantic` (paraphrase the seed) and
+`lexical` (share vocabulary with the seed, allow meaning to drift),
+and the existing **Advanced LLM settings** disclosure exposes every
+LLM knob with the diversity-mode row suppressed because mode lives
+at the top-level. Submit → a worker thread fires; the new
+`run_results` row carries five new audit columns
+(`seed_alternative_id`, `seed_alternative_text`, `parent_run_id`,
+`model`, `provider`) so `/history show <run>` and Studio can trace
+the seed lineage and the effective LLM identity per row. The seed
+text is filtered back out of the alternatives list before
+persistence.
+
+The same Advanced LLM settings block grows a **per-run profile
+selector** at the top of the Generation section. Pick a different
+saved profile to swap the whole `provider` / `model` / `api_key` /
+`api_base` bundle for this single run only — per-knob overrides
+(temperature, max tokens, …) layer on top. Profiles on disk are
+never mutated. Profiles whose API key isn't configured surface a
+`no key` suffix in the picker and the submit button disables with
+an inline pointer to Settings → LLM. The Advanced block also gates
+`thinking_budget` and the `logprob_*` rows on whether the
+`(provider, model)` pair actually supports those knobs — the
+capability table now lives centrally at `amx/llm/capabilities.py`
+and ships through `GET /api/llm/capabilities`.
+
+CLI parity: `/variations <result_id> <letter>` mirrors the modal
+flow (`A` / zero-based index both accepted, `--mode`,
+`--instructions`, `--temperature`). When `--mode` is omitted the
+CLI defaults to the parent run's `alternatives_mode` so a follow-up
+exploration stays consistent.
+
+Backend: new `POST /api/runs/variations` endpoint (separate from
+`/rerun-item` because the wire shape differs: `result_id` +
+`alternative_index` + `seed_text` + top-level `mode` instead of
+`result_ids`). `LLMOverrides.profile` lets callers swap the whole
+saved-profile bundle atomically; unknown profile names degrade
+safely to the active profile. The profiles router exposes
+`has_credentials` with a lazy in-process cache: literal keys take a
+fast path with no keyring lookup; `keyring:` references resolve once
+per `(profile, ref)` pair and are invalidated on profile mutation.
+`GET /api/runs/{id}/results?include_descendants=true` returns the
+descendant Variations + Re-Run tree (Variations recurse three
+levels, Re-Run one) — wired ahead of the upcoming inline-nested
+run-detail display.
+
 ### Re-Run modal: full LLM override parity with RunNew
 
 Studio's **Re-Run modal** (asset-row ↻ and the multi-select batch

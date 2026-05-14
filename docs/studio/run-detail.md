@@ -74,6 +74,18 @@ Expandable per-row sections show alternatives (with a one-click "promote"
 button on each), citations with snippet previews, the model's reasoning,
 and the version history when this row has been re-run.
 
+### Variations from an alternative ✨
+
+Every alternative on a multi-alt row carries a small ✨ trigger next
+to its confidence badge. Click it to open the
+[Variations](variations.md) modal — the chosen alternative is used as
+a seed, and the new run is anchored on it under either `semantic`
+(paraphrase) or `lexical` (shared vocabulary) mode. The new run
+appears in `/history`; the source row carries an audit pointer back
+to the seed via `parent_run_id` + `seed_alternative_id`. The trigger
+is hidden when the row has fewer than two alternatives — nothing to
+vary around.
+
 ### Scope
 
 JSON editor showing the scope the run was submitted with — useful when

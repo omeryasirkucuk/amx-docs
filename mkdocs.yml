@@ -154,6 +154,7 @@ nav:
       - Browse: studio/browse.md
       - Runs: studio/runs.md
       - Run detail: studio/run-detail.md
+      - Variations: studio/variations.md
       - Compare: studio/compare.md
       - Ask: studio/ask.md
       - Pending: studio/pending.md
