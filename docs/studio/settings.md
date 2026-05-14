@@ -38,6 +38,20 @@ The **Add new profile** wizard:
 - Model dropdown — populated from the provider's offerings, or a
   free-text field
 - API-key / base-URL fields appropriate for the provider
+- **Alternatives per column** slider (1–5) — how many candidate
+  descriptions the LLM emits per column.
+- **Alternatives diversity mode** segmented control — choose whether
+  those candidates are paraphrases (`semantic`) or
+  shared-vocabulary candidate meanings (`lexical`). Disabled when
+  alternatives per column is 1. See
+  [Alternatives mode](../concepts/alternatives-mode.md) for the full
+  reference and worked examples.
+- **Confidence signal** dropdown — which per-alternative scorer
+  drives the HIGH / MED / LOW pill on each row:
+  `self_consistency` (default), `logprob`, `self_decl`, `judge`,
+  `none`. See [Confidence signals](../concepts/confidence-signals.md)
+  for what each one measures, score ranges, and how to tune the
+  bands.
 - Optional per-model price override — pre-filled with the auto-detected
   public rate, so an override is a deliberate tweak rather than a
   re-keying chore

@@ -131,6 +131,8 @@ nav:
   - Concepts:
       - Architecture: concepts/architecture.md
       - Agents: concepts/agents.md
+      - Alternatives mode: concepts/alternatives-mode.md
+      - Confidence signals: concepts/confidence-signals.md
       - Universal Metadata: concepts/universal-metadata.md
       - Multi-profile scoping: concepts/scoping.md
       - Human in the Loop: concepts/human-in-the-loop.md

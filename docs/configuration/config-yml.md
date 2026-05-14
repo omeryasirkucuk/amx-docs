@@ -170,6 +170,8 @@ llm:
   column_batch_size: 10
   logprob_high: 0.85
   logprob_medium: 0.50
+  alternatives_mode: semantic         # diversity dimension; see Concepts → Alternatives mode
+  confidence_signal: self_consistency # per-alternative scorer; see Concepts → Confidence signals
 
 llm_profiles:
   openai-prod:
@@ -181,6 +183,8 @@ llm_profiles:
     column_batch_size: 10
     logprob_high: 0.85
     logprob_medium: 0.50
+    alternatives_mode: semantic         # or: lexical
+    confidence_signal: self_consistency # or: logprob | self_decl | judge | none
 
   anthropic-deep:
     provider: anthropic
@@ -227,6 +231,20 @@ history_store_enabled: false
 history_store_profile: ""        # name of a db_profile entry
 history_store_schema: AMX
 ```
+
+Two of the LLM-profile knobs in the example above shape the *kind* of
+output AMX produces rather than which model runs:
+
+* `alternatives_mode` controls whether `DESCRIPTION_2..N` are
+  paraphrases of `DESCRIPTION_1` (`semantic`) or share vocabulary
+  with shifted meaning (`lexical`). See
+  [Alternatives mode](../concepts/alternatives-mode.md) for the full
+  reference and worked examples.
+* `confidence_signal` picks which scorer drives the HIGH / MED / LOW
+  pill on each alternative. Options: `self_consistency` (default),
+  `logprob`, `self_decl`, `judge`, `none`. See
+  [Confidence signals](../concepts/confidence-signals.md) for what
+  each one measures and how to read the bands.
 
 ## Field reference (per profile)
 

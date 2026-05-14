@@ -8,6 +8,31 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### Docs — Alternatives mode + Confidence signals
+
+Two new Concepts pages cover features that were under-documented:
+
+- **[Alternatives mode](concepts/alternatives-mode.md)** explains the
+  `semantic` vs `lexical` diversity dimension on every LLM profile.
+  Includes the Definition 1 wording (semantic = paraphrase / same
+  meaning, different words; lexical = shared vocabulary / shifted
+  meaning), worked examples per mode, profile + per-run set
+  instructions for CLI and Studio, and where the
+  `[Semantic]` / `[Lexical]` badge surfaces in results.
+- **[Confidence signals](concepts/confidence-signals.md)** documents
+  the five scorers (`self_consistency`, `logprob`, `self_decl`,
+  `judge`, `none`) end-to-end: what each one measures, how it's
+  computed at a high level, the score range, how to read the HIGH /
+  MED / LOW bands, and the per-`alternatives_mode` expected SC
+  distribution that AMX's runtime guardrail watches. Includes a
+  short "how to read the score" guide for non-ML-literate readers.
+
+[`config.yml`](configuration/config-yml.md) gains the
+`alternatives_mode` and `confidence_signal` rows in the LLM-profile
+example and a cross-link block after it.
+[Run & Apply](cli/run-and-apply.md), [Setup](cli/setup.md), and
+[Studio Settings](studio/settings.md) cross-link into the new pages.
+
 ### 0.14.0 — Live cost everywhere, Re-Run, Studio Landing
 
 Every LLM call AMX makes now reports tokens **and USD cost** at every

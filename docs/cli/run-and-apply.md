@@ -63,6 +63,14 @@ Or skip the picker by passing the scope on the command line: `/run sales`,
   Review with /run review (or /apply to write back).
 ```
 
+The `Confidence: high N · medium N · low N` line is bucketed from the
+per-alternative scorer set on the active LLM profile
+(`confidence_signal`). The default is `self_consistency`; see
+[Confidence signals](../concepts/confidence-signals.md) for the four
+other scorers and how to read each band. The character of the
+generated alternatives is in turn shaped by `alternatives_mode` —
+[paraphrases vs shared-vocabulary candidate meanings](../concepts/alternatives-mode.md).
+
 Per-batch token and USD cost are reported live for every LLM-using step
 (`/run`, `/run-apply`, `/generate`, `/ask`). Cost is computed against the
 versioned per-(provider, model) pricing table AMX caches on disk; see
