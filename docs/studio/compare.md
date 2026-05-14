@@ -53,6 +53,34 @@ any of the selected runs. Columns are arranged left-to-right by run:
 Cells are clickable — drill into the corresponding [Run detail](run-detail.md)
 row, or edit inline.
 
+#### Stacked versions per cell
+
+When a run had Re-Run or Variations triggered against one of its
+assets, the descendant rows render **inline under the v1 cell** in
+the same column. The v1 description shows first with a small `v1`
+chip; v2 / v3 / … descendants stack below it with a left-border
+accent and their own `v2` / `v3` chip. A descendant whose
+`alternatives_mode` is `lexical` carries a compact `L` chip
+(tooltip: *lexical — same vocabulary, distinct candidate
+meaning*); `semantic` carries an `S` chip (tooltip: *semantic —
+paraphrase of the seed*). The seed text is also surfaced on the
+chip tooltip for Variations descendants so you can see at a glance
+which alternative the variation was anchored on.
+
+Per-version mode chips inline beneath the cell describe each
+descendant's own mode. The mode chip in the column header above
+continues to reflect the parent run's v1 mode — descendant modes
+can diverge from the parent (a `semantic` run can spawn a
+`lexical` variation), and the per-version chips make that
+divergence visible without you having to navigate into the
+descendant run.
+
+The winner ring (the highlighted cell with the highest logprob)
+still compares v1's logprob across runs; descendants are
+peer-rendered to v1 rather than competing for the winner
+highlight. See [Variations](variations.md) for how descendants
+are generated.
+
 ## Ask AMX hand-off
 
 The **Ask AMX** button above the grid closes the comparison and opens

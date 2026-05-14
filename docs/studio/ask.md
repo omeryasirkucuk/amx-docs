@@ -57,6 +57,35 @@ Every assistant turn that called tools (`search_docs`, `search_catalog`,
 - Result preview (truncated to a few lines)
 - Citations, when present, as a collapsible block
 
+### Asking about variations and mode
+
+`describe_run` returns each result row with `alternatives_mode` at
+the top level and a `variations[]` array of v2 / v3+ descendants
+for that asset. Each variation entry carries its own `mode`
+(`semantic` / `lexical`), the `seed_alternative_text` the user
+picked, the `descendant_run_id`, and the variation's own
+alternatives. The agent is taught the `semantic` vs `lexical`
+contract: `semantic` means paraphrase of the seed (same factual
+content, different surface form); `lexical` means re-use of the
+seed's vocabulary with a distinct candidate meaning a reviewer
+can tell apart. Example prompts:
+
+- *"What variations did we try for `public.country.abbreviation`
+  in run #99 — were they semantic or lexical?"*
+- *"Evaluate the lexical variations on `sales.orders.status` in
+  run #142 and name the distinct candidate meaning each version
+  proposes."*
+- *"Compare v1 and v2 of `users.email_status` in run #67 — what
+  changed and what does the mode imply about the agent's
+  reasoning?"*
+
+For Re-Run descendants the `seed_alternative_text` is null (Re-Run
+regenerates from scratch rather than anchoring on a seed); the
+agent still surfaces `kind: "rerun"` and the descendant's mode so
+you can reason about diversity decisions across versions. See
+[Variations](variations.md) and
+[Alternatives diversity mode](../concepts/alternatives-mode.md).
+
 ### Answer footer
 
 Below each assistant turn:

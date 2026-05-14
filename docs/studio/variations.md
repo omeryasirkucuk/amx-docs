@@ -145,11 +145,61 @@ Every Variations run creates:
      the row (captures per-run profile overrides).
    - `alternatives_mode` — `semantic` or `lexical`, mirroring the
      top-level radio.
+   - `production_warning` — populated when the model under-produced
+     the configured `n_alternatives` and the agent had to top-up
+     retry or pad with FALLBACK strings to reach the target count.
+     Reads e.g. `produced 2 of 3 requested (retry got 0, fallback
+     padded 1)`. The run-detail row surfaces a ⚠ chip carrying
+     this text. See
+     [Alternatives diversity mode — hard guarantee on N](../concepts/alternatives-mode.md#hard-guarantee-on-n)
+     for the full mechanism.
 
 `/history show <new_run_id>` surfaces the variation as a normal row
 with the audit fields populated; the seed text is filtered out of
 the alternatives list so the new row carries only the *new*
 variations, not the seed itself.
+
+## Pending queue integration
+
+The new v2/v3 row lands in the pending queue automatically so a
+click on any of its alternatives writes through the same patch /
+apply path the rest of the SPA uses. Three rules govern the
+hand-off:
+
+1. **Auto-seed.** The new descendant row joins the queue with its
+   top alternative (`DESCRIPTION_1`) pre-picked as the chosen
+   description. You can swap to another alternative with a single
+   click — the existing "Stays in the queue" toast confirms.
+2. **Per-asset supersede.** Re-Run / Variations is an explicit
+   "redo this asset" action, so the new row replaces any prior
+   pending entry on the same `(schema, table, column,
+   asset_kind)`. The queue holds at most one entry per asset; v1
+   and v2 cannot both be queued for the same column.
+3. **Cross-version mutual exclusion.** When v2 is the holder, v1's
+   alternative buttons (and any earlier v2/v3) go non-clickable
+   with a tooltip pointing the user at the holder — *"Locked: this
+   asset already has a selection on v2. Deselect it there first to
+   pick from this version."* Deselect the holder's chosen
+   alternative to unlock the other versions.
+
+The "N queued" header and the *Apply pending queue (N)* CTA both
+tally entries on v2/v3 rows too, so the count reflects every
+descendant pick. See [Pending queue](pending.md) for the queue's
+overall lifecycle.
+
+## Asking the AMX agent about your variations
+
+Once a v2/v3 row has landed, the [Ask page](ask.md) agent can
+reason about it directly — the `describe_run` tool now surfaces a
+`variations[]` block per result and the agent has been taught the
+`semantic` vs `lexical` contract. Example prompt:
+
+> *What variations did we try for `public.country.abbreviation` in
+> run #99 — semantic or lexical, and how do they differ?*
+
+For lexical variations the agent names the distinct candidate
+meaning each version proposes; for semantic it explains what
+surface form changes between paraphrases.
 
 ## Out of scope (deliberate)
 

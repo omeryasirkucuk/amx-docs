@@ -74,6 +74,17 @@ Expandable per-row sections show alternatives (with a one-click "promote"
 button on each), citations with snippet previews, the model's reasoning,
 and the version history when this row has been re-run.
 
+**Production warning chip.** When the LLM under-produced the
+configured `n_alternatives` and the agent had to top-up retry
+and / or pad with FALLBACK strings to reach the target count,
+the row carries a ⚠ chip reading e.g.
+`produced 2 of 3 requested (retry got 0, fallback padded 1)`.
+The FALLBACK entries render with placeholder text so you can
+spot them and either accept the partial set, edit the chosen
+description inline, or trigger Re-Run with a different model.
+See [Alternatives diversity mode — hard guarantee on N](../concepts/alternatives-mode.md#hard-guarantee-on-n)
+for the mechanism.
+
 ### Variations from an alternative ✨
 
 Every alternative on a multi-alt row carries a small ✨ trigger next
@@ -136,6 +147,29 @@ comparable to its source rather than a fresh shot. Cost amortises
 across re-runs because the profiling step doesn't repeat. The saved
 LLM profile on disk is never mutated — the override only affects
 this single re-run job.
+
+### Pending queue handoff
+
+The new v2/v3 row lands in the pending queue automatically with
+its top alternative pre-picked, so a click on any of its
+alternative buttons routes through the existing patch / apply
+path:
+
+- **Auto-seed.** Top alternative becomes the chosen description.
+  Swap to another with one click.
+- **Per-asset supersede.** The new row replaces any prior pending
+  entry on the same `(schema, table, column, asset_kind)` — the
+  queue never holds two competing picks for the same column.
+- **Cross-version mutual exclusion.** Earlier versions of the
+  same asset go non-clickable while the latest holds the queue
+  entry; the tooltip points you at where to deselect first.
+- **Apply count.** The Apply pending queue CTA and the *N queued*
+  header tally entries on v2/v3 rows too, so a pick on any
+  descendant updates the count immediately.
+
+Variations behaves identically; the two paths share the same
+queue helper. See [Variations — Pending queue integration](variations.md#pending-queue-integration)
+and [Pending queue](pending.md) for the full lifecycle.
 
 **CLI parity exception.** The CLI does not expose a per-run
 `/rerun --alternatives-mode` (or `--confidence-signal`, etc.). The
