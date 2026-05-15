@@ -968,14 +968,44 @@ different identity raises <code>EmbeddingProviderMismatch</code> (Document RAG),
 (Catalog Search) — never silent re-embedding. Recovery commands per
 pipeline: <code>/docs reindex</code>, <code>/code-refresh</code>, <code>/search rebuild</code>.</p>
 <h3 id="2-chunking">2. Chunking<a class="headerlink" href="#2-chunking" title="Permanent link">&para;</a></h3>
-<p>Document RAG uses LangChain's <code>RecursiveCharacterTextSplitter</code> with
-the structural separator hierarchy <code>["\n\n", "\n", ". ", " ", ""]</code> —
-paragraph-aware first, then line, sentence, word, character. Default
-window: 1000 characters with 200-character overlap.</p>
-<p>Code RAG is <strong>AST-aware</strong> for Python: one chunk per function or class,
-with <code>start_line</code> and <code>end_line</code> preserved so citations point at the
-exact lines. Jupyter notebooks chunk one cell at a time. Other source
-languages fall back to a 4000-character recursive splitter.</p>
+<p>Document RAG dispatches by file extension via
+<code>amx.docs.splitters.get_splitter</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Extension</th>
+<th>Splitter</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.md</code> / <code>.markdown</code></td>
+<td>Markdown-header-aware (two-stage)</td>
+<td>Splits by <code>#</code>/<code>##</code>/<code>###</code> headers; records heading path on each chunk's <code>h1</code>/<code>h2</code>/<code>h3</code> metadata. Long sections are further chunked to fit the budget; header metadata propagates onto every sub-chunk. The heading line stays in the chunk body so the LLM sees the structure too.</td>
+</tr>
+<tr>
+<td><code>.txt</code>, <code>.pdf</code>, <code>.csv</code>, <code>.docx</code>, <code>.html</code>, <code>.py</code>, ...</td>
+<td><code>RecursiveCharacterTextSplitter</code></td>
+<td>Default. Structural separator hierarchy <code>["\n\n", "\n", ". ", " ", ""]</code> — paragraph → line → sentence → word → character. 1000 chars per chunk, 200-char overlap.</td>
+</tr>
+<tr>
+<td>Unknown extension</td>
+<td>Default (fallback)</td>
+<td>Never raises <code>KeyError</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The header metadata is the channel future prompt-assembly upgrades
+use for citation strings ("<code>orders.md → h2: total_amount</code>"). Chunks
+from non-Markdown extensions never have <code>h1</code>/<code>h2</code>/<code>h3</code> keys —
+downstream code that reads them treats absence as "no structural
+hint available."</p>
+<p>Code RAG is <strong>AST-aware</strong> for Python: one chunk per function or
+class, with <code>start_line</code> and <code>end_line</code> preserved so citations point
+at the exact lines. Jupyter notebooks chunk one cell at a time.
+Other source languages fall back to a 4000-character recursive
+splitter.</p>
 <p>Catalog Search does not chunk in the document sense — each catalog
 entity (a table or column) is its own "chunk" with structured
 metadata.</p>
@@ -1085,10 +1115,11 @@ crowd out other evidence.</p>
 <p>The architecture above is the current state. The following retrieval
 improvements are tracked and will land in sequence:</p>
 <ol>
-<li><strong>Format-dispatching chunker</strong> for Document RAG — Markdown-header-
-   aware, code-aware, CSV row-group, token-counted budgets, with the
-   existing AST chunker reused for <code>.py</code> files when they enter via
-   <code>/docs ingest</code>.</li>
+<li><strong>Format-dispatching chunker — follow-ups.</strong> F1.1 (Markdown
+   header awareness) shipped; F1.2 (token-counted budgets), F1.3
+   (<code>cfg.docs.chunking</code> knobs), F1.4 (chunker signature in
+   collection metadata), and the <code>.py</code> / <code>.csv</code> / <code>.pdf</code>
+   specialisations are open as follow-up PRs on the dispatcher seam.</li>
 <li><strong>FTS5 hybrid retrieval</strong> for Document RAG, mirroring the catalog
    pattern (BM25 sidecar + RRF fusion of dense and lexical results).</li>
 <li><strong>Cross-encoder rerank</strong> (opt-in) — replaces the heuristic with a
