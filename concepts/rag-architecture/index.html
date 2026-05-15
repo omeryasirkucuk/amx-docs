@@ -1018,6 +1018,7 @@ metadata.</p>
 <th>Lexical</th>
 <th>Fusion</th>
 <th>Rerank</th>
+<th>Diversity</th>
 </tr>
 </thead>
 <tbody>
@@ -1027,6 +1028,7 @@ metadata.</p>
 <td>SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool</td>
 <td>Reciprocal Rank Fusion (k=60) over the two channels</td>
 <td>Heuristic: <code>distance + token_overlap + explanatory_terms − header_penalty</code> over the fused pool</td>
+<td>MMR (λ=0.7) over the reranked pool, demotes near-duplicate chunks</td>
 </tr>
 <tr>
 <td>Code RAG</td>
@@ -1034,6 +1036,7 @@ metadata.</p>
 <td>Identifier-token overlap</td>
 <td>Additive weighted</td>
 <td><code>distance + 2.5 × keyword_overlap</code></td>
+<td>—</td>
 </tr>
 <tr>
 <td>Catalog Search</td>
@@ -1041,6 +1044,7 @@ metadata.</p>
 <td>SQLite FTS5 (BM25)</td>
 <td>Additive weighted</td>
 <td>Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
