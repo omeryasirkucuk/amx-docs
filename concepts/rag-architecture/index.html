@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/configuration/env-vars/">
+        <link rel="canonical" href="https://amxcli.com/concepts/rag-architecture/">
       
       
-        <link rel="prev" href="../config-yml/">
+        <link rel="prev" href="../agents/">
       
       
-        <link rel="next" href="../tls-and-proxies/">
+        <link rel="next" href="../alternatives-mode/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Environment variables - AMX</title>
+        <title>RAG architecture - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Environment variables — AMX CLI">
+  <meta property="og:title" content="RAG architecture — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/configuration/env-vars/">
+  <meta property="og:url" content="https://amxcli.com/concepts/rag-architecture/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Environment variables — AMX CLI">
+  <meta name="twitter:title" content="RAG architecture — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#environment-variables" class="md-skip">
+        <a href="#rag-architecture" class="md-skip">
           Skip to content
         </a>
       
@@ -213,7 +213,7 @@
           
           
           
-            <a href="../../concepts/architecture/">Concepts</a>
+            <a href="../architecture/" class="active">Concepts</a>
             
           
         
@@ -393,23 +393,23 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-concepts-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/architecture/"
+         href="../architecture/"
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/agents/"
-         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/rag-architecture/"
-         >RAG architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/alternatives-mode/"
+         href="../agents/"
+         >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">RAG architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../alternatives-mode/"
          >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/confidence-signals/"
+         href="../confidence-signals/"
          >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/universal-metadata/"
+         href="../universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/scoping/"
+         href="../scoping/"
          >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/human-in-the-loop/"
+         href="../human-in-the-loop/"
          >Human in the Loop</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/catalog-cache/"
+         href="../catalog-cache/"
          >Catalog cache</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-cli">
@@ -574,13 +574,13 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-configuration-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../config-yml/"
-         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../tls-and-proxies/"
+         href="../../configuration/config-yml/"
+         >config.yml</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/env-vars/"
+         >Environment variables</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../configuration/tls-and-proxies/"
          >TLS and proxies</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../profiling-modes/"
+         href="../../configuration/profiling-modes/"
          >Profiling modes</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-llm-providers">
@@ -749,33 +749,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#the-four-layers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        The four layers
       
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step-by-step
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Step-by-step">
+    <nav class="md-nav" aria-label="The four layers">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-override-the-config-dir-for-an-isolated-run" class="md-nav__link">
+  <a href="#1-embedding-layer" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Override the config dir for an isolated run
+        1. Embedding layer
       
     </span>
   </a>
@@ -783,10 +772,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-inject-secrets-via-env-in-ci" class="md-nav__link">
+  <a href="#2-chunking" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Inject secrets via env in CI
+        2. Chunking
       
     </span>
   </a>
@@ -794,10 +783,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider" class="md-nav__link">
+  <a href="#3-retrieval-rerank" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Point AMX at an Azure OpenAI endpoint without a separate provider
+        3. Retrieval + rerank
       
     </span>
   </a>
@@ -805,10 +794,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-verbose-logging-without-changing-the-yaml" class="md-nav__link">
+  <a href="#4-prompt-assembly" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Verbose logging without changing the YAML
+        4. Prompt assembly
       
     </span>
   </a>
@@ -821,104 +810,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#variable-reference" class="md-nav__link">
+  <a href="#defaults-at-a-glance" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Variable reference
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Variable reference">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#path-config" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Path / config
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#database-secrets-override-per-profile-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Database secrets (override per-profile values)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#llm-provider-keys" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LLM provider keys
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#llm-behaviour-reasoning-models-timeouts" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        LLM behaviour (reasoning models, timeouts)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#cloud-specific-authentication" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Cloud-specific authentication
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#tls-proxy" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        TLS / proxy
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#oracle-thick-mode" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Oracle thick mode
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#resolution-order" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Resolution order
+        Defaults at a glance
       
     </span>
   </a>
@@ -926,60 +821,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-patterns" class="md-nav__link">
+  <a href="#tuning-recommendations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample patterns
-      
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Sample patterns">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#ci-pipeline-no-secrets-on-disk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        CI pipeline (no secrets on disk)
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#one-off-scratch-profile-in-a-temp-dir" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        One-off scratch profile in a temp dir
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#debugging-a-corporate-proxy-blocked-llm-call" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Debugging a corporate-proxy-blocked LLM call
-      
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Verify
+        Tuning recommendations
       
     </span>
   </a>
@@ -987,21 +832,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
+  <a href="#roadmap" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshooting
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        What's next
+        Roadmap
       
     </span>
   </a>
@@ -1030,17 +864,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>Configuration</span>
+            <span>Concepts</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Environment variables</span>
+      <span>RAG architecture</span>
     </div>
   </div>
 
@@ -1049,428 +878,207 @@
 
 
 
-<h1 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h1>
-<p>A handful of <code>AMX_*</code> and standard env vars affect AMX's behaviour. None are required —
-the wizard works without setting any — but they let you keep secrets out of files,
-override config-yml entries for one shell, and integrate AMX into CI pipelines without
-hand-edits to <code>~/.amx/config.yml</code>. This page lists every variable AMX reads and shows
-the most useful patterns.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>AMX installed.</li>
-<li>A shell where you can <code>export</code> env vars (or a CI runner that injects them).</li>
-</ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-override-the-config-dir-for-an-isolated-run">1. Override the config dir for an isolated run<a class="headerlink" href="#1-override-the-config-dir-for-an-isolated-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span>/tmp/amx-test<span class="w"> </span>amx
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># inside the REPL:</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># &gt; /setup</span>
-</span></code></pre></div>
-<p>The wizard creates <code>/tmp/amx-test/config.yml</code> instead of touching <code>~/.amx</code>. Useful for:
-running AMX inside a sandbox; trying a clean config without losing your daily one;
-running CI tests that mustn't pollute the dev machine.</p>
-<h3 id="2-inject-secrets-via-env-in-ci">2. Inject secrets via env in CI<a class="headerlink" href="#2-inject-secrets-via-env-in-ci" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DB_PASSWORD</span><span class="s2">&quot;</span><span class="w">           </span><span class="c1"># CI secret</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPENAI_API_KEY</span><span class="s2">&quot;</span><span class="w">         </span><span class="c1"># CI secret</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>sales<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
-</span></code></pre></div>
-<p>With these env vars set, the YAML can ship <code>password: ""</code> and <code>api_key: ""</code> (no secrets
-on disk); AMX picks the values up from env at session start.</p>
-<h3 id="3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider">3. Point AMX at an Azure OpenAI endpoint without a separate provider<a class="headerlink" href="#3-point-amx-at-an-azure-openai-endpoint-without-a-separate-provider" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_BASE</span><span class="o">=</span><span class="s2">&quot;https://my-azure-openai.openai.azure.com/&quot;</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$AZURE_OPENAI_KEY</span><span class="s2">&quot;</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt;<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
-</span></code></pre></div>
-<p>The OpenAI provider transparently switches to Azure routing.</p>
-<h3 id="4-verbose-logging-without-changing-the-yaml">4. Verbose logging without changing the YAML<a class="headerlink" href="#4-verbose-logging-without-changing-the-yaml" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span>amx
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># inside the REPL:</span>
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># &gt; /run sales.customer</span>
-</span></code></pre></div>
-<p>Equivalent to passing <code>--debug</code> to every command in the session.</p>
-<h2 id="variable-reference">Variable reference<a class="headerlink" href="#variable-reference" title="Permanent link">&para;</a></h2>
-<h3 id="path-config">Path / config<a class="headerlink" href="#path-config" title="Permanent link">&para;</a></h3>
+<h1 id="rag-architecture">RAG architecture<a class="headerlink" href="#rag-architecture" title="Permanent link">&para;</a></h1>
+<p>AMX retrieves grounding evidence through three independent pipelines —
+<strong>Document RAG</strong>, <strong>Code RAG</strong>, and <strong>Catalog Search</strong> — that share a
+common four-layer shape: embed, chunk, retrieve, assemble.</p>
+<p>Each pipeline answers a different question:</p>
 <table>
 <thead>
 <tr>
-<th>Variable</th>
+<th>Pipeline</th>
+<th>Backing collection</th>
+<th>What it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Document RAG</strong></td>
+<td><code>amx_docs</code></td>
+<td>"What do my ingested docs say about this column / report / concept?"</td>
+</tr>
+<tr>
+<td><strong>Code RAG</strong></td>
+<td><code>amx_code</code></td>
+<td>"Where in the codebase is this column written, read, or transformed?"</td>
+</tr>
+<tr>
+<td><strong>Catalog Search</strong></td>
+<td><code>amx_search_&lt;profile&gt;</code></td>
+<td>"Which tables / columns match this question?" — backs <code>/ask</code> and <code>/search</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The pipelines never see each other's chunks. They run in parallel and
+their results meet at the orchestrator (see
+<a href="../architecture/">Architecture</a>).</p>
+<h2 id="the-four-layers">The four layers<a class="headerlink" href="#the-four-layers" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    Q[User question] --&gt; Embed
+    subgraph Pipeline
+        direction LR
+        Embed[Embedding layer] --&gt; Chunk[Chunking]
+        Chunk --&gt; Retrieve[Retrieval + rerank]
+        Retrieve --&gt; Assemble[Prompt assembly]
+    end
+    Assemble --&gt; LLM[LLM call]</code></pre>
+<h3 id="1-embedding-layer">1. Embedding layer<a class="headerlink" href="#1-embedding-layer" title="Permanent link">&para;</a></h3>
+<p>Pluggable per pipeline via <a href="../../cli/setup/"><code>/embeddings</code></a>. The
+default is <strong>MiniLM-L6-v2</strong> (384-dim, English, offline, bundled by
+Chroma) — small, deterministic, and zero-config. Three provider kinds
+are supported:</p>
+<table>
+<thead>
+<tr>
+<th>Kind</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>minilm</code></td>
+<td>Default; offline, fast, good baseline English retrieval.</td>
+</tr>
+<tr>
+<td><code>openai_compatible</code></td>
+<td>Any OpenAI-style <code>/embeddings</code> endpoint (OpenAI, Azure, vLLM, llama.cpp). Best quality for general English prose.</td>
+</tr>
+<tr>
+<td><code>sentence_transformers</code></td>
+<td>Local HuggingFace model. Useful for code-specialised or multilingual embedders.</td>
+</tr>
+</tbody>
+</table>
+<p>Each Document RAG / Code RAG collection records its
+<code>embedding_provider</code> and <code>embedding_model</code> in Chroma metadata on
+creation. Reopening a collection with a different provider raises
+<code>EmbeddingProviderMismatch</code> — the recovery is <code>/docs reindex</code> or
+<code>/code-refresh</code>, never silent re-embedding. Catalog Search's
+<code>/search rebuild</code> is the equivalent recovery for tables/columns.</p>
+<h3 id="2-chunking">2. Chunking<a class="headerlink" href="#2-chunking" title="Permanent link">&para;</a></h3>
+<p>Document RAG uses LangChain's <code>RecursiveCharacterTextSplitter</code> with
+the structural separator hierarchy <code>["\n\n", "\n", ". ", " ", ""]</code> —
+paragraph-aware first, then line, sentence, word, character. Default
+window: 1000 characters with 200-character overlap.</p>
+<p>Code RAG is <strong>AST-aware</strong> for Python: one chunk per function or class,
+with <code>start_line</code> and <code>end_line</code> preserved so citations point at the
+exact lines. Jupyter notebooks chunk one cell at a time. Other source
+languages fall back to a 4000-character recursive splitter.</p>
+<p>Catalog Search does not chunk in the document sense — each catalog
+entity (a table or column) is its own "chunk" with structured
+metadata.</p>
+<h3 id="3-retrieval-rerank">3. Retrieval + rerank<a class="headerlink" href="#3-retrieval-rerank" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Pipeline</th>
+<th>Vector</th>
+<th>Lexical</th>
+<th>Rerank</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Document RAG</td>
+<td>Chroma cosine, top-k over-fetched to <code>max(k, min(4k, 40))</code></td>
+<td>—</td>
+<td>Heuristic: <code>distance + token_overlap + explanatory_terms − header_penalty</code></td>
+</tr>
+<tr>
+<td>Code RAG</td>
+<td>Chroma cosine, top-k over-fetched</td>
+<td>Identifier-token overlap</td>
+<td>Hybrid: <code>distance + 2.5 × keyword_overlap</code></td>
+</tr>
+<tr>
+<td>Catalog Search</td>
+<td>Chroma cosine per profile</td>
+<td>SQLite FTS5 (BM25)</td>
+<td>Hybrid additive + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus</td>
+</tr>
+</tbody>
+</table>
+<p>The Catalog Search path also runs a two-pass LLM <strong>query planning</strong>
+step that classifies the question (<code>question_class</code>), surfaces entity
+hints, and may translate a non-English question into English search
+queries before retrieval.</p>
+<h3 id="4-prompt-assembly">4. Prompt assembly<a class="headerlink" href="#4-prompt-assembly" title="Permanent link">&para;</a></h3>
+<p>The RAG Agent assembles the retrieved chunks into the user message
+sent to the LLM. The chunks arrive in descending relevance and are
+truncated to <code>rag_max_chunks</code> (configurable per
+<a href="../../cli/run-and-apply/">prompt-detail preset</a>: 5 / 8 / 12 / 15).
+Per-chunk extractive compaction keeps the first ~1200 characters and
+the last ~300 characters of each chunk so very long documents don't
+crowd out other evidence.</p>
+<h2 id="defaults-at-a-glance">Defaults at a glance<a class="headerlink" href="#defaults-at-a-glance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Knob</th>
 <th>Default</th>
-<th>What it does</th>
+<th>Where to change</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>AMX_CONFIG_DIR</code></td>
-<td><code>~/.amx</code></td>
-<td>Where AMX reads / writes <code>config.yml</code>, sessions, history file, Chroma index</td>
+<td>Embedder</td>
+<td><code>minilm-l6-v2</code></td>
+<td><code>/embeddings</code></td>
 </tr>
 <tr>
-<td><code>AMX_LOG</code></td>
-<td><code>info</code></td>
-<td>Log level: <code>debug</code> / <code>info</code> / <code>warning</code> / <code>error</code></td>
+<td>Docs chunk size / overlap</td>
+<td>1000 chars / 200 chars</td>
+<td>hardcoded today; configurable in the chunking roadmap</td>
 </tr>
 <tr>
-<td><code>AMX_LOG_MAX_BYTES</code></td>
-<td><code>10485760</code> (10 MB)</td>
-<td>Rotating-handler ceiling for <code>~/.amx/logs/amx.log</code>. The active log is renamed to <code>amx.log.1</code> and a fresh file starts when it exceeds this size. Minimum <code>1024</code>.</td>
+<td>Code chunk strategy</td>
+<td>AST for Python, 4000-char for other code</td>
+<td>hardcoded</td>
 </tr>
 <tr>
-<td><code>AMX_LOG_BACKUP_COUNT</code></td>
-<td><code>5</code></td>
-<td>How many rotated <code>amx.log.N</code> archives to keep alongside the active file. Total disk footprint ≈ <code>AMX_LOG_MAX_BYTES * (1 + AMX_LOG_BACKUP_COUNT)</code> ≈ 60 MB by default. Set to <code>0</code> to keep one bounded file with no rollovers.</td>
+<td>Top-k retrieved</td>
+<td>5</td>
+<td><code>/docs search --results N</code> for ad-hoc; preset-driven for <code>/run</code></td>
 </tr>
 <tr>
-<td><code>AMX_NO_COLOR</code></td>
-<td>unset</td>
-<td>If set (any value), disable ANSI color in output</td>
-</tr>
-<tr>
-<td><code>AMX_NO_KEYRING</code></td>
-<td>unset</td>
-<td>If set, skip OS keychain — store secrets plaintext in <code>config.yml</code></td>
-</tr>
-<tr>
-<td><code>AMX_NO_NETWORK</code></td>
-<td>unset</td>
-<td>If set, skip the connectivity ping at every <code>/run</code> start</td>
-</tr>
-<tr>
-<td><code>AMX_PROFILE_DEFAULT</code></td>
-<td>unset</td>
-<td>Default profile name to use when none is active (rare; useful in CI)</td>
-</tr>
-<tr>
-<td><code>AMX_DEBUG</code></td>
-<td>unset</td>
-<td>If set to <code>1</code>, show full tracebacks on errors. Equivalent to passing <code>--debug</code></td>
-</tr>
-<tr>
-<td><code>AMX_NO_BANNER</code></td>
-<td>unset</td>
-<td>If set, suppress the AMX startup banner (useful for scripted invocations)</td>
-</tr>
-<tr>
-<td><code>AMX_THEME</code></td>
-<td>auto-detected</td>
-<td>Terminal color theme override (<code>dark</code> / <code>light</code>). AMX otherwise sniffs the terminal background</td>
-</tr>
-<tr>
-<td><code>AMX_AUTO_INSTALL</code></td>
-<td>unset</td>
-<td>If set, auto-install optional dependencies (DB drivers, LLM SDKs) on first use without prompting</td>
-</tr>
-<tr>
-<td><code>AMX_SKIP_BOOTSTRAP_TICK</code></td>
-<td>unset</td>
-<td>If set, skip the scheduled-runs tick at startup. Used by CI and scripted invocations to avoid kicking off background work</td>
-</tr>
-<tr>
-<td><code>AMX_SKIP_DRIFT_PROBE</code></td>
-<td>unset</td>
-<td>If set, skip the metadata-drift probe at startup</td>
+<td>Chunks fed to LLM</td>
+<td>8 (default preset)</td>
+<td>prompt-detail preset</td>
 </tr>
 </tbody>
 </table>
-<h3 id="database-secrets-override-per-profile-values">Database secrets (override per-profile values)<a class="headerlink" href="#database-secrets-override-per-profile-values" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AMX_DB_PASSWORD</code></td>
-<td>Override the active DB profile's password</td>
-</tr>
-<tr>
-<td><code>AMX_DB_HOST</code></td>
-<td>Override the active DB profile's host</td>
-</tr>
-<tr>
-<td><code>AMX_DB_USER</code></td>
-<td>Override the active DB profile's user</td>
-</tr>
-<tr>
-<td><code>AMX_DB_DATABASE</code></td>
-<td>Override the active DB profile's database</td>
-</tr>
-<tr>
-<td><code>PGHOST</code> / <code>PGPORT</code> / <code>PGUSER</code> / <code>PGPASSWORD</code> / <code>PGDATABASE</code></td>
-<td>Standard libpq vars; respected by the PostgreSQL adapter</td>
-</tr>
-<tr>
-<td><code>PGSSLMODE</code></td>
-<td><code>require</code> / <code>verify-ca</code> / <code>verify-full</code> — TLS mode for PostgreSQL</td>
-</tr>
-<tr>
-<td><code>MYSQL_HOST</code> / <code>MYSQL_PORT</code> / <code>MYSQL_USER</code> / <code>MYSQL_PWD</code></td>
-<td>Standard MySQL vars</td>
-</tr>
-<tr>
-<td><code>SNOWFLAKE_ACCOUNT</code> / <code>SNOWFLAKE_USER</code> / <code>SNOWFLAKE_PASSWORD</code> / <code>SNOWFLAKE_WAREHOUSE</code> / <code>SNOWFLAKE_ROLE</code></td>
-<td>Standard Snowflake vars</td>
-</tr>
-<tr>
-<td><code>DATABRICKS_HOST</code> / <code>DATABRICKS_TOKEN</code></td>
-<td>Standard Databricks vars</td>
-</tr>
-<tr>
-<td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
-<td>Path to BigQuery service-account JSON (overrides <code>credentials_path:</code>)</td>
-</tr>
-<tr>
-<td><code>AWS_PROFILE</code> / <code>AWS_REGION</code> / <code>AWS_ACCESS_KEY_ID</code> / <code>AWS_SECRET_ACCESS_KEY</code></td>
-<td>Standard boto3 vars; used by Redshift IAM auth</td>
-</tr>
-</tbody>
-</table>
-<h3 id="llm-provider-keys">LLM provider keys<a class="headerlink" href="#llm-provider-keys" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>OPENAI_API_KEY</code></td>
-<td>Used when an OpenAI profile has <code>api_key: ""</code></td>
-</tr>
-<tr>
-<td><code>OPENAI_API_BASE</code></td>
-<td>Override OpenAI base URL — Azure OpenAI / proxy use cases</td>
-</tr>
-<tr>
-<td><code>OPENAI_ORG_ID</code></td>
-<td>OpenAI organisation header</td>
-</tr>
-<tr>
-<td><code>ANTHROPIC_API_KEY</code></td>
-<td>Used when an Anthropic profile has <code>api_key: ""</code></td>
-</tr>
-<tr>
-<td><code>GOOGLE_API_KEY</code> / <code>GEMINI_API_KEY</code></td>
-<td>Used by the Gemini provider</td>
-</tr>
-<tr>
-<td><code>OPENROUTER_API_KEY</code></td>
-<td>OpenRouter</td>
-</tr>
-<tr>
-<td><code>DEEPSEEK_API_KEY</code></td>
-<td>DeepSeek</td>
-</tr>
-<tr>
-<td><code>AMX_LLM_API_KEY</code></td>
-<td>Fallback LLM API key — used by the active LLM profile when its <code>api_key</code> is blank and no provider-specific env var is set. Useful in environments where you can only inject one secret</td>
-</tr>
-</tbody>
-</table>
-<h3 id="llm-behaviour-reasoning-models-timeouts">LLM behaviour (reasoning models, timeouts)<a class="headerlink" href="#llm-behaviour-reasoning-models-timeouts" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Default</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AMX_LLM_MIN_MAX_TOKENS</code></td>
-<td><code>32768</code></td>
-<td>Output-token floor for recognised reasoning routes (Kimi K2.x, Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, OpenRouter thinking variants). Bump this if a reasoning model keeps hitting the ceiling. See <a href="../../llm-providers/#reasoning-models">LLM Providers</a></td>
-</tr>
-<tr>
-<td><code>AMX_LLM_TIMEOUT_SEC</code></td>
-<td>provider default</td>
-<td>Request timeout (seconds) for outgoing LLM calls. Raise it on slow networks; lower it to bail out faster on a stuck model</td>
-</tr>
-<tr>
-<td><code>AMX_REASONING_EFFORT</code></td>
-<td><code>low</code> for OpenRouter, model default elsewhere</td>
-<td>Reasoning effort level (<code>minimal</code> / <code>low</code> / <code>medium</code> / <code>high</code>). Only takes effect on routes that accept <code>reasoning.effort</code></td>
-</tr>
-</tbody>
-</table>
-<h3 id="cloud-specific-authentication">Cloud-specific authentication<a class="headerlink" href="#cloud-specific-authentication" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AMX_AZURE_CLIENT_ID</code> / <code>AMX_AZURE_CLIENT_SECRET</code> / <code>AMX_AZURE_TENANT_ID</code></td>
-<td>Azure service-principal credentials, used when an LLM or DB profile points at an Azure-hosted endpoint that requires AAD auth</td>
-</tr>
-<tr>
-<td><code>AMX_GOOGLE_SERVICE_ACCOUNT_JSON</code></td>
-<td>Path <strong>or</strong> inline JSON for a Google Cloud service account (BigQuery, Gemini). Takes precedence over <code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
-</tr>
-<tr>
-<td><code>AMX_GOOGLE_OAUTH_TOKEN_JSON</code></td>
-<td>Path <strong>or</strong> inline JSON for a Google OAuth user-token file. Used when service-account auth isn't an option</td>
-</tr>
-</tbody>
-</table>
-<h3 id="tls-proxy">TLS / proxy<a class="headerlink" href="#tls-proxy" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>HTTPS_PROXY</code> / <code>HTTP_PROXY</code></td>
-<td>Standard proxy vars; AMX uses urllib's resolution</td>
-</tr>
-<tr>
-<td><code>NO_PROXY</code></td>
-<td>Standard exclusion list</td>
-</tr>
-<tr>
-<td><code>REQUESTS_CA_BUNDLE</code></td>
-<td>CA bundle for HTTPS calls (LLM providers, Databricks, BigQuery)</td>
-</tr>
-<tr>
-<td><code>SSL_CERT_FILE</code></td>
-<td>Same as above; some libraries prefer this name</td>
-</tr>
-<tr>
-<td><code>AMX_CA_BUNDLE</code></td>
-<td>AMX-specific CA bundle path. Takes precedence over <code>REQUESTS_CA_BUNDLE</code> for AMX's own HTTPS clients</td>
-</tr>
-<tr>
-<td><code>AMX_INSECURE_SSL</code></td>
-<td>If <code>1</code>, disable SSL verification globally (development only — never set in production)</td>
-</tr>
-<tr>
-<td><code>AMX_DATABRICKS_TRUSTED_CA_FILE</code> / <code>DATABRICKS_TRUSTED_CA_FILE</code></td>
-<td>CA bundle path used by the Databricks adapter. <code>AMX_*</code> form takes precedence</td>
-</tr>
-<tr>
-<td><code>AMX_DBX_TLS_NO_VERIFY</code></td>
-<td>If set, disable TLS verification on Databricks (insecure debug)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="oracle-thick-mode">Oracle thick mode<a class="headerlink" href="#oracle-thick-mode" title="Permanent link">&para;</a></h3>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>What it does</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>AMX_ORACLE_LIB_DIR</code></td>
-<td>Path to Oracle Instant Client; switches the <code>oracledb</code> driver from thin to thick mode</td>
-</tr>
-<tr>
-<td><code>TNS_ADMIN</code></td>
-<td>Oracle TNS / wallet directory</td>
-</tr>
-</tbody>
-</table>
-<h2 id="resolution-order">Resolution order<a class="headerlink" href="#resolution-order" title="Permanent link">&para;</a></h2>
-<p>For any field that has a YAML value, an env var, AND a CLI flag, the order is:</p>
-<ol>
-<li><strong>CLI flag</strong> (highest priority — <code>--db-profile</code>, <code>--profiling-mode</code>, etc.)</li>
-<li><strong>Env var</strong> (e.g. <code>AMX_DB_PASSWORD</code>)</li>
-<li><strong>YAML value</strong> (<code>db_profiles.&lt;active&gt;.password</code>)</li>
-<li><strong>Default</strong> (lowest)</li>
-</ol>
-<p>This matches the convention used by most CLIs — explicit beats env beats config beats
-default.</p>
-<h2 id="sample-patterns">Sample patterns<a class="headerlink" href="#sample-patterns" title="Permanent link">&para;</a></h2>
-<h3 id="ci-pipeline-no-secrets-on-disk">CI pipeline (no secrets on disk)<a class="headerlink" href="#ci-pipeline-no-secrets-on-disk" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Repository: ~/.amx/config.yml committed with empty secrets</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>db_profiles:
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>ci:
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>backend:<span class="w"> </span>postgresql
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span>host:<span class="w"> </span><span class="s2">&quot;&quot;</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span>port:<span class="w"> </span><span class="m">5432</span>
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span>user:<span class="w"> </span><span class="s2">&quot;&quot;</span>
-</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span>password:<span class="w"> </span><span class="s2">&quot;&quot;</span>
-</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span>database:<span class="w"> </span>ci_test
-</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>active_db_profile:<span class="w"> </span>ci
-</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
-</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="c1"># CI runner injects env vars per job:</span>
-</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_HOST</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_HOST</span><span class="s2">&quot;</span>
-</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_USER</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_USER</span><span class="s2">&quot;</span>
-</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_PASSWORD</span><span class="s2">&quot;</span>
-</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_OPENAI_KEY</span><span class="s2">&quot;</span>
-</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
-</span></code></pre></div>
-<h3 id="one-off-scratch-profile-in-a-temp-dir">One-off scratch profile in a temp dir<a class="headerlink" href="#one-off-scratch-profile-in-a-temp-dir" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="w"> </span>amx
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>&gt;<span class="w"> </span>/setup
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># explore...</span>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&gt;<span class="w"> </span>/exit
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># the temp dir is auto-cleaned when the shell exits (it&#39;s just a normal dir)</span>
-</span></code></pre></div>
-<h3 id="debugging-a-corporate-proxy-blocked-llm-call">Debugging a corporate-proxy-blocked LLM call<a class="headerlink" href="#debugging-a-corporate-proxy-blocked-llm-call" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">HTTPS_PROXY</span><span class="o">=</span>http://proxy.corp:8080<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">REQUESTS_CA_BUNDLE</span><span class="o">=</span>/etc/ssl/corp-bundle.pem<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">AMX_LOG</span><span class="o">=</span>debug<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&gt;<span class="w"> </span>/llm<span class="w"> </span><span class="nb">test</span>
-</span></code></pre></div>
-<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>&gt; /config show --include-env</code> — pretty-prints the resolved values, marking which came from env (<code>&lt;- env: OPENAI_API_KEY</code>).</li>
-<li><code>&gt; /doctor</code> — verifies the env-derived secrets actually authenticate.</li>
-<li><code>&gt; /db connect</code> — runs a real round-trip with the resolved credentials.</li>
-</ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Env override seems ignored</td>
-<td>The YAML profile's value was non-empty (env only fills in blank fields)</td>
-<td>Set the YAML value to <code>""</code> to let env take over, OR use <code>--db-profile &lt;name-with-blank&gt;</code></td>
-</tr>
-<tr>
-<td><code>OPENAI_API_BASE</code> works for the SDK but not for <code>/llm test</code></td>
-<td>URL needs the trailing <code>/v1</code></td>
-<td>Set <code>https://my-azure.openai.azure.com/openai/deployments/&lt;deployment&gt;/</code>. Azure deployments are nested</td>
-</tr>
-<tr>
-<td><code>keyring://</code> URI not resolved</td>
-<td><code>AMX_NO_KEYRING</code> is set, OR no OS keychain is reachable</td>
-<td>Unset it, or install a keychain backend (<code>secretstorage</code> on Linux); fallback is plaintext in YAML with <code>chmod 600</code></td>
-</tr>
-<tr>
-<td><code>AWS_*</code> env vars ignored on Redshift IAM auth</td>
-<td>The YAML profile has a non-empty <code>password</code></td>
-<td>Set <code>password: ""</code> in the YAML; AMX uses IAM only when password is blank</td>
-</tr>
-</tbody>
-</table>
-<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<h2 id="tuning-recommendations">Tuning recommendations<a class="headerlink" href="#tuning-recommendations" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../config-yml/"><code>config.yml</code></a> — what fields these env vars actually override.</li>
-<li><a href="../tls-and-proxies/">TLS and proxies</a> — full proxy / CA bundle walkthrough.</li>
-<li><a href="../../backends/">Per-backend pages</a> — backend-specific env vars (e.g. <code>PGSSLMODE</code> for PostgreSQL).</li>
+<li><strong>English prose corpora</strong>: default MiniLM is fine. For higher
+  quality without leaving offline, switch to <code>bge-small-en-v1.5</code> via
+  <code>/embeddings sentence_transformers BAAI/bge-small-en-v1.5</code>.</li>
+<li><strong>Code-heavy corpora</strong>: switching the Code RAG embedder to a
+  code-specialised model improves identifier-heavy retrieval; see
+  the rollout below.</li>
+<li><strong>Long-form questions</strong>: bump <code>rag_max_chunks</code> via the
+  <code>detailed</code> / <code>full</code> prompt preset.</li>
 </ul>
+<h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
+<p>The architecture above is the current state. The following retrieval
+improvements are tracked and will land in sequence:</p>
+<ol>
+<li><strong>Format-dispatching chunker</strong> for Document RAG — Markdown-header-
+   aware, code-aware, CSV row-group, token-counted budgets, with the
+   existing AST chunker reused for <code>.py</code> files when they enter via
+   <code>/docs ingest</code>.</li>
+<li><strong>FTS5 hybrid retrieval</strong> for Document RAG, mirroring the catalog
+   pattern (BM25 sidecar + RRF fusion of dense and lexical results).</li>
+<li><strong>Cross-encoder rerank</strong> (opt-in) — replaces the heuristic with a
+   model-based reranker for the top-K candidate pool.</li>
+<li><strong>Query rewriting</strong> for Document RAG, reusing the catalog planner.</li>
+<li><strong>Edges-first context assembly</strong> — places the highest-relevance
+   chunks at both ends of the prompt to recover the "lost in the
+   middle" attention gap.</li>
+<li><strong>Per-model context budget</strong> — replaces the heuristic 3× output
+   budget with a real per-provider input window lookup.</li>
+</ol>
+<p>Each step ships with a measurable retrieval delta against the
+<a href="../../evaluation/retrieval-eval/">retrieval evaluation harness</a>.</p>
 
 
 
