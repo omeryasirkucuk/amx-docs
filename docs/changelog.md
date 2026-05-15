@@ -8,6 +8,45 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.15.0 — Scheduled jobs, hybrid RAG, LLM price browser
+
+Recurring runs ship as a first-class feature: a cron-based daemon runs
+on macOS, Linux, and Windows; Studio adds a schedule edit dialog and a
+one-click install/uninstall flow. The scheduler plumbs the full cascading
+scope tree (profile → database → schema → table → column) into the
+orchestrator and persists `column_overrides` so a "/analyze on Mondays"
+schedule lands exactly the same scope you would have picked
+interactively.
+
+Document RAG gets serious hardening. An FTS5 sidecar with RRF fusion
+adds hybrid lexical + semantic retrieval; an opt-in cross-encoder
+reranks the top candidates; MMR diversity reorders the rerank output
+to avoid near-duplicates; a format-dispatching chunker respects
+Markdown headers so chunk boundaries fall on natural sections. A
+gold-set runner with a baseline regression CI gate locks retrieval
+quality in place. Edges-first context assembly with a model-aware
+budget gives the agent the citation chain it actually needs to ground
+its answer.
+
+The LLM price browser lets you pick prices for any LiteLLM /
+OpenRouter model from Studio or CLI; the sidebar surfaces the live
+token-consuming rate and the run detail page records both the price
+the run actually used and the price it would consume today. Code RAG
+defaults to `jina-embeddings-v2-base-code` (MiniLM fallback) and
+collection identity v2 records `embedding_dim` so port mismatches
+surface in Catalog Search instead of silently returning wrong
+neighbours.
+
+The bulk-review UX adds filter / search / sort / group, multi-select
+with bulk actions, pagination, URL-shareable state, keyboard
+navigation, and column-level compare. Cancellation is now real across
+`/ask`, `/run`, and the scheduler: cancelled runs are tagged
+`cancelled` (never `success`), runs where every asset failed flip to
+`failed`, and the Studio SSE consumer no longer hangs waiting for a
+terminal frame. See the detailed sub-sections below for variations, the
+re-run modal override parity, the CLI override picker, and the docs
+update covering alternatives mode and confidence signals.
+
 ### Variations: seeded re-run + per-run model selector
 
 Studio's run-detail page now renders a ✨ trigger next to every
