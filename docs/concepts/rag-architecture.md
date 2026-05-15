@@ -94,9 +94,16 @@ metadata.
 
 | Pipeline | Vector | Lexical | Fusion | Rerank | Diversity |
 | --- | --- | --- | --- | --- | --- |
-| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool | Reciprocal Rank Fusion (k=60) over the two channels | Heuristic: `distance + token_overlap + explanatory_terms − header_penalty` over the fused pool | MMR (λ=0.7) over the reranked pool, demotes near-duplicate chunks |
+| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool | Reciprocal Rank Fusion (k=60) over the two channels | Heuristic (default): `distance + token_overlap + explanatory_terms − header_penalty`. Opt-in: cross-encoder (`cross-encoder/ms-marco-MiniLM-L-6-v2` ~80 MB, English) or `BAAI/bge-reranker-v2-m3` (~568 MB, multilingual) when `cfg.docs.rerank.kind` is set. | MMR (λ=0.7) over the reranked pool, demotes near-duplicate chunks |
 | Code RAG | Chroma cosine, top-k over-fetched | Identifier-token overlap | Additive weighted | `distance + 2.5 × keyword_overlap` | — |
 | Catalog Search | Chroma cosine per profile | SQLite FTS5 (BM25) | Additive weighted | Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus | — |
+
+The opt-in cross-encoder rerank requires
+`pip install "amx-cli[local-embeddings]"`. It replaces the
+heuristic when active; on any failure (extra not installed, model
+download blocked, prediction error) it logs a structured warning
+and returns the heuristic's ordering unchanged. The cross-encoder
+is a quality *upgrade*, never a single point of failure.
 
 For Document RAG specifically: every Chroma upsert mirrors the same
 chunk into a SQLite FTS5 sidecar at
