@@ -132,41 +132,46 @@ nav:
       - Architecture: concepts/architecture.md
       - Agents: concepts/agents.md
       - RAG architecture: concepts/rag-architecture.md
-      - Alternatives mode: concepts/alternatives-mode.md
-      - Confidence signals: concepts/confidence-signals.md
       - Universal Metadata: concepts/universal-metadata.md
       - Multi-profile scoping: concepts/scoping.md
       - Human in the Loop: concepts/human-in-the-loop.md
-      - Catalog cache: concepts/catalog-cache.md
+      - Catalog cache (architecture): concepts/catalog-cache.md
+      - Alternatives mode: concepts/alternatives-mode.md
+      - Confidence signals: concepts/confidence-signals.md
   - CLI:
       - Overview: cli/overview.md
-      - Setup: cli/setup.md
-      - Run & Apply: cli/run-and-apply.md
-      - Metadata: cli/metadata.md
-      - Schedules: cli/schedules.md
-      - Ask & Search: cli/ask-and-search.md
-      - Studio: cli/studio.md
-      - History: cli/history.md
-      - Doctor: cli/doctor.md
-      - Restore config: cli/restore-config.md
-      - Flags: cli/flags.md
+      - Core workflow:
+          - Setup: cli/setup.md
+          - Run & Apply: cli/run-and-apply.md
+          - Metadata: cli/metadata.md
+          - Ask & Search: cli/ask-and-search.md
+      - Schedules (CLI): cli/schedules.md
+      - Studio launcher: cli/studio.md
+      - Utilities:
+          - History: cli/history.md
+          - Doctor: cli/doctor.md
+          - Restore config: cli/restore-config.md
+          - Flags: cli/flags.md
   - Studio:
       - studio/index.md
       - Overview: studio/overview.md
-      - Browse: studio/browse.md
-      - Runs: studio/runs.md
-      - Run detail: studio/run-detail.md
-      - Variations: studio/variations.md
-      - Compare: studio/compare.md
-      - Ask: studio/ask.md
-      - Pending: studio/pending.md
-      - Audit: studio/audit.md
-      - Settings: studio/settings.md
-      - System: studio/system.md
-      - Schedules: studio/schedules.md
-      - Pricing: studio/pricing.md
-      - Catalog cache: studio/db-cache.md
-      - Keyboard: studio/keyboard.md
+      - Workspace:
+          - Browse: studio/browse.md
+          - Audit: studio/audit.md
+      - Runs & analysis:
+          - Runs: studio/runs.md
+          - Run detail: studio/run-detail.md
+          - Variations: studio/variations.md
+          - Compare: studio/compare.md
+      - Ask:
+          - Ask: studio/ask.md
+          - Pending: studio/pending.md
+      - Operations:
+          - Settings: studio/settings.md
+          - System: studio/system.md
+          - Schedules (UI): studio/schedules.md
+          - Catalog cache (UI): studio/db-cache.md
+          - Pricing: studio/pricing.md
   - Backends:
       - Overview: backends/index.md
       - PostgreSQL: backends/postgresql.md
@@ -218,6 +223,7 @@ nav:
           - FAQ: troubleshooting/faq.md
           - Diagnostics: troubleshooting/doctor.md
           - Common errors: troubleshooting/common-errors.md
+      - Keyboard shortcuts: studio/keyboard.md
       - Project:
           - Python API: api/index.md
           - API Reference: api/reference.md
