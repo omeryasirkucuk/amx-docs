@@ -92,11 +92,11 @@ metadata.
 
 ### 3. Retrieval + rerank
 
-| Pipeline | Vector | Lexical | Fusion | Rerank |
-| --- | --- | --- | --- | --- |
-| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool | Reciprocal Rank Fusion (k=60) over the two channels | Heuristic: `distance + token_overlap + explanatory_terms − header_penalty` over the fused pool |
-| Code RAG | Chroma cosine, top-k over-fetched | Identifier-token overlap | Additive weighted | `distance + 2.5 × keyword_overlap` |
-| Catalog Search | Chroma cosine per profile | SQLite FTS5 (BM25) | Additive weighted | Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus |
+| Pipeline | Vector | Lexical | Fusion | Rerank | Diversity |
+| --- | --- | --- | --- | --- | --- |
+| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool | Reciprocal Rank Fusion (k=60) over the two channels | Heuristic: `distance + token_overlap + explanatory_terms − header_penalty` over the fused pool | MMR (λ=0.7) over the reranked pool, demotes near-duplicate chunks |
+| Code RAG | Chroma cosine, top-k over-fetched | Identifier-token overlap | Additive weighted | `distance + 2.5 × keyword_overlap` | — |
+| Catalog Search | Chroma cosine per profile | SQLite FTS5 (BM25) | Additive weighted | Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus | — |
 
 For Document RAG specifically: every Chroma upsert mirrors the same
 chunk into a SQLite FTS5 sidecar at
