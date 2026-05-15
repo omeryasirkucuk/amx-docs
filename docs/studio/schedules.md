@@ -1,7 +1,12 @@
 # Schedules
 
-`/runs/schedules` manages one-shot scheduled metadata runs and the
+`/runs/schedules` manages LLM-driven metadata analysis schedules and the
 background daemon that fires them.
+
+!!! note "Cache refresh schedules are on a different page"
+    Scheduled cache refreshes (`kind='cache_refresh'`) are managed from
+    [Catalog cache](db-cache.md#scheduled-refreshes), not here. This page
+    covers `kind='analyze'` runs only — the LLM-annotated metadata passes.
 
 ## Daemon status
 
