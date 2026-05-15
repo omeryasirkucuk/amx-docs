@@ -291,12 +291,3 @@ the root prompt.
 1. `> /help` — full command list, grouped by namespace.
 2. `> /db` then `>back` — confirms namespace navigation works.
 3. `> /doctor` — confirms profiles activate and reach their endpoints.
-
-## What's next
-
-- [Quick start](../getting-started/quickstart.md) — five-minute walkthrough using PostgreSQL + OpenAI.
-- [Run & Apply](run-and-apply.md) — the heart of the workflow: `/run`, review wizard, `/apply`.
-- [Setup wizard](setup.md) — first-time `/setup` walkthrough.
-- [`/analyze schedule`](schedules.md) — one-shot scheduled metadata runs and daemon controls.
-- [`/restore-config`](restore-config.md) — recover `~/.amx/config.yml` from a rotated backup.
-- [`/studio`](studio.md) — same workflow on a local web UI (AMX Studio) when you'd rather see everything at once.

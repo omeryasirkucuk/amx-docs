@@ -81,10 +81,3 @@ isn't quite true — a handful of CLI commands (e.g. `/restore-config`,
 `/doctor`-style diagnostics) are surfaced only inside the System page or
 not exposed at all. Where parity exists, the relevant Studio page links to
 the equivalent CLI command(s).
-
-## What's next
-
-- Read the [Overview](overview.md) for the landing and dashboard layout.
-- Or jump to [Browse](browse.md) to start exploring schemas and editing
-  comments.
-- For the CLI-side launcher entry point, see [`/studio`](../cli/studio.md).

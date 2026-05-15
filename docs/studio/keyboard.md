@@ -40,8 +40,3 @@ tab, Pending queue):
 - `Esc` (while streaming) — cancel the in-flight answer
 - `Ctrl/Cmd-Up` / `Ctrl/Cmd-Down` — cycle through the prior questions in
   this session
-
-## What's next
-
-- [Run detail](run-detail.md) — where most of the keyboard surface lives.
-- [Ask](ask.md) — the chat-specific shortcuts.

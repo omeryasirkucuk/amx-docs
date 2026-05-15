@@ -95,9 +95,3 @@ doc profile linked to `prod-pg` is silent when `/ask` is running against
 | LLM tab | `/add-llm-profile`, `/use-llm`, `/temperature`, `/max-tokens`, `/n-alternatives`, `/cost` |
 | Docs tab | `/add-doc-profile`, `/doc-link`, `/scan`, `/ingest` |
 | Code tab | `/add-code-profile`, `/code-link`, `/code-scan` |
-
-## What's next
-
-- [System](system.md) — where indexing status, doctor, token usage live.
-- [Pricing](pricing.md) — the LLM pricing surface the LLM tab reads
-  from.

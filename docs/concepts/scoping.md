@@ -140,9 +140,3 @@ Scope spec: column:public.users.email,public.users.first_name
 Profile:    prod-pg
 Next fire:  2026-05-14 03:00 UTC
 ```
-
-## What's next
-
-- [`/analyze run`](../cli/run-and-apply.md) — the canonical command that consumes a scope.
-- [`/analyze schedule`](../cli/schedules.md) — schedules persist the scope spec verbatim.
-- [Studio](../cli/studio.md) — the multi-profile sidebar and `/runs/new` wizard.

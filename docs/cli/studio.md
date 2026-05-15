@@ -30,9 +30,3 @@ The full Studio reference lives in its own section:
 - [Browse, Runs, Run detail, Compare, Ask, Pending, Audit, Settings,
   System, Schedules, Pricing, DB cache, Keyboard](../studio/index.md#whats-where)
   — per-page walkthroughs
-
-## What's next
-
-- [Studio index](../studio/index.md) — every Studio page in one map.
-- [Responsive Studio](../guides/responsive-studio.md) — the mobile
-  pattern catalogue.

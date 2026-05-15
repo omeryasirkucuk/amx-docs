@@ -232,9 +232,3 @@ references on day one, the commercial alternatives are further along.
   AMX → OpenMetadata flow over locking into Collate's hosted plan.
 - **Together** — this is the canonical OSS stack for "fully open
   source, fully on-prem, full-featured catalog with AI descriptions".
-
-## What's next
-
-- [Benchmarks](benchmarks.md) — the evaluation gap and the protocol AMX will publish.
-- [Self-hosted by design](../index.md) — the compliance / data-sovereignty argument in detail.
-- [Backends](../backends/index.md) — the 10 supported backends with `/add-db-profile` walkthroughs.

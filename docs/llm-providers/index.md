@@ -133,9 +133,3 @@ amx /llm /use-rag-llm
 /use-rag-llm gpt-4o-mini       # pin the RAG agent to this profile
 /use-rag-llm none              # clear the override (RAG falls back to active)
 ```
-
-## What's next
-
-- [Quick start](../getting-started/quickstart.md) — five-minute install-to-first-comment walkthrough.
-- [Run & Apply](../cli/run-and-apply.md) — what happens between `/run` and `/apply`, including review-wizard keystrokes.
-- [Configuration: env vars](../configuration/env-vars.md) — provider-specific env vars (proxies, API base overrides).

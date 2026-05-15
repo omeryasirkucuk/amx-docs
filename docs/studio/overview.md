@@ -63,9 +63,3 @@ A fresh install lands on a landing with three placeholder cards:
 The dashboard mirrors this — every stat card shows `—` until at least one
 run has landed, and the **Recent runs** card renders an icon + "No runs
 yet" line.
-
-## What's next
-
-- [Browse](browse.md) — open a schema and start reviewing columns.
-- [Runs](runs.md) — full filterable history.
-- [System](system.md#token-usage) — windowed token + cost breakdown.

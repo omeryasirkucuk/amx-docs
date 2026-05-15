@@ -147,9 +147,3 @@ active_db_profile: prod-mysql
 | `(1142, "ALTER command denied to user")` mid-`/apply` | User can SELECT but lacks ALTER on the schema | `GRANT ALTER ON sales.* TO 'amx_reader'@'%';` |
 | `(2059, "Authentication plugin 'caching_sha2_password' cannot be loaded")` | Outdated client without the plugin (very old `cryptography`) | `pip install -U cryptography pymysql` and try again |
 | `(1366, "Incorrect string value: '\\xF0\\x9F…' for column 'comment'")` | The LLM output contains 4-byte UTF-8 (emoji); the column charset is `utf8` not `utf8mb4` | `ALTER TABLE … CONVERT TO CHARACTER SET utf8mb4;` or set the LLM profile to plain ASCII |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — sampled mode is the default for MySQL; `full` is fine for tables under a few million rows.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes and how `/apply` handles per-row failures.
-- [Shared history store](../collaboration/shared-history-store.md) — store the audit trail in the same MySQL instance for team workflows.

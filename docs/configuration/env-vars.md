@@ -214,9 +214,3 @@ AMX_LOG=debug \
 | `OPENAI_API_BASE` works for the SDK but not for `/llm test` | URL needs the trailing `/v1` | Set `https://my-azure.openai.azure.com/openai/deployments/<deployment>/`. Azure deployments are nested |
 | `keyring://` URI not resolved | `AMX_NO_KEYRING` is set, OR no OS keychain is reachable | Unset it, or install a keychain backend (`secretstorage` on Linux); fallback is plaintext in YAML with `chmod 600` |
 | `AWS_*` env vars ignored on Redshift IAM auth | The YAML profile has a non-empty `password` | Set `password: ""` in the YAML; AMX uses IAM only when password is blank |
-
-## What's next
-
-- [`config.yml`](config-yml.md) — what fields these env vars actually override.
-- [TLS and proxies](tls-and-proxies.md) — full proxy / CA bundle walkthrough.
-- [Per-backend pages](../backends/index.md) — backend-specific env vars (e.g. `PGSSLMODE` for PostgreSQL).

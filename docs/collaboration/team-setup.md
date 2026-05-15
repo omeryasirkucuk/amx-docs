@@ -165,9 +165,3 @@ history_store_schema: AMX
 | `psycopg.errors.UndefinedTable: relation "AMX.amx_history_runs" does not exist` | Schema name mismatch (lead used `amx`, member configured `AMX`) | Postgres folds unquoted identifiers to lowercase; use the same case on both sides |
 | `/history compare` shows `alice` and `bob` for the same person on different machines | `AMX_USER` not consistent with OS user | Set `AMX_USER=alice@acme.com` in shell init for predictable attribution |
 | Member can `/run` but `/apply` fails with `permission denied` on the audit insert | Member's DB role lacks `INSERT` on `AMX.amx_history_*` | Grant `INSERT, UPDATE ON AMX.amx_history_runs, AMX.amx_history_results TO <member-role>` |
-
-## What's next
-
-- [Shared history store](shared-history-store.md) — schema details, DDL, and migration.
-- [Safety guards](safety-guards.md) — what AMX prevents in shared mode (concurrent /apply on the same row, etc.).
-- [History](../cli/history.md) — `/history list`, `/history show`, `/history compare` reference.

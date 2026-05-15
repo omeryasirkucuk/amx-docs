@@ -79,11 +79,3 @@ confidence if `logprob_high` / `logprob_medium` flags fire empty.
 | `Unauthorized` on first call | Re-check `DEEPSEEK_API_KEY` or the YAML `api_key:` field. Keys start with `sk-`, like OpenAI |
 | Reasoning route returns 0 visible characters | The 32 768 floor wasn't enough — `export AMX_LLM_MIN_MAX_TOKENS=65536` and retry |
 | Rate-limit (429) on a bulk run | Lower `column_batch_size` or the new account's QPS cap — DeepSeek throttles aggressively on free-tier keys |
-
-## What's next
-
-- [Configuration: env vars → `DEEPSEEK_API_KEY`](../configuration/env-vars.md#llm-provider-keys)
-- [Run & Apply](../cli/run-and-apply.md) — what happens after this
-  profile is active.
-- [LLM Providers overview](index.md) — pick a different model for a
-  specific job.

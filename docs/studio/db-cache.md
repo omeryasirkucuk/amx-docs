@@ -162,11 +162,3 @@ recurring schedules re-arm to `status='pending'` with a fresh
 Schedule management for `cache_refresh` runs is Studio-first today;
 the existing `/schedule` CLI namespace handles `kind='analyze'`
 schedules.
-
-## What's next
-
-- [Concepts → Catalog cache](../concepts/catalog-cache.md) — what the
-  three cache tables actually store, how schedules re-arm, and when
-  to clear vs sync.
-- [Studio → Schedules](schedules.md) — the separate analyze-run
-  schedule page (LLM-driven metadata runs).

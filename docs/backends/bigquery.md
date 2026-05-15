@@ -158,9 +158,3 @@ active_db_profile: prod-bq
 | `Quota exceeded: Your project exceeded quota for free query bytes scanned` | Default project has the free-tier ceiling | Switch to a billed project, or set `profiling_mode: metadata` for the discovery sweep |
 | `400 Cannot read non-existent column …` mid-run | Sampled rows from a partition with a different schema | Run with `profiling_mode: metadata` first to confirm column lists per partition; then re-run on the latest partition explicitly |
 | `Bytes billed exceeded the maximum (10737418240)` | A `full`-mode `/run` hit your `max_bytes_billed` ceiling | Switch the table to `sampled` or raise the ceiling for the duration of the sweep |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — `metadata` for inventory, `sampled` for description drafting, `full` only when you need exact stats.
-- [Batch mode for LLM calls](../llm-providers/batch-mode.md) — pair with BigQuery `metadata` mode for dirt-cheap whole-warehouse description sweeps.
-- [Run & Apply](../cli/run-and-apply.md) — the review wizard, including how `/apply` handles partial failures.

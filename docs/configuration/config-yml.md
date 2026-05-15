@@ -278,9 +278,3 @@ output AMX produces rather than which model runs:
 | `unknown field 'foo' in profile 'bar'` | Hand-edit added a typo | Run `> /config validate` to surface the offending key |
 | Edits don't take effect | AMX caches at start; `/config reload` not run | `> /config reload` (or restart AMX) |
 | Multiple machines disagree on the audit trail | Local history is per-machine | Enable `history_store_enabled: true` — see [Shared history store](../collaboration/shared-history-store.md) |
-
-## What's next
-
-- [Environment variables](env-vars.md) — when env beats config-file edits.
-- [Profiling modes](profiling-modes.md) — `full` / `sampled` / `metadata` and what they mean per backend.
-- [TLS and proxies](tls-and-proxies.md) — when to add `tls_trusted_ca_file:` and where it gets picked up.

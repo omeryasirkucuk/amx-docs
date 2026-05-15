@@ -95,8 +95,3 @@ forcing you back to this page.
 |---|---|
 | Compare grid | `/history compare [--last N] [run_ids…] [--by DIMENSION]` |
 | Ask AMX hand-off | `/ask "compare runs 58, 59"` |
-
-## What's next
-
-- [Ask](ask.md) — the chat surface the Ask AMX button opens.
-- [Run detail](run-detail.md) — drill into a single run.

@@ -157,9 +157,3 @@ llm_profiles:
 | `batch_max_wait_s` exceeded | Schema is wider than the timeout allows | Bump `batch_max_wait_s` to `172800` (48 h) or split the schema across multiple `/run` calls |
 | Anthropic batch job returns half the columns | Anthropic batch supports up to 100k requests per job — but each request is one column batch, not one column | Confirm `column_batch_size` is 20+ so you stay under the request cap |
 | Cost was higher than estimate | The estimate is provider-list-price × tokens; usage tier discounts and prompt-caching discounts aren't included | Check the dashboard "Costs" view for the actual billed amount |
-
-## What's next
-
-- [Run & Apply](../cli/run-and-apply.md) — `/run review` walks you through batch results once they're back.
-- [Guides: Batch a large schema](../guides/batch-large-schema.md) — full end-to-end procedure with checkpointing across multiple batches.
-- [OpenAI](openai.md) / [Anthropic](anthropic.md) — switch the underlying model without re-creating the profile.

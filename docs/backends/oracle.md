@@ -170,9 +170,3 @@ db_profiles:
 | `ORA-00942: table or view does not exist` during `/run` | Connecting user lacks SELECT on the target schema's tables (catalog row missing) | `GRANT SELECT ON SALES.CUSTOMER TO AMX_READER;` (or grant `SELECT_CATALOG_ROLE` for blanket read) |
 | `ORA-01031: insufficient privileges` mid-`/apply` | User lacks `COMMENT ANY TABLE` (or owner-level access) | `GRANT COMMENT ANY TABLE TO AMX_READER;` or run `/apply` as the schema owner |
 | `DPY-3002: connection abandoned by server` mid-run | Long-running scan tripped Resource Manager limits | Set `profiling_mode: sampled` and reduce `profiling_sample_size`; talk to the DBA about a higher limit for the AMX session |
-
-## What's next
-
-- [Environment variables](../configuration/env-vars.md) — `AMX_ORACLE_LIB_DIR` for thick-mode / Kerberos use.
-- [Profiling modes](../configuration/profiling-modes.md) — sampled is the safe default; `metadata` for inventory-only sweeps.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes and per-row error handling on `/apply`.

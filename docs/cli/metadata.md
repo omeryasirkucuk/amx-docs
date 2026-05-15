@@ -98,12 +98,3 @@ the Studio Pending page).
 After saving an edit, the next `/inspect` shows the new text immediately (it
 lives in the pending queue) and the underlying database is updated once you run
 `/apply`.
-
-## What's next
-
-- [Run & Apply](run-and-apply.md) — how the pending queue is materialised onto
-  the database via native `COMMENT ON` / `ALTER` statements.
-- [Human in the Loop](../concepts/human-in-the-loop.md) — review keys, bulk
-  accept, and the journey from suggestion to applied comment.
-- [Universal Metadata](../concepts/universal-metadata.md) — the engine-neutral
-  data model the `/metadata` commands operate on.

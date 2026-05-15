@@ -89,9 +89,3 @@ troubleshooting table → what to read next.
 - [Redshift](redshift.md) — Provisioned / Serverless, password / IAM auth.
 - [ClickHouse](clickhouse.md) — HTTP vs HTTPS port choice, history-store caveat.
 - [DuckDB](duckdb.md) — file vs `:memory:`, attached scanner workflows.
-
-## What's next
-
-- [Quick start](../getting-started/quickstart.md) — five-minute install-to-first-comment walkthrough using PostgreSQL.
-- [Profiling modes](../configuration/profiling-modes.md) — full / sampled / metadata trade-offs per backend.
-- [Run & Apply](../cli/run-and-apply.md) — what happens between `/run` and `/apply`, including review-wizard keystrokes.

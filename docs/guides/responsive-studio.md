@@ -98,11 +98,3 @@ the tab) to force the swap.
    intentionally allow it (Usage table, Compare grid, Audit diffs).
 4. Open a Schedule edit dialog — it should fill the phone screen, not
    spill off the right edge.
-
-## What's next
-
-- [Studio overview](../cli/studio.md) — the desktop counterpart to this
-  guide; same routes, denser surface.
-- [Multi-profile scoping](../concepts/scoping.md) — the picker is the
-  same on phone and desktop; the off-canvas sidebar is the phone shell
-  for it.

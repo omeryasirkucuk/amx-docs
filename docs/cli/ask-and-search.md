@@ -356,9 +356,3 @@ search:
 | `/ask` answer contradicts the citations | Prompt regression — file an issue with the run id from `/history list` | Workaround: lower `n_alternatives` to 1 to make answers more conservative |
 | `/sync` is slow on every run | Embedding-model latency, not AMX | Use a smaller model: `embedding_model: openai/text-embedding-3-small` |
 | Out-of-disk after several rebuilds | Chroma index isn't garbage-collected | `> /search rebuild` (drops the old index) or `rm -rf ~/.amx/chroma` and re-`/sync` |
-
-## What's next
-
-- [Search catalog](../data-sources/search-catalog.md) — how the catalog is built, when to `/sync` vs `/rebuild`.
-- [Documents](../data-sources/documents.md) / [Codebase](../data-sources/codebase.md) — feed external context so `/ask` can answer "where is the retention policy" with real evidence.
-- [Run & Apply](run-and-apply.md) — write descriptions back so `/ask` has more to retrieve from next time.

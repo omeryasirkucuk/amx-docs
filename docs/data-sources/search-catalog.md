@@ -178,9 +178,3 @@ For larger / more nuanced catalogs, switch to `openai/text-embedding-3-large` (a
 | Index dir size keeps growing forever | `/search rebuild` not run since several model swaps; orphan collections accumulate | `rm -rf ~/.amx/chroma` and `> /search rebuild` once |
 | Searches return only `db_catalog` results, never docs | Doc profile not active | `> /use-doc <name>` then re-run `/ask` |
 | `/sync` takes 10+ minutes on a small warehouse | Network round-trip to the embedding API per call | Use a batched embedding model (the OpenAI client batches automatically); confirm `OPENAI_API_BASE` isn't pointing at a slow proxy |
-
-## What's next
-
-- [Documents](documents.md) — populate the documents collection.
-- [Codebase](codebase.md) — populate the code_refs collection.
-- [Ask & Search](../cli/ask-and-search.md) — query the catalog conversationally.

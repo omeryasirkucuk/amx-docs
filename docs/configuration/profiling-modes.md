@@ -178,9 +178,3 @@ an unexpectedly huge table can't accidentally bill you for an hour-long warehous
 | All sampled output looks identical for a clustered column | Table is range-partitioned and the sample landed in one partition | Increase `profiling_sample_size`, or use `TABLESAMPLE SYSTEM` for block sampling |
 | `metadata` mode skipped a column | The column was added after the catalog stats were last refreshed | `> /sync` to refresh; or run `ANALYZE` on the table |
 | `profiling_max_rows` keeps tripping | Cap is set too low for tables you actually need full stats on | Raise the per-profile cap, or override per-run with `--profiling-max-rows` |
-
-## What's next
-
-- [Configuration: env vars](env-vars.md) — global overrides for sampling.
-- [Run & Apply](../cli/run-and-apply.md) — `/run` flag combinations including profiling overrides.
-- [Per-backend pages](../backends/index.md) — backend-specific notes on what `full` actually costs.

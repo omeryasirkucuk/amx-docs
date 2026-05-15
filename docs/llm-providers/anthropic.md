@@ -140,9 +140,3 @@ active_llm_profile: anthropic-prod
 | Lots of `low` confidence on otherwise simple columns | Default thresholds calibrated for `sonnet-4`; older Sonnet / Haiku gives lower derived confidence | `/logprob-thresholds 0.7 0.4` for older models |
 | `anthropic.BadRequestError: max_tokens: …` mid-`/run` | Column batch + thinking budget exceeded the model's context window | Lower `column_batch_size` or `thinking_budget_tokens` |
 | Cost surprise | Sonnet ≈ 3× Haiku per token; with `n_alternatives: 3` you're paying for three drafts per column | Drop to `claude-haiku-3-5-…` for sweeps, or use [Batch mode](batch-mode.md) for ~50% off |
-
-## What's next
-
-- [Batch mode](batch-mode.md) — Anthropic's batch API for cheap async drafts (~50% off, 24h SLA).
-- [OpenAI](openai.md) — same template; useful as a parallel profile for `/history compare`.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes for picking between Claude's alternatives.

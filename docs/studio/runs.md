@@ -83,9 +83,3 @@ the live `/runs/new-:jobId` route, which converts to the persisted
 | Cancel a running run | `Ctrl-C` in the REPL during the run |
 | `+ New run` button | `/run <scope>` |
 | Compare | `/history compare` |
-
-## What's next
-
-- [Run detail](run-detail.md) — tabs, filtering, inline edits, ReRun.
-- [Compare](compare.md) — side-by-side aggregate metrics.
-- [Pending](pending.md) — review queue produced by runs.

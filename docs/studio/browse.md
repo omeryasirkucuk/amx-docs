@@ -98,8 +98,3 @@ configured for the active DB scope.
 | Per-asset **Gen** | `/generate <db>.<schema>.<table>.<column>` |
 | Generate description (bulk) | `/run <scope>` |
 | Refresh sidebar tier | `/sync --db-profile <name>` |
-
-## What's next
-
-- [Pending](pending.md) — review and apply draft comments.
-- [Run detail](run-detail.md) — what a bulk run produces.

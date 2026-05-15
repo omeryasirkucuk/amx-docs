@@ -150,9 +150,3 @@ separate provider.
 | All suggestions land in `low` confidence | Reasoning model returns no logprobs the way chat models do | Use a chat model (`gpt-4o`) for AMX, OR loosen the thresholds via `/logprob-thresholds 0.7 0.4` so reasoning-model output isn't punished |
 | `openai.APIConnectionError: Connection error` repeatedly | Corporate proxy intercepting TLS | Set `HTTPS_PROXY` and a CA bundle (`SSL_CERT_FILE`); see [TLS and proxies](../configuration/tls-and-proxies.md) |
 | Cost surprise | Default `column_batch_size: 10` × wide tables × 3 alternatives can run up | Switch to `gpt-4o-mini` for sweeps; or use [Batch mode](batch-mode.md) for ~50% off |
-
-## What's next
-
-- [Batch mode](batch-mode.md) — submit `/run` jobs to OpenAI's batch API for ~50% cheaper async drafts.
-- [Anthropic](anthropic.md) — same template; useful as a parallel profile for cross-model description quality comparisons via `/history compare`.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes (1-3 to pick alternatives, A to accept, S to skip).

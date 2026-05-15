@@ -213,9 +213,3 @@ history_store_schema: AMX
 | Slow `/history list` on a large team (1000+ runs) | Index missing or stale stats | `ANALYZE AMX.amx_history_runs; ANALYZE AMX.amx_history_results;` |
 | `/history-store migrate-from-local` fails partway through | Local SQLite file has a row that violates a NOT NULL constraint in the new schema | The migration is idempotent; re-run with `--skip-errors` to skip the bad row, then inspect `~/.amx/history.db` for the offender |
 | Outbox depth keeps climbing in `/history-store status` | Shared DB intermittently unreachable so dual-writes queue without being drained | `/history-store flush-pending` once the DB is healthy; consider a daemon-side `pull-from-shared` cron if the gap is persistent |
-
-## What's next
-
-- [Team setup](team-setup.md) — onboarding workflow built around this store.
-- [Safety guards](safety-guards.md) — what AMX prevents in shared mode.
-- [History command](../cli/history.md) — `/history list`, `/history show`, `/history compare` reference.

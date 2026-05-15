@@ -264,9 +264,3 @@ llm_profiles:
 | `/apply` writes 0 of N rows, all "must be owner" | Role lacks comment-write privilege | See the per-backend page for the exact `GRANT` syntax |
 | `/run-apply` finished but `/db inspect` still shows `comment?: no` | Catalog cache stale | `> /sync` to refresh the introspection cache |
 | Low confidence on every column from a specific table | Table name / columns are very ambiguous (e.g. `t1`, `c_a`, `c_b`) | Add documentation context: `/add-doc-profile` for a folder of design docs, or `/add-code-profile` for the codebase that uses these columns |
-
-## What's next
-
-- [Ask & Search](ask-and-search.md) — `/ask` over the descriptions you just wrote.
-- [History](history.md) — `/history compare` two runs side-by-side; useful when comparing two LLM models on the same scope.
-- [Human-in-the-loop](../concepts/human-in-the-loop.md) — the design rationale behind the review wizard.
