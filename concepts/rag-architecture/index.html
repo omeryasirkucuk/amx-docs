@@ -1016,6 +1016,7 @@ metadata.</p>
 <th>Pipeline</th>
 <th>Vector</th>
 <th>Lexical</th>
+<th>Fusion</th>
 <th>Rerank</th>
 </tr>
 </thead>
@@ -1023,23 +1024,33 @@ metadata.</p>
 <tr>
 <td>Document RAG</td>
 <td>Chroma cosine, top-k over-fetched to <code>max(k, min(4k, 40))</code></td>
-<td>—</td>
-<td>Heuristic: <code>distance + token_overlap + explanatory_terms − header_penalty</code></td>
+<td>SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool</td>
+<td>Reciprocal Rank Fusion (k=60) over the two channels</td>
+<td>Heuristic: <code>distance + token_overlap + explanatory_terms − header_penalty</code> over the fused pool</td>
 </tr>
 <tr>
 <td>Code RAG</td>
 <td>Chroma cosine, top-k over-fetched</td>
 <td>Identifier-token overlap</td>
-<td>Hybrid: <code>distance + 2.5 × keyword_overlap</code></td>
+<td>Additive weighted</td>
+<td><code>distance + 2.5 × keyword_overlap</code></td>
 </tr>
 <tr>
 <td>Catalog Search</td>
 <td>Chroma cosine per profile</td>
 <td>SQLite FTS5 (BM25)</td>
-<td>Hybrid additive + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus</td>
+<td>Additive weighted</td>
+<td>Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus</td>
 </tr>
 </tbody>
 </table>
+<p>For Document RAG specifically: every Chroma upsert mirrors the same
+chunk into a SQLite FTS5 sidecar at
+<code>&lt;persist_dir&gt;/docs_fts.sqlite</code>. Returning users get hybrid
+retrieval on next <code>RAGStore</code> open via a one-time backfill that
+seeds the FTS table from existing Chroma chunks; no manual reindex
+required. Queries that produce no alphanumeric tokens (or hit a
+sidecar error) fall back to vector-only — backward-compatible.</p>
 <p>The Catalog Search path also runs a two-pass LLM <strong>query planning</strong>
 step that classifies the question (<code>question_class</code>), surfaces entity
 hints, and may translate a non-English question into English search
@@ -1120,8 +1131,6 @@ improvements are tracked and will land in sequence:</p>
    (<code>cfg.docs.chunking</code> knobs), F1.4 (chunker signature in
    collection metadata), and the <code>.py</code> / <code>.csv</code> / <code>.pdf</code>
    specialisations are open as follow-up PRs on the dispatcher seam.</li>
-<li><strong>FTS5 hybrid retrieval</strong> for Document RAG, mirroring the catalog
-   pattern (BM25 sidecar + RRF fusion of dense and lexical results).</li>
 <li><strong>Cross-encoder rerank</strong> (opt-in) — replaces the heuristic with a
    model-based reranker for the top-K candidate pool.</li>
 <li><strong>Query rewriting</strong> for Document RAG, reusing the catalog planner.</li>
