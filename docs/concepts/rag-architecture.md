@@ -32,23 +32,36 @@ flowchart LR
 
 ### 1. Embedding layer
 
-Pluggable per pipeline via [`/embeddings`](../cli/setup.md). The
-default is **MiniLM-L6-v2** (384-dim, English, offline, bundled by
-Chroma) — small, deterministic, and zero-config. Three provider kinds
-are supported:
+Pluggable per pipeline via [`/embeddings`](../cli/setup.md). Three
+provider kinds are supported:
 
 | Kind | When to use |
 | --- | --- |
-| `minilm` | Default; offline, fast, good baseline English retrieval. |
+| `minilm` | Document RAG default; offline, fast, 384-dim, good baseline English retrieval. |
 | `openai_compatible` | Any OpenAI-style `/embeddings` endpoint (OpenAI, Azure, vLLM, llama.cpp). Best quality for general English prose. |
-| `sentence_transformers` | Local HuggingFace model. Useful for code-specialised or multilingual embedders. |
+| `sentence_transformers` | Local HuggingFace model. Used by the **code-specialised default** below and for any other custom embedder. |
 
-Each Document RAG / Code RAG collection records its
-`embedding_provider` and `embedding_model` in Chroma metadata on
-creation. Reopening a collection with a different provider raises
-`EmbeddingProviderMismatch` — the recovery is `/docs reindex` or
-`/code-refresh`, never silent re-embedding. Catalog Search's
-`/search rebuild` is the equivalent recovery for tables/columns.
+**Defaults per pipeline:**
+
+- **Document RAG** — MiniLM-L6-v2 (384-dim), bundled, zero-config.
+- **Code RAG** — `jinaai/jina-embeddings-v2-base-code` (768-dim, ~161 MB,
+  code-trained) when `sentence-transformers` is installed; falls back
+  to MiniLM when it isn't. Identifier-heavy, snake_case, and CamelCase
+  queries are measurably better on the code-trained encoder. Install
+  the extra to opt in:
+  ```bash
+  pip install "amx-cli[local-embeddings]"
+  ```
+  Users without the extra get MiniLM plus a one-time WARNING in the
+  log on first `/code search` naming the install command.
+- **Catalog Search** — same as Document RAG.
+
+Each collection records its `embedding_provider`, `embedding_model`,
+and `embedding_dim` in Chroma metadata on creation. Reopening with a
+different identity raises `EmbeddingProviderMismatch` (Document RAG),
+`CodeEmbeddingMismatch` (Code RAG), or `CollectionIdentityMismatch`
+(Catalog Search) — never silent re-embedding. Recovery commands per
+pipeline: `/docs reindex`, `/code-refresh`, `/search rebuild`.
 
 ### 2. Chunking
 
@@ -93,7 +106,9 @@ crowd out other evidence.
 
 | Knob | Default | Where to change |
 | --- | --- | --- |
-| Embedder | `minilm-l6-v2` | `/embeddings` |
+| Docs RAG embedder | `minilm-l6-v2` | `/embeddings` |
+| Code RAG embedder | `jinaai/jina-embeddings-v2-base-code` if `amx-cli[local-embeddings]` is installed; else `minilm-l6-v2` (with one-time warning) | install the extra, or `/embeddings` |
+| Catalog Search embedder | `minilm-l6-v2` | `/embeddings` |
 | Docs chunk size / overlap | 1000 chars / 200 chars | hardcoded today; configurable in the chunking roadmap |
 | Code chunk strategy | AST for Python, 4000-char for other code | hardcoded |
 | Top-k retrieved | 5 | `/docs search --results N` for ad-hoc; preset-driven for `/run` |
@@ -104,9 +119,10 @@ crowd out other evidence.
 - **English prose corpora**: default MiniLM is fine. For higher
   quality without leaving offline, switch to `bge-small-en-v1.5` via
   `/embeddings sentence_transformers BAAI/bge-small-en-v1.5`.
-- **Code-heavy corpora**: switching the Code RAG embedder to a
-  code-specialised model improves identifier-heavy retrieval; see
-  the rollout below.
+- **Code-heavy corpora**: install `amx-cli[local-embeddings]` to
+  pick up the code-specialised default. Already opted in if you
+  installed the extra — Code RAG uses it automatically with no
+  config change.
 - **Long-form questions**: bump `rag_max_chunks` via the
   `detailed` / `full` prompt preset.
 
