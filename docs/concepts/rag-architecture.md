@@ -65,15 +65,26 @@ pipeline: `/docs reindex`, `/code-refresh`, `/search rebuild`.
 
 ### 2. Chunking
 
-Document RAG uses LangChain's `RecursiveCharacterTextSplitter` with
-the structural separator hierarchy `["\n\n", "\n", ". ", " ", ""]` —
-paragraph-aware first, then line, sentence, word, character. Default
-window: 1000 characters with 200-character overlap.
+Document RAG dispatches by file extension via
+`amx.docs.splitters.get_splitter`:
 
-Code RAG is **AST-aware** for Python: one chunk per function or class,
-with `start_line` and `end_line` preserved so citations point at the
-exact lines. Jupyter notebooks chunk one cell at a time. Other source
-languages fall back to a 4000-character recursive splitter.
+| Extension | Splitter | Notes |
+| --- | --- | --- |
+| `.md` / `.markdown` | Markdown-header-aware (two-stage) | Splits by `#`/`##`/`###` headers; records heading path on each chunk's `h1`/`h2`/`h3` metadata. Long sections are further chunked to fit the budget; header metadata propagates onto every sub-chunk. The heading line stays in the chunk body so the LLM sees the structure too. |
+| `.txt`, `.pdf`, `.csv`, `.docx`, `.html`, `.py`, ... | `RecursiveCharacterTextSplitter` | Default. Structural separator hierarchy `["\n\n", "\n", ". ", " ", ""]` — paragraph → line → sentence → word → character. 1000 chars per chunk, 200-char overlap. |
+| Unknown extension | Default (fallback) | Never raises `KeyError`. |
+
+The header metadata is the channel future prompt-assembly upgrades
+use for citation strings ("`orders.md → h2: total_amount`"). Chunks
+from non-Markdown extensions never have `h1`/`h2`/`h3` keys —
+downstream code that reads them treats absence as "no structural
+hint available."
+
+Code RAG is **AST-aware** for Python: one chunk per function or
+class, with `start_line` and `end_line` preserved so citations point
+at the exact lines. Jupyter notebooks chunk one cell at a time.
+Other source languages fall back to a 4000-character recursive
+splitter.
 
 Catalog Search does not chunk in the document sense — each catalog
 entity (a table or column) is its own "chunk" with structured
@@ -131,10 +142,11 @@ crowd out other evidence.
 The architecture above is the current state. The following retrieval
 improvements are tracked and will land in sequence:
 
-1. **Format-dispatching chunker** for Document RAG — Markdown-header-
-   aware, code-aware, CSV row-group, token-counted budgets, with the
-   existing AST chunker reused for `.py` files when they enter via
-   `/docs ingest`.
+1. **Format-dispatching chunker — follow-ups.** F1.1 (Markdown
+   header awareness) shipped; F1.2 (token-counted budgets), F1.3
+   (`cfg.docs.chunking` knobs), F1.4 (chunker signature in
+   collection metadata), and the `.py` / `.csv` / `.pdf`
+   specialisations are open as follow-up PRs on the dispatcher seam.
 2. **FTS5 hybrid retrieval** for Document RAG, mirroring the catalog
    pattern (BM25 sidecar + RRF fusion of dense and lexical results).
 3. **Cross-encoder rerank** (opt-in) — replaces the heuristic with a
