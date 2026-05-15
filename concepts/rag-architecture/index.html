@@ -1027,7 +1027,7 @@ metadata.</p>
 <td>Chroma cosine, top-k over-fetched to <code>max(k, min(4k, 40))</code></td>
 <td>SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool</td>
 <td>Reciprocal Rank Fusion (k=60) over the two channels</td>
-<td>Heuristic: <code>distance + token_overlap + explanatory_terms − header_penalty</code> over the fused pool</td>
+<td>Heuristic (default): <code>distance + token_overlap + explanatory_terms − header_penalty</code>. Opt-in: cross-encoder (<code>cross-encoder/ms-marco-MiniLM-L-6-v2</code> ~80 MB, English) or <code>BAAI/bge-reranker-v2-m3</code> (~568 MB, multilingual) when <code>cfg.docs.rerank.kind</code> is set.</td>
 <td>MMR (λ=0.7) over the reranked pool, demotes near-duplicate chunks</td>
 </tr>
 <tr>
@@ -1048,6 +1048,12 @@ metadata.</p>
 </tr>
 </tbody>
 </table>
+<p>The opt-in cross-encoder rerank requires
+<code>pip install "amx-cli[local-embeddings]"</code>. It replaces the
+heuristic when active; on any failure (extra not installed, model
+download blocked, prediction error) it logs a structured warning
+and returns the heuristic's ordering unchanged. The cross-encoder
+is a quality <em>upgrade</em>, never a single point of failure.</p>
 <p>For Document RAG specifically: every Chroma upsert mirrors the same
 chunk into a SQLite FTS5 sidecar at
 <code>&lt;persist_dir&gt;/docs_fts.sqlite</code>. Returning users get hybrid
