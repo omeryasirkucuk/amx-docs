@@ -832,10 +832,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#roadmap" class="md-nav__link">
+  <a href="#future-tuning" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Roadmap
+        Future tuning
       
     </span>
   </a>
@@ -996,11 +996,12 @@ pipeline: <code>/docs reindex</code>, <code>/code-refresh</code>, <code>/search 
 </tr>
 </tbody>
 </table>
-<p>The header metadata is the channel future prompt-assembly upgrades
-use for citation strings ("<code>orders.md → h2: total_amount</code>"). Chunks
-from non-Markdown extensions never have <code>h1</code>/<code>h2</code>/<code>h3</code> keys —
-downstream code that reads them treats absence as "no structural
-hint available."</p>
+<p>The header metadata is the channel prompt assembly uses for
+citation strings ("<code>orders.md → h2: total_amount</code>") —
+see <a href="#4-prompt-assembly">Prompt assembly</a> below. Chunks from
+non-Markdown extensions never have <code>h1</code>/<code>h2</code>/<code>h3</code> keys; downstream
+code that reads them treats absence as "no structural hint
+available."</p>
 <p>Code RAG is <strong>AST-aware</strong> for Python: one chunk per function or
 class, with <code>start_line</code> and <code>end_line</code> preserved so citations point
 at the exact lines. Jupyter notebooks chunk one cell at a time.
@@ -1164,26 +1165,41 @@ unchanged.</p>
 <li><strong>Long-form questions</strong>: bump <code>rag_max_chunks</code> via the
   <code>detailed</code> / <code>full</code> prompt preset.</li>
 </ul>
-<h2 id="roadmap">Roadmap<a class="headerlink" href="#roadmap" title="Permanent link">&para;</a></h2>
-<p>The architecture above is the current state. The following retrieval
-improvements are tracked and will land in sequence:</p>
-<ol>
-<li><strong>Format-dispatching chunker — follow-ups.</strong> F1.1 (Markdown
-   header awareness) shipped; F1.2 (token-counted budgets), F1.3
-   (<code>cfg.docs.chunking</code> knobs), F1.4 (chunker signature in
-   collection metadata), and the <code>.py</code> / <code>.csv</code> / <code>.pdf</code>
-   specialisations are open as follow-up PRs on the dispatcher seam.</li>
-<li><strong>Cross-encoder rerank</strong> (opt-in) — replaces the heuristic with a
-   model-based reranker for the top-K candidate pool.</li>
-<li><strong>Query rewriting</strong> for Document RAG, reusing the catalog planner.</li>
-<li><strong>Edges-first context assembly</strong> — places the highest-relevance
-   chunks at both ends of the prompt to recover the "lost in the
-   middle" attention gap.</li>
-<li><strong>Per-model context budget</strong> — replaces the heuristic 3× output
-   budget with a real per-provider input window lookup.</li>
-</ol>
-<p>Each step ships with a measurable retrieval delta against the
-<a href="../../evaluation/retrieval-eval/">retrieval evaluation harness</a>.</p>
+<h2 id="future-tuning">Future tuning<a class="headerlink" href="#future-tuning" title="Permanent link">&para;</a></h2>
+<p>The retrieval architecture above is considered complete for AMX's
+English-only data-catalog use case. Each retrieval-quality change
+shipped against the
+<a href="../../evaluation/retrieval-eval/">retrieval evaluation harness</a> —
+the committed baseline (<code>hit@3 = 0.85</code>, <code>hit@5 = 0.95</code>, <code>MRR = 0.78</code>)
+is the floor every subsequent change must clear.</p>
+<p>A small number of low-priority follow-ups remain available on the
+dispatcher seam for users with corpora that exercise them:</p>
+<ul>
+<li><strong>Token-counted chunk budgets.</strong> The default splitter still
+  counts characters; switching to <code>tiktoken</code>-based length functions
+  aligns chunk sizing with the LLM context budget downstream.</li>
+<li><strong><code>cfg.docs.chunking</code> config knobs.</strong> Chunk size, overlap, and
+  strategy are hardcoded today; exposing them would let users with
+  code-heavy or PDF-heavy corpora tune without forking.</li>
+<li><strong>Chunker signature in collection metadata.</strong> A sibling of the
+  embedding-identity check that forces a reingest when the chunker
+  config changes.</li>
+<li><strong>Format-specific splitters for <code>.py</code> / <code>.csv</code> / <code>.pdf</code>.</strong> Reuse
+  the existing AST chunker for <code>.py</code> files entering via
+  <code>/docs ingest</code>; row-group splitter for CSV; layout-aware PDF.</li>
+</ul>
+<p>Two larger ideas were explicitly evaluated and dropped:</p>
+<ul>
+<li><strong>Query rewriting + metadata filters.</strong> Aimed at synonym /
+  terminology gaps and non-English → English-corpus translation.
+  AMX's data-catalog scope is English-only by design; adding an
+  LLM call to every retrieval (+500-2000 ms per query) for a
+  problem AMX doesn't have is the wrong trade-off.</li>
+<li><strong>Shared retrieval-core refactor.</strong> Pure refactor whose payoff
+  is amortised across future retrieval PRs. With the rollout
+  complete and no new retrieval features planned, the refactor
+  has no payback window.</li>
+</ul>
 
 
 
