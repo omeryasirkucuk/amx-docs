@@ -7,10 +7,12 @@ quality fails CI rather than landing on `main`.
 
 ## What it measures
 
-The harness ingests a synthetic six-document Markdown corpus
-(orders / customers / products / inventory / glossary / ETL) into a
-fresh `RAGStore`, runs 20 gold-set questions through the live
-retrieval surface, and reports source-level metrics:
+The harness ingests a synthetic six-document plain-text corpus
+(orders / customers / products / inventory / glossary / ETL — the
+content is Markdown-formatted but the files are saved as `.txt` so
+ingest uses the dependency-free `TextLoader`) into a fresh
+`RAGStore`, runs 20 gold-set questions through the live retrieval
+surface, and reports source-level metrics:
 
 | Metric | Reads |
 | --- | --- |
@@ -31,7 +33,7 @@ many of its chunks landed in the window.
 | --- | --- |
 | `tests/eval/metrics.py` | Pure scoring functions (`hit@k`, `MRR`, `nDCG@k`, …). |
 | `tests/eval/runner.py` | End-to-end driver against the real `RAGStore`. |
-| `tests/eval/fixtures/docs/` | Synthetic Markdown corpus. |
+| `tests/eval/fixtures/docs/` | Synthetic plain-text corpus (Markdown-formatted content, `.txt` extension). |
 | `tests/eval/fixtures/docs_gold.jsonl` | Gold set: 20 question / expected-source / expected-content triples. |
 | `tests/eval/baselines/docs_baseline.json` | The committed CI floor. |
 | `tests/eval/test_baselines.py` | The CI gate. |
@@ -103,7 +105,9 @@ message.
 The synthetic corpus is intentionally small so the harness runs in
 seconds. To strengthen coverage:
 
-1. Add a Markdown file to `tests/eval/fixtures/docs/`.
+1. Add a plain-text file to `tests/eval/fixtures/docs/` (`.txt`
+   extension keeps CI offline; use `.md` only if your environment
+   has the `markdown` PyPI package).
 2. Add the relevant question rows to
    `tests/eval/fixtures/docs_gold.jsonl` — each row is one JSON object
    with `id`, `question`, `expected_sources` (list of filenames), and
