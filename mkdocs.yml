@@ -131,6 +131,7 @@ nav:
   - Concepts:
       - Architecture: concepts/architecture.md
       - Agents: concepts/agents.md
+      - RAG architecture: concepts/rag-architecture.md
       - Alternatives mode: concepts/alternatives-mode.md
       - Confidence signals: concepts/confidence-signals.md
       - Universal Metadata: concepts/universal-metadata.md
@@ -212,6 +213,7 @@ nav:
           - Benchmarks: evaluation/benchmarks.md
           - Bulk review: evaluation/bulk-review.md
           - Comparisons: evaluation/comparisons.md
+          - Retrieval eval harness: evaluation/retrieval-eval.md
       - Troubleshooting:
           - FAQ: troubleshooting/faq.md
           - Diagnostics: troubleshooting/doctor.md
