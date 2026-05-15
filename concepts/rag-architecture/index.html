@@ -1057,12 +1057,44 @@ hints, and may translate a non-English question into English search
 queries before retrieval.</p>
 <h3 id="4-prompt-assembly">4. Prompt assembly<a class="headerlink" href="#4-prompt-assembly" title="Permanent link">&para;</a></h3>
 <p>The RAG Agent assembles the retrieved chunks into the user message
-sent to the LLM. The chunks arrive in descending relevance and are
-truncated to <code>rag_max_chunks</code> (configurable per
-<a href="../../cli/run-and-apply/">prompt-detail preset</a>: 5 / 8 / 12 / 15).
-Per-chunk extractive compaction keeps the first ~1200 characters and
-the last ~300 characters of each chunk so very long documents don't
-crowd out other evidence.</p>
+sent to the LLM through three steps:</p>
+<ol>
+<li>
+<p><strong>Truncate + edges-first reorder.</strong> Chunks arrive in descending
+   relevance from rerank. <code>assemble_chunks(chunks, k)</code> takes the
+   top-k and reorders them so the highest-relevance chunks anchor
+   <em>both</em> ends of the prompt — <code>[c1, c3, c5, c6, c4, c2]</code> for
+   <code>k=6</code> — pushing mid-scorers into the attention-dead middle.
+   This combats the "Lost in the Middle" failure documented in
+   Liu et al. (2023). <code>k</code> is <code>rag_max_chunks</code> (configurable per
+   <a href="../../cli/run-and-apply/">prompt-detail preset</a>: 5 / 8 / 12 / 15).</p>
+</li>
+<li>
+<p><strong>Citation header per chunk.</strong> Every chunk body gets a
+   one-line prefix:
+   <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[orders.md | section=total_amount] (rel=1.34)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>&lt;chunk body&gt;
+</span></code></pre></div>
+   The header reads <code>source.basename</code> + <code>h2</code>/<code>h3</code>/<code>h1</code> from chunk
+   metadata (produced by the Markdown-aware splitter) and the
+   rerank score. Plain-text chunks degrade gracefully to
+   <code>[plain.txt]</code>. The header gives the LLM a scannable summary
+   even when attention is weakest mid-prompt and gives downstream
+   citation extraction a stable channel to mine.</p>
+</li>
+<li>
+<p><strong>Per-model input budget.</strong> The input window is the smaller of
+   <code>litellm.get_model_info(model)["max_input_tokens"] - output - 256</code>
+   (real per-provider window) and the legacy <code>max(1000, max_tokens * 3)</code>
+   heuristic (used as a fallback for unknown / proxy models). Stops
+   AMX from over-stuffing a small-context Mistral or under-using a
+   200k-token Claude.</p>
+</li>
+</ol>
+<p>Per-chunk extractive compaction (first ~1200 characters + last
+~300 characters of each chunk) still runs after these steps when
+the assembled context still exceeds the budget — that part is
+unchanged.</p>
 <h2 id="defaults-at-a-glance">Defaults at a glance<a class="headerlink" href="#defaults-at-a-glance" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
