@@ -170,9 +170,3 @@ at a time; switch with `/use-code <name>`.
 | Evidence cites the wrong column (looks like noise) | Common substrings (e.g. `id`, `name`) collide across tables | Increase `code_min_relevance` in the YAML to filter low-relevance hits |
 | `/code-scan` clones a Git URL but pulls fail later | The cache dir is read-only or the credential expired | `rm -rf ~/.amx/code-cache/<profile>` and re-scan with fresh creds |
 | `OutOfMemory` during embedding | Repo is huge (50k+ files) and the embedding batch is too big | Lower `code_embed_batch_size` in YAML to 32 |
-
-## What's next
-
-- [Documents data source](documents.md) — pair with code; design docs and code together substantially raise description confidence.
-- [Search catalog](search-catalog.md) — the unified index that holds tables, columns, docs, and code references.
-- [Run & Apply](../cli/run-and-apply.md) — `/run` orchestrates the Code Agent alongside Profile and RAG.

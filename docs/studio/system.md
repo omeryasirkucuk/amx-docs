@@ -72,9 +72,3 @@ Backend-specific admin actions, surfaced when they're available for the
 active profile (e.g. Databricks-only PAT rotation hints, MySQL
 `information_schema` reload). The exact buttons here depend on the
 profile in scope.
-
-## What's next
-
-- [Doctor (CLI)](../cli/doctor.md) — the same checks from the REPL.
-- [Shared history store](../collaboration/shared-history-store.md) —
-  full team-history walkthrough.

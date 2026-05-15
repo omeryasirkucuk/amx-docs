@@ -102,9 +102,3 @@ Daemon: loaded · 4 active · next fire in 8h 12m
 | Schedule fires twice on the same minute | Two daemons installed (e.g. via cron *and* `install-daemon`). Run `/analyze schedule uninstall-daemon` and rely on one. |
 | `next fire in -3h` (past timestamp) | The host clock drifted or the schedule sat through a long AMX-closed window — `/analyze schedule run-now <id>` to fire once, then resume. |
 | Spec rejected with "unknown column" | The DB schema drifted since the schedule was added. `/analyze schedule show <id>` to inspect, `rm` + re-`add` to rebuild. |
-
-## What's next
-
-- [Scheduled runs walkthrough](../guides/scheduled-runs.md) — the workflow this reference backs.
-- [Multi-profile scoping](../concepts/scoping.md) — what the cascading picker writes into the scope spec.
-- [Studio Schedules tab](../studio/schedules.md) — the same operations in a web UI.

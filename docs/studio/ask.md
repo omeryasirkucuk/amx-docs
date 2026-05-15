@@ -118,10 +118,3 @@ auto-submits.
 | End session | `/session end` |
 | Scope dropdown | `/session scope [profiles]` and `/use-db <profile> [<profile>…]` |
 | Tool-call trace | CLI prints tool names inline in the answer |
-
-## What's next
-
-- [Multi-profile scoping](../concepts/scoping.md) — how scope encoding
-  works across CLI and Studio.
-- [Search catalog](../data-sources/search-catalog.md) — the index `/ask`
-  reads from.

@@ -179,9 +179,3 @@ active_db_profile: prod-mssql
 | `('42000', "ALTER permission denied")` mid-`/apply` | User lacks `ALTER` on the schema | `GRANT ALTER ON SCHEMA::sales TO amx_reader;` |
 | `[Microsoft][ODBC Driver 18 ...] Encrypt parameter set to "true" but no encryption support` | Old on-prem SQL Server without TLS | Set `encrypt: false` in the YAML — only acceptable for isolated legacy servers |
 | Comments don't appear in SSMS object explorer | SSMS reads `MS_Description`; AMX writes to `MS_Description` by default — no diff. SSMS just caches the schema | Refresh the schema in SSMS (F5) or reconnect |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — `sampled` (TABLESAMPLE) is the default; `full` is fine for tables under a few million rows.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard, keystrokes, and per-row error handling on `/apply`.
-- [Configuration: TLS and proxies](../configuration/tls-and-proxies.md) — for Azure SQL behind a corporate proxy.

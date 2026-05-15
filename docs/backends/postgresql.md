@@ -159,9 +159,3 @@ warehouse-cost-sensitive scans (no row scans at all).
 | `/apply` writes 0 of N comments, all rows say `ERROR: must be owner` | Role lacks `COMMENT` privilege | `GRANT ALL ON TABLE sales.customer TO amx_reader;` or run `/apply` as the owning role |
 | `Port must be a number.` repeats | Pasted a `host:port` string into the port field | Re-run `/add-db-profile` and split host and port across the two prompts |
 | `psycopg.errors.AdminShutdown` mid-run | RDS / managed PG idle-timed-out the session during a long sample | Set `profiling_mode: sampled` (default 5,000 rows) or shrink `profiling_sample_size` |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — control exactly how much data AMX scans (`full` / `sampled` / `metadata`) before it talks to the LLM.
-- [Run & Apply](../cli/run-and-apply.md) — the review wizard between `/run` and `/apply`, including keystroke shortcuts.
-- [Shared history store](../collaboration/shared-history-store.md) — share the audit trail with your team using the same PostgreSQL profile.

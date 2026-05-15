@@ -127,9 +127,3 @@ llm_profiles:
 ```
 
 Set sensible defaults per profile so you only need flags for one-off overrides.
-
-## What's next
-
-- [Run & Apply](run-and-apply.md) — the most common command surface; flag combinations live here.
-- [Profiling modes](../configuration/profiling-modes.md) — when to use `full` vs `sampled` vs `metadata`.
-- [Environment variables](../configuration/env-vars.md) — flags you can also set globally via env.

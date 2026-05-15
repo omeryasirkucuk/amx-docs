@@ -72,9 +72,3 @@ full contract.
 If a newer config schema is detected by an older AMX binary, AMX raises
 `ConfigSchemaTooNewError` rather than silently mangling the file. Upgrade or downgrade
 accordingly.
-
-## Next steps
-
-- [Quick start](quickstart.md) — five-minute happy path.
-- [First run walkthrough](first-run.md) — narrated review session.
-- [Per-backend setup](../backends/index.md) — connection details for each supported engine.

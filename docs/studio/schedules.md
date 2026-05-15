@@ -76,9 +76,3 @@ status; you can decide whether to **Run now** or skip.
 | Run now | `/schedule run-now <id>` |
 | Delete | `/schedule rm <id>` |
 | Daemon status | `/schedule status` |
-
-## What's next
-
-- [Scheduled runs guide](../guides/scheduled-runs.md) — the longer-form
-  walkthrough.
-- [Schedules CLI](../cli/schedules.md) — the REPL counterpart in detail.

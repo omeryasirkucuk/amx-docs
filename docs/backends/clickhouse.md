@@ -158,9 +158,3 @@ and the port is `8443`.
     refuses to enable history-store on a ClickHouse profile. Host the history store on
     PostgreSQL or any other supported backend; the ClickHouse profile remains the data
     source — only the audit table moves elsewhere.
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — ClickHouse uses the `SAMPLE` clause for sampled mode; `metadata` mode hits `system.*` only.
-- [Shared history store](../collaboration/shared-history-store.md) — host the audit table on PostgreSQL while keeping ClickHouse as the data source.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes and per-row error handling on `/apply`.

@@ -109,10 +109,3 @@ buckets.
 | `400 reasoning.max_tokens not allowed` | An older AMX version. Upgrade — `0.12.0+` only sends `reasoning.effort` |
 | Reasoning route returns 0 visible characters | Bump `AMX_LLM_MIN_MAX_TOKENS`, or raise `AMX_REASONING_EFFORT` to `minimal` to bias the model toward shorter thinking |
 | `429 rate limited` | OpenRouter applies per-key QPS limits. Lower `column_batch_size` |
-
-## What's next
-
-- [Configuration: env vars → `OPENROUTER_API_KEY`](../configuration/env-vars.md#llm-provider-keys)
-- [Kimi](kimi.md) — Moonshot's reasoning models, also available via OpenRouter.
-- [LLM Providers overview](index.md) — direct provider keys vs the
-  routing layer trade-off.

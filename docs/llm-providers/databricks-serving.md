@@ -114,9 +114,3 @@ active_llm_profile: databricks-llama
 | Token-throughput tier exceeded | Foundation Model endpoints have per-workspace QPS limits | Drop `column_batch_size` to 5–8, or move to a Provisioned Throughput endpoint for predictable cost |
 | `logprob_high`/`medium` warnings on draft results | Some Databricks-hosted endpoints don't return logprobs | Lower thresholds or rely on the heuristic-confidence fallback; see [logprob thresholds](index.md#generation-defaults-that-apply-across-all-providers) |
 | Auto-detected `api_base` is wrong | You typed a full URL with extra path components into the host prompt | Re-run `/edit-llm-profile <name>` and enter just the bare hostname (no scheme, no path) |
-
-## What's next
-
-- [Databricks SQL warehouse setup](../backends/databricks.md) — pair the same PAT with a SQL warehouse profile so AMX can actually read the schema it's documenting.
-- [Run & Apply](../cli/run-and-apply.md) — what happens between `/run` and `/apply`, including the review-wizard keystrokes (A/1/2/3/W/S).
-- [Logprob thresholds](index.md#generation-defaults-that-apply-across-all-providers) — calibrate confidence buckets if Databricks logprobs differ from OpenAI's.

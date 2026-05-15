@@ -97,8 +97,3 @@ copied out of a previous machine). The aliases `-f` and `--from` both work.
 | `Backup file not found: …` after `--from` | Path typo or expansion error. The path is `Path(...).expanduser()`-resolved; `~/Downloads/cfg.yml` works, but a shell variable that wasn't substituted (`$HOME/...`) won't. |
 | Restore succeeds, but `/doctor` still reports a missing profile | The selected backup pre-dates the profile. Pick an older / different generation or use `--from` to point at a known-good file. |
 | `config.yml.shadow` left on disk | Means the last save aborted between shadow-fsync and rename. Safe to delete; the live file is intact. The same gate also writes a warning into the REPL on the next bootstrap. |
-
-## What's next
-
-- [Safety guards](../collaboration/safety-guards.md) — autosave-suspend, 5-generation rotation, shadow integrity gate, and what each prevents.
-- [`/config`](overview.md#the-full-namespace-tree) — show / edit individual fields instead of rolling the whole file back.

@@ -144,9 +144,3 @@ active_db_profile: prod-dbx
 | `unity_catalog_required` on `/apply` | Target schema lives in `hive_metastore` | Migrate the schema to Unity Catalog or skip — comment write-back over the SQL connector requires Unity Catalog |
 | `EXECUTE_PERMISSION_DENIED on column …` mid-`/apply` | Role lacks `MODIFY` on the schema or table owner is a different group | Ask the catalog admin to grant `MODIFY ON SCHEMA main.sales TO <group>` or run `/apply` as the owning principal |
 | `404 Not Found: /api/2.0/sql/queries` | Token belongs to a workspace that has the SQL endpoint disabled | Use a different workspace token, or a service-principal token from a workspace with SQL endpoints enabled |
-
-## What's next
-
-- [TLS and proxies](../configuration/tls-and-proxies.md) — full walkthrough for corporate-network TLS recovery, including the order in which AMX picks up CA bundles.
-- [Profiling modes](../configuration/profiling-modes.md) — choose `metadata` to keep the warehouse cold for big sweeps; `sampled` for description drafting.
-- [Run & Apply](../cli/run-and-apply.md) — what happens during the review wizard between `/run` and `/apply`.

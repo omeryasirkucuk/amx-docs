@@ -164,9 +164,3 @@ For key-pair auth swap `password:` for `private_key_path:`. For SSO, set
 | `390100 (08004): Incorrect username or password was specified.` | Password expired or MFA is required | Rotate the password OR switch to key-pair / SSO (see auth note above) |
 | `/run` is fast for the first table then suddenly slow | Warehouse auto-suspended between tables and is resuming | Use a larger warehouse OR set `profiling_mode: metadata` for the first sweep, then switch to `sampled` for the subset you want descriptions for |
 | `001003 (42000): SQL compilation error: Object 'X' does not exist or not authorized` | Role lacks `USAGE` on the schema or `SELECT` on the table | Ask the security admin to grant the missing privileges; verify with `SHOW GRANTS TO ROLE AMX_READER_ROLE` |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — full / sampled / metadata, with cost guidance per warehouse size.
-- [Batch mode for LLM calls](../llm-providers/batch-mode.md) — pair sampled profiling with batch-mode LLM calls to drop draft cost by ~50%.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes, partial-accept, and how `/apply` recovers from per-row errors.

@@ -117,11 +117,3 @@ re-opens an already-run pass for late edits. Edits there also write to
    appear in the `column_overrides` block.
 4. `/rerun <result_id>` from the REPL — confirm the column you edited
    is left alone and only the un-overridden columns get fresh drafts.
-
-## What's next
-
-- [Human in the loop](../concepts/human-in-the-loop.md) — why review is the
-  gate every comment goes through.
-- [Comparisons](comparisons.md) — diff a reviewed run against another run.
-- [Multi-profile scoping](../concepts/scoping.md) — the picker that decides
-  what lands in the review queue.

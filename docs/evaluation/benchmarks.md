@@ -74,11 +74,4 @@ The Databricks-style protocol AMX will publish:
 If you'd like to contribute to AMX's first benchmark — schema donations,
 expert reviewers in a specific domain, or co-authoring the methodology
 paper — open a discussion at
-[github.com/omeryasirkucuk/amx/discussions](https://github.com/omeryasirkucuk/amx/discussions)
-or email [omeryasirkucuk@gmail.com](mailto:omeryasirkucuk@gmail.com).
-
-## What's next
-
-- [Comparisons](comparisons.md) — feature-by-feature comparison against the major AI-metadata tools, with explicit notes on which claims are evidenced and which are pending the benchmark above.
-- [Run & Apply](../cli/run-and-apply.md) — confidence-band scoring at runtime.
-- [`/ask` and `/search`](../cli/ask-and-search.md) — the live Q&A surface that goes on top of any descriptions you generate.
+[github.com/omeryasirkucuk/amx/discussions](https://github.com/omeryasirkucuk/amx/discussions).

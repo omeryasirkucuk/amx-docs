@@ -155,9 +155,3 @@ cluster.
 | `permission denied for relation customer` during `/run` | User lacks `SELECT` (datashare permissions are different from local grants) | `GRANT SELECT ON ALL TABLES IN SCHEMA sales TO amx_reader;` (and `USAGE ON SCHEMA sales`) |
 | `external_schema_readonly` on `/apply` | Target schema is a Spectrum / datashare schema | Comment write-back is unsupported on external schemas — write to the source instead |
 | `Disk full` mid-`/run` with `profiling_mode: full` | Full scan of a wide table created a sort spill | Switch to `profiling_mode: sampled` or shrink `profiling_sample_size` |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — `sampled` is the recommended default for Redshift; `full` only for tables you'd happily run a `SELECT *` against.
-- [Configuration: env vars](../configuration/env-vars.md) — `AWS_PROFILE`, `AWS_REGION`, and the IAM credential resolution order AMX inherits from boto3.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes and per-row error handling on `/apply`.

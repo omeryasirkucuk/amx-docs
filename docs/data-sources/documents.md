@@ -156,9 +156,3 @@ active_doc_profile: data-handbook
 | `/ingest` is slow on every run | Source folder is on a network mount with high stat() latency | Move sources locally or to a faster mount; AMX touches every file's mtime to decide what to re-ingest |
 | Out-of-disk after several rebuilds | Chroma index isn't garbage-collected on incremental rebuilds | `/ingest --rebuild` (drops the old index) or `rm -rf ~/.amx/chroma` and re-`/ingest` |
 | `/ask` answer doesn't use the docs even though they're indexed | Active doc profile isn't the one ingested | `> /use-doc data-handbook` then `> /ask …` |
-
-## What's next
-
-- [Codebase data source](codebase.md) — pair docs with code references for highest description quality.
-- [Search catalog](search-catalog.md) — how docs / code / catalog all sit in the same Chroma index.
-- [Ask & Search](../cli/ask-and-search.md) — `/ask` over your documents.

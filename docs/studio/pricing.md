@@ -58,10 +58,3 @@ bundled rates. The empty state renders:
 |---|---|
 | Pricing table | `/refresh-prices` (re-fetches into the same cache) |
 | Per-model override | `/cost <input> <output>` on the active profile |
-
-## What's next
-
-- [LLM Providers](../llm-providers/index.md) — provider-by-provider
-  cost notes.
-- [Settings → LLM](settings.md#llm) — where per-profile price overrides
-  live.

@@ -74,9 +74,3 @@ edit lives in the queue — it doesn't write to the database until you
 | Preview SQL | `/apply --dry-run` |
 | Apply queue | `/apply` |
 | Clear queue | `/review` and skip every row |
-
-## What's next
-
-- [Audit](audit.md) — see what your applied changes look like.
-- [Run detail](run-detail.md) — where drafts originate before they land
-  in the queue.

@@ -90,11 +90,3 @@ calibrated logprob threshold.
 | `429 rate limited` | New accounts have low QPS caps. Lower `column_batch_size` or contact Moonshot for a higher quota tier |
 | Reasoning route returns 0 visible characters | The 32 768 floor wasn't enough. `export AMX_LLM_MIN_MAX_TOKENS=65536` |
 | Very slow first response | K2.x thinking models are intrinsically slower. Raise `AMX_LLM_TIMEOUT_SEC` if AMX bails out before the answer arrives |
-
-## What's next
-
-- [OpenRouter](openrouter.md) — same models behind one routing key.
-- [Anthropic — extended thinking](anthropic.md) — Claude's equivalent
-  reasoning route.
-- [LLM Providers overview](index.md) — pick a direct provider vs a
-  routing layer.

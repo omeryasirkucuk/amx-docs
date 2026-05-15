@@ -201,11 +201,3 @@ rows.
 | ReRun | `/rerun <run_id>[.schema.table.column]` |
 | Skip / Restore | `/review <run_id>` interactive picker |
 | Apply pending | `/apply` |
-
-## What's next
-
-- [Pending](pending.md) — the queue accepted rows land in before they
-  write to the database.
-- [Compare](compare.md) — pivot multiple runs side-by-side.
-- [Audit](audit.md) — see what your applied changes look like in the
-  timeline.

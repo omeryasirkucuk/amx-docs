@@ -55,9 +55,3 @@ authored-by-a-user from authored-by-an-imported-run.
 | Audit timeline | `/history events` (older entries) and `/history results <run_id>` |
 | Identity filter | Filter on the user / hostname columns in the SQLite store |
 | Rollback an entry | `/history rollback <run_id>` |
-
-## What's next
-
-- [Shared history store](../collaboration/shared-history-store.md) —
-  how multi-user attribution works.
-- [Pending](pending.md) — the queue these timeline entries flow out of.

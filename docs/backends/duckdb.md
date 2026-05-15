@@ -151,9 +151,3 @@ db_profiles:
 | `/apply` writes to the DuckDB file but Postgres-attached comments don't appear | Comments on attached objects go to the attached backend; you need write privileges there too | Confirm the Postgres user in the `ATTACH` connection string has `COMMENT` privilege on the target schema |
 | File grows large after several `/apply` runs | DuckDB doesn't auto-compact `.duckdb` files | `> /sql CHECKPOINT;` to force a write barrier; `> /sql VACUUM;` to reclaim space |
 | `duckdb.OutOfMemoryException` mid-run | Full scan of a wide table exceeded the default memory limit | `> /sql SET memory_limit='4GB';` or switch to `profiling_mode: sampled` |
-
-## What's next
-
-- [Profiling modes](../configuration/profiling-modes.md) — `full` mode is the natural default for DuckDB; warehouse cost concerns don't apply.
-- [Documents data source](../data-sources/documents.md) — pair a DuckDB profile with the RAG agent to draft descriptions from a folder of CSVs / Parquets you just attached.
-- [Run & Apply](../cli/run-and-apply.md) — review wizard keystrokes and per-row error handling on `/apply`.
