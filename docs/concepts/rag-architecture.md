@@ -92,11 +92,19 @@ metadata.
 
 ### 3. Retrieval + rerank
 
-| Pipeline | Vector | Lexical | Rerank |
-| --- | --- | --- | --- |
-| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | — | Heuristic: `distance + token_overlap + explanatory_terms − header_penalty` |
-| Code RAG | Chroma cosine, top-k over-fetched | Identifier-token overlap | Hybrid: `distance + 2.5 × keyword_overlap` |
-| Catalog Search | Chroma cosine per profile | SQLite FTS5 (BM25) | Hybrid additive + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus |
+| Pipeline | Vector | Lexical | Fusion | Rerank |
+| --- | --- | --- | --- | --- |
+| Document RAG | Chroma cosine, top-k over-fetched to `max(k, min(4k, 40))` | SQLite FTS5 (BM25), Porter unicode61 tokeniser, same top-k pool | Reciprocal Rank Fusion (k=60) over the two channels | Heuristic: `distance + token_overlap + explanatory_terms − header_penalty` over the fused pool |
+| Code RAG | Chroma cosine, top-k over-fetched | Identifier-token overlap | Additive weighted | `distance + 2.5 × keyword_overlap` |
+| Catalog Search | Chroma cosine per profile | SQLite FTS5 (BM25) | Additive weighted | Hybrid + source-kind weighting (manual ≫ reviewed ≫ generated) + confidence bonus |
+
+For Document RAG specifically: every Chroma upsert mirrors the same
+chunk into a SQLite FTS5 sidecar at
+`<persist_dir>/docs_fts.sqlite`. Returning users get hybrid
+retrieval on next `RAGStore` open via a one-time backfill that
+seeds the FTS table from existing Chroma chunks; no manual reindex
+required. Queries that produce no alphanumeric tokens (or hit a
+sidecar error) fall back to vector-only — backward-compatible.
 
 The Catalog Search path also runs a two-pass LLM **query planning**
 step that classifies the question (`question_class`), surfaces entity
@@ -147,8 +155,6 @@ improvements are tracked and will land in sequence:
    (`cfg.docs.chunking` knobs), F1.4 (chunker signature in
    collection metadata), and the `.py` / `.csv` / `.pdf`
    specialisations are open as follow-up PRs on the dispatcher seam.
-2. **FTS5 hybrid retrieval** for Document RAG, mirroring the catalog
-   pattern (BM25 sidecar + RRF fusion of dense and lexical results).
 3. **Cross-encoder rerank** (opt-in) — replaces the heuristic with a
    model-based reranker for the top-K candidate pool.
 4. **Query rewriting** for Document RAG, reusing the catalog planner.
