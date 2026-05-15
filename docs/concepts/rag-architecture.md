@@ -114,12 +114,41 @@ queries before retrieval.
 ### 4. Prompt assembly
 
 The RAG Agent assembles the retrieved chunks into the user message
-sent to the LLM. The chunks arrive in descending relevance and are
-truncated to `rag_max_chunks` (configurable per
-[prompt-detail preset](../cli/run-and-apply.md): 5 / 8 / 12 / 15).
-Per-chunk extractive compaction keeps the first ~1200 characters and
-the last ~300 characters of each chunk so very long documents don't
-crowd out other evidence.
+sent to the LLM through three steps:
+
+1. **Truncate + edges-first reorder.** Chunks arrive in descending
+   relevance from rerank. `assemble_chunks(chunks, k)` takes the
+   top-k and reorders them so the highest-relevance chunks anchor
+   *both* ends of the prompt — `[c1, c3, c5, c6, c4, c2]` for
+   `k=6` — pushing mid-scorers into the attention-dead middle.
+   This combats the "Lost in the Middle" failure documented in
+   Liu et al. (2023). `k` is `rag_max_chunks` (configurable per
+   [prompt-detail preset](../cli/run-and-apply.md): 5 / 8 / 12 / 15).
+
+2. **Citation header per chunk.** Every chunk body gets a
+   one-line prefix:
+   ```
+   [orders.md | section=total_amount] (rel=1.34)
+   <chunk body>
+   ```
+   The header reads `source.basename` + `h2`/`h3`/`h1` from chunk
+   metadata (produced by the Markdown-aware splitter) and the
+   rerank score. Plain-text chunks degrade gracefully to
+   `[plain.txt]`. The header gives the LLM a scannable summary
+   even when attention is weakest mid-prompt and gives downstream
+   citation extraction a stable channel to mine.
+
+3. **Per-model input budget.** The input window is the smaller of
+   `litellm.get_model_info(model)["max_input_tokens"] - output - 256`
+   (real per-provider window) and the legacy `max(1000, max_tokens * 3)`
+   heuristic (used as a fallback for unknown / proxy models). Stops
+   AMX from over-stuffing a small-context Mistral or under-using a
+   200k-token Claude.
+
+Per-chunk extractive compaction (first ~1200 characters + last
+~300 characters of each chunk) still runs after these steps when
+the assembled context still exceeds the budget — that part is
+unchanged.
 
 ## Defaults at a glance
 
