@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/collaboration/team-setup/">
+        <link rel="canonical" href="https://amxcli.com/concepts/catalog-cache/">
       
       
-        <link rel="prev" href="../shared-history-store/">
+        <link rel="prev" href="../human-in-the-loop/">
       
       
-        <link rel="next" href="../safety-guards/">
+        <link rel="next" href="../../cli/overview/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Team setup - AMX</title>
+        <title>Catalog cache - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Team setup — AMX CLI">
+  <meta property="og:title" content="Catalog cache — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/collaboration/team-setup/">
+  <meta property="og:url" content="https://amxcli.com/concepts/catalog-cache/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Team setup — AMX CLI">
+  <meta name="twitter:title" content="Catalog cache — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#team-setup" class="md-skip">
+        <a href="#catalog-cache" class="md-skip">
           Skip to content
         </a>
       
@@ -213,7 +213,7 @@
           
           
           
-            <a href="../../concepts/architecture/">Concepts</a>
+            <a href="../architecture/" class="active">Concepts</a>
             
           
         
@@ -393,22 +393,22 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-concepts-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/architecture/"
+         href="../architecture/"
          >Architecture</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/agents/"
+         href="../agents/"
          >Agents</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/alternatives-mode/"
+         href="../alternatives-mode/"
          >Alternatives mode</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/confidence-signals/"
+         href="../confidence-signals/"
          >Confidence signals</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/universal-metadata/"
+         href="../universal-metadata/"
          >Universal Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/scoping/"
+         href="../scoping/"
          >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/human-in-the-loop/"
-         >Human in the Loop</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../concepts/catalog-cache/"
-         >Catalog cache</a></div>
+         href="../human-in-the-loop/"
+         >Human in the Loop</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Catalog cache</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-cli">
       <button type="button"
@@ -645,11 +645,11 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-collaboration-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../shared-history-store/"
-         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../safety-guards/"
+         href="../../collaboration/shared-history-store/"
+         >Shared history store</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/team-setup/"
+         >Team setup</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../collaboration/safety-guards/"
          >Safety guards</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-evaluation">
@@ -745,10 +745,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#why-a-cache" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        Why a cache?
       
     </span>
   </a>
@@ -756,22 +756,33 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#what-gets-cached" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
+        What gets cached
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step-by-step">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache lifecycle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Cache lifecycle">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-lead-pick-the-host-backend" class="md-nav__link">
+  <a href="#populate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. (Lead) Pick the host backend
+        Populate
       
     </span>
   </a>
@@ -779,10 +790,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-lead-create-the-audit-tables" class="md-nav__link">
+  <a href="#serve" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. (Lead) Create the audit tables
+        Serve
       
     </span>
   </a>
@@ -790,32 +801,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-team-member-reuse-the-leads-history-store" class="md-nav__link">
+  <a href="#invalidate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. (Team member) Reuse the lead's history store
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-verify-everyone-sees-the-same-history" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Verify everyone sees the same history
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-recommended-division-of-work" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. Recommended division of work
+        Invalidate
       
     </span>
   </a>
@@ -828,43 +817,60 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#scheduled-refreshes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
+        Scheduled refreshes
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scheduled refreshes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#one-shot-vs-recurring" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        One-shot vs recurring
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#re-arm-behavior" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify
+        Re-arm behavior
       
     </span>
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#scope-payload" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshooting
+        Scope payload
       
     </span>
   </a>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
-  <a href="#whats-next" class="md-nav__link">
+  <a href="#see-also" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What's next
+        See also
       
     </span>
   </a>
@@ -893,17 +899,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>Collaboration</span>
+            <span>Concepts</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Team setup</span>
+      <span>Catalog cache</span>
     </div>
   </div>
 
@@ -912,173 +913,162 @@
 
 
 
-<h1 id="team-setup">Team setup<a class="headerlink" href="#team-setup" title="Permanent link">&para;</a></h1>
-<p>When more than one person uses AMX against the same warehouse, you want to share two
-things: which descriptions have already been drafted (so people don't repeat work) and
-the audit trail of who applied which description when. The mechanism for both is the
-<strong>shared history store</strong> — an AMX-managed audit table inside one of your existing
-databases. This page walks through enabling it from the lead's machine, onboarding
-team members, and verifying everyone sees the same history.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
+<h1 id="catalog-cache">Catalog cache<a class="headerlink" href="#catalog-cache" title="Permanent link">&para;</a></h1>
+<p>AMX keeps a local SQLite mirror of the shape and comment data it reads
+from connected databases. Every schema list, table list, column
+definition, and column comment that AMX fetches from a live backend is
+written into this cache on the way back. Subsequent reads come from the
+cache instead of re-querying the warehouse.</p>
+<h2 id="why-a-cache">Why a cache?<a class="headerlink" href="#why-a-cache" title="Permanent link">&para;</a></h2>
+<p>Live <code>information_schema</code> queries have costs that compound quickly:</p>
 <ul>
-<li>AMX installed on every team member's machine (<code>pip install amx-cli</code>).</li>
-<li>A database where the audit table can live. PostgreSQL is the recommended host
-  (it supports the row-level UPDATE the audit table needs); MySQL, SQL Server,
-  Snowflake, BigQuery, Databricks, and Redshift also work. ClickHouse and DuckDB do
-  not — see <a href="../shared-history-store/">Shared history store</a> for the reason.</li>
-<li>Each team member has their own active LLM profile (cost is per-user; it's fine to
-  share a service-account API key, but cleaner to issue one key per user).</li>
-<li>Network connectivity from every team member to the host database.</li>
+<li><strong>Latency</strong> — a full schema walk of a large warehouse can take tens
+  of seconds.</li>
+<li><strong>Cluster CPU</strong> — Databricks, Snowflake, and BigQuery charge for
+  query slots regardless of whether the query is user-facing.</li>
+<li><strong>Rate limits</strong> — some backends throttle metadata APIs under high
+  concurrency.</li>
 </ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-lead-pick-the-host-backend">1. (Lead) Pick the host backend<a class="headerlink" href="#1-lead-pick-the-host-backend" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>[lead]&gt; /db-profiles
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>default        prod-pg          dev-snowflake
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>[lead]&gt; /history-store
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>History store currently: disabled (per-user local file at ~/.amx/history.db).
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>To enable shared history, pick a DB profile that will host the audit table.
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Recommended: pick a &#39;sandbox&#39; / &#39;metadata&#39; database that all team members can reach.
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  [1] default       (postgresql) localhost/postgres
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  [2] prod-pg       (postgresql) db-prod.eu-west-1.rds.amazonaws.com/analytics
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>  [3] dev-snowflake (snowflake)  xy12345.eu-west-1/DEV
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>&gt; 2
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>Schema name for the audit table (default: AMX): AMX
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>✓ Will create AMX.amx_history_runs / amx_history_results in db-prod...analytics
-</span></code></pre></div>
-<p>The lead picks once; everyone else points at the same backend by name.</p>
-<h3 id="2-lead-create-the-audit-tables">2. (Lead) Create the audit tables<a class="headerlink" href="#2-lead-create-the-audit-tables" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[lead]&gt; /history-store enable
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>About to create:
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  CREATE SCHEMA IF NOT EXISTS AMX;
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  CREATE TABLE AMX.amx_history_runs (...) ;
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  CREATE TABLE AMX.amx_history_results (...) ;
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  CREATE INDEX ix_amx_history_results_run_id ON AMX.amx_history_results(run_id) ;
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  CREATE INDEX ix_amx_history_results_target ON AMX.amx_history_results(target_qname) ;
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Proceed? [y/N]: y
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>✓ History store enabled. Future /run / /apply will write to AMX.amx_history_*.
-</span></code></pre></div>
-<p>The lead's <code>~/.amx/config.yml</code> now has:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">history_store_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">history_store_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-pg</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">history_store_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AMX</span>
-</span></code></pre></div>
-<h3 id="3-team-member-reuse-the-leads-history-store">3. (Team member) Reuse the lead's history store<a class="headerlink" href="#3-team-member-reuse-the-leads-history-store" title="Permanent link">&para;</a></h3>
-<p>Each team member adds the same DB profile to their own AMX (read-only credentials are
-fine — the audit table needs <code>INSERT</code> and <code>UPDATE</code> on the AMX schema only) and points
-their config at it:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>[member]&gt; /add-db-profile
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt; postgresql
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>Database host (e.g. db.example.com): db-prod.eu-west-1.rds.amazonaws.com
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>... (rest of wizard)
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[member]&gt; /history-store
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>History store currently: disabled.
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>&gt; /history-store enable --profile prod-pg --schema AMX
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>✓ History store now points at: AMX.amx_history_* in db-prod.../analytics.
-</span></code></pre></div>
-<p>The <code>--profile</code> flag re-uses the existing profile rather than running a new wizard.</p>
-<h3 id="4-verify-everyone-sees-the-same-history">4. Verify everyone sees the same history<a class="headerlink" href="#4-verify-everyone-sees-the-same-history" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>[member]&gt; /history list
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>run_id                            who              when               scope        ok    fail
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>run_2026-05-03_15-44-002          alice@acme.com   2 hours ago        sales        1219  0
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>run_2026-05-03_14-12-001          bob@acme.com     4 hours ago        catalog      47    0
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>run_2026-05-03_11-08-001          alice@acme.com   7 hours ago        sales (1 t)  18    0
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>...
-</span></code></pre></div>
-<p>The <code>who</code> column is the OS user (or, if <code>AMX_USER</code> env is set, that override). All
-team members see all runs.</p>
-<h3 id="5-recommended-division-of-work">5. Recommended division of work<a class="headerlink" href="#5-recommended-division-of-work" title="Permanent link">&para;</a></h3>
-<p>Once the history store is shared, here's the workflow that works:</p>
-<ul>
-<li><strong>Lead</strong> runs whole-warehouse <code>/run-apply --profiling-mode metadata</code> once a quarter to seed first-draft descriptions for every column.</li>
-<li><strong>Domain owners</strong> pick up specific schemas in their area and run <code>/run sales --review-all</code> to refine the descriptions interactively.</li>
-<li><strong>Reviewers</strong> spot-check via <code>/history show &lt;run-id&gt;</code> and edit via <code>/run review</code>.</li>
-<li><strong>Anyone</strong> can <code>/ask</code> with confidence — the catalog has been built across everyone's contributions.</li>
-</ul>
-<p><code>/history compare</code> is invaluable in the multi-person case — when two people produced
-different descriptions for the same column, compare runs side-by-side:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /history compare run_2026-05-03_15-44-002 run_2026-05-03_11-08-001 --filter sales.customer
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>                                  alice (2 hr ago)        bob (5 days ago)         status
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>sales.customer.c_first_name      &quot;Given name of …&quot;        &quot;First name of …&quot;        diff
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>sales.customer.c_last_name       &quot;Surname of …&quot;           &quot;Surname of …&quot;           same
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>sales.customer.x_legacy_status   &quot;Legacy status flag …&quot;   (no description)         alice added
-</span></code></pre></div>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>Lead's config (the one that creates the tables):</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="c1"># ...</span>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nt">history_store_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nt">history_store_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-pg</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nt">history_store_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AMX</span>
-</span></code></pre></div>
-<p>Team member's config (after re-use):</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span><span class="w">                 </span><span class="c1"># same name, same connection details, possibly different creds</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="c1"># ...</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">history_store_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="nt">history_store_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-pg</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nt">history_store_schema</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">AMX</span>
-</span></code></pre></div>
-<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><strong>Lead and member</strong>: <code>&gt; /history list</code> returns the same row count.</li>
-<li><strong>Lead and member</strong>: <code>&gt; /history show &lt;some-run-id&gt;</code> returns identical content (down to the SHA-256 of the <code>descriptions</code> blob — <code>/history show --hash</code>).</li>
-<li><strong>Member</strong>: <code>&gt; /db inspect</code> shows <code>AMX</code> as a schema with the two <code>amx_history_*</code> tables.</li>
-</ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<p>AMX's sidebar, <code>/ask</code> agent tools, and <code>/sync</code> all need schema
+awareness; without a cache they would each fire independent live
+queries. The cache absorbs that pressure and lets every surface share
+a single warmed copy.</p>
+<h2 id="what-gets-cached">What gets cached<a class="headerlink" href="#what-gets-cached" title="Permanent link">&para;</a></h2>
+<p>Three tables hold the cached data:</p>
 <table>
 <thead>
 <tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
+<th>Table</th>
+<th>Key</th>
+<th>What it stores</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>/history-store enable</code> fails with <code>permission denied for schema public</code> (PG) or equivalent on other backends</td>
-<td>The DB user can't <code>CREATE SCHEMA</code></td>
-<td>Have the DBA pre-create the schema, then run <code>/history-store enable --schema AMX</code> (skips the CREATE)</td>
+<td><code>schemas_cache</code></td>
+<td><code>(db_profile, database)</code></td>
+<td>List of schema names visible in the database</td>
 </tr>
 <tr>
-<td>Member's <code>/history list</code> is empty even after lead's run</td>
-<td>Member's <code>history_store_enabled</code> is still <code>false</code> (config not reloaded)</td>
-<td><code>&gt; /config reload</code> or restart AMX</td>
+<td><code>column_comments_cache</code></td>
+<td><code>(db_profile, database, schema, table)</code></td>
+<td>Column names, types, and comments for one table</td>
 </tr>
 <tr>
-<td><code>psycopg.errors.UndefinedTable: relation "AMX.amx_history_runs" does not exist</code></td>
-<td>Schema name mismatch (lead used <code>amx</code>, member configured <code>AMX</code>)</td>
-<td>Postgres folds unquoted identifiers to lowercase; use the same case on both sides</td>
-</tr>
-<tr>
-<td><code>/history compare</code> shows <code>alice</code> and <code>bob</code> for the same person on different machines</td>
-<td><code>AMX_USER</code> not consistent with OS user</td>
-<td>Set <code>AMX_USER=alice@acme.com</code> in shell init for predictable attribution</td>
-</tr>
-<tr>
-<td>Member can <code>/run</code> but <code>/apply</code> fails with <code>permission denied</code> on the audit insert</td>
-<td>Member's DB role lacks <code>INSERT</code> on <code>AMX.amx_history_*</code></td>
-<td>Grant <code>INSERT, UPDATE ON AMX.amx_history_runs, AMX.amx_history_results TO &lt;member-role&gt;</code></td>
+<td><code>catalog_entities</code></td>
+<td><code>(db_profile, database, schema, table)</code></td>
+<td>Full-text search index entries populated by <code>/sync</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
+<p>A fourth pair of tables caches database and catalog lists (for
+backends that distinguish the two):</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>Key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>databases_cache</code></td>
+<td><code>(db_profile,)</code></td>
+</tr>
+<tr>
+<td><code>catalogs_cache</code></td>
+<td><code>(db_profile,)</code></td>
+</tr>
+</tbody>
+</table>
+<p>The scope key always includes <code>db_profile</code> so two profiles pointing at
+the same physical server never share or overwrite each other's rows.</p>
+<h2 id="cache-lifecycle">Cache lifecycle<a class="headerlink" href="#cache-lifecycle" title="Permanent link">&para;</a></h2>
+<h3 id="populate">Populate<a class="headerlink" href="#populate" title="Permanent link">&para;</a></h3>
+<p>A cache miss triggers a live query to the backend, then writes the
+result back into the appropriate cache table before returning. The
+first time you expand a schema in the sidebar, AMX fetches the table
+list live and caches it; the next expand is instant.</p>
+<p><code>sync_profile_skeleton</code> (triggered by "Sync now" / "Sync all" /
+<code>/db cache-refresh</code>) does a proactive full walk of the profile and
+warms all three tables in one pass.</p>
+<h3 id="serve">Serve<a class="headerlink" href="#serve" title="Permanent link">&para;</a></h3>
+<p>Cache rows are served directly with no TTL check on the hot path — a
+present row is returned immediately. Staleness is surfaced through the
+freshness pill in the top bar and the Profile freshness section on the
+<a href="../../studio/db-cache/">Catalog cache page</a>, but it does not block
+reads.</p>
+<h3 id="invalidate">Invalidate<a class="headerlink" href="#invalidate" title="Permanent link">&para;</a></h3>
+<p>Rows are invalidated (deleted or overwritten) in four situations:</p>
+<ol>
+<li><strong>COMMENT write</strong> — when <code>/annotate</code>, <code>/sync</code>, or the Pending
+   review apply a comment change, the affected <code>column_comments_cache</code>
+   row is invalidated so the next read fetches the fresh value.</li>
+<li><strong>Manual clear</strong> — the per-row <strong>Clear</strong> button or <code>cache-clear</code>
+   CLI wipes the selected <code>(profile, database)</code> slice. The rows are
+   deleted; the next sidebar expand repopulates lazily.</li>
+<li><strong>Sync</strong> — <code>sync_profile_skeleton</code> overwrites every row for the
+   profile unconditionally, so it both invalidates and re-populates in
+   one step.</li>
+<li><strong>Scope refresh</strong> — <code>POST /api/catalog/refresh</code> (the Sync scope
+   dialog) invalidates and re-populates the subset you picked.</li>
+</ol>
+<h2 id="scheduled-refreshes">Scheduled refreshes<a class="headerlink" href="#scheduled-refreshes" title="Permanent link">&para;</a></h2>
+<p>A <code>scheduled_runs</code> row with <code>kind='cache_refresh'</code> fires
+<code>cache_refresh_executor</code> at the scheduled time instead of the LLM
+analysis path.</p>
+<h3 id="one-shot-vs-recurring">One-shot vs recurring<a class="headerlink" href="#one-shot-vs-recurring" title="Permanent link">&para;</a></h3>
 <ul>
-<li><a href="../shared-history-store/">Shared history store</a> — schema details, DDL, and migration.</li>
-<li><a href="../safety-guards/">Safety guards</a> — what AMX prevents in shared mode (concurrent /apply on the same row, etc.).</li>
-<li><a href="../../cli/history/">History</a> — <code>/history list</code>, <code>/history show</code>, <code>/history compare</code> reference.</li>
+<li><strong>One-shot</strong> — <code>cron_expr</code> is <code>NULL</code>; the schedule fires once and
+  moves to <code>completed</code>.</li>
+<li><strong>Recurring</strong> — <code>cron_expr</code> holds a standard 5-field cron expression
+  (e.g. <code>0 */6 * * *</code> for every 6 hours). After every fire — success
+  or failure — <code>arm_next_fire()</code> computes the next occurrence via
+  <code>croniter</code> and resets the row to <code>status='pending'</code> with a fresh
+  <code>fire_at_utc</code>. The schedule never terminates on its own.</li>
+</ul>
+<h3 id="re-arm-behavior">Re-arm behavior<a class="headerlink" href="#re-arm-behavior" title="Permanent link">&para;</a></h3>
+<p><code>_try_rearm_recurring()</code> is called in both the success and failure
+paths of the worker, before the terminal status is written. This means
+a transient connection error does not stop future refreshes; the
+schedule simply re-arms and tries again at the next cron tick.</p>
+<p>Recurring cache refresh schedules are intentionally excluded from the
+sweeper that skips profiles with active schedules — the sweeper's
+role is TTL cleanup, which is independent of scheduled refresh.</p>
+<h3 id="scope-payload">Scope payload<a class="headerlink" href="#scope-payload" title="Permanent link">&para;</a></h3>
+<p>The executor reads <code>scope_json</code> from the payload:</p>
+<table>
+<thead>
+<tr>
+<th><code>mode</code> value</th>
+<th>What runs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"all"</code> (default)</td>
+<td>Full <code>sync_profile_skeleton</code> for the profile</td>
+</tr>
+<tr>
+<td><code>"schemas"</code></td>
+<td>Invalidate + re-fetch schema list only</td>
+</tr>
+<tr>
+<td><code>"tables"</code></td>
+<td>Invalidate + re-fetch table list for each named schema</td>
+</tr>
+<tr>
+<td><code>"columns"</code></td>
+<td>Invalidate + re-fetch column comments for each named table</td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../studio/db-cache/">Catalog cache page</a> — the Studio surface
+  for all cache operations.</li>
+<li><a href="../../studio/schedules/">Schedules</a> — the LLM-driven analyze
+  schedule page (separate from cache refresh).</li>
 </ul>
 
 

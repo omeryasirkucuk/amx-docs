@@ -31,7 +31,7 @@
   
     
       
-        <title>DB cache - AMX</title>
+        <title>Catalog cache - AMX</title>
       
     
   
@@ -75,7 +75,7 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="DB cache — AMX CLI">
+  <meta property="og:title" content="Catalog cache — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta property="og:url" content="https://amxcli.com/studio/db-cache/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
@@ -84,7 +84,7 @@
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DB cache — AMX CLI">
+  <meta name="twitter:title" content="Catalog cache — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#db-cache" class="md-skip">
+        <a href="#catalog-cache" class="md-skip">
           Skip to content
         </a>
       
@@ -406,7 +406,9 @@
          href="../../concepts/scoping/"
          >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
-         >Human in the Loop</a></div>
+         >Human in the Loop</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/catalog-cache/"
+         >Catalog cache</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-cli">
       <button type="button"
@@ -484,7 +486,7 @@
          href="../pricing/"
          >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
          href="./"
-         aria-current="page">DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         aria-current="page">Catalog cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../keyboard/"
          >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -743,6 +745,29 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#why-we-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why we cache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#page-tour" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Page tour
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Page tour">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#stats-cards" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -752,12 +777,50 @@
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#cache-contents-table" class="md-nav__link">
+        
+          <li class="md-nav__item">
+  <a href="#profile-freshness" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Cache contents table
+        Profile freshness
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cache-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scheduled-refreshes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scheduled refreshes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manual-refresh-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Manual refresh paths
       
     </span>
   </a>
@@ -765,10 +828,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-clear" class="md-nav__link">
+  <a href="#sync-scope-dialog" class="md-nav__link">
     <span class="md-ellipsis">
       
-        When to clear
+        Sync scope dialog
       
     </span>
   </a>
@@ -776,10 +839,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-equivalents" class="md-nav__link">
+  <a href="#schedule-cache-refresh-dialog" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLI equivalents
+        Schedule cache refresh dialog
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cli-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI parity
       
     </span>
   </a>
@@ -824,7 +898,7 @@
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>DB cache</span>
+      <span>Catalog cache</span>
     </div>
   </div>
 
@@ -833,38 +907,74 @@
 
 
 
-<h1 id="db-cache">DB cache<a class="headerlink" href="#db-cache" title="Permanent link">&para;</a></h1>
-<p><code>/db-cache</code> inspects and clears the metadata cache AMX maintains per
-DB profile. The cache speeds up Browse and <code>/ask</code> by avoiding repeated
-<code>information_schema</code> lookups; this page is where you go when you
-suspect the cache is stale.</p>
-<h2 id="stats-cards">Stats cards<a class="headerlink" href="#stats-cards" title="Permanent link">&para;</a></h2>
-<p>Top of the page: three cards covering the three cache kinds AMX
-maintains.</p>
+<h1 id="catalog-cache">Catalog cache<a class="headerlink" href="#catalog-cache" title="Permanent link">&para;</a></h1>
+<p><code>/db-cache</code> is the single home for everything cache-related in Studio:
+live stats per cache table, per-profile freshness, the inventory of
+cached <code>(profile, database)</code> rows, and the scheduled refreshes that
+keep them warm. You can reach the page three ways:</p>
+<ul>
+<li>The <strong>DB cache</strong> entry in the sidebar</li>
+<li>The <strong>Catalog cache</strong> button in the Runs page header</li>
+<li>The freshness pill in the top bar — <strong>Manage refreshes</strong> link</li>
+</ul>
+<p>The pill is read-only status now (a quick rollup of per-profile sync
+ages); every action that mutates cache state lives on this page.</p>
+<h2 id="why-we-cache">Why we cache<a class="headerlink" href="#why-we-cache" title="Permanent link">&para;</a></h2>
+<p>Live <code>information_schema</code> queries against production warehouses are
+expensive in latency, in cluster CPU, and on backends like BigQuery or
+Snowflake in compute that consumes tokens on the active LLM
+downstream. AMX caches the answers locally so:</p>
+<ul>
+<li>the Studio sidebar can paint schema and table trees instantly,</li>
+<li><code>/ask</code> agent tools resolve <code>schema.table.column</code> references without
+  a round-trip,</li>
+<li>per-table snapshot pages render comments and types from the cache,</li>
+<li><code>/sync</code> and <code>sync_profile_skeleton</code> can populate the
+  <code>catalog_entities</code> full-text index without re-asking every backend.</li>
+</ul>
+<p>The trade-off is staleness: a DBA editing a column comment in the
+warehouse will not be visible to AMX until the relevant cache row is
+refreshed. This page is where you fix that.</p>
+<h2 id="page-tour">Page tour<a class="headerlink" href="#page-tour" title="Permanent link">&para;</a></h2>
+<h3 id="stats-cards">Stats cards<a class="headerlink" href="#stats-cards" title="Permanent link">&para;</a></h3>
+<p>Three cards at the top of the page, one per cache table:</p>
 <table>
 <thead>
 <tr>
 <th>Card</th>
-<th>What it shows</th>
+<th>What it tracks</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>Schemas</strong></td>
-<td>Total rows in the schemas cache, oldest fetch timestamp, % expired (older than TTL)</td>
+<td><strong><code>schemas_cache</code></strong></td>
+<td>total rows, distinct profiles, distinct databases, oldest fetch, newest fetch, TTL state</td>
 </tr>
 <tr>
-<td><strong>Columns</strong></td>
-<td>Same for the column-comments cache</td>
+<td><strong><code>column_comments_cache</code></strong></td>
+<td>same counters, scoped at <code>(profile, database, schema, table)</code></td>
 </tr>
 <tr>
-<td><strong>Catalogs</strong></td>
-<td>Same for the catalog-entities cache (Databricks UC / BigQuery)</td>
+<td><strong><code>catalog_entities</code></strong></td>
+<td>the search index populated by <code>/sync</code>; row count + freshness</td>
 </tr>
 </tbody>
 </table>
-<h2 id="cache-contents-table">Cache contents table<a class="headerlink" href="#cache-contents-table" title="Permanent link">&para;</a></h2>
-<p>A DataTable below the stats, one row per (profile, database) pair:</p>
+<p>The TTL state badge is green when the oldest row is within TTL, amber
+when some rows have expired but are still served, and red when every
+row in that table is past TTL.</p>
+<h3 id="profile-freshness">Profile freshness<a class="headerlink" href="#profile-freshness" title="Permanent link">&para;</a></h3>
+<p>A compact list of every DB profile with:</p>
+<ul>
+<li>Last sync timestamp (relative + absolute on hover)</li>
+<li>A per-profile <strong>Sync now</strong> button, or <strong>Retry</strong> if the last attempt
+  failed</li>
+<li>A section-header <strong>Sync all</strong> button that fans out to every profile</li>
+</ul>
+<p>This is the right tool when you want "refresh everything I know about
+profile X" without filtering down to a single database or schema.</p>
+<h3 id="cache-inventory">Cache inventory<a class="headerlink" href="#cache-inventory" title="Permanent link">&para;</a></h3>
+<p>A DataTable with one row per <code>(profile, database)</code> pair:</p>
 <table>
 <thead>
 <tr>
@@ -883,35 +993,120 @@ maintains.</p>
 </tr>
 <tr>
 <td>Schemas</td>
-<td>Row count in the schemas cache</td>
+<td>Row count in <code>schemas_cache</code></td>
 </tr>
 <tr>
 <td>Columns</td>
-<td>Row count in the column-comments cache</td>
+<td>Row count in <code>column_comments_cache</code></td>
 </tr>
 <tr>
-<td>Catalogs</td>
-<td>Row count in the catalog-entities cache</td>
+<td>Catalog</td>
+<td>Row count in <code>catalog_entities</code></td>
+</tr>
+<tr>
+<td>Last fetch</td>
+<td>Newest <code>last_fetch</code> across the three tables</td>
 </tr>
 <tr>
 <td>Actions</td>
-<td><strong>Clear</strong> button (clears just this row)</td>
+<td><strong>Clear</strong> (this row only)</td>
 </tr>
 </tbody>
 </table>
-<p>A <strong>Clear all</strong> button (top-right) wipes every cache row after
-confirmation.</p>
-<h2 id="when-to-clear">When to clear<a class="headerlink" href="#when-to-clear" title="Permanent link">&para;</a></h2>
+<p>A header-level <strong>Clear all</strong> wipes every cache row after confirmation.</p>
+<p><strong>Clear is not Sync.</strong> Clear only deletes rows; the next live read
+will repopulate them lazily. If you want fresh data right now, use
+<strong>Sync now</strong> instead — it actively re-fetches.</p>
+<h3 id="scheduled-refreshes">Scheduled refreshes<a class="headerlink" href="#scheduled-refreshes" title="Permanent link">&para;</a></h3>
+<p>A DataTable listing every <code>kind='cache_refresh'</code> schedule in
+<code>scheduled_runs</code>. The PageHeader exposes a <strong>New schedule</strong> button
+which opens the <a href="#schedule-cache-refresh-dialog">Schedule cache refresh dialog</a>.</p>
+<p>Per-row actions: <strong>Edit</strong>, <strong>Pause</strong>, <strong>Resume</strong>, <strong>Run now</strong>,
+<strong>Delete</strong>. Recurring schedules show their cron expression in a
+tooltip; one-shot schedules show their single fire time.</p>
+<p>The longer-form treatment of how schedules work lives in
+<a href="../../concepts/catalog-cache/">Concepts → Catalog cache</a>.</p>
+<h2 id="manual-refresh-paths">Manual refresh paths<a class="headerlink" href="#manual-refresh-paths" title="Permanent link">&para;</a></h2>
+<p>There are four ways to trigger a sync. They all converge on the same
+cache tables; the difference is scope and ergonomics.</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Where</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Freshness pill → <strong>Manage refreshes</strong></td>
+<td>Top bar</td>
+<td>Quick status glance + jump to this page</td>
+</tr>
+<tr>
+<td><strong>Sync all</strong> / <strong>Sync now</strong></td>
+<td>This page, Profile freshness</td>
+<td>Refresh a whole profile after a maintenance window</td>
+</tr>
+<tr>
+<td><strong>Sync scope</strong></td>
+<td>This page, PageHeader button</td>
+<td>Surgical refresh after a single COMMENT edit or table change</td>
+</tr>
+<tr>
+<td>Sidebar left-tree refresh icons</td>
+<td>Per-profile, per-database/catalog, per-schema</td>
+<td>In-context refresh while browsing</td>
+</tr>
+<tr>
+<td><code>/db cache-show</code>, <code>/db cache-stats</code>, <code>/db cache-clear</code></td>
+<td>CLI</td>
+<td>Scripts, CI, terminal-first workflows</td>
+</tr>
+</tbody>
+</table>
+<p>The sidebar icons cover profile / database / catalog / schema. Table-
+and column-level refreshes are only available through the Sync scope
+dialog described below.</p>
+<h2 id="sync-scope-dialog">Sync scope dialog<a class="headerlink" href="#sync-scope-dialog" title="Permanent link">&para;</a></h2>
+<p>The PageHeader <strong>Sync scope</strong> button opens a dialog with:</p>
 <ul>
-<li>A schema rename / drop happened outside AMX and the sidebar still
-  shows the old layout</li>
-<li>Column comments were edited directly in the database and <code>/ask</code>
-  doesn't see them</li>
-<li>A backend upgraded its <code>information_schema</code> semantics</li>
+<li><strong>DB profile</strong> dropdown</li>
+<li><strong>Database / catalog</strong> — cascades from the profile</li>
+<li><strong>ScopeTree</strong> — pick one or many schemas / tables / columns</li>
+<li><strong>Confirm</strong></li>
 </ul>
-<p>After clearing, the next Browse or <code>/ask</code> request re-populates the
-cache from the live database.</p>
-<h2 id="cli-equivalents">CLI equivalents<a class="headerlink" href="#cli-equivalents" title="Permanent link">&para;</a></h2>
+<p>Submitting fires <code>POST /api/catalog/refresh</code>, which runs the
+<code>cache_refresh_executor</code> synchronously. No <code>scheduled_runs</code> row is
+written — this is an ad-hoc fire, not a schedule.</p>
+<p>Typical use cases:</p>
+<ul>
+<li>A DBA just edited the comment on one column; refresh that column
+  only.</li>
+<li>A table was dropped and recreated; refresh that table's row in
+  <code>column_comments_cache</code>.</li>
+<li>A new schema was added; refresh that schema's slice of
+  <code>schemas_cache</code> before pointing <code>/ask</code> at it.</li>
+</ul>
+<h2 id="schedule-cache-refresh-dialog">Schedule cache refresh dialog<a class="headerlink" href="#schedule-cache-refresh-dialog" title="Permanent link">&para;</a></h2>
+<p>Opened from <strong>New schedule</strong> in the Scheduled refreshes section.</p>
+<ul>
+<li><strong>DB profile</strong> dropdown</li>
+<li><strong>Database / catalog</strong></li>
+<li><strong>ScopeTree</strong> — profile / database / schema / table / column</li>
+<li><strong>First fire (local)</strong> — datetime picker</li>
+<li><strong>Timezone</strong> — IANA Select, browser-detected default</li>
+<li><strong>Recurrence</strong> — <code>none</code> / <code>1h</code> / <code>6h</code> / <code>12h</code> / <code>1d</code> / <code>1w</code> /
+  <code>custom</code></li>
+<li><strong>Show cron syntax</strong> — toggle to reveal the cron expression the
+  dialog computed for the recurrence above</li>
+</ul>
+<p>The dialog persists the schedule as a <code>kind='cache_refresh'</code> row in
+<code>scheduled_runs</code> with <code>cron_expr</code> set for recurring choices and
+<code>NULL</code> for one-shot. After every fire — success or failure —
+recurring schedules re-arm to <code>status='pending'</code> with a fresh
+<code>fire_at_utc</code> computed by <code>croniter</code>.</p>
+<h2 id="cli-parity">CLI parity<a class="headerlink" href="#cli-parity" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
@@ -922,26 +1117,32 @@ cache from the live database.</p>
 <tbody>
 <tr>
 <td>Stats cards</td>
-<td><code>/cache-stats</code></td>
+<td><code>/db cache-stats</code></td>
 </tr>
 <tr>
-<td>Cache contents table</td>
-<td><code>/cache-show [--profile=X] [--database=Y]</code></td>
+<td>Cache inventory</td>
+<td><code>/db cache-show [--profile=X] [--database=Y]</code></td>
 </tr>
 <tr>
 <td>Per-row Clear</td>
-<td><code>/cache-clear --profile=X --database=Y</code></td>
+<td><code>/db cache-clear --profile=X --database=Y</code></td>
 </tr>
 <tr>
 <td>Clear all</td>
-<td><code>/cache-clear --type=all --force</code></td>
+<td><code>/db cache-clear --type=all --force</code></td>
 </tr>
 </tbody>
 </table>
+<p>Schedule management for <code>cache_refresh</code> runs is Studio-first today;
+the existing <code>/schedule</code> CLI namespace handles <code>kind='analyze'</code>
+schedules.</p>
 <h2 id="whats-next">What's next<a class="headerlink" href="#whats-next" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../cli/overview/">DB CLI</a> — the full <code>/db</code> namespace including the
-  cache commands above.</li>
+<li><a href="../../concepts/catalog-cache/">Concepts → Catalog cache</a> — what the
+  three cache tables actually store, how schedules re-arm, and when
+  to clear vs sync.</li>
+<li><a href="../schedules/">Studio → Schedules</a> — the separate analyze-run
+  schedule page (LLM-driven metadata runs).</li>
 </ul>
 
 

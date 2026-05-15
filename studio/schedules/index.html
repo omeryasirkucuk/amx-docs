@@ -406,7 +406,9 @@
          href="../../concepts/scoping/"
          >Multi-profile scoping</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../concepts/human-in-the-loop/"
-         >Human in the Loop</a></div>
+         >Human in the Loop</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../concepts/catalog-cache/"
+         >Catalog cache</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-cli">
       <button type="button"
@@ -484,7 +486,7 @@
          href="../pricing/"
          >Pricing</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../db-cache/"
-         >DB cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         >Catalog cache</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../keyboard/"
          >Keyboard</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -845,8 +847,14 @@
 
 
 <h1 id="schedules">Schedules<a class="headerlink" href="#schedules" title="Permanent link">&para;</a></h1>
-<p><code>/runs/schedules</code> manages one-shot scheduled metadata runs and the
+<p><code>/runs/schedules</code> manages LLM-driven metadata analysis schedules and the
 background daemon that fires them.</p>
+<div class="admonition note">
+<p class="admonition-title">Cache refresh schedules are on a different page</p>
+<p>Scheduled cache refreshes (<code>kind='cache_refresh'</code>) are managed from
+<a href="../db-cache/#scheduled-refreshes">Catalog cache</a>, not here. This page
+covers <code>kind='analyze'</code> runs only — the LLM-annotated metadata passes.</p>
+</div>
 <h2 id="daemon-status">Daemon status<a class="headerlink" href="#daemon-status" title="Permanent link">&para;</a></h2>
 <p>The top of the page shows whether the schedule daemon is installed.
 <strong>Install daemon</strong> sets up the per-OS scheduler:</p>
