@@ -13,7 +13,7 @@ this page mirrors them with prose explanations.
 
 ```python
 import amx
-amx.__version__   # str, e.g. "0.14.0"
+amx.__version__   # str, e.g. "0.15.0"
 ```
 
 The installed AMX version. Useful for runtime feature checks and bug reports.
