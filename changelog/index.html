@@ -759,6 +759,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0150-scheduled-jobs-hybrid-rag-llm-price-browser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.15.0 — Scheduled jobs, hybrid RAG, LLM price browser
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#variations-seeded-re-run-per-run-model-selector" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1030,6 +1041,40 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0150-scheduled-jobs-hybrid-rag-llm-price-browser">0.15.0 — Scheduled jobs, hybrid RAG, LLM price browser<a class="headerlink" href="#0150-scheduled-jobs-hybrid-rag-llm-price-browser" title="Permanent link">&para;</a></h3>
+<p>Recurring runs ship as a first-class feature: a cron-based daemon runs
+on macOS, Linux, and Windows; Studio adds a schedule edit dialog and a
+one-click install/uninstall flow. The scheduler plumbs the full cascading
+scope tree (profile → database → schema → table → column) into the
+orchestrator and persists <code>column_overrides</code> so a "/analyze on Mondays"
+schedule lands exactly the same scope you would have picked
+interactively.</p>
+<p>Document RAG gets serious hardening. An FTS5 sidecar with RRF fusion
+adds hybrid lexical + semantic retrieval; an opt-in cross-encoder
+reranks the top candidates; MMR diversity reorders the rerank output
+to avoid near-duplicates; a format-dispatching chunker respects
+Markdown headers so chunk boundaries fall on natural sections. A
+gold-set runner with a baseline regression CI gate locks retrieval
+quality in place. Edges-first context assembly with a model-aware
+budget gives the agent the citation chain it actually needs to ground
+its answer.</p>
+<p>The LLM price browser lets you pick prices for any LiteLLM /
+OpenRouter model from Studio or CLI; the sidebar surfaces the live
+token-consuming rate and the run detail page records both the price
+the run actually used and the price it would consume today. Code RAG
+defaults to <code>jina-embeddings-v2-base-code</code> (MiniLM fallback) and
+collection identity v2 records <code>embedding_dim</code> so port mismatches
+surface in Catalog Search instead of silently returning wrong
+neighbours.</p>
+<p>The bulk-review UX adds filter / search / sort / group, multi-select
+with bulk actions, pagination, URL-shareable state, keyboard
+navigation, and column-level compare. Cancellation is now real across
+<code>/ask</code>, <code>/run</code>, and the scheduler: cancelled runs are tagged
+<code>cancelled</code> (never <code>success</code>), runs where every asset failed flip to
+<code>failed</code>, and the Studio SSE consumer no longer hangs waiting for a
+terminal frame. See the detailed sub-sections below for variations, the
+re-run modal override parity, the CLI override picker, and the docs
+update covering alternatives mode and confidence signals.</p>
 <h3 id="variations-seeded-re-run-per-run-model-selector">Variations: seeded re-run + per-run model selector<a class="headerlink" href="#variations-seeded-re-run-per-run-model-selector" title="Permanent link">&para;</a></h3>
 <p>Studio's run-detail page now renders a ✨ trigger next to every
 alternative in the <strong>Results</strong> tab. Click it to open the <strong>Variations
@@ -1542,7 +1587,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.14.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.15.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1562,7 +1607,7 @@ don't match anything print <code>Unknown command: /asl. Type /help.</code> like 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.14.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.15.0"}</script>
     
     
       <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
