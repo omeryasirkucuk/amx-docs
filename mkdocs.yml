@@ -136,6 +136,7 @@ nav:
       - Universal Metadata: concepts/universal-metadata.md
       - Multi-profile scoping: concepts/scoping.md
       - Human in the Loop: concepts/human-in-the-loop.md
+      - Catalog cache: concepts/catalog-cache.md
   - CLI:
       - Overview: cli/overview.md
       - Setup: cli/setup.md
@@ -163,7 +164,7 @@ nav:
       - System: studio/system.md
       - Schedules: studio/schedules.md
       - Pricing: studio/pricing.md
-      - DB cache: studio/db-cache.md
+      - Catalog cache: studio/db-cache.md
       - Keyboard: studio/keyboard.md
   - Backends:
       - Overview: backends/index.md
