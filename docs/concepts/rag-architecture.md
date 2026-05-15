@@ -74,11 +74,12 @@ Document RAG dispatches by file extension via
 | `.txt`, `.pdf`, `.csv`, `.docx`, `.html`, `.py`, ... | `RecursiveCharacterTextSplitter` | Default. Structural separator hierarchy `["\n\n", "\n", ". ", " ", ""]` — paragraph → line → sentence → word → character. 1000 chars per chunk, 200-char overlap. |
 | Unknown extension | Default (fallback) | Never raises `KeyError`. |
 
-The header metadata is the channel future prompt-assembly upgrades
-use for citation strings ("`orders.md → h2: total_amount`"). Chunks
-from non-Markdown extensions never have `h1`/`h2`/`h3` keys —
-downstream code that reads them treats absence as "no structural
-hint available."
+The header metadata is the channel prompt assembly uses for
+citation strings ("`orders.md → h2: total_amount`") —
+see [Prompt assembly](#4-prompt-assembly) below. Chunks from
+non-Markdown extensions never have `h1`/`h2`/`h3` keys; downstream
+code that reads them treats absence as "no structural hint
+available."
 
 Code RAG is **AST-aware** for Python: one chunk per function or
 class, with `start_line` and `end_line` preserved so citations point
@@ -181,24 +182,39 @@ unchanged.
 - **Long-form questions**: bump `rag_max_chunks` via the
   `detailed` / `full` prompt preset.
 
-## Roadmap
+## Future tuning
 
-The architecture above is the current state. The following retrieval
-improvements are tracked and will land in sequence:
+The retrieval architecture above is considered complete for AMX's
+English-only data-catalog use case. Each retrieval-quality change
+shipped against the
+[retrieval evaluation harness](../evaluation/retrieval-eval.md) —
+the committed baseline (`hit@3 = 0.85`, `hit@5 = 0.95`, `MRR = 0.78`)
+is the floor every subsequent change must clear.
 
-1. **Format-dispatching chunker — follow-ups.** F1.1 (Markdown
-   header awareness) shipped; F1.2 (token-counted budgets), F1.3
-   (`cfg.docs.chunking` knobs), F1.4 (chunker signature in
-   collection metadata), and the `.py` / `.csv` / `.pdf`
-   specialisations are open as follow-up PRs on the dispatcher seam.
-3. **Cross-encoder rerank** (opt-in) — replaces the heuristic with a
-   model-based reranker for the top-K candidate pool.
-4. **Query rewriting** for Document RAG, reusing the catalog planner.
-5. **Edges-first context assembly** — places the highest-relevance
-   chunks at both ends of the prompt to recover the "lost in the
-   middle" attention gap.
-6. **Per-model context budget** — replaces the heuristic 3× output
-   budget with a real per-provider input window lookup.
+A small number of low-priority follow-ups remain available on the
+dispatcher seam for users with corpora that exercise them:
 
-Each step ships with a measurable retrieval delta against the
-[retrieval evaluation harness](../evaluation/retrieval-eval.md).
+- **Token-counted chunk budgets.** The default splitter still
+  counts characters; switching to `tiktoken`-based length functions
+  aligns chunk sizing with the LLM context budget downstream.
+- **`cfg.docs.chunking` config knobs.** Chunk size, overlap, and
+  strategy are hardcoded today; exposing them would let users with
+  code-heavy or PDF-heavy corpora tune without forking.
+- **Chunker signature in collection metadata.** A sibling of the
+  embedding-identity check that forces a reingest when the chunker
+  config changes.
+- **Format-specific splitters for `.py` / `.csv` / `.pdf`.** Reuse
+  the existing AST chunker for `.py` files entering via
+  `/docs ingest`; row-group splitter for CSV; layout-aware PDF.
+
+Two larger ideas were explicitly evaluated and dropped:
+
+- **Query rewriting + metadata filters.** Aimed at synonym /
+  terminology gaps and non-English → English-corpus translation.
+  AMX's data-catalog scope is English-only by design; adding an
+  LLM call to every retrieval (+500-2000 ms per query) for a
+  problem AMX doesn't have is the wrong trade-off.
+- **Shared retrieval-core refactor.** Pure refactor whose payoff
+  is amortised across future retrieval PRs. With the rollout
+  complete and no new retrieval features planned, the refactor
+  has no payback window.
