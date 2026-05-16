@@ -136,6 +136,7 @@ print(report.to_baseline_dict())
 
 The metric logic is re-usable; only the `fixture_dir` and `gold_path`
 arguments change. To compare embedding providers on the same corpus,
-swap the `cfg.embedding.kind` setting in between runs (or pass an
-explicit `embedding_function` to a custom runner) and report per-query
-deltas alongside the aggregate.
+swap the `cfg.embedding_docs.kind` setting in between runs — or
+`cfg.embedding_code.kind` when evaluating code retrieval — and report
+per-query deltas alongside the aggregate. The two sides are independent,
+so a docs-side change does not affect code retrieval and vice versa.

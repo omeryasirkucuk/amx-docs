@@ -81,14 +81,17 @@ metadata.
 
 ## Embeddings
 
-For fully-offline AMX, also configure local embeddings:
+For fully-offline AMX, also configure local embeddings on both sides
+(docs RAG and code RAG carry independent providers):
 
 ```text
-/embeddings Local
+/embeddings docs local BAAI/bge-large-en-v1.5
+/embeddings code local jinaai/jina-embeddings-v2-base-code
 ```
 
-This uses local sentence-transformers. Run `/search rebuild` after switching to
-re-embed the catalog.
+This uses local sentence-transformers. Run `/search rebuild` after the docs
+switch and `/code refresh` after the code switch to re-embed the
+respective collections.
 
 ## Known gotchas
 

@@ -1,7 +1,7 @@
 # Settings
 
 `/settings` is the profile-management surface in Studio. It mirrors the
-CLI's `/add-…-profile` wizards in a four-tab tabbed interface.
+CLI's `/add-…-profile` wizards in a five-tab tabbed interface.
 
 ## Database {#database}
 
@@ -80,6 +80,37 @@ Same shape as Docs, scoped to source-code paths. One path per profile
 
 Linked DB profiles control which `/ask` scopes consult this code profile.
 
+## Embeddings {#embeddings}
+
+Docs RAG and code RAG carry independent embedding providers
+(`cfg.embedding_docs` and `cfg.embedding_code`), so a code-specialised
+encoder can drive code retrieval while a prose-tuned model drives the
+documentation side. The tab renders two panels — one per side — sharing
+the same form shape:
+
+- **Provider** radio — MiniLM (Chroma bundled, offline default),
+  OpenAI-compatible (OpenAI, OpenRouter, Together, Mistral, DeepInfra,
+  Azure, vLLM / LM Studio / llama.cpp via `base_url`), or local
+  sentence-transformers. The local option is auto-disabled with a hint
+  when the host lacks the `sentence-transformers` extra.
+- **Preset** dropdown (OpenAI-compatible only) — fills `base_url` with
+  the matching endpoint.
+- **Model**, **Base URL**, **API key** — rendered conditionally on the
+  chosen kind. Keys are masked on read (`********`); leaving the
+  placeholder in the save body preserves the existing secret.
+- **Test connection** — embeds a one-token sentinel with the merged-
+  but-not-yet-saved settings and reports a green pill with the vector
+  dimension, or a red pill with the provider's error verbatim.
+- **Save** — persists to `cfg.embedding_{docs,code}` and re-installs the
+  process-wide embedding factory so subsequent `/search` and code-RAG
+  queries pick up the new provider without restarting the server.
+
+When the active provider drifts from what an existing collection was
+embedded with, a yellow banner appears with the concrete collection
+and chunk counts and a **Rebuild** button. The rebuild clears the
+affected vector store so the next ingest or query re-embeds with the
+active provider; document and code data themselves are untouched.
+
 ## Profile linking
 
 Both Docs and Code wizards expose a linked-DB-profiles multi-select.
@@ -95,3 +126,4 @@ doc profile linked to `prod-pg` is silent when `/ask` is running against
 | LLM tab | `/add-llm-profile`, `/use-llm`, `/temperature`, `/max-tokens`, `/n-alternatives`, `/cost` |
 | Docs tab | `/add-doc-profile`, `/doc-link`, `/scan`, `/ingest` |
 | Code tab | `/add-code-profile`, `/code-link`, `/code-scan` |
+| Embeddings tab | `/embeddings docs`, `/embeddings code` |

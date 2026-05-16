@@ -217,11 +217,21 @@ code_profiles:
 active_code_profile: default
 
 # ─────────────────────────────────────────────────────────────────────
-# Search catalog (RAG embeddings + Chroma store).
-search:
-  embedding_model: openai/text-embedding-3-small
-  top_k: 8
-  index_store: ~/.amx/chroma
+# Embedding providers. Docs RAG and code RAG carry independent
+# providers; the active provider for each side drives ingest, indexing,
+# and retrieval. Switch via /embeddings docs|code <kind> in the CLI or
+# Studio → Settings → Embeddings. ``api_key`` is moved to the OS keyring
+# on save (the YAML stores only an opaque ``keyring:...`` reference).
+embedding_docs:
+  kind: openai_compatible
+  model: text-embedding-3-small
+  base_url: https://api.openai.com/v1
+  api_key: keyring:embedding_docs/api_key
+embedding_code:
+  kind: sentence_transformers
+  model: jinaai/jina-embeddings-v2-base-code
+  base_url: ''
+  api_key: ''
 
 # ─────────────────────────────────────────────────────────────────────
 # Optional: shared history store. When set, /history is read from and

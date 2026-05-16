@@ -32,14 +32,22 @@ flowchart LR
 
 ### 1. Embedding layer
 
-Pluggable per pipeline via [`/embeddings`](../cli/setup.md). Three
-provider kinds are supported:
+Pluggable per pipeline via [`/embeddings`](../cli/setup.md). Document
+RAG and code RAG carry independent providers — `cfg.embedding_docs`
+drives docs ingestion and `cfg.embedding_code` drives code RAG — so a
+code-specialised encoder can power code retrieval while a prose-tuned
+model serves the documentation side. Three provider kinds are
+supported:
 
 | Kind | When to use |
 | --- | --- |
 | `minilm` | Document RAG default; offline, fast, 384-dim, good baseline English retrieval. |
 | `openai_compatible` | Any OpenAI-style `/embeddings` endpoint (OpenAI, Azure, vLLM, llama.cpp). Best quality for general English prose. |
 | `sentence_transformers` | Local HuggingFace model. Used by the **code-specialised default** below and for any other custom embedder. |
+
+Switch a side from the CLI with `/embeddings docs <kind>` or
+`/embeddings code <kind>`, or from
+[Studio → Settings → Embeddings](../studio/settings.md#embeddings).
 
 **Defaults per pipeline:**
 
@@ -54,7 +62,8 @@ provider kinds are supported:
   ```
   Users without the extra get MiniLM plus a one-time WARNING in the
   log on first `/code search` naming the install command.
-- **Catalog Search** — same as Document RAG.
+- **Catalog Search** — same as Document RAG (reads
+  `cfg.embedding_docs`).
 
 Each collection records its `embedding_provider`, `embedding_model`,
 and `embedding_dim` in Chroma metadata on creation. Reopening with a
@@ -162,9 +171,9 @@ unchanged.
 
 | Knob | Default | Where to change |
 | --- | --- | --- |
-| Docs RAG embedder | `minilm-l6-v2` | `/embeddings` |
-| Code RAG embedder | `jinaai/jina-embeddings-v2-base-code` if `amx-cli[local-embeddings]` is installed; else `minilm-l6-v2` (with one-time warning) | install the extra, or `/embeddings` |
-| Catalog Search embedder | `minilm-l6-v2` | `/embeddings` |
+| Docs RAG embedder (`cfg.embedding_docs`) | `minilm-l6-v2` | `/embeddings docs <kind>` |
+| Code RAG embedder (`cfg.embedding_code`) | `jinaai/jina-embeddings-v2-base-code` if `amx-cli[local-embeddings]` is installed; else `minilm-l6-v2` (with one-time warning) | install the extra, or `/embeddings code <kind>` |
+| Catalog Search embedder | reads `cfg.embedding_docs` | `/embeddings docs <kind>` |
 | Docs chunk size / overlap | 1000 chars / 200 chars | hardcoded today; configurable in the chunking roadmap |
 | Code chunk strategy | AST for Python, 4000-char for other code | hardcoded |
 | Top-k retrieved | 5 | `/docs search --results N` for ad-hoc; preset-driven for `/run` |
@@ -174,7 +183,8 @@ unchanged.
 
 - **English prose corpora**: default MiniLM is fine. For higher
   quality without leaving offline, switch to `bge-small-en-v1.5` via
-  `/embeddings sentence_transformers BAAI/bge-small-en-v1.5`.
+  `/embeddings docs local BAAI/bge-small-en-v1.5` (the docs side; the
+  code side is independent).
 - **Code-heavy corpora**: install `amx-cli[local-embeddings]` to
   pick up the code-specialised default. Already opted in if you
   installed the extra — Code RAG uses it automatically with no
