@@ -1132,9 +1132,10 @@ CI. To evaluate against a real corpus locally:</p>
 </span></code></pre></div>
 <p>The metric logic is re-usable; only the <code>fixture_dir</code> and <code>gold_path</code>
 arguments change. To compare embedding providers on the same corpus,
-swap the <code>cfg.embedding.kind</code> setting in between runs (or pass an
-explicit <code>embedding_function</code> to a custom runner) and report per-query
-deltas alongside the aggregate.</p>
+swap the <code>cfg.embedding_docs.kind</code> setting in between runs — or
+<code>cfg.embedding_code.kind</code> when evaluating code retrieval — and report
+per-query deltas alongside the aggregate. The two sides are independent,
+so a docs-side change does not affect code retrieval and vice versa.</p>
 
 
 

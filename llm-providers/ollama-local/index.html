@@ -1025,11 +1025,14 @@ metadata.</p>
   with the right flags. Confidence calibration works as for OpenAI direct.</li>
 </ul>
 <h2 id="embeddings">Embeddings<a class="headerlink" href="#embeddings" title="Permanent link">&para;</a></h2>
-<p>For fully-offline AMX, also configure local embeddings:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/embeddings Local
+<p>For fully-offline AMX, also configure local embeddings on both sides
+(docs RAG and code RAG carry independent providers):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/embeddings docs local BAAI/bge-large-en-v1.5
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>/embeddings code local jinaai/jina-embeddings-v2-base-code
 </span></code></pre></div>
-<p>This uses local sentence-transformers. Run <code>/search rebuild</code> after switching to
-re-embed the catalog.</p>
+<p>This uses local sentence-transformers. Run <code>/search rebuild</code> after the docs
+switch and <code>/code refresh</code> after the code switch to re-embed the
+respective collections.</p>
 <h2 id="known-gotchas">Known gotchas<a class="headerlink" href="#known-gotchas" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Local servers often have small default context windows. For wide-table profiling, set

@@ -871,6 +871,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#embeddings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Embeddings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#profile-linking" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -935,7 +946,7 @@
 
 <h1 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h1>
 <p><code>/settings</code> is the profile-management surface in Studio. It mirrors the
-CLI's <code>/add-…-profile</code> wizards in a four-tab tabbed interface.</p>
+CLI's <code>/add-…-profile</code> wizards in a five-tab tabbed interface.</p>
 <h2 id="database">Database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h2>
 <p>Lists every configured DB profile. Each row shows the profile name,
 backend, host, and the database / catalog the profile pins.</p>
@@ -1003,6 +1014,35 @@ Indexing status can also be inspected from
 (filesystem or Git URL — cloned on first scan into
 <code>~/.amx/code_cache/&lt;slug&gt;/</code>).</p>
 <p>Linked DB profiles control which <code>/ask</code> scopes consult this code profile.</p>
+<h2 id="embeddings">Embeddings<a class="headerlink" href="#embeddings" title="Permanent link">&para;</a></h2>
+<p>Docs RAG and code RAG carry independent embedding providers
+(<code>cfg.embedding_docs</code> and <code>cfg.embedding_code</code>), so a code-specialised
+encoder can drive code retrieval while a prose-tuned model drives the
+documentation side. The tab renders two panels — one per side — sharing
+the same form shape:</p>
+<ul>
+<li><strong>Provider</strong> radio — MiniLM (Chroma bundled, offline default),
+  OpenAI-compatible (OpenAI, OpenRouter, Together, Mistral, DeepInfra,
+  Azure, vLLM / LM Studio / llama.cpp via <code>base_url</code>), or local
+  sentence-transformers. The local option is auto-disabled with a hint
+  when the host lacks the <code>sentence-transformers</code> extra.</li>
+<li><strong>Preset</strong> dropdown (OpenAI-compatible only) — fills <code>base_url</code> with
+  the matching endpoint.</li>
+<li><strong>Model</strong>, <strong>Base URL</strong>, <strong>API key</strong> — rendered conditionally on the
+  chosen kind. Keys are masked on read (<code>********</code>); leaving the
+  placeholder in the save body preserves the existing secret.</li>
+<li><strong>Test connection</strong> — embeds a one-token sentinel with the merged-
+  but-not-yet-saved settings and reports a green pill with the vector
+  dimension, or a red pill with the provider's error verbatim.</li>
+<li><strong>Save</strong> — persists to <code>cfg.embedding_{docs,code}</code> and re-installs the
+  process-wide embedding factory so subsequent <code>/search</code> and code-RAG
+  queries pick up the new provider without restarting the server.</li>
+</ul>
+<p>When the active provider drifts from what an existing collection was
+embedded with, a yellow banner appears with the concrete collection
+and chunk counts and a <strong>Rebuild</strong> button. The rebuild clears the
+affected vector store so the next ingest or query re-embeds with the
+active provider; document and code data themselves are untouched.</p>
 <h2 id="profile-linking">Profile linking<a class="headerlink" href="#profile-linking" title="Permanent link">&para;</a></h2>
 <p>Both Docs and Code wizards expose a linked-DB-profiles multi-select.
 This controls which <code>/ask</code> invocations see the profile's contents — a
@@ -1032,6 +1072,10 @@ doc profile linked to <code>prod-pg</code> is silent when <code>/ask</code> is r
 <tr>
 <td>Code tab</td>
 <td><code>/add-code-profile</code>, <code>/code-link</code>, <code>/code-scan</code></td>
+</tr>
+<tr>
+<td>Embeddings tab</td>
+<td><code>/embeddings docs</code>, <code>/embeddings code</code></td>
 </tr>
 </tbody>
 </table>

@@ -1001,8 +1001,12 @@ their results meet at the orchestrator (see
     end
     Assemble --&gt; LLM[LLM call]</code></pre>
 <h3 id="1-embedding-layer">1. Embedding layer<a class="headerlink" href="#1-embedding-layer" title="Permanent link">&para;</a></h3>
-<p>Pluggable per pipeline via <a href="../../cli/setup/"><code>/embeddings</code></a>. Three
-provider kinds are supported:</p>
+<p>Pluggable per pipeline via <a href="../../cli/setup/"><code>/embeddings</code></a>. Document
+RAG and code RAG carry independent providers — <code>cfg.embedding_docs</code>
+drives docs ingestion and <code>cfg.embedding_code</code> drives code RAG — so a
+code-specialised encoder can power code retrieval while a prose-tuned
+model serves the documentation side. Three provider kinds are
+supported:</p>
 <table>
 <thead>
 <tr>
@@ -1025,6 +1029,9 @@ provider kinds are supported:</p>
 </tr>
 </tbody>
 </table>
+<p>Switch a side from the CLI with <code>/embeddings docs &lt;kind&gt;</code> or
+<code>/embeddings code &lt;kind&gt;</code>, or from
+<a href="../../studio/settings/#embeddings">Studio → Settings → Embeddings</a>.</p>
 <p><strong>Defaults per pipeline:</strong></p>
 <ul>
 <li><strong>Document RAG</strong> — MiniLM-L6-v2 (384-dim), bundled, zero-config.</li>
@@ -1037,7 +1044,8 @@ provider kinds are supported:</p>
 </span></code></pre></div>
   Users without the extra get MiniLM plus a one-time WARNING in the
   log on first <code>/code search</code> naming the install command.</li>
-<li><strong>Catalog Search</strong> — same as Document RAG.</li>
+<li><strong>Catalog Search</strong> — same as Document RAG (reads
+  <code>cfg.embedding_docs</code>).</li>
 </ul>
 <p>Each collection records its <code>embedding_provider</code>, <code>embedding_model</code>,
 and <code>embedding_dim</code> in Chroma metadata on creation. Reopening with a
@@ -1195,19 +1203,19 @@ unchanged.</p>
 </thead>
 <tbody>
 <tr>
-<td>Docs RAG embedder</td>
+<td>Docs RAG embedder (<code>cfg.embedding_docs</code>)</td>
 <td><code>minilm-l6-v2</code></td>
-<td><code>/embeddings</code></td>
+<td><code>/embeddings docs &lt;kind&gt;</code></td>
 </tr>
 <tr>
-<td>Code RAG embedder</td>
+<td>Code RAG embedder (<code>cfg.embedding_code</code>)</td>
 <td><code>jinaai/jina-embeddings-v2-base-code</code> if <code>amx-cli[local-embeddings]</code> is installed; else <code>minilm-l6-v2</code> (with one-time warning)</td>
-<td>install the extra, or <code>/embeddings</code></td>
+<td>install the extra, or <code>/embeddings code &lt;kind&gt;</code></td>
 </tr>
 <tr>
 <td>Catalog Search embedder</td>
-<td><code>minilm-l6-v2</code></td>
-<td><code>/embeddings</code></td>
+<td>reads <code>cfg.embedding_docs</code></td>
+<td><code>/embeddings docs &lt;kind&gt;</code></td>
 </tr>
 <tr>
 <td>Docs chunk size / overlap</td>
@@ -1235,7 +1243,8 @@ unchanged.</p>
 <ul>
 <li><strong>English prose corpora</strong>: default MiniLM is fine. For higher
   quality without leaving offline, switch to <code>bge-small-en-v1.5</code> via
-  <code>/embeddings sentence_transformers BAAI/bge-small-en-v1.5</code>.</li>
+  <code>/embeddings docs local BAAI/bge-small-en-v1.5</code> (the docs side; the
+  code side is independent).</li>
 <li><strong>Code-heavy corpora</strong>: install <code>amx-cli[local-embeddings]</code> to
   pick up the code-specialised default. Already opted in if you
   installed the extra — Code RAG uses it automatically with no
