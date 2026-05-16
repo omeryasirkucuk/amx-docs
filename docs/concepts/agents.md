@@ -59,7 +59,8 @@ Chroma store, and generates suggestions backed by those snippets.
 
 `/ingest` walks each configured root, splits files into chunks (`langchain-text-splitters`),
 embeds them, and upserts into Chroma. Default embeddings are MiniLM (offline). Switch to
-OpenAI-compatible or local sentence-transformers via `/embeddings`.
+OpenAI-compatible or local sentence-transformers via `/embeddings docs <kind>`. The
+code-agent side is independent — change it with `/embeddings code <kind>`.
 
 Supported file types: `pdf`, `docx`, `doc`, `txt`, `md`, `csv`, `xlsx`, `xls`, `html`,
 `htm`, `pptx`, `json`, `yaml`, `yml`, `rst`, `rtf`.

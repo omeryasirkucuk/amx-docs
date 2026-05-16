@@ -265,7 +265,7 @@ the root prompt.
 | `/sources` | Show evidence sources and settings |
 | `/ask-context` | Show which doc / code profiles `/ask` will use for the current DB scope |
 | `/config [key] [value]` | Show / set search-scoped config |
-| `/embeddings [minilm\|openai\|local] [model]` | Show / change the embedding provider |
+| `/embeddings [docs\|code] [minilm\|openai\|local] [model]` | Show / change the embedding provider per side (docs RAG or code RAG) |
 | `/sync [--db-profile NAME…]` | Sync DB structure / comments and code evidence into the index |
 | `/rebuild` | Rebuild search state and vector index |
 | `/find-columns` | Find columns by name / pattern |
