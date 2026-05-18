@@ -501,6 +501,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../studio/browse/"
          >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../studio/lineage/"
+         >Lineage</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../studio/audit/"
          >Audit</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
@@ -837,6 +839,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0160-lineage-canvas-rebuild-ai-generate-quality" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.16.0 — Lineage canvas rebuild + AI Generate quality
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0150-scheduled-jobs-hybrid-rag-llm-price-browser" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1119,6 +1132,60 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0160-lineage-canvas-rebuild-ai-generate-quality">0.16.0 — Lineage canvas rebuild + AI Generate quality<a class="headerlink" href="#0160-lineage-canvas-rebuild-ai-generate-quality" title="Permanent link">&para;</a></h3>
+<p>The Lineage canvas is rebuilt from the ground up. Per-column typed
+handles render every table as a column-row card with its own
+connection ports; Bezier edges carry hover labels colored by
+relationship type; a rich top toolbar adds undo / auto-arrange /
+search / attribute-tracker / PNG export / SQL import-export. A
+single canvas can host nodes from any number of DB profiles, so
+Postgres tables, Snowflake tables, and a Power BI logo can all
+sit in the same diagram and connect to each other. See the
+<a href="../studio/lineage/">Lineage page</a> for the full feature surface.</p>
+<p>AI Generate gets a three-layer quality pass. The LLM now sees the
+anchor's full context — table + column descriptions, FK partners,
+views that join the anchor, and recent query-log co-occurrence —
+instead of bare metadata, and candidates are ranked by a weighted
+sum over six signals (FK partnership, view co-mentions, query
+co-occurrence, shared column names, name prefix, matching
+column-name tokens) so SAP-style sibling-prefix tables never fill
+the prompt. The output contract switched to explicit column-pair
+edges with an <code>evidence</code> enum (<code>FK | view | co-query | name |
+inferred</code>); self-loops are rejected at the parser; the streaming
+hook reuses existing canvas nodes so picking an anchor never spawns
+a duplicate. Anchor resolution falls back to <code>(profile, schema,
+table)</code> when the picker's database label differs from the catalog
+row's synced label, and a ghost-endpoint filter drops streamed
+edges whose source / target isn't in <code>catalog_entities</code>. Prompt
+size is capped so LLM provider errors (e.g. out-of-credit) surface
+as clean SSE warnings within seconds instead of hanging until the
+tunnel cuts the connection.</p>
+<p>New node types: standalone <strong>Logo nodes</strong> for external systems
+(22 default brand logos seeded inline from SimpleIcons with
+Iconify fallback; custom uploads shadow any default under the
+same key) and a <strong>rich-text Label node</strong> (font size, bold,
+color, bullet list, auto-grow with paragraphs). Every node type
+carries an explicit floating delete button on selection; multi-
+select via ⌘/Ctrl-click and Shift-drag rubber-band removes every
+selected node and its incident edges in one pass. Save-canvas
+re-opens by id (<code>?artifact=&lt;id&gt;</code>), so naming a canvas the same as
+a real table no longer collides with the anchor resolver. New
+sticky-note Comment node with a six-color palette + resizable
+NodeResizer.</p>
+<p>Catalog cache stops auto-expiring at 7 days — a profile with
+<code>state='done'</code> is fully synced regardless of age. The
+<code>/api/catalog/freshness</code> pill still flags profiles past one week
+(was 24 h) as <code>stale: true</code>. Ask gets three new cache-only tools
+(<code>catalog_coverage_summary</code>, <code>catalog_inventory</code>, <code>describe_column</code>),
+a 1-second LLM heartbeat surface during long tool rounds, a live
+activity feed per tool dispatch, a structured <code>needs_live_refresh</code>
+envelope (instead of hidden tools) with a one-click "Enable Live
+refresh &amp; retry" affordance, and a <code>catalog_sync_status</code> tool that
+short-circuits every "are my tables fresh?" question to a single
+zero-DB-query call. The Scheduler daemon now actually loads on
+modern macOS (<code>launchctl bootstrap</code> / <code>enable</code> / <code>kickstart</code>) and
+distinguishes <code>installed</code> from <code>loaded</code> so Studio's Schedules page
+stops showing misleading green checks for unloaded plists.</p>
 <h3 id="0150-scheduled-jobs-hybrid-rag-llm-price-browser">0.15.0 — Scheduled jobs, hybrid RAG, LLM price browser<a class="headerlink" href="#0150-scheduled-jobs-hybrid-rag-llm-price-browser" title="Permanent link">&para;</a></h3>
 <p>Recurring runs ship as a first-class feature: a cron-based daemon runs
 on macOS, Linux, and Windows; Studio adds a schedule edit dialog and a

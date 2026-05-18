@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/backends/duckdb/">
+        <link rel="canonical" href="https://amxcli.com/studio/lineage/">
       
       
-        <link rel="prev" href="../clickhouse/">
+        <link rel="prev" href="../browse/">
       
       
-        <link rel="next" href="../../guides/sap-discovery-walkthrough/">
+        <link rel="next" href="../audit/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>DuckDB - AMX</title>
+        <title>Lineage - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="DuckDB — AMX CLI">
+  <meta property="og:title" content="Lineage — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/backends/duckdb/">
+  <meta property="og:url" content="https://amxcli.com/studio/lineage/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="DuckDB — AMX CLI">
+  <meta name="twitter:title" content="Lineage — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#duckdb" class="md-skip">
+        <a href="#lineage" class="md-skip">
           Skip to content
         </a>
       
@@ -231,7 +231,7 @@
           
           
           
-            <a href="../../studio/">Studio</a>
+            <a href="../" class="active">Studio</a>
             
           
         
@@ -485,9 +485,9 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-studio-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../studio/"
+         href="../"
          >AMX Studio</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../studio/overview/"
+         href="../overview/"
          >Overview</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-workspace">
       <button type="button"
@@ -501,11 +501,11 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-workspace-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/browse/"
-         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/lineage/"
-         >Lineage</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/audit/"
+         href="../browse/"
+         >Browse</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Lineage</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../audit/"
          >Audit</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-runs-and-analysis">
@@ -520,13 +520,13 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-runs-and-analysis-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/runs/"
+         href="../runs/"
          >Runs</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/run-detail/"
+         href="../run-detail/"
          >Run detail</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/variations/"
+         href="../variations/"
          >Variations</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/compare/"
+         href="../compare/"
          >Compare</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-ask">
@@ -541,9 +541,9 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-ask-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/ask/"
+         href="../ask/"
          >Ask</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/pending/"
+         href="../pending/"
          >Pending</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-operations">
@@ -558,15 +558,15 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-operations-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/settings/"
+         href="../settings/"
          >Settings</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/system/"
+         href="../system/"
          >System</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/schedules/"
+         href="../schedules/"
          >Schedules (UI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/db-cache/"
+         href="../db-cache/"
          >Catalog cache (UI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../../studio/pricing/"
+         href="../pricing/"
          >Pricing</a></div>
     </div></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
@@ -582,28 +582,28 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-backends-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../"
+         href="../../backends/"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../postgresql/"
+         href="../../backends/postgresql/"
          >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../snowflake/"
+         href="../../backends/snowflake/"
          >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../databricks/"
+         href="../../backends/databricks/"
          >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../bigquery/"
+         href="../../backends/bigquery/"
          >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../mysql/"
+         href="../../backends/mysql/"
          >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../oracle/"
+         href="../../backends/oracle/"
          >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../mssql/"
+         href="../../backends/mssql/"
          >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../redshift/"
+         href="../../backends/redshift/"
          >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../clickhouse/"
-         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">DuckDB</a></div>
+         href="../../backends/clickhouse/"
+         >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/duckdb/"
+         >DuckDB</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -640,7 +640,7 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-reference-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../studio/keyboard/"
+         href="../keyboard/"
          >Keyboard shortcuts</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-configuration">
       <button type="button"
@@ -829,10 +829,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#what-you-can-put-on-the-canvas" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Prerequisites
+        What you can put on the canvas
       
     </span>
   </a>
@@ -840,88 +840,44 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-by-step" class="md-nav__link">
+  <a href="#multi-select-delete" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step-by-step
+        Multi-select + delete
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Step-by-step">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#drawing-edges" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drawing edges
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ai-generate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AI Generate
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AI Generate">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-open-the-amx-repl" class="md-nav__link">
+  <a href="#streaming-ux" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Open the AMX REPL
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-add-a-database-profile" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        2. Add a database profile
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-answer-the-connection-prompt" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        3. Answer the connection prompt
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-activate-and-confirm" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        4. Activate and confirm
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-optional-attach-parquet-csv-postgres-scanners" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        5. (Optional) Attach Parquet / CSV / Postgres scanners
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#6-inspect-schemas-and-tables" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        6. Inspect schemas and tables
-      
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#7-run-and-apply" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        7. Run and apply
+        Streaming UX
       
     </span>
   </a>
@@ -934,10 +890,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#saving-re-opening" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
+        Saving + re-opening
       
     </span>
   </a>
@@ -945,10 +901,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify" class="md-nav__link">
+  <a href="#export-share" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Verify
+        Export + share
       
     </span>
   </a>
@@ -956,10 +912,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#troubleshooting" class="md-nav__link">
+  <a href="#keyboard-shortcuts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Troubleshooting
+        Keyboard shortcuts
       
     </span>
   </a>
@@ -988,12 +944,17 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Backends</span>
+            <span>Studio</span>
+          
+        
+          <span class="amx-breadcrumb__sep">›</span>
+          
+            <span>Workspace</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>DuckDB</span>
+      <span>Lineage</span>
     </div>
   </div>
 
@@ -1002,159 +963,188 @@
 
 
 
-<h1 id="duckdb">DuckDB<a class="headerlink" href="#duckdb" title="Permanent link">&para;</a></h1>
-<p>Configure DuckDB as an AMX backend for embedded, single-file analytical work — perfect
-for prototyping AMX against a sample dataset before pointing it at a production warehouse,
-or for documenting Parquet / S3 collections via DuckDB's external scanners. AMX
-introspects tables, views, sequences, functions, macros, and attached databases, and
-writes reviewed descriptions back as <code>COMMENT ON COLUMN</code> / <code>COMMENT ON TABLE</code> statements.</p>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>duckdb</code> driver is included by default.</li>
-<li>Either:<ul>
-<li>A <code>.duckdb</code> file you own (created by another DuckDB session or downloaded), OR</li>
-<li>The <code>:memory:</code> choice, which spins up an ephemeral instance you populate inline (good for one-off sample sets).</li>
-</ul>
-</li>
-<li>Optional: Parquet / CSV / Iceberg / Postgres / SQLite files or endpoints you want to attach as scanners.</li>
-<li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>
-</ul>
-<h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-open-the-amx-repl">1. Open the AMX REPL<a class="headerlink" href="#1-open-the-amx-repl" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx
-</span></code></pre></div>
-<h3 id="2-add-a-database-profile">2. Add a database profile<a class="headerlink" href="#2-add-a-database-profile" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /add-db-profile
-</span></code></pre></div>
-<p>Pick <code>duckdb</code> from the backend menu:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Select database backend (engine):
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ...
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  duckdb     Single-file or in-memory; no host/auth (analytical, embedded)
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ...
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&gt; duckdb
-</span></code></pre></div>
-<h3 id="3-answer-the-connection-prompt">3. Answer the connection prompt<a class="headerlink" href="#3-answer-the-connection-prompt" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Path to .duckdb file (or &#39;:memory:&#39; for an ephemeral database): /Users/me/data/sales.duckdb
-</span></code></pre></div>
-<p>There's only one prompt — DuckDB has no host, port, user, or password concept.</p>
-<ul>
-<li><strong>File path</strong> — absolute or relative path to a <code>.duckdb</code> file. AMX creates the file if it doesn't exist (so you can use this profile to seed a brand-new database).</li>
-<li><strong><code>:memory:</code></strong> — type the literal string. The instance dies when you <code>/exit</code> AMX. Useful for short-lived demos and tutorials.</li>
-</ul>
-<div class="admonition tip">
-<p class="admonition-title">Path vs <code>:memory:</code> — pick by use case</p>
-<ul>
-<li><strong>Path</strong> — when you want comments to persist between AMX sessions (the most common case). Reuse the same <code>.duckdb</code> across analyses; comments survive in the file.</li>
-<li><strong><code>:memory:</code></strong> — for documentation drills against attached files (Parquet, CSV) where you don't need persistence. Anything you <code>/apply</code> is lost when AMX exits.</li>
-</ul>
-</div>
-<h3 id="4-activate-and-confirm">4. Activate and confirm<a class="headerlink" href="#4-activate-and-confirm" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /use-db local-duck
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>✓ Active DB profile → local-duck [duckdb] /Users/me/data/sales.duckdb
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>&gt; /connect
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Testing local-duck... ✓ connected (server: DuckDB 0.10.2, file size: 234 MB)
-</span></code></pre></div>
-<h3 id="5-optional-attach-parquet-csv-postgres-scanners">5. (Optional) Attach Parquet / CSV / Postgres scanners<a class="headerlink" href="#5-optional-attach-parquet-csv-postgres-scanners" title="Permanent link">&para;</a></h3>
-<p>DuckDB can introspect external sources via attached databases or <code>read_parquet</code> /
-<code>read_csv</code> views. AMX picks them up alongside native tables — you don't need to teach
-AMX about scanners, just have them registered in the DuckDB session.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /sql ATTACH &#39;postgres:dbname=analytics host=db.example.com user=amx password=…&#39; AS pg (TYPE postgres);
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>&gt; /sql CREATE VIEW sales.daily_orders AS SELECT * FROM read_parquet(&#39;s3://acme-data/orders/*.parquet&#39;);
-</span></code></pre></div>
-<p>After attaching, run <code>/schemas</code> again — <code>pg</code> will appear as a database alongside the
-local <code>main</code>.</p>
-<h3 id="6-inspect-schemas-and-tables">6. Inspect schemas and tables<a class="headerlink" href="#6-inspect-schemas-and-tables" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /schemas
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>database   schema   objects   tables   views   matviews   external?
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>main       main     21        16       2       3          no
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>pg         public   118       104      10      4          yes (postgres scanner)
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>&gt; /tables main.main
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>schema  name              kind    rows         comment?
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>main    customer          TABLE   2,450,118    no
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>main    customer_address  TABLE   2,450,118    no
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>main    inventory         TABLE   45,318,234   yes
-</span></code></pre></div>
-<h3 id="7-run-and-apply">7. Run and apply<a class="headerlink" href="#7-run-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /run main.customer
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[Profile] USING SAMPLE on main.customer ... ok (rows: 5000)
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>[LLM]     drafting 18 column descriptions ... ok (high: 13, medium: 4, low: 1)
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>&gt; /apply
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Write 18 comment(s) to /Users/me/data/sales.duckdb? [y/N]: y
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>COMMENT ON TABLE  main.customer IS &#39;Master customer record …&#39;;
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>COMMENT ON COLUMN main.customer.c_customer_sk IS &#39;Surrogate key …&#39;;
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>... (18/18 written)
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
-</span></code></pre></div>
-<p>For attached external databases (<code>pg.public.…</code>), comment write-back goes to the <strong>attached
-backend</strong>, not the DuckDB file — so attaching a Postgres database lets you use AMX with
-DuckDB as the orchestrator while writing comments back to the real Postgres catalog.</p>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<p>File-backed:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">local-duck</span><span class="p">:</span>
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duckdb</span>
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/Users/me/data/sales.duckdb</span>
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">full</span><span class="w">       </span><span class="c1"># full is fine for local files — no warehouse cost</span>
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-duck</span>
-</span></code></pre></div>
-<p>In-memory:</p>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">ephemeral</span><span class="p">:</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">duckdb</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;:memory:&quot;</span>
-</span></code></pre></div>
-<h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
-<ol>
-<li><code>&gt; /connect</code> — server version + file size (or <code>(ephemeral)</code> for <code>:memory:</code>).</li>
-<li><code>&gt; /db inspect</code> — counts of tables, views, sequences, functions, macros, and attached databases.</li>
-<li><code>&gt; /doctor</code> — confirms the DuckDB driver is loaded and the file is readable.</li>
-</ol>
-<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
+<h1 id="lineage">Lineage<a class="headerlink" href="#lineage" title="Permanent link">&para;</a></h1>
+<p>The Lineage canvas (<code>/lineage</code>) is where you draw, generate, and
+review how data moves between tables. One canvas can host nodes
+from any number of DB profiles — drop a Postgres table next to a
+Snowflake table next to a Power BI logo and wire them together.</p>
+<h2 id="what-you-can-put-on-the-canvas">What you can put on the canvas<a class="headerlink" href="#what-you-can-put-on-the-canvas" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Symptom</th>
-<th>Cause</th>
-<th>Fix</th>
+<th>Node type</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>duckdb.IOException: IO Error: Cannot open file "/Users/me/data/sales.duckdb": Permission denied</code></td>
-<td>The user running AMX can't read/write the file</td>
-<td><code>chmod +rw</code> the file or move it under your home dir</td>
+<td><strong>Table</strong> (<code>+ Add table</code>, <code>D</code>)</td>
+<td>A real table from any cached DB profile. Renders schema + table name, a column count badge, and one row per column. Each column row has its own left / right handle so edges can attach at column granularity. Long tables auto-collapse at 25+ columns and surface a built-in column-name filter when expanded.</td>
 </tr>
 <tr>
-<td><code>duckdb.CatalogException: Table with name customer does not exist!</code> after attach</td>
-<td>Attached database wasn't registered before <code>/run</code></td>
-<td>Re-run the <code>ATTACH</code> command in the same session, or persist it in a startup SQL file</td>
+<td><strong>Filter operator</strong> (<code>F</code>)</td>
+<td>WHERE-clause node with an <code>@</code>-mention expression editor. Type <code>@</code> to autocomplete from the upstream node's columns.</td>
 </tr>
 <tr>
-<td><code>external_history_store_unsupported</code> from <code>/history-store enable</code></td>
-<td>DuckDB doesn't support multi-process write — sharing the history store across machines doesn't make sense</td>
-<td>Host the history store on PostgreSQL or another transactional backend; keep DuckDB as the data source</td>
+<td><strong>Join</strong> (<code>J</code>), <strong>Group by</strong> (<code>G</code>), <strong>Function</strong> (<code>E</code>)</td>
+<td>Generic operator nodes for the rest of the SQL surface; each has its own colored border tag and inline editable expression.</td>
 </tr>
 <tr>
-<td><code>/apply</code> writes to the DuckDB file but Postgres-attached comments don't appear</td>
-<td>Comments on attached objects go to the attached backend; you need write privileges there too</td>
-<td>Confirm the Postgres user in the <code>ATTACH</code> connection string has <code>COMMENT</code> privilege on the target schema</td>
+<td><strong>Comment / sticky note</strong> (<code>C</code>)</td>
+<td>Colored sticky note for free-form review notes. Six palette colors, resizable.</td>
 </tr>
 <tr>
-<td>File grows large after several <code>/apply</code> runs</td>
-<td>DuckDB doesn't auto-compact <code>.duckdb</code> files</td>
-<td><code>&gt; /sql CHECKPOINT;</code> to force a write barrier; <code>&gt; /sql VACUUM;</code> to reclaim space</td>
+<td><strong>Text label</strong> (<code>T</code>)</td>
+<td>Plain rich-text annotation — font size, bold, color, bullet list. Auto-grows with paragraphs. Use it for canvas section headings ("Production pipeline", "Staging").</td>
 </tr>
 <tr>
-<td><code>duckdb.OutOfMemoryException</code> mid-run</td>
-<td>Full scan of a wide table exceeded the default memory limit</td>
-<td><code>&gt; /sql SET memory_limit='4GB';</code> or switch to <code>profiling_mode: sampled</code></td>
+<td><strong>Logo node</strong> (<code>I</code>)</td>
+<td>Standalone external-system node. Pick from 22 default brand logos (AWS, GCP, Azure, Snowflake, Databricks, BigQuery, Postgres, MySQL, Redshift, Power BI, Tableau, Looker, Metabase, Apache Superset, dbt, Apache Airflow, Fivetran, Apache Kafka, Apache Spark, Apache Iceberg, Microsoft SharePoint, Dfive) or upload your own (SVG / PNG / JPG / WebP, ≤ 200 KB) under any custom key.</td>
 </tr>
 </tbody>
 </table>
+<p>Every node carries an explicit floating trash button on selection
+and a draggable grip; Backspace / Delete on a selected node also
+works.</p>
+<h2 id="multi-select-delete">Multi-select + delete<a class="headerlink" href="#multi-select-delete" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>⌘ / Ctrl + click</strong> adds a node to the current selection.</li>
+<li><strong>Shift + drag</strong> on the canvas rubber-bands a rectangle.</li>
+<li><strong>Backspace</strong> or <strong>Delete</strong> removes every selected node and its
+  incident edges in one pass — works for tables, operators,
+  comments, text labels, and logo nodes alike.</li>
+</ul>
+<h2 id="drawing-edges">Drawing edges<a class="headerlink" href="#drawing-edges" title="Permanent link">&para;</a></h2>
+<p>Drag from a column-row handle on one node to a column-row handle
+on another. The edge renders as a Bezier curve, colored by
+relationship type (FK black, view-DDL blue, query-log green,
+LLM purple). Hover the edge to see the type + confidence label.</p>
+<p>Right-click an edge for <code>Approve</code>, <code>Reject</code>, or <code>Delete</code>. Verdicts
+ride into the next AI Generate run as positive / negative few-shot
+examples so the LLM converges on your taste.</p>
+<h2 id="ai-generate">AI Generate<a class="headerlink" href="#ai-generate" title="Permanent link">&para;</a></h2>
+<p>Click <strong>AI Generate</strong> in the toolbar, pick an anchor table, and
+the canvas streams suggestions in batches as the pipeline runs:</p>
+<ol>
+<li><strong>Foreign keys</strong> — deterministic, instant.</li>
+<li><strong>View DDL</strong> — parsed <code>CREATE VIEW</code> definitions from the
+   cached <code>view_definitions_cache</code>.</li>
+<li><strong>Deterministic</strong> — query-log co-occurrence + codebase scan +
+   manually authored edges.</li>
+<li><strong>LLM suggest</strong> — an on-demand LLM call that grounds itself in
+   the anchor's full context: table + column descriptions, FK
+   partners, views that join the anchor, query-log co-occurrence,
+   and previously approved / rejected edges for the profile.</li>
+</ol>
+<p>The candidate list the LLM sees is ranked by a weighted-sum
+score over six signals (FK partnership, view co-mentions,
+query co-occurrence, shared column names, name prefix, matching
+column-name tokens) so on SAP-style schemas the prompt never
+fills up with sibling tables that just happen to share a prefix.</p>
+<p>Suggestions stream in with a dashed purple stroke and a
+confidence badge; right-click each edge to approve or reject.
+Saved verdicts feed back into the next run's prompt at full
+column-pair granularity ("user approved <code>customers.id →
+orders.customer_id</code>", not just "<code>customers → orders</code>").</p>
+<h3 id="streaming-ux">Streaming UX<a class="headerlink" href="#streaming-ux" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Anchor picker remembers the active profile's database label
+  even when it differs from the catalog row's synced label —
+  picking <code>sap_s6p.adr6</code> works whether you're scoped to the
+  picker's <code>bird_train</code> or the row's <code>SAP</code>.</li>
+<li>Streamed edges land on the existing canvas node when an FQN
+  match exists, so you never get a duplicate of your anchor.</li>
+<li>Self-loops (<code>anchor → anchor</code>) are rejected server-side and
+  filtered client-side as defence-in-depth.</li>
+<li>Catalog-unknown endpoints (e.g. SQL fragments the codebase
+  scanner can't resolve to a real table) are filtered before they
+  reach the canvas.</li>
+</ul>
+<h2 id="saving-re-opening">Saving + re-opening<a class="headerlink" href="#saving-re-opening" title="Permanent link">&para;</a></h2>
+<p><strong>Save canvas</strong> persists every node, edge, comment, text label,
+and logo as a single artifact under its display name. Re-open
+via the <strong>Open saved</strong> tile on the lineage hub or the
+<code>/lineage?artifact=&lt;id&gt;</code> deep link. The artifact name is purely
+a label — it never participates in node resolution, so naming a
+canvas "orders" no longer collides with a real <code>orders</code> table.</p>
+<h2 id="export-share">Export + share<a class="headerlink" href="#export-share" title="Permanent link">&para;</a></h2>
+<p>The toolbar exposes:</p>
+<ul>
+<li><strong>PNG export</strong> — flatten the canvas via <code>html-to-image</code>.</li>
+<li><strong>Share</strong> — copy a <code>/lineage?artifact=&lt;id&gt;</code> deep link to the
+  clipboard.</li>
+<li><strong>SQL import / export</strong> — paste a SELECT statement into the
+  importer to spawn nodes for the parsed tables + operator chain;
+  Export renders the current canvas back into a SELECT via
+  <code>sqlglot</code>. Round-trip preserves the table + operator + filter
+  structure.</li>
+</ul>
+<h2 id="keyboard-shortcuts">Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D</code></td>
+<td>Add table</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Add filter</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td>Add function</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>Add group-by</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>Add join</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Add comment (sticky)</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td>Add text label</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>Add logo</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>Auto-arrange</td>
+</tr>
+<tr>
+<td><code>⌘K</code></td>
+<td>Search the canvas</td>
+</tr>
+<tr>
+<td><code>⌘⇧F</code></td>
+<td>Track an attribute by name</td>
+</tr>
+<tr>
+<td><code>⌘S</code></td>
+<td>Save canvas</td>
+</tr>
+<tr>
+<td><code>Backspace</code> / <code>Delete</code></td>
+<td>Delete selected node(s)</td>
+</tr>
+</tbody>
+</table>
+<p>Single-letter shortcuts only fire when the canvas (not an input
+or editor) holds focus, so typing in a Filter expression or a
+text label never spawns a modal.</p>
 
 
 
