@@ -8,6 +8,65 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.16.0 — Lineage canvas rebuild + AI Generate quality
+
+The Lineage canvas is rebuilt from the ground up. Per-column typed
+handles render every table as a column-row card with its own
+connection ports; Bezier edges carry hover labels colored by
+relationship type; a rich top toolbar adds undo / auto-arrange /
+search / attribute-tracker / PNG export / SQL import-export. A
+single canvas can host nodes from any number of DB profiles, so
+Postgres tables, Snowflake tables, and a Power BI logo can all
+sit in the same diagram and connect to each other. See the
+[Lineage page](studio/lineage.md) for the full feature surface.
+
+AI Generate gets a three-layer quality pass. The LLM now sees the
+anchor's full context — table + column descriptions, FK partners,
+views that join the anchor, and recent query-log co-occurrence —
+instead of bare metadata, and candidates are ranked by a weighted
+sum over six signals (FK partnership, view co-mentions, query
+co-occurrence, shared column names, name prefix, matching
+column-name tokens) so SAP-style sibling-prefix tables never fill
+the prompt. The output contract switched to explicit column-pair
+edges with an `evidence` enum (`FK | view | co-query | name |
+inferred`); self-loops are rejected at the parser; the streaming
+hook reuses existing canvas nodes so picking an anchor never spawns
+a duplicate. Anchor resolution falls back to `(profile, schema,
+table)` when the picker's database label differs from the catalog
+row's synced label, and a ghost-endpoint filter drops streamed
+edges whose source / target isn't in `catalog_entities`. Prompt
+size is capped so LLM provider errors (e.g. out-of-credit) surface
+as clean SSE warnings within seconds instead of hanging until the
+tunnel cuts the connection.
+
+New node types: standalone **Logo nodes** for external systems
+(22 default brand logos seeded inline from SimpleIcons with
+Iconify fallback; custom uploads shadow any default under the
+same key) and a **rich-text Label node** (font size, bold,
+color, bullet list, auto-grow with paragraphs). Every node type
+carries an explicit floating delete button on selection; multi-
+select via ⌘/Ctrl-click and Shift-drag rubber-band removes every
+selected node and its incident edges in one pass. Save-canvas
+re-opens by id (`?artifact=<id>`), so naming a canvas the same as
+a real table no longer collides with the anchor resolver. New
+sticky-note Comment node with a six-color palette + resizable
+NodeResizer.
+
+Catalog cache stops auto-expiring at 7 days — a profile with
+`state='done'` is fully synced regardless of age. The
+`/api/catalog/freshness` pill still flags profiles past one week
+(was 24 h) as `stale: true`. Ask gets three new cache-only tools
+(`catalog_coverage_summary`, `catalog_inventory`, `describe_column`),
+a 1-second LLM heartbeat surface during long tool rounds, a live
+activity feed per tool dispatch, a structured `needs_live_refresh`
+envelope (instead of hidden tools) with a one-click "Enable Live
+refresh & retry" affordance, and a `catalog_sync_status` tool that
+short-circuits every "are my tables fresh?" question to a single
+zero-DB-query call. The Scheduler daemon now actually loads on
+modern macOS (`launchctl bootstrap` / `enable` / `kickstart`) and
+distinguishes `installed` from `loaded` so Studio's Schedules page
+stops showing misleading green checks for unloaded plists.
+
 ### 0.15.0 — Scheduled jobs, hybrid RAG, LLM price browser
 
 Recurring runs ship as a first-class feature: a cron-based daemon runs

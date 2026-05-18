@@ -157,6 +157,7 @@ nav:
       - Overview: studio/overview.md
       - Workspace:
           - Browse: studio/browse.md
+          - Lineage: studio/lineage.md
           - Audit: studio/audit.md
       - Runs & analysis:
           - Runs: studio/runs.md
