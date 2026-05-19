@@ -96,8 +96,8 @@ Releases are automated via
 release is a single tag push from `main`:
 
 ```bash
-git tag v0.12.1
-git push origin v0.12.1
+git tag v0.17.1
+git push origin v0.17.1
 ```
 
 The `release.yml` workflow then:
