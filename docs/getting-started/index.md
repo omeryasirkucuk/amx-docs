@@ -42,7 +42,7 @@ AMX runs entirely in your environment. **No SaaS account, no data leaves your ne
 ![AMX interactive session: Agentic Metadata Extractor banner followed by version, config path, active database and LLM profile, and the root command palette (db / metadata / docs / llm / code / analyze / search / history)](../assets/cli-hero.png){ .amx-hero-img }
 
 !!! tip
-    AMX supports 10 database backends and 9 LLM providers (including `databricks_serving` as of 0.12.7). The fastest way to evaluate
+    AMX supports 11 database backends and 9 LLM providers (including `databricks_serving` as of 0.12.7). The fastest way to evaluate
     is `pip install amx-cli`, then run `amx` and walk through the `/setup`
     wizard. Five minutes from install to your first reviewed description.
 
