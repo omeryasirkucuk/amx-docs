@@ -8,6 +8,55 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.17.0 — Trino / Presto + Hive (HiveServer2) backends
+
+Two new first-class adapters land, taking the supported-backend count
+to **twelve**.
+
+**Trino / Presto** (`backend: trino`, install with
+`pip install 'amx-cli[trino]'`) targets the distributed-SQL
+coordinator over the standard HTTP protocol. Trino and Presto share
+the same wire protocol so the adapter covers both. ANSI
+`COMMENT ON TABLE / COLUMN / VIEW / MATERIALIZED VIEW / SCHEMA`
+writeback flows straight through to whatever connector the
+coordinator is pointed at — `hive`, `iceberg`, `delta`, `memory`,
+`tpch` — with single-quote escaping handled by the adapter.
+Three-level catalog hierarchy (`catalog.schema.table`) is wired
+through the picker, the cache, and Studio's settings form.
+Basic and JWT auth modes ship in the wizard; OAuth2 and Kerberos
+are accepted as hand-edit paths for power users. See the
+[Trino / Presto page](backends/trino.md) for the wizard walkthrough,
+sample configs, capability matrix, and a Docker dev compose snippet.
+
+**Hive (HiveServer2)** (`backend: hive`, install with
+`pip install 'amx-cli[hive]'`) targets the HiveServer2 SQL gateway
+over Thrift. The `[hive]` extra uses `pure-sasl` (pure Python)
+instead of the legacy `sasl` C extension, so it wheels cleanly on
+macOS, Linux, and Windows. Table / view / database (== schema)
+comments write back via `ALTER TABLE / VIEW … SET TBLPROPERTIES` and
+`ALTER DATABASE … SET DBPROPERTIES`. The wizard surfaces
+PLAIN / LDAP / NOSASL for the four mainstream deployments
+(local Docker / on-prem Hadoop / AWS EMR / Cloudera CDH+CDP);
+KERBEROS and CUSTOM auth modes are accepted as hand-edit YAML
+overrides. Bulk metadata caches via Hive 3.x `information_schema`
+with a `DESCRIBE FORMATTED` parser fallback that handles the
+row-shape drift between Hive 2.x, 3.x, and 4.x. **Column-comment
+write-back is intentionally OFF on Hive** — Hive's only column path
+requires re-declaring the original column type, which is lossy for
+complex types (`struct`, `map`, `array`); `/apply` raises
+`UnsupportedDatabaseOperation` cleanly upstream so users get a
+clear error instead of a silently-broken schema. Apply Hive column
+comments through dbt or Apache Atlas instead, or migrate the table
+to Trino / Databricks Unity Catalog / PostgreSQL where native
+column-comment DDL is safe. See the
+[Hive page](backends/hive.md) for the deployment matrix, the
+disambiguation against Databricks legacy `hive_metastore` catalogs,
+and copy-paste configs for each scenario.
+
+This release closes [issue
+#518](https://github.com/omeryasirkucuk/amx/issues/518) — thanks to
+[@ying-w](https://github.com/ying-w) for the request.
+
 ### 0.16.0 — Lineage canvas rebuild + AI Generate quality
 
 The Lineage canvas is rebuilt from the ground up. Per-column typed
