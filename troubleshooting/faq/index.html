@@ -1298,8 +1298,12 @@ explicitly.</p>
 <p>Yes, but you'll lose run history, the search catalog, and all session memory. The next
 <code>amx</code> start recreates an empty database. <code>config.yml</code> is unaffected.</p>
 <h3 id="my-teammates-runs-arent-visible-in-history-list">My teammate's runs aren't visible in <code>/history list</code><a class="headerlink" href="#my-teammates-runs-arent-visible-in-history-list" title="Permanent link">&para;</a></h3>
-<p>In v0.12, <strong>reads still come from local SQLite</strong>. Cross-machine read views are slated
-for a follow-up minor. Until then, query the shared backend directly with SQL.</p>
+<p><code>/history list</code> reads from your local <code>~/.amx/history.db</code> only. To see the team's runs,
+both you and your teammate need to have run <code>/history-store enable</code> against the same
+shared backend (PostgreSQL / Snowflake / MySQL / MSSQL / Redshift / Databricks), and
+then <code>/history-store list-team</code> surfaces the cross-machine view from the shared schema.
+Plain <code>/history list</code> stays local on purpose so the per-user audit trail is always
+authoritative even when the team store is offline.</p>
 <h2 id="where-to-ask-more">Where to ask more<a class="headerlink" href="#where-to-ask-more" title="Permanent link">&para;</a></h2>
 <ul>
 <li>File a question / bug at <a href="https://github.com/omeryasirkucuk/amx/issues">https://github.com/omeryasirkucuk/amx/issues</a>.</li>
@@ -1342,7 +1346,7 @@ for a follow-up minor. Until then, query the shared backend directly with SQL.</
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.15.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1362,7 +1366,7 @@ for a follow-up minor. Until then, query the shared backend directly with SQL.</
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.15.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
