@@ -1,9 +1,9 @@
 # Database backends
 
-AMX ships adapters for **eleven database backends**. Every adapter normalises that backend's
+AMX ships adapters for **twelve database backends**. Every adapter normalises that backend's
 introspection and comment APIs into the [Universal Metadata Interface](../concepts/universal-metadata.md)
 so the agents and review wizard treat them identically. This page tells you which backend
-to pick for which workload, the capability matrix across all eleven, and where each backend
+to pick for which workload, the capability matrix across all twelve, and where each backend
 diverges in profiling syntax or write-back SQL.
 
 ## Pick a backend
@@ -13,6 +13,7 @@ Use this short decision tree before you reach for any specific page:
 - **Postgres-flavored OLTP / data warehouse with `COMMENT ON` semantics** → [PostgreSQL](postgresql.md). The reference adapter; everything else is normalised against it.
 - **Cloud data warehouse with explicit warehouse cost / compute separation** → [Snowflake](snowflake.md), [Databricks](databricks.md), [BigQuery](bigquery.md), [Redshift](redshift.md). Pair with `profiling_mode: sampled` or `metadata` to keep the bill predictable.
 - **Lakehouse via a query engine over open table formats (Iceberg / Delta / Hive)** → [Trino / Presto](trino.md). Covers the "I need one engine across S3 / GCS / on-prem HDFS" pattern and writes ANSI `COMMENT ON` straight through to the underlying connector.
+- **HiveServer2 directly (local Docker / on-prem Hadoop / EMR / Cloudera CDH+CDP)** → [Hive](hive.md). Talks the Thrift protocol directly to the cluster; covers the legacy-warehouse case where Hive is the SQL engine, not just the metastore. Column-comment write-back stays disabled by design — see the page.
 - **OLTP RDBMS at the edge of a data product** → [MySQL / MariaDB](mysql.md), [Oracle](oracle.md), [SQL Server](mssql.md). Use AMX to backfill descriptions on legacy systems.
 - **Real-time analytics / event store** → [ClickHouse](clickhouse.md). Watch out for the shared-history-store caveat.
 - **Embedded / file-based / Parquet+S3 documentation** → [DuckDB](duckdb.md). Excellent for prototyping AMX or documenting Parquet collections.
@@ -32,9 +33,12 @@ Use this short decision tree before you reach for any specific page:
 | [ClickHouse](clickhouse.md) | `clickhouse` | `pip install amx-cli` | `ALTER TABLE … MODIFY COMMENT` | ✗ (no row-level `UPDATE`) |
 | [DuckDB](duckdb.md) | `duckdb` | `pip install amx-cli` | `COMMENT ON COLUMN` | ✗ (single-writer file) |
 | [Trino / Presto](trino.md) | `trino` | `pip install 'amx-cli[trino]'` | `COMMENT ON TABLE / COLUMN / VIEW / SCHEMA` | ✗ (writeback is connector-dependent) |
+| [Hive (HiveServer2)](hive.md) | `hive` | `pip install 'amx-cli[hive]'` | `ALTER TABLE / VIEW … SET TBLPROPERTIES` + `ALTER DATABASE … SET DBPROPERTIES` (no columns) | ✗ (row UPDATE is partition-/transactional-only) |
 
-`pip install amx-cli` pulls every supported driver except Trino — the Trino client lives
-in the optional `[trino]` extra so users on classic warehouses don't pay the install cost.
+`pip install amx-cli` pulls every supported driver except Trino and Hive — both live in
+optional `[trino]` / `[hive]` extras so users on classic warehouses don't pay the install
+cost. The Hive extra uses `pure-sasl` (pure Python) instead of the legacy `sasl` C
+extension so it wheels cleanly on macOS / Linux / Windows.
 
 ## Distinctive object types per backend
 
@@ -55,6 +59,7 @@ inference loop currently focuses on tables, views, and materialized views.
 | ClickHouse | materialized views, UDFs, **dictionaries**, skipping indices, MergeTree engine info |
 | DuckDB | sequences, functions, **macros**, attached databases (Parquet/S3/Postgres scanner) |
 | Trino / Presto | materialized views, external tables, **catalogs** (3-level `catalog.schema.table` hierarchy across hive / iceberg / delta / tpch / memory connectors) |
+| Hive (HiveServer2) | external tables, partitioned tables, **TBLPROPERTIES / DBPROPERTIES** key-value metadata (where Hive stores table-level and database-level comments) |
 
 `BackendCapabilities` flags gate which list operations the connector even attempts, so
 unsupported types short-circuit cleanly with a clear "not supported on this backend"
@@ -73,6 +78,7 @@ All backends honour the three [profiling modes](../configuration/profiling-modes
 - **ClickHouse** — `SAMPLE` clause.
 - **DuckDB** — `USING SAMPLE`.
 - **Trino / Presto** — `TABLESAMPLE BERNOULLI` (default) or `SYSTEM`. With `profiling_approximate: true` the COUNT-DISTINCT path also switches to Trino's `approx_distinct` (HyperLogLog) so wide tables across hive / iceberg connectors stay cheap.
+- **Hive (HiveServer2)** — `SUM(CASE WHEN col IS NULL THEN 1 ELSE 0 END)` + `COUNT(DISTINCT col)` profiling expressions (HiveQL has no ANSI `FILTER (WHERE …)` aggregate clause). Sampling defaults to a bounded `LIMIT :lim` rather than `TABLESAMPLE` because `TABLESAMPLE BUCKET` only works on bucketed tables and `TABLESAMPLE (n PERCENT)` triggers a full input read on most file formats.
 
 When backend table-stats are unavailable in `full` mode (Snowflake, Databricks, BigQuery),
 AMX skips the expensive full column scans and falls back to lightweight metadata + samples
@@ -95,3 +101,4 @@ troubleshooting table → what to read next.
 - [ClickHouse](clickhouse.md) — HTTP vs HTTPS port choice, history-store caveat.
 - [DuckDB](duckdb.md) — file vs `:memory:`, attached scanner workflows.
 - [Trino / Presto](trino.md) — coordinator host, Basic vs JWT auth, catalog picker for lakehouse deployments.
+- [Hive (HiveServer2)](hive.md) — HS2 host, PLAIN / LDAP / NOSASL auth picker, four deployment-pattern recipes (local Docker, on-prem Hadoop, EMR, Cloudera CDP).
