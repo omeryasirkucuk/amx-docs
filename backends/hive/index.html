@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/backends/databricks/">
+        <link rel="canonical" href="https://amxcli.com/backends/hive/">
       
       
-        <link rel="prev" href="../snowflake/">
+        <link rel="prev" href="../trino/">
       
       
-        <link rel="next" href="../bigquery/">
+        <link rel="next" href="../../guides/sap-discovery-walkthrough/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Databricks - AMX</title>
+        <title>Hive (HiveServer2) - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Databricks — AMX CLI">
+  <meta property="og:title" content="Hive (HiveServer2) — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/backends/databricks/">
+  <meta property="og:url" content="https://amxcli.com/backends/hive/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Databricks — AMX CLI">
+  <meta name="twitter:title" content="Hive (HiveServer2) — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#databricks" class="md-skip">
+        <a href="#hive-hiveserver2" class="md-skip">
           Skip to content
         </a>
       
@@ -587,9 +587,9 @@
          href="../postgresql/"
          >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../snowflake/"
-         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../databricks/"
+         >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../bigquery/"
          >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../mysql/"
@@ -605,9 +605,9 @@
          href="../duckdb/"
          >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../trino/"
-         >Trino / Presto</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../hive/"
-         >Hive (HiveServer2)</a></div>
+         >Trino / Presto</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Hive (HiveServer2)</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -927,10 +927,71 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#sample-config" class="md-nav__link">
+  <a href="#deployment-matrix" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Sample config
+        Deployment matrix
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment matrix">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#local-docker-development" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local Docker (development)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#on-premises-hadoop-cloudera-cdh-hdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        On-premises Hadoop (Cloudera CDH, HDP)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-emr" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS EMR
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudera-cdp-kerberos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cloudera CDP (Kerberos)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-hive-does-not-live-and-what-to-use-instead" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where Hive does NOT live (and what to use instead)
       
     </span>
   </a>
@@ -949,10 +1010,32 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
         Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -986,7 +1069,7 @@
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Databricks</span>
+      <span>Hive (HiveServer2)</span>
     </div>
   </div>
 
@@ -995,115 +1078,307 @@
 
 
 
-<h1 id="databricks">Databricks<a class="headerlink" href="#databricks" title="Permanent link">&para;</a></h1>
-<p>Configure Databricks as an AMX backend to introspect Unity Catalog catalogs, schemas,
-tables, views, and functions, and write reviewed descriptions back as
-<code>COMMENT ON COLUMN</code> / <code>COMMENT ON TABLE</code> statements over a SQL warehouse. This page walks
-through registering a workspace profile, recovering from corporate-TLS issues, and
-applying your first batch of generated comments.</p>
+<h1 id="hive-hiveserver2">Hive (HiveServer2)<a class="headerlink" href="#hive-hiveserver2" title="Permanent link">&para;</a></h1>
+<p>Configure HiveServer2 as an AMX backend to introspect Hive databases (==schemas),
+tables, views, and columns, and write <strong>table-level</strong>, <strong>view-level</strong>, and
+<strong>database-level</strong> descriptions back via <code>ALTER TABLE … SET TBLPROPERTIES</code> and
+<code>ALTER DATABASE … SET DBPROPERTIES</code>. The adapter targets the <strong>HiveServer2 SQL
+gateway</strong> (Thrift) — not the bare Hive Metastore. HiveServer2 lives in many
+places and the wizard accepts all of them; see <a href="#deployment-matrix">Deployment matrix</a>
+below for copy-paste configs.</p>
+<div class="admonition warning">
+<p class="admonition-title">Column-comment write-back is intentionally disabled</p>
+<p>Hive's only path for writing column comments is
+<code>ALTER TABLE &lt;db&gt;.&lt;t&gt; CHANGE col col &lt;TYPE&gt; COMMENT '&lt;text&gt;'</code>,
+which requires re-declaring the original column type. Complex types
+(<code>struct&lt;...&gt;</code>, <code>map&lt;...&gt;</code>, <code>array&lt;...&gt;</code>, <code>uniontype&lt;...&gt;</code>, generics
+nested inside generics) round-trip lossily through Hive's catalog
+representation, and a wrong type re-emission corrupts the table.
+AMX's Hive adapter therefore ships with <code>column_comments=False</code> —
+<code>/apply</code> raises <code>UnsupportedDatabaseOperation</code> cleanly upstream.</p>
+<p>Apply column comments through your data-definition tooling (dbt,
+Apache Atlas) instead, or migrate the table to a backend with
+native column-comment DDL: <a href="../trino/">Trino</a>,
+<a href="../databricks/">Databricks</a>, or <a href="../postgresql/">PostgreSQL</a>.</p>
+</div>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>databricks-sql-connector</code> driver is included by default.</li>
-<li>A Databricks workspace with Unity Catalog enabled. (Hive-metastore-only workspaces are listable but cannot accept comment write-back via the SQL connector.)</li>
-<li>A running SQL warehouse — Serverless or Pro both work. Note its <strong>HTTP path</strong> (visible under "Connection details" on the warehouse page).</li>
-<li>A personal access token (PAT) for the workspace user — User Settings → Developer → Access tokens. Service-principal tokens work too.</li>
-<li>For commenting: the role / group needs <code>USE CATALOG</code>, <code>USE SCHEMA</code>, and <code>MODIFY</code> on the target objects. <code>SELECT</code> is enough for <code>/run</code> only.</li>
+<li>
+<p>AMX installed with the Hive extra:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;amx-cli[hive]&#39;</span>
+</span></code></pre></div>
+<p>The <code>[hive]</code> extra pulls bare <code>pyhive&gt;=0.7</code> + <code>thrift&gt;=0.16</code> +
+<code>thrift-sasl&gt;=0.4.3</code> + <code>pure-sasl&gt;=0.6</code>. The legacy <code>sasl</code> C
+extension is <strong>deliberately avoided</strong> — it has no Windows wheels
+for modern Pythons and fails to build on macOS. <code>thrift-sasl</code>
+routes through pure-Python <code>pure-sasl</code>, which wheels cleanly on
+macOS, Linux, and Windows.</p>
+</li>
+<li>
+<p>A reachable HiveServer2 endpoint (Thrift on TCP). HiveServer2 ships
+  with every Hadoop / Hive distribution.</p>
+</li>
+<li>For commenting: the principal needs <code>SELECT</code> on the underlying
+  table plus <code>ALTER</code> on the database — or the equivalent grant
+  through Ranger / Sentry / Lake Formation as your stack requires.</li>
 <li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>
 </ul>
 <h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
 <h3 id="1-open-the-amx-repl">1. Open the AMX REPL<a class="headerlink" href="#1-open-the-amx-repl" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx
 </span></code></pre></div>
 <h3 id="2-add-a-database-profile">2. Add a database profile<a class="headerlink" href="#2-add-a-database-profile" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /add-db-profile
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /add-db-profile
 </span></code></pre></div>
-<p>Pick <code>databricks</code> from the backend menu:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Select database backend (engine):
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>  ...
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  databricks   SQL warehouse HTTP path + token - Unity Catalog
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  ...
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>&gt; databricks
+<p>Pick <code>hive</code> from the backend menu:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Select database backend (engine):
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ...
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  hive    Host/port user/password - HiveServer2; partial comment write-back (no columns)
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  ...
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>&gt; hive
+</span></code></pre></div>
+<p>The wizard prints a deployment-disambiguation banner so users on a
+Databricks workspace know to pick the Databricks backend instead:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Hive backend targets HiveServer2 (Thrift). Use this for local Docker,
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>on-prem Hadoop, EMR, and Cloudera CDH/CDP clusters. Databricks legacy
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>&#39;hive_metastore&#39; catalogs belong to the Databricks backend, not this one.
 </span></code></pre></div>
 <h3 id="3-answer-the-connection-prompts">3. Answer the connection prompts<a class="headerlink" href="#3-answer-the-connection-prompts" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Databricks host (e.g. adb-xxxxxxxxxxxxxxxx.0.azuredatabricks.net):
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  adb-1234567890123456.7.azuredatabricks.net
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>SQL warehouse HTTP path (e.g. /sql/1.0/warehouses/abc1234567890):
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  /sql/1.0/warehouses/abc1234567890
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>Access token: ••••••••••••••••
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>Unity Catalog name (optional): main
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>Schema / database (optional): sales
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>Trusted CA bundle path (optional, for corporate/self-signed TLS):
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>Disable TLS certificate verification? (insecure; use only if a trusted CA bundle is not available) [y/N]: n
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>HiveServer2 host (e.g. hive.example.com or localhost):
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  hive.prod.example.com
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Port (default 10000 for HiveServer2):
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  10000
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Authentication mode (NOSASL is for local dev clusters only):
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>&gt; PLAIN
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>Username (Hive user — also recorded in query history):
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  amx
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>Password: ••••••••••••
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>Default database / schema (leave blank to pick at command time):
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>  warehouse
 </span></code></pre></div>
 <p>Notes on each field:</p>
 <ul>
-<li><strong>Host</strong> — the workspace hostname only. No protocol, no path, no <code>?</code> query string.</li>
-<li><strong>HTTP path</strong> — copy from the warehouse "Connection details" tab. The leading <code>/sql/1.0/warehouses/...</code> form is correct; don't paste the full JDBC URL.</li>
-<li><strong>Access token</strong> — required. Stored in the OS keychain when one is available.</li>
-<li><strong>Unity Catalog name / Schema</strong> — both optional. Filling them in pre-scopes <code>/schemas</code> and <code>/run</code> so commands don't pause to ask. Leave blank for cross-catalog discovery sessions.</li>
-<li><strong>Trusted CA bundle / Disable TLS verify</strong> — only relevant on networks doing TLS interception. Order of preference: pin a CA bundle (most secure), then verify-off (only as a debug fallback).</li>
+<li><strong>Host</strong> — HiveServer2 hostname. No scheme prefix; Thrift is plain
+  TCP (10000) or SASL-over-TCP (10000) by default. TLS-fronted
+  deployments (HS2 behind stunnel / nginx) use <code>tls_trusted_ca_file:</code>
+  in the YAML — see <code>~/.amx/config.yml</code> sample below.</li>
+<li><strong>Port</strong> — <code>10000</code> is the universal HS2 default. Some EMR / on-prem
+  clusters relocate it behind a load balancer; check
+  <code>hive.server2.thrift.port</code> on the cluster.</li>
+<li><strong>Authentication mode</strong> —<ul>
+<li><strong><code>PLAIN</code></strong> — SASL PLAIN; username + password (the workhorse
+  against production HS2 with a SASL-aware authenticator,
+  including LDAP-backed setups that the cluster admin wires up
+  through <code>hive.server2.authentication=LDAP</code>).</li>
+<li><strong><code>LDAP</code></strong> — Same wire format as PLAIN but the credential is
+  validated against an LDAP directory (Cloudera / EMR pattern).</li>
+<li><strong><code>NOSASL</code></strong> — Plaintext, no authentication. Use <strong>only</strong> for
+  local Docker dev clusters; never against a production HS2.</li>
 </ul>
-<div class="admonition warning">
-<p class="admonition-title">Corporate TLS — <code>SSL: CERTIFICATE_VERIFY_FAILED</code> from <code>/connect</code></p>
-<p>On networks that MITM TLS (Zscaler, corporate proxies) the SQL connector rejects the cert by default. The fix:</p>
-<ol>
-<li>Get the bundle from your IT team (often <code>/etc/ssl/certs/ca-bundle.crt</code>).</li>
-<li>Re-run <code>/add-db-profile</code> (or edit the YAML) and set <code>tls_trusted_ca_file: /etc/ssl/certs/ca-bundle.crt</code>.</li>
-<li>As a temporary fallback only, answer <code>y</code> to "Disable TLS certificate verification". This is logged and surfaced in <code>/doctor</code> output so you remember to fix it.</li>
-</ol>
-<p>See <a href="../../configuration/tls-and-proxies/">TLS and proxies</a> for the recovery walkthrough.</p>
+</li>
+<li><strong>Username / Password</strong> — Username always required (Hive logs it in
+  query history). Password skipped for NOSASL.</li>
+<li><strong>Default database</strong> — Hive treats databases as schemas; the
+  <code>database</code> field IS the default schema. Leave blank to be prompted
+  at command time.</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">Kerberos / Cloudera CDP</p>
+<p>Wizard-collected auth stops at PLAIN / LDAP / NOSASL. For
+Kerberos (the Cloudera CDH/CDP default) hand-edit
+<code>~/.amx/config.yml</code>:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">cdp-hive</span><span class="p">:</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive.cdp.example.com</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx@EXAMPLE.COM</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">auth_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KERBEROS</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span></code></pre></div>
+<p>Then <code>kinit amx@EXAMPLE.COM</code> before launching <code>amx</code>. PyHive's
+Thrift transport picks up the active ticket via the system's
+<code>krb5</code> library.</p>
 </div>
 <h3 id="4-activate-and-confirm">4. Activate and confirm<a class="headerlink" href="#4-activate-and-confirm" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /use-db prod-dbx
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>✓ Active DB profile → prod-dbx [databricks] adb-1234.../sql/1.0/warehouses/abc1234567890 · main.sales
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>&gt; /connect
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Testing prod-dbx... ✓ connected (server: 14.3.x-photon, warehouse: adhoc-xs, latency: 412 ms)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /use-db prod-hive
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>✓ Active DB profile → prod-hive [hive] warehouse @ hive.prod.example.com:10000 (user amx, PLAIN)
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>&gt; /connect
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>Testing prod-hive... ✓ connected (server: 4.0.0, latency: 318 ms)
 </span></code></pre></div>
 <h3 id="5-inspect-the-catalog">5. Inspect the catalog<a class="headerlink" href="#5-inspect-the-catalog" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /schemas
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>catalog   schema     objects   tables   views
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>main      sales      18        16       2
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>main      catalog    7         7        0
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>hive_metastore  default  4        4        0   (read-only — no Unity Catalog)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>&gt; /schemas
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>schema       objects   tables   views
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>warehouse    42        38       4
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>staging      11        11       0
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>gold         24        20       4
 </span></code></pre></div>
-<p>Hive-metastore schemas appear in listings but are tagged read-only — <code>/apply</code> skips them
-with <code>unity_catalog_required</code> rather than emitting a SQL that would silently no-op.</p>
+<p>Hive has no catalog above the database, so the listings are flat —
+just schemas and their objects.</p>
 <h3 id="6-run-and-apply">6. Run and apply<a class="headerlink" href="#6-run-and-apply" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /run main.sales.customer
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>[Profile] TABLESAMPLE on main.sales.customer ... ok (2.1 s)
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>[LLM]     drafting 18 column descriptions ... ok (high: 13, medium: 4, low: 1)
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
-</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>&gt; /apply
-</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Write 18 comment(s) to main.sales? [y/N]: y
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>COMMENT ON COLUMN main.sales.customer.c_customer_sk IS &#39;Surrogate key …&#39;;
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>COMMENT ON COLUMN main.sales.customer.c_first_name  IS &#39;Given name …&#39;;
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>COMMENT ON TABLE  main.sales.customer IS &#39;Master customer record …&#39;;
-</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>... (18/18 written)
-</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&gt; /run warehouse.orders
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>[Profile] SELECT … FROM warehouse.orders LIMIT 5 ... ok (1.7 s)
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>[LLM]     drafting 12 column descriptions + 1 table description ... ok
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>&gt; /apply
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>Write 1 comment(s) to warehouse? [y/N]: y
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>ALTER TABLE `warehouse`.`orders` SET TBLPROPERTIES (
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>  &#39;comment&#39; = &#39;Master orders fact table …&#39;
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>);
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>(1/1 written)
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>ℹ /apply skipped 12 column comment(s) — column write-back is disabled on Hive
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
 </span></code></pre></div>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">  </span><span class="nt">prod-dbx</span><span class="p">:</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">databricks</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">adb-1234567890123456.7.azuredatabricks.net</span>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nt">http_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/sql/1.0/warehouses/abc1234567890</span>
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nt">access_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/prod-dbx/access_token</span>
-</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span>
-</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sales</span>
-</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nt">tls_trusted_ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">        </span><span class="c1"># set on TLS-intercepting networks</span>
-</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">tls_no_verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">           </span><span class="c1"># never set true outside debug</span>
-</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span>
-</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
-</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-dbx</span>
+<p>When <code>/apply</code> encounters column comments on a Hive profile it surfaces
+the capability gap as a single informational line and continues with
+the table / view / database writes — no partial-success ambiguity.
+See the warning at the top of this page for the deliberate "why".</p>
+<h2 id="deployment-matrix">Deployment matrix<a class="headerlink" href="#deployment-matrix" title="Permanent link">&para;</a></h2>
+<p>Hive lives in several different stacks. AMX's wizard covers all four
+mainstream deployments without code changes — only the auth mode and
+hostname conventions shift.</p>
+<h3 id="local-docker-development">Local Docker (development)<a class="headerlink" href="#local-docker-development" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">local-hive</span><span class="p">:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nt">auth_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NOSASL</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local-hive</span>
 </span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>amx-hive<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="m">10000</span>:10000<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span>-e<span class="w"> </span><span class="nv">SERVICE_NAME</span><span class="o">=</span>hiveserver2<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span>-e<span class="w"> </span><span class="s1">&#39;SERVICE_OPTS=-Dhive.server2.authentication=NOSASL&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span>apache/hive:4.0.0
+</span></code></pre></div>
+<p><code>apache/hive:4.0.0</code> boots HMS + HiveServer2 against a Derby metastore
+in one container. Cold start takes ~1–2 minutes; subsequent
+connections are instant.</p>
+<h3 id="on-premises-hadoop-cloudera-cdh-hdp">On-premises Hadoop (Cloudera CDH, HDP)<a class="headerlink" href="#on-premises-hadoop-cloudera-cdh-hdp" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="nt">cdh-hive</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive.internal.example.com</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/cdh-hive/password</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nt">auth_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PLAIN</span><span class="w">          </span><span class="c1"># or LDAP — wire format is the same</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdh-hive</span>
+</span></code></pre></div>
+<p>Grant Ranger / Sentry policy: <code>SELECT</code> on <code>warehouse.*</code>, <code>ALTER</code> on
+<code>warehouse</code> for the comment write-back path.</p>
+<h3 id="aws-emr">AWS EMR<a class="headerlink" href="#aws-emr" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">emr-hive</span><span class="p">:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ip-10-0-1-23.eu-west-1.compute.internal</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hadoop</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/emr-hive/password</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nt">auth_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PLAIN</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">analytics</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">emr-hive</span>
+</span></code></pre></div>
+<p>Connect to the EMR master node either through a bastion / VPN or via
+the AWS Session Manager port-forward. EMR's PLAIN auth validates
+against the operating-system user database by default; LDAP requires
+explicit cluster configuration.</p>
+<h3 id="cloudera-cdp-kerberos">Cloudera CDP (Kerberos)<a class="headerlink" href="#cloudera-cdp-kerberos" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">  </span><span class="nt">cdp-hive</span><span class="p">:</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive.cdp.example.com</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx@EXAMPLE.COM</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">auth_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KERBEROS</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdp-hive</span>
+</span></code></pre></div>
+<p>Outside the wizard. <code>kinit amx@EXAMPLE.COM</code> before launching <code>amx</code>;
+the Thrift transport picks up the active ticket from the system
+keychain (<code>/etc/krb5.conf</code>).</p>
+<h2 id="where-hive-does-not-live-and-what-to-use-instead">Where Hive does NOT live (and what to use instead)<a class="headerlink" href="#where-hive-does-not-live-and-what-to-use-instead" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Standalone Hive Metastore (HMS Thrift only, no HiveServer2)</strong> —
+  AMX's adapter contract includes profiling SQL (<code>column_stats_sql</code>,
+  <code>column_sample_sql</code>), which a Metastore-only deployment cannot
+  serve. Use <a href="../trino/">Trino</a> configured with the <code>hive</code> connector
+  pointing at your HMS instead — Trino's catalog API delegates to
+  HMS for object discovery and then runs the actual SQL itself.</li>
+<li><strong>Databricks legacy <code>hive_metastore</code> catalog</strong> — Databricks
+  exposes its built-in <code>hive_metastore</code> through the SQL warehouse,
+  not through HiveServer2. Use <a href="../databricks/">Databricks</a> with the
+  workspace token / HTTP path instead.</li>
+</ul>
+<p>The wizard surfaces both alternatives in the banner shown above so
+users don't accidentally configure the wrong backend.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
-<li><code>&gt; /connect</code> — reports the cluster runtime version (e.g. <code>14.3.x-photon</code>) and round-trip latency. Latency over ~1.5 s usually means the warehouse is cold-starting; subsequent calls drop to ~200–400 ms.</li>
-<li><code>&gt; /db inspect</code> — confirms catalog / schema counts and flags any Hive-metastore schemas as read-only.</li>
-<li><code>&gt; /doctor</code> — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as <code>Access token rejected by /api/2.0/clusters/list</code>).</li>
+<li><code>&gt; /connect</code> — reports the HS2 server version (e.g. <code>4.0.0</code>) and
+   round-trip latency. First connect on a cold cluster takes a few
+   seconds; steady state is well under 500 ms.</li>
+<li><code>&gt; /db inspect</code> — confirms schema counts and which schemas have
+   tables / views.</li>
+<li><code>&gt; /doctor</code> — verifies driver presence (<code>pyhive</code>, <code>pure-sasl</code>),
+   profile activation, and that the configured auth mode is one of
+   the supported values.</li>
 </ol>
+<h2 id="capabilities">Capabilities<a class="headerlink" href="#capabilities" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Supported</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table comments</td>
+<td>✓</td>
+<td><code>ALTER TABLE &lt;db&gt;.&lt;t&gt; SET TBLPROPERTIES ('comment' = '…')</code>.</td>
+</tr>
+<tr>
+<td>View comments</td>
+<td>✓</td>
+<td><code>ALTER VIEW &lt;db&gt;.&lt;v&gt; SET TBLPROPERTIES ('comment' = '…')</code>.</td>
+</tr>
+<tr>
+<td>Schema / Database comments</td>
+<td>✓</td>
+<td><code>ALTER DATABASE &lt;db&gt; SET DBPROPERTIES ('comment' = '…')</code>. Hive treats database == schema.</td>
+</tr>
+<tr>
+<td>Materialized view comments</td>
+<td>✗</td>
+<td>Hive 3.x materialized views exist but the write-back DDL surface varies by execution engine.</td>
+</tr>
+<tr>
+<td>Column comments</td>
+<td>✗</td>
+<td>See warning at the top — full column-redefinition risk is too high.</td>
+</tr>
+<tr>
+<td>Shared history store</td>
+<td>✗</td>
+<td>Row-level UPDATE is partition- / transactional-table-only; cannot host AMX's run-history schema.</td>
+</tr>
+<tr>
+<td>Bulk schema metadata cache</td>
+<td>✓</td>
+<td>Two-query path against <code>information_schema.{tables,columns}</code> on Hive 3+; per-table <code>DESCRIBE FORMATTED</code> parser fallback on Hive 2.x.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1115,37 +1390,48 @@ with <code>unity_catalog_required</code> rather than emitting a SQL that would s
 </thead>
 <tbody>
 <tr>
-<td><code>databricks.sql.exc.OperationalError: Connection refused</code></td>
-<td>Warehouse is stopped (Auto-stop kicked in)</td>
-<td>Start the warehouse in the workspace UI or set Auto-stop to a longer interval; <code>/connect</code> will warm it on the next try</td>
+<td><code>ImportError: The 'pyhive' package is required</code> from <code>/connect</code></td>
+<td>Hive extra not installed</td>
+<td><code>pip install 'amx-cli[hive]'</code></td>
 </tr>
 <tr>
-<td><code>INVALID_PARAMETER_VALUE: HTTP path is invalid</code></td>
-<td>The pasted path includes the <code>https://</code> host prefix</td>
-<td>Re-run <code>/add-db-profile</code>; HTTP path is the leading-slash portion only (<code>/sql/1.0/warehouses/...</code>)</td>
+<td><code>OSError: failed building wheel for sasl</code> during <code>pip install</code></td>
+<td>Tried <code>pip install pyhive[hive]</code> directly (pulls the legacy C extension)</td>
+<td>Use the AMX extra (<code>pip install 'amx-cli[hive]'</code>); it routes through <code>pure-sasl</code> instead</td>
 </tr>
 <tr>
-<td><code>SSL: CERTIFICATE_VERIFY_FAILED</code> on <code>/connect</code></td>
-<td>Corporate proxy is intercepting TLS</td>
-<td>Pin <code>tls_trusted_ca_file:</code> to the org CA bundle (see warning above)</td>
+<td><code>TTransportException: SASL/PLAIN auth failed</code></td>
+<td>Cluster expects LDAP but profile says <code>PLAIN</code> (or vice versa)</td>
+<td>Check <code>hive.server2.authentication</code> on the cluster and adjust <code>auth_mode</code> in the profile</td>
 </tr>
 <tr>
-<td><code>unity_catalog_required</code> on <code>/apply</code></td>
-<td>Target schema lives in <code>hive_metastore</code></td>
-<td>Migrate the schema to Unity Catalog or skip — comment write-back over the SQL connector requires Unity Catalog</td>
+<td><code>Hive SASL / Kerberos handshake failed</code></td>
+<td>Missing or expired Kerberos ticket</td>
+<td><code>kinit &lt;principal&gt;</code>; verify the keytab path and KRB5 config</td>
 </tr>
 <tr>
-<td><code>EXECUTE_PERMISSION_DENIED on column …</code> mid-<code>/apply</code></td>
-<td>Role lacks <code>MODIFY</code> on the schema or table owner is a different group</td>
-<td>Ask the catalog admin to grant <code>MODIFY ON SCHEMA main.sales TO &lt;group&gt;</code> or run <code>/apply</code> as the owning principal</td>
+<td><code>AuthorizationException: Permission denied</code> on <code>/apply</code></td>
+<td>Principal lacks <code>ALTER</code> on the target database</td>
+<td>Grant via Ranger / Sentry / Lake Formation (or <code>GRANT ALTER ON DATABASE …</code> directly on simpler deployments)</td>
 </tr>
 <tr>
-<td><code>404 Not Found: /api/2.0/sql/queries</code></td>
-<td>Token belongs to a workspace that has the SQL endpoint disabled</td>
-<td>Use a different workspace token, or a service-principal token from a workspace with SQL endpoints enabled</td>
+<td><code>/apply</code> reports "column write-back is disabled on Hive"</td>
+<td>Capability gap by design — see warning above</td>
+<td>Apply column comments via dbt / Atlas, or migrate the table to a backend with native column-comment DDL</td>
+</tr>
+<tr>
+<td><code>DESCRIBE FORMATTED</code> shows the table-level comment but <code>bulk_schema_metadata</code> returns <code>None</code></td>
+<td>Hive 2.x cluster lacks an initialised <code>information_schema</code> — fallback parser is correct but cached entry was filled before the writeback</td>
+<td><code>&gt; /db cache clear</code>, then re-list — the per-table parser will pick up the new comment</td>
 </tr>
 </tbody>
 </table>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../">Backend overview</a> — capability matrix across every adapter.</li>
+<li><a href="../trino/">Trino / Presto</a> — sibling adapter for HMS-backed tables through a modern query engine. The recommended alternative when HiveServer2 isn't running but the Metastore is.</li>
+<li><a href="../databricks/">Databricks</a> — Databricks workspace legacy <code>hive_metastore</code> catalog lives here, not the Hive backend.</li>
+</ul>
 
 
 

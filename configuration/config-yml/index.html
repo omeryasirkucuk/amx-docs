@@ -605,7 +605,9 @@
          href="../../backends/duckdb/"
          >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../backends/trino/"
-         >Trino / Presto</a></div>
+         >Trino / Presto</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../backends/hive/"
+         >Hive (HiveServer2)</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -1247,7 +1249,7 @@ output AMX produces rather than which model runs:</p>
 <td><code>backend</code></td>
 <td>all</td>
 <td>yes</td>
-<td>One of <code>postgresql</code>, <code>snowflake</code>, <code>databricks</code>, <code>bigquery</code>, <code>mysql</code>, <code>oracle</code>, <code>mssql</code>, <code>redshift</code>, <code>clickhouse</code>, <code>duckdb</code>, <code>trino</code></td>
+<td>One of <code>postgresql</code>, <code>snowflake</code>, <code>databricks</code>, <code>bigquery</code>, <code>mysql</code>, <code>oracle</code>, <code>mssql</code>, <code>redshift</code>, <code>clickhouse</code>, <code>duckdb</code>, <code>trino</code>, <code>hive</code></td>
 </tr>
 <tr>
 <td><code>host</code> / <code>port</code></td>
@@ -1314,6 +1316,12 @@ output AMX produces rather than which model runs:</p>
 <td>trino</td>
 <td>optional (<code>jwt_token</code> required when <code>auth_mode=jwt</code>)</td>
 <td>See <a href="../../backends/trino/">Trino / Presto</a>. 3-level catalog hierarchy reuses <code>catalog</code> + <code>database</code> (for schema)</td>
+</tr>
+<tr>
+<td><code>auth_mode</code></td>
+<td>hive</td>
+<td>optional (default <code>PLAIN</code>)</td>
+<td>One of <code>NOSASL</code>, <code>NONE</code>, <code>PLAIN</code>, <code>LDAP</code>, <code>KERBEROS</code>, <code>CUSTOM</code>. The wizard collects <code>NOSASL</code> / <code>PLAIN</code> / <code>LDAP</code>; <code>KERBEROS</code> is hand-edit only (Cloudera CDP). See <a href="../../backends/hive/">Hive</a>.</td>
 </tr>
 <tr>
 <td><code>profiling_mode</code> / <code>profiling_max_rows</code> / <code>profiling_sample_size</code></td>

@@ -605,7 +605,9 @@
          href="duckdb/"
          >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="trino/"
-         >Trino / Presto</a></div>
+         >Trino / Presto</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="hive/"
+         >Hive (HiveServer2)</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -922,10 +924,10 @@
 
 
 <h1 id="database-backends">Database backends<a class="headerlink" href="#database-backends" title="Permanent link">&para;</a></h1>
-<p>AMX ships adapters for <strong>eleven database backends</strong>. Every adapter normalises that backend's
+<p>AMX ships adapters for <strong>twelve database backends</strong>. Every adapter normalises that backend's
 introspection and comment APIs into the <a href="../concepts/universal-metadata/">Universal Metadata Interface</a>
 so the agents and review wizard treat them identically. This page tells you which backend
-to pick for which workload, the capability matrix across all eleven, and where each backend
+to pick for which workload, the capability matrix across all twelve, and where each backend
 diverges in profiling syntax or write-back SQL.</p>
 <h2 id="pick-a-backend">Pick a backend<a class="headerlink" href="#pick-a-backend" title="Permanent link">&para;</a></h2>
 <p>Use this short decision tree before you reach for any specific page:</p>
@@ -933,6 +935,7 @@ diverges in profiling syntax or write-back SQL.</p>
 <li><strong>Postgres-flavored OLTP / data warehouse with <code>COMMENT ON</code> semantics</strong> → <a href="postgresql/">PostgreSQL</a>. The reference adapter; everything else is normalised against it.</li>
 <li><strong>Cloud data warehouse with explicit warehouse cost / compute separation</strong> → <a href="snowflake/">Snowflake</a>, <a href="databricks/">Databricks</a>, <a href="bigquery/">BigQuery</a>, <a href="redshift/">Redshift</a>. Pair with <code>profiling_mode: sampled</code> or <code>metadata</code> to keep the bill predictable.</li>
 <li><strong>Lakehouse via a query engine over open table formats (Iceberg / Delta / Hive)</strong> → <a href="trino/">Trino / Presto</a>. Covers the "I need one engine across S3 / GCS / on-prem HDFS" pattern and writes ANSI <code>COMMENT ON</code> straight through to the underlying connector.</li>
+<li><strong>HiveServer2 directly (local Docker / on-prem Hadoop / EMR / Cloudera CDH+CDP)</strong> → <a href="hive/">Hive</a>. Talks the Thrift protocol directly to the cluster; covers the legacy-warehouse case where Hive is the SQL engine, not just the metastore. Column-comment write-back stays disabled by design — see the page.</li>
 <li><strong>OLTP RDBMS at the edge of a data product</strong> → <a href="mysql/">MySQL / MariaDB</a>, <a href="oracle/">Oracle</a>, <a href="mssql/">SQL Server</a>. Use AMX to backfill descriptions on legacy systems.</li>
 <li><strong>Real-time analytics / event store</strong> → <a href="clickhouse/">ClickHouse</a>. Watch out for the shared-history-store caveat.</li>
 <li><strong>Embedded / file-based / Parquet+S3 documentation</strong> → <a href="duckdb/">DuckDB</a>. Excellent for prototyping AMX or documenting Parquet collections.</li>
@@ -1026,10 +1029,19 @@ diverges in profiling syntax or write-back SQL.</p>
 <td><code>COMMENT ON TABLE / COLUMN / VIEW / SCHEMA</code></td>
 <td>✗ (writeback is connector-dependent)</td>
 </tr>
+<tr>
+<td><a href="hive/">Hive (HiveServer2)</a></td>
+<td><code>hive</code></td>
+<td><code>pip install 'amx-cli[hive]'</code></td>
+<td><code>ALTER TABLE / VIEW … SET TBLPROPERTIES</code> + <code>ALTER DATABASE … SET DBPROPERTIES</code> (no columns)</td>
+<td>✗ (row UPDATE is partition-/transactional-only)</td>
+</tr>
 </tbody>
 </table>
-<p><code>pip install amx-cli</code> pulls every supported driver except Trino — the Trino client lives
-in the optional <code>[trino]</code> extra so users on classic warehouses don't pay the install cost.</p>
+<p><code>pip install amx-cli</code> pulls every supported driver except Trino and Hive — both live in
+optional <code>[trino]</code> / <code>[hive]</code> extras so users on classic warehouses don't pay the install
+cost. The Hive extra uses <code>pure-sasl</code> (pure Python) instead of the legacy <code>sasl</code> C
+extension so it wheels cleanly on macOS / Linux / Windows.</p>
 <h2 id="distinctive-object-types-per-backend">Distinctive object types per backend<a class="headerlink" href="#distinctive-object-types-per-backend" title="Permanent link">&para;</a></h2>
 <p>Beyond tables and views, each adapter exposes the object types that are first-class on
 its backend. These are listable via <code>/metadata</code> (and counted by <code>/db inspect</code>); the
@@ -1086,6 +1098,10 @@ inference loop currently focuses on tables, views, and materialized views.</p>
 <td>Trino / Presto</td>
 <td>materialized views, external tables, <strong>catalogs</strong> (3-level <code>catalog.schema.table</code> hierarchy across hive / iceberg / delta / tpch / memory connectors)</td>
 </tr>
+<tr>
+<td>Hive (HiveServer2)</td>
+<td>external tables, partitioned tables, <strong>TBLPROPERTIES / DBPROPERTIES</strong> key-value metadata (where Hive stores table-level and database-level comments)</td>
+</tr>
 </tbody>
 </table>
 <p><code>BackendCapabilities</code> flags gate which list operations the connector even attempts, so
@@ -1103,6 +1119,7 @@ rather than a generic driver error.</p>
 <li><strong>ClickHouse</strong> — <code>SAMPLE</code> clause.</li>
 <li><strong>DuckDB</strong> — <code>USING SAMPLE</code>.</li>
 <li><strong>Trino / Presto</strong> — <code>TABLESAMPLE BERNOULLI</code> (default) or <code>SYSTEM</code>. With <code>profiling_approximate: true</code> the COUNT-DISTINCT path also switches to Trino's <code>approx_distinct</code> (HyperLogLog) so wide tables across hive / iceberg connectors stay cheap.</li>
+<li><strong>Hive (HiveServer2)</strong> — <code>SUM(CASE WHEN col IS NULL THEN 1 ELSE 0 END)</code> + <code>COUNT(DISTINCT col)</code> profiling expressions (HiveQL has no ANSI <code>FILTER (WHERE …)</code> aggregate clause). Sampling defaults to a bounded <code>LIMIT :lim</code> rather than <code>TABLESAMPLE</code> because <code>TABLESAMPLE BUCKET</code> only works on bucketed tables and <code>TABLESAMPLE (n PERCENT)</code> triggers a full input read on most file formats.</li>
 </ul>
 <p>When backend table-stats are unavailable in <code>full</code> mode (Snowflake, Databricks, BigQuery),
 AMX skips the expensive full column scans and falls back to lightweight metadata + samples
@@ -1123,6 +1140,7 @@ troubleshooting table → what to read next.</p>
 <li><a href="clickhouse/">ClickHouse</a> — HTTP vs HTTPS port choice, history-store caveat.</li>
 <li><a href="duckdb/">DuckDB</a> — file vs <code>:memory:</code>, attached scanner workflows.</li>
 <li><a href="trino/">Trino / Presto</a> — coordinator host, Basic vs JWT auth, catalog picker for lakehouse deployments.</li>
+<li><a href="hive/">Hive (HiveServer2)</a> — HS2 host, PLAIN / LDAP / NOSASL auth picker, four deployment-pattern recipes (local Docker, on-prem Hadoop, EMR, Cloudera CDP).</li>
 </ul>
 
 
