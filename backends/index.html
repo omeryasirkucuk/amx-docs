@@ -603,7 +603,9 @@
          href="clickhouse/"
          >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="duckdb/"
-         >DuckDB</a></div>
+         >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="trino/"
+         >Trino / Presto</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -920,16 +922,17 @@
 
 
 <h1 id="database-backends">Database backends<a class="headerlink" href="#database-backends" title="Permanent link">&para;</a></h1>
-<p>AMX ships adapters for <strong>ten database backends</strong>. Every adapter normalises that backend's
+<p>AMX ships adapters for <strong>eleven database backends</strong>. Every adapter normalises that backend's
 introspection and comment APIs into the <a href="../concepts/universal-metadata/">Universal Metadata Interface</a>
 so the agents and review wizard treat them identically. This page tells you which backend
-to pick for which workload, the capability matrix across all ten, and where each backend
+to pick for which workload, the capability matrix across all eleven, and where each backend
 diverges in profiling syntax or write-back SQL.</p>
 <h2 id="pick-a-backend">Pick a backend<a class="headerlink" href="#pick-a-backend" title="Permanent link">&para;</a></h2>
 <p>Use this short decision tree before you reach for any specific page:</p>
 <ul>
 <li><strong>Postgres-flavored OLTP / data warehouse with <code>COMMENT ON</code> semantics</strong> → <a href="postgresql/">PostgreSQL</a>. The reference adapter; everything else is normalised against it.</li>
 <li><strong>Cloud data warehouse with explicit warehouse cost / compute separation</strong> → <a href="snowflake/">Snowflake</a>, <a href="databricks/">Databricks</a>, <a href="bigquery/">BigQuery</a>, <a href="redshift/">Redshift</a>. Pair with <code>profiling_mode: sampled</code> or <code>metadata</code> to keep the bill predictable.</li>
+<li><strong>Lakehouse via a query engine over open table formats (Iceberg / Delta / Hive)</strong> → <a href="trino/">Trino / Presto</a>. Covers the "I need one engine across S3 / GCS / on-prem HDFS" pattern and writes ANSI <code>COMMENT ON</code> straight through to the underlying connector.</li>
 <li><strong>OLTP RDBMS at the edge of a data product</strong> → <a href="mysql/">MySQL / MariaDB</a>, <a href="oracle/">Oracle</a>, <a href="mssql/">SQL Server</a>. Use AMX to backfill descriptions on legacy systems.</li>
 <li><strong>Real-time analytics / event store</strong> → <a href="clickhouse/">ClickHouse</a>. Watch out for the shared-history-store caveat.</li>
 <li><strong>Embedded / file-based / Parquet+S3 documentation</strong> → <a href="duckdb/">DuckDB</a>. Excellent for prototyping AMX or documenting Parquet collections.</li>
@@ -1016,9 +1019,17 @@ diverges in profiling syntax or write-back SQL.</p>
 <td><code>COMMENT ON COLUMN</code></td>
 <td>✗ (single-writer file)</td>
 </tr>
+<tr>
+<td><a href="trino/">Trino / Presto</a></td>
+<td><code>trino</code></td>
+<td><code>pip install 'amx-cli[trino]'</code></td>
+<td><code>COMMENT ON TABLE / COLUMN / VIEW / SCHEMA</code></td>
+<td>✗ (writeback is connector-dependent)</td>
+</tr>
 </tbody>
 </table>
-<p><code>pip install amx-cli</code> pulls every supported driver — there are no separate extras to manage.</p>
+<p><code>pip install amx-cli</code> pulls every supported driver except Trino — the Trino client lives
+in the optional <code>[trino]</code> extra so users on classic warehouses don't pay the install cost.</p>
 <h2 id="distinctive-object-types-per-backend">Distinctive object types per backend<a class="headerlink" href="#distinctive-object-types-per-backend" title="Permanent link">&para;</a></h2>
 <p>Beyond tables and views, each adapter exposes the object types that are first-class on
 its backend. These are listable via <code>/metadata</code> (and counted by <code>/db inspect</code>); the
@@ -1071,6 +1082,10 @@ inference loop currently focuses on tables, views, and materialized views.</p>
 <td>DuckDB</td>
 <td>sequences, functions, <strong>macros</strong>, attached databases (Parquet/S3/Postgres scanner)</td>
 </tr>
+<tr>
+<td>Trino / Presto</td>
+<td>materialized views, external tables, <strong>catalogs</strong> (3-level <code>catalog.schema.table</code> hierarchy across hive / iceberg / delta / tpch / memory connectors)</td>
+</tr>
 </tbody>
 </table>
 <p><code>BackendCapabilities</code> flags gate which list operations the connector even attempts, so
@@ -1087,6 +1102,7 @@ rather than a generic driver error.</p>
 <li><strong>MySQL / Oracle / SQL Server / Redshift</strong> — backend statistics + small sample only when in <code>sampled</code> mode.</li>
 <li><strong>ClickHouse</strong> — <code>SAMPLE</code> clause.</li>
 <li><strong>DuckDB</strong> — <code>USING SAMPLE</code>.</li>
+<li><strong>Trino / Presto</strong> — <code>TABLESAMPLE BERNOULLI</code> (default) or <code>SYSTEM</code>. With <code>profiling_approximate: true</code> the COUNT-DISTINCT path also switches to Trino's <code>approx_distinct</code> (HyperLogLog) so wide tables across hive / iceberg connectors stay cheap.</li>
 </ul>
 <p>When backend table-stats are unavailable in <code>full</code> mode (Snowflake, Databricks, BigQuery),
 AMX skips the expensive full column scans and falls back to lightweight metadata + samples
@@ -1106,6 +1122,7 @@ troubleshooting table → what to read next.</p>
 <li><a href="redshift/">Redshift</a> — Provisioned / Serverless, password / IAM auth.</li>
 <li><a href="clickhouse/">ClickHouse</a> — HTTP vs HTTPS port choice, history-store caveat.</li>
 <li><a href="duckdb/">DuckDB</a> — file vs <code>:memory:</code>, attached scanner workflows.</li>
+<li><a href="trino/">Trino / Presto</a> — coordinator host, Basic vs JWT auth, catalog picker for lakehouse deployments.</li>
 </ul>
 
 

@@ -12,13 +12,13 @@
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/data-sources/search-catalog/">
+        <link rel="canonical" href="https://amxcli.com/backends/trino/">
       
       
-        <link rel="prev" href="../documents/">
+        <link rel="prev" href="../duckdb/">
       
       
-        <link rel="next" href="../../collaboration/shared-history-store/">
+        <link rel="next" href="../../guides/sap-discovery-walkthrough/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Search catalog - AMX</title>
+        <title>Trino / Presto - AMX</title>
       
     
   
@@ -75,16 +75,16 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Search catalog — AMX CLI">
+  <meta property="og:title" content="Trino / Presto — AMX CLI">
   <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
-  <meta property="og:url" content="https://amxcli.com/data-sources/search-catalog/">
+  <meta property="og:url" content="https://amxcli.com/backends/trino/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Search catalog — AMX CLI">
+  <meta name="twitter:title" content="Trino / Presto — AMX CLI">
   <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#search-catalog" class="md-skip">
+        <a href="#trino-presto" class="md-skip">
           Skip to content
         </a>
       
@@ -582,30 +582,30 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-backends-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/"
+         href="../"
          >Overview</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/postgresql/"
+         href="../postgresql/"
          >PostgreSQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/snowflake/"
+         href="../snowflake/"
          >Snowflake</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/databricks/"
+         href="../databricks/"
          >Databricks</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/bigquery/"
+         href="../bigquery/"
          >BigQuery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/mysql/"
+         href="../mysql/"
          >MySQL</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/oracle/"
+         href="../oracle/"
          >Oracle</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/mssql/"
+         href="../mssql/"
          >SQL Server</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/redshift/"
+         href="../redshift/"
          >Redshift</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/clickhouse/"
+         href="../clickhouse/"
          >ClickHouse</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/duckdb/"
-         >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../backends/trino/"
-         >Trino / Presto</a></div>
+         href="../duckdb/"
+         >DuckDB</a><a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Trino / Presto</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-0"
          data-amx-group-key="amx-grp-guides">
       <button type="button"
@@ -710,12 +710,12 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-data-sources-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../codebase/"
+         href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../documents/"
-         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Search catalog</a></div>
+         href="../../data-sources/documents/"
+         >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/search-catalog/"
+         >Search catalog</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-collaboration">
       <button type="button"
@@ -842,17 +842,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-the-catalog-is-built" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        How the catalog is built
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#step-by-step" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -865,10 +854,10 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-initial-sync" class="md-nav__link">
+  <a href="#1-open-the-amx-repl" class="md-nav__link">
     <span class="md-ellipsis">
       
-        1. Initial sync
+        1. Open the AMX REPL
       
     </span>
   </a>
@@ -876,10 +865,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-incremental-sync" class="md-nav__link">
+  <a href="#2-add-a-database-profile" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Incremental sync
+        2. Add a database profile
       
     </span>
   </a>
@@ -887,10 +876,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-search-the-catalog" class="md-nav__link">
+  <a href="#3-answer-the-connection-prompts" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Search the catalog
+        3. Answer the connection prompts
       
     </span>
   </a>
@@ -898,10 +887,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#4-status-check" class="md-nav__link">
+  <a href="#4-activate-and-confirm" class="md-nav__link">
     <span class="md-ellipsis">
       
-        4. Status check
+        4. Activate and confirm
       
     </span>
   </a>
@@ -909,10 +898,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#5-full-rebuild" class="md-nav__link">
+  <a href="#5-inspect-the-catalog" class="md-nav__link">
     <span class="md-ellipsis">
       
-        5. Full rebuild
+        5. Inspect the catalog
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-run-and-apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Run and apply
       
     </span>
   </a>
@@ -925,17 +925,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#when-to-sync-vs-rebuild" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        When to /sync vs /rebuild
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#sample-config" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -943,6 +932,23 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Sample config">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#jwt-variant" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        JWT variant
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -958,10 +964,43 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#capabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Capabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-development-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Local development (Docker)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#troubleshooting" class="md-nav__link">
     <span class="md-ellipsis">
       
         Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -990,17 +1029,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>Data Sources</span>
+            <span>Backends</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Search catalog</span>
+      <span>Trino / Presto</span>
     </div>
   </div>
 
@@ -1009,191 +1043,260 @@
 
 
 
-<h1 id="search-catalog">Search catalog<a class="headerlink" href="#search-catalog" title="Permanent link">&para;</a></h1>
-<p>AMX maintains an internal search catalog that combines three things — the database
-catalog (tables, columns, descriptions), the document RAG index (PDFs, Word, Markdown),
-and the code reference index (extracted snippets) — into a single embedding store.
-That's what <code>/ask</code> queries to answer your questions, what <code>/run</code> consults for context
-when drafting descriptions, and what <code>/search</code> exposes directly. This page walks
-through how the catalog is built, when to <code>/sync</code> vs <code>/rebuild</code>, and how to recover
-from corruption or model-mismatch errors.</p>
+<h1 id="trino-presto">Trino / Presto<a class="headerlink" href="#trino-presto" title="Permanent link">&para;</a></h1>
+<p>Configure Trino as an AMX backend to introspect catalogs, schemas, tables, views,
+materialized views, and columns, and write reviewed descriptions back as
+<code>COMMENT ON TABLE</code> / <code>COMMENT ON COLUMN</code> / <code>COMMENT ON SCHEMA</code> /
+<code>COMMENT ON VIEW</code> / <code>COMMENT ON MATERIALIZED VIEW</code> statements over the standard
+Trino HTTP protocol. Trino and Presto share the same wire protocol, so the same
+adapter targets both — Presto users connect with the same <code>trino://</code> URL form.</p>
+<p>This page walks through registering a coordinator profile, picking between
+Basic and JWT authentication, applying TLS settings for a production cluster,
+and rolling out your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed.</li>
-<li>An active DB profile (introspected at least once — <code>/sync</code> will do it).</li>
-<li>Optionally, an active doc and / or code profile.</li>
-<li>An active LLM profile (used for the embedding step).</li>
-</ul>
-<h2 id="how-the-catalog-is-built">How the catalog is built<a class="headerlink" href="#how-the-catalog-is-built" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌──────────────────────────────────┐
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   /sync                          │
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>├──────────────────────────────────┤
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   1. Refresh introspection cache │   ← from DB profile
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   2. Embed new / changed entries │   ← LLM profile (embedding model)
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   3. Update Chroma index         │
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   4. Reconcile with audit trail  │   ← from /history
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>└──────────────────────────────────┘
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>              │
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>              ▼
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>   ~/.amx/chroma/  ← single Chroma directory; per-collection inside
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>              │
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>              ▼
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>       /ask, /search, /run (RAG context)
+<li>
+<p>AMX installed with the Trino extra:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s1">&#39;amx-cli[trino]&#39;</span>
 </span></code></pre></div>
-<p>Three collections live inside <code>~/.amx/chroma/</code>:</p>
-<table>
-<thead>
-<tr>
-<th>Collection</th>
-<th>Source</th>
-<th>Refreshed by</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>db_catalog</code></td>
-<td>DB tables, columns, existing comments</td>
-<td><code>/sync</code></td>
-</tr>
-<tr>
-<td><code>documents</code></td>
-<td>RAG doc profile</td>
-<td><code>/ingest</code></td>
-</tr>
-<tr>
-<td><code>code_refs</code></td>
-<td>Code agent profile</td>
-<td><code>/code-scan</code></td>
-</tr>
-</tbody>
-</table>
-<p><code>/ask</code> searches across all three and merges results.</p>
+<p>The <code>[trino]</code> extra pulls <code>trino[sqlalchemy]&gt;=0.330</code> — pure-Python wheels on
+macOS, Linux, and Windows. No compiler required.</p>
+</li>
+<li>
+<p>A reachable Trino coordinator (Trino ≥ 351 for <code>COMMENT ON VIEW</code>, ≥ 400 for
+  <code>COMMENT ON MATERIALIZED VIEW</code>). Presto coordinators work over the same client.</p>
+</li>
+<li>For commenting: the role / catalog principal needs SELECT on the underlying
+  table plus the connector-specific privilege required to write metadata
+  (<code>USE</code> + <code>MODIFY</code> on Hive / Iceberg, etc.).</li>
+<li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>
+</ul>
 <h2 id="step-by-step">Step-by-step<a class="headerlink" href="#step-by-step" title="Permanent link">&para;</a></h2>
-<h3 id="1-initial-sync">1. Initial sync<a class="headerlink" href="#1-initial-sync" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /search status
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Search catalog: empty (never synced)
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt; /sync
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>[1/4] Refreshing introspection cache .........  ok (47 tables, 1,283 columns)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>[2/4] Embedding 1,330 entries ................  ok (8.4 s, $0.012)
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>[3/4] Updating Chroma index ..................  ok
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>[4/4] Reconciling with description audit .....  ok (0 prior /apply runs)
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>✓ /sync finished. Catalog ready for /ask.
+<h3 id="1-open-the-amx-repl">1. Open the AMX REPL<a class="headerlink" href="#1-open-the-amx-repl" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>amx
 </span></code></pre></div>
-<p>The first sync against a fresh DB takes a moment — one embedding call per table +
-column. With <code>text-embedding-3-small</code> at OpenAI's price, a 1,300-entry warehouse
-embeds for ~$0.01.</p>
-<h3 id="2-incremental-sync">2. Incremental sync<a class="headerlink" href="#2-incremental-sync" title="Permanent link">&para;</a></h3>
-<p>After the first sync, re-running is cheap — only entries with changed names or
-descriptions are re-embedded:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /sync
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[1/4] Refreshing introspection cache .........  ok (47 tables, 1,283 columns)
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>[2/4] Embedding 12 changed entries ...........  ok (0.8 s, $0.0001)
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>[3/4] Updating Chroma index ..................  ok
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[4/4] Reconciling with description audit .....  ok (3 new /apply runs since last sync)
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>✓ /sync finished in 1.4 s.
+<h3 id="2-add-a-database-profile">2. Add a database profile<a class="headerlink" href="#2-add-a-database-profile" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /add-db-profile
 </span></code></pre></div>
-<p>Run <code>/sync</code> after every <code>/apply</code> so descriptions you just wrote are immediately
-searchable.</p>
-<h3 id="3-search-the-catalog">3. Search the catalog<a class="headerlink" href="#3-search-the-catalog" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /search &quot;customer addresses&quot;
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Top-8 results across all collections:
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  0.142  [db_catalog]  sales.customer_address (table)
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  0.198  [documents]   data-glossary/address.md p.1
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  0.214  [code_refs]   models/marts/customer.sql:42
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  ...
+<p>Pick <code>trino</code> from the backend menu:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Select database backend (engine):
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>  ...
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  trino   Host/port user/password (or JWT) + catalog - Trino / Presto; COMMENT ON DDL
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  hive    Host/port user/password - HiveServer2; partial comment write-back (no columns)
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>  ...
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&gt; trino
 </span></code></pre></div>
-<p>The <code>[db_catalog]</code> / <code>[documents]</code> / <code>[code_refs]</code> tag tells you which collection a
-hit came from. Useful when retrieval looks off — you can immediately tell whether the
-LLM was relying on the DB or the docs.</p>
-<h3 id="4-status-check">4. Status check<a class="headerlink" href="#4-status-check" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /search status
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Search catalog
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  db_catalog: 1,330 entries (last /sync 4 min ago)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  documents:    412 chunks  (last /ingest 1 hour ago)
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  code_refs:    412 chunks  (last /code-scan 23 min ago)
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Embedding model: openai/text-embedding-3-small
-</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Index store: ~/.amx/chroma  (size: 18.4 MB)
+<h3 id="3-answer-the-connection-prompts">3. Answer the connection prompts<a class="headerlink" href="#3-answer-the-connection-prompts" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Trino coordinator host (e.g. trino.example.com or localhost):
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  trino.prod.example.com
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>HTTP scheme (https for production, http for local Docker):
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>&gt; https
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Port (default 443 for https):
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  443
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Username (Trino user — used for query auditing even with JWT):
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>  amx
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>Authentication mode:
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>&gt; basic
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>Password (leave blank for anonymous on a dev cluster): ••••••••••••••
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>Default catalog (leave blank to pick at command time):
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  hive
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>Default schema (leave blank to pick at command time):
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>  warehouse
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>Verify TLS certificate? (Y for production, N only behind a TLS-inspecting proxy):
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>&gt; yes
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>Path to private CA bundle (leave blank for system trust store):
 </span></code></pre></div>
-<p>If any of the three lines say <code>(never indexed)</code>, run the corresponding command:
-<code>/sync</code> for db_catalog, <code>/ingest</code> for documents, <code>/code-scan</code> for code_refs.</p>
-<h3 id="5-full-rebuild">5. Full rebuild<a class="headerlink" href="#5-full-rebuild" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /search rebuild
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>About to wipe ~/.amx/chroma and re-embed:
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  db_catalog: 1,330 entries
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  documents:  412 chunks
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  code_refs:  412 chunks
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  Estimated cost: $0.025
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>Proceed? [y/N]: y
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>[1/3] Wiping index ...................  ok
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>[2/3] Re-syncing db_catalog ..........  ok (8.1 s)
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>[3/3] Re-ingesting documents .........  ok (5.4 s)
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>[4/3] Re-scanning code_refs ..........  ok (6.0 s)
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>✓ /search rebuild finished in 19.5 s.
-</span></code></pre></div>
-<p><code>/search rebuild</code> is the right move when:</p>
+<p>Notes on each field:</p>
 <ul>
-<li>You changed the embedding model in <code>~/.amx/config.yml</code> (cosine distances become
-  meaningless across models).</li>
-<li>The Chroma directory got corrupted (rare but happens with abrupt power loss).</li>
-<li>You moved AMX to a different config dir and want a fresh index.</li>
+<li><strong>Host</strong> — coordinator hostname only. No <code>https://</code> prefix, no path; the wizard
+  asks for the scheme separately.</li>
+<li><strong>HTTP scheme</strong> — <code>https</code> for any production / cloud deployment. <code>http</code> is
+  intentionally surfaced for local Docker (<code>trinodb/trino:latest</code> exposes
+  plain <code>8080</code>).</li>
+<li><strong>Port</strong> — the wizard pre-fills 443 for https and 8080 for http. Override
+  freely if your cluster sits behind a non-standard load balancer.</li>
+<li>
+<p><strong>Authentication mode</strong> —</p>
+<ul>
+<li><strong><code>basic</code></strong> — HTTP Basic against the coordinator (<code>user:password</code>).
+  The most common production setup.</li>
+<li><strong><code>jwt</code></strong> — Bearer token (Starburst Galaxy, OAuth-minted tokens). The
+  wizard skips the password prompt and asks for the JWT instead.</li>
 </ul>
-<h2 id="when-to-sync-vs-rebuild">When to <code>/sync</code> vs <code>/rebuild</code><a class="headerlink" href="#when-to-sync-vs-rebuild" title="Permanent link">&para;</a></h2>
-<table>
-<thead>
-<tr>
-<th>You did this</th>
-<th>Then run</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>/apply</code> (wrote descriptions back to the DB)</td>
-<td><code>/sync</code></td>
-</tr>
-<tr>
-<td>Added a new column / table on the DB</td>
-<td><code>/sync</code></td>
-</tr>
-<tr>
-<td>Edited <code>~/.amx/config.yml</code> to add a doc path</td>
-<td><code>/ingest</code></td>
-</tr>
-<tr>
-<td>Edited the codebase</td>
-<td><code>/code-scan</code></td>
-</tr>
-<tr>
-<td>Changed <code>embedding_model:</code> in YAML</td>
-<td><code>/search rebuild</code></td>
-</tr>
-<tr>
-<td><code>~/.amx/chroma/</code> got deleted / corrupted</td>
-<td><code>/search rebuild</code></td>
-</tr>
-<tr>
-<td>Switched to a different DB profile</td>
-<td><code>/sync</code> (catalog is per-profile)</td>
-</tr>
-</tbody>
-</table>
-<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">search</span><span class="p">:</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nt">embedding_model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">openai/text-embedding-3-small</span>
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">top_k</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">index_store</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.amx/chroma</span>
+<p>OAuth2 and Kerberos auth are <em>not</em> in the wizard; both require host-level
+flows that don't fit an interactive picker. Power users can hand-edit
+<code>~/.amx/config.yml</code> to set those auth modes — the adapter accepts them
+without crashing but the wizard won't surface them.</p>
+</li>
+<li>
+<p><strong>Default catalog</strong> — Trino is 3-level (<code>catalog.schema.table</code>); the catalog
+  is the connector pointer. Common values: <code>hive</code>, <code>iceberg</code>, <code>delta</code>,
+  <code>tpch</code>, <code>memory</code>. Leave blank to be prompted at command time.</p>
+</li>
+<li><strong>Default schema</strong> — schema <em>inside</em> the chosen catalog. Reused as the
+  <code>database</code> field on <code>DBConfig</code> so downstream commands stay backend-uniform.</li>
+<li><strong>Verify TLS / CA bundle</strong> — only asked when scheme is <code>https</code>. Pin a CA
+  bundle if your environment uses a private root; turn verify off <strong>only</strong>
+  behind a TLS-inspecting proxy that refuses to present a distributable cert.</li>
+</ul>
+<h3 id="4-activate-and-confirm">4. Activate and confirm<a class="headerlink" href="#4-activate-and-confirm" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /use-db prod-trino
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>✓ Active DB profile → prod-trino [trino] trino.prod.example.com:443 catalog=hive (user amx)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>&gt; /connect
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>Testing prod-trino... ✓ connected (server: 481, coordinator: 4ixeg, latency: 215 ms)
 </span></code></pre></div>
-<p>For larger / more nuanced catalogs, switch to <code>openai/text-embedding-3-large</code> (about
-3× the cost, noticeably better retrieval on technical jargon) and run
-<code>/search rebuild</code>.</p>
+<h3 id="5-inspect-the-catalog">5. Inspect the catalog<a class="headerlink" href="#5-inspect-the-catalog" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /schemas
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>catalog   schema       objects   tables   views
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>hive      warehouse    42        38       4
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>hive      staging      11        11       0
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>iceberg   default      18        14       4
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>system    runtime      —         —        —   (read-only system catalog)
+</span></code></pre></div>
+<p>The catalog picker surfaces every connector the coordinator has registered
+(<code>SHOW CATALOGS</code>). The <code>system</code> catalog appears for completeness but AMX never
+writes to it.</p>
+<h3 id="6-run-and-apply">6. Run and apply<a class="headerlink" href="#6-run-and-apply" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /run hive.warehouse.orders
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[Profile] TABLESAMPLE BERNOULLI(1) on hive.warehouse.orders ... ok (1.4 s)
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>[LLM]     drafting 18 column descriptions ... ok (high: 14, medium: 3, low: 1)
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>&gt; /apply
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>Write 18 comment(s) to hive.warehouse? [y/N]: y
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>COMMENT ON COLUMN &quot;hive&quot;.&quot;warehouse&quot;.&quot;orders&quot;.&quot;o_orderkey&quot; IS &#39;Surrogate order id …&#39;;
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>COMMENT ON COLUMN &quot;hive&quot;.&quot;warehouse&quot;.&quot;orders&quot;.&quot;o_custkey&quot;  IS &#39;Reference to customer …&#39;;
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>COMMENT ON TABLE  &quot;hive&quot;.&quot;warehouse&quot;.&quot;orders&quot; IS &#39;Master orders fact table …&#39;;
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>... (18/18 written)
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>✓ /apply finished. Audit trail: /history show &lt;run-id&gt;
+</span></code></pre></div>
+<p>The DDL is dispatched with the comment text inlined as a SQL literal —
+AMX's <code>quote_literal</code> escapes single quotes via the ANSI <code>''</code> doubling, so
+descriptions that contain apostrophes ("the customer's address") land
+correctly. The inlined form sidesteps a long-standing variance in how
+different Trino connectors (hive, iceberg, delta) bind named parameters
+inside DDL.</p>
+<h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">prod-trino</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino.prod.example.com</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/prod-trino/password</span><span class="w">   </span><span class="c1"># blank when using JWT</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">jwt_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                                 </span><span class="c1"># set when auth_mode = jwt</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hive</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">    </span><span class="nt">database</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse</span><span class="w">                           </span><span class="c1"># default schema inside catalog</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">    </span><span class="nt">http_scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">    </span><span class="nt">verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">    </span><span class="nt">tls_trusted_ca_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                       </span><span class="c1"># set on TLS-intercepting networks</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="w">    </span><span class="nt">profiling_approximate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">                   </span><span class="c1"># uses approx_distinct (HLL) for high-cardinality columns</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-trino</span>
+</span></code></pre></div>
+<h3 id="jwt-variant">JWT variant<a class="headerlink" href="#jwt-variant" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">galaxy</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trino</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">galaxy.starburst.io</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">443</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">amx</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">                                  </span><span class="c1"># ignored when jwt_token is set</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="nt">jwt_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">keyring://amx/galaxy/jwt_token</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">    </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">iceberg</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">    </span><span class="nt">http_scheme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span><span class="nt">verify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">galaxy</span>
+</span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
-<li><code>&gt; /search status</code> — entry counts per collection, last-update timestamp, embedding model identity, on-disk size.</li>
-<li><code>&gt; /search "&lt;a phrase you indexed&gt;"</code> — confirms retrieval works at all.</li>
-<li><code>&gt; /ask "&lt;a question with a known answer&gt;"</code> — end-to-end test of retrieval + LLM answer.</li>
+<li><code>&gt; /connect</code> — reports the Trino server version (e.g. <code>481</code>) and round-trip
+   latency. First connect against a cold coordinator may take ~1–2 s; steady
+   state is well under 500 ms.</li>
+<li><code>&gt; /db inspect</code> — confirms the catalog tree and which schemas have tables /
+   views / materialized views.</li>
+<li><code>&gt; /doctor</code> — verifies driver presence, profile activation, and that the
+   coordinator's <code>/v1/info</code> endpoint reports <code>"starting":false</code>.</li>
 </ol>
+<h2 id="capabilities">Capabilities<a class="headerlink" href="#capabilities" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Supported</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Table comments (<code>COMMENT ON TABLE</code>)</td>
+<td>✓</td>
+<td>ANSI <code>COMMENT ON … IS '&lt;literal&gt;'</code>.</td>
+</tr>
+<tr>
+<td>View comments (<code>COMMENT ON VIEW</code>)</td>
+<td>✓</td>
+<td>Trino ≥ 351.</td>
+</tr>
+<tr>
+<td>Materialized view comments</td>
+<td>✓</td>
+<td>Trino ≥ 400.</td>
+</tr>
+<tr>
+<td>Column comments</td>
+<td>✓</td>
+<td><code>COMMENT ON COLUMN &lt;catalog&gt;.&lt;schema&gt;.&lt;table&gt;.&lt;column&gt;</code>.</td>
+</tr>
+<tr>
+<td>Schema comments</td>
+<td>✓</td>
+<td><code>COMMENT ON SCHEMA &lt;catalog&gt;.&lt;schema&gt;</code>.</td>
+</tr>
+<tr>
+<td>Database / catalog comments</td>
+<td>✗</td>
+<td>Trino catalog descriptions live in <code>etc/catalog/&lt;name&gt;.properties</code> on the coordinator, not DDL.</td>
+</tr>
+<tr>
+<td>Shared history store</td>
+<td>✗</td>
+<td>Row UPDATE for the <code>finish_run</code> lifecycle is connector-specific (Iceberg ✓, Hive raw ✗). Use another backend for AMX's run-history schema.</td>
+</tr>
+<tr>
+<td>Bulk schema metadata cache</td>
+<td>✓</td>
+<td>Two-query path against <code>&lt;catalog&gt;.information_schema.tables</code> + <code>…columns</code>; graceful fallback for older Trino releases or connectors without <code>comment</code> columns.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="local-development-docker">Local development (Docker)<a class="headerlink" href="#local-development-docker" title="Permanent link">&para;</a></h2>
+<p>For a self-contained smoke test of the adapter:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># trino-compose.yml</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">trino</span><span class="p">:</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trinodb/trino:latest</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;8080:8080&quot;</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./catalog:/etc/trino/catalog:ro</span>
+</span></code></pre></div>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># catalog/memory.properties</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="na">connector.name</span><span class="o">=</span><span class="s">memory</span>
+</span></code></pre></div>
+<div class="language-properties highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># catalog/tpch.properties</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="na">connector.name</span><span class="o">=</span><span class="s">tpch</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>docker<span class="w"> </span>compose<span class="w"> </span>-f<span class="w"> </span>trino-compose.yml<span class="w"> </span>up<span class="w"> </span>-d
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># then in AMX:</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1">#   /add-db-profile     → backend=trino, host=localhost, scheme=http, port=8080</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1">#   /connect            → SELECT 1 succeeds against memory + tpch catalogs</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1">#   /run tpch.sf1.orders</span>
+</span></code></pre></div>
+<p>The <code>memory</code> connector accepts <code>CREATE TABLE … COMMENT '…'</code> and the full
+column-comment writeback path, so it is the cleanest smoke test target.</p>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1205,37 +1308,47 @@ LLM was relying on the DB or the docs.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>/search status</code> shows the catalog but <code>/ask</code> says "I don't know" for everything</td>
-<td>Embedding-model mismatch (you changed model in YAML, didn't rebuild)</td>
-<td><code>&gt; /search rebuild</code></td>
+<td><code>TrinoUserError: COLUMN_NOT_FOUND … 'comment'</code> from <code>information_schema.tables</code></td>
+<td>Older Trino release (≤ 350) or a connector that does not expose <code>comment</code> in <code>information_schema</code></td>
+<td>The adapter falls back to a no-comment listing path automatically. Comments still apply via DDL — only the bulk metadata cache renders as "no description yet".</td>
 </tr>
 <tr>
-<td>Chroma error on startup: <code>chromadb.errors.InvalidCollectionException</code></td>
-<td>Index dir corrupted</td>
-<td><code>rm -rf ~/.amx/chroma</code> and <code>&gt; /search rebuild</code></td>
+<td><code>Access Denied: Cannot SELECT from table …</code></td>
+<td>Role lacks SELECT on the underlying connector source (Hive metastore, Iceberg table)</td>
+<td>Grant SELECT on the catalog.schema.table via the connector's native ACL flow. AMX's <code>actionable_profile_error</code> surfaces a one-liner remediation.</td>
 </tr>
 <tr>
-<td><code>/sync</code> fails with <code>OpenAI quota exceeded</code></td>
-<td>Free-tier embedding quota for the day exhausted</td>
-<td>Wait, raise the quota tier, or switch to <code>text-embedding-3-small</code> (cheaper)</td>
+<td><code>Catalog 'foo' not found</code> from <code>/schemas</code></td>
+<td>Catalog is not registered on the coordinator</td>
+<td>Check <code>etc/catalog/&lt;name&gt;.properties</code> on the Trino server (or update the profile catalog name to one returned by <code>SHOW CATALOGS</code>).</td>
 </tr>
 <tr>
-<td>Index dir size keeps growing forever</td>
-<td><code>/search rebuild</code> not run since several model swaps; orphan collections accumulate</td>
-<td><code>rm -rf ~/.amx/chroma</code> and <code>&gt; /search rebuild</code> once</td>
+<td><code>Connection refused</code> on <code>/connect</code></td>
+<td>Coordinator is offline, port closed, or HTTPS port pointed at a plain-HTTP service</td>
+<td>Verify with <code>curl -sf http://&lt;host&gt;:&lt;port&gt;/v1/info</code>; check the wizard captured the correct <code>http_scheme</code>.</td>
 </tr>
 <tr>
-<td>Searches return only <code>db_catalog</code> results, never docs</td>
-<td>Doc profile not active</td>
-<td><code>&gt; /use-doc &lt;name&gt;</code> then re-run <code>/ask</code></td>
+<td><code>SSL: CERTIFICATE_VERIFY_FAILED</code></td>
+<td>Corporate TLS interception, or self-signed cert in front of the coordinator</td>
+<td>Pin <code>tls_trusted_ca_file:</code> to the org CA bundle. As a debug-only fallback, set <code>verify: false</code> in the YAML.</td>
 </tr>
 <tr>
-<td><code>/sync</code> takes 10+ minutes on a small warehouse</td>
-<td>Network round-trip to the embedding API per call</td>
-<td>Use a batched embedding model (the OpenAI client batches automatically); confirm <code>OPENAI_API_BASE</code> isn't pointing at a slow proxy</td>
+<td><code>COMMENT ON …</code> returns "operation not supported by connector"</td>
+<td>The chosen connector (e.g. legacy Hive raw) does not support COMMENT writeback</td>
+<td>Move the table to a connector that does (Iceberg, Delta, Hive with metastore-DDL enabled) or comment the underlying database directly using its native tooling.</td>
 </tr>
 </tbody>
 </table>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../">Backend overview</a> — capability matrix across every adapter.</li>
+<li><a href="../databricks/">Databricks</a> — sibling distributed-SQL adapter with a similar
+  HTTP / token / catalog shape. If your data is in Databricks SQL warehouses
+  (Unity Catalog) use the Databricks backend instead — its driver is purpose-built
+  for that workspace shape.</li>
+<li><a href="../../configuration/tls-and-proxies/">TLS and proxies</a> — common corporate-TLS
+  recovery walkthrough.</li>
+</ul>
 
 
 
