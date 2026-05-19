@@ -5,6 +5,8 @@ review how data moves between tables. One canvas can host nodes
 from any number of DB profiles — drop a Postgres table next to a
 Snowflake table next to a Power BI logo and wire them together.
 
+![AMX Studio Lineage canvas: AI-generated column-level edges between SAP-style tables, with a toolbar exposing AI Generate, table / filter / operator nodes, SQL import / export, and PNG export.](../assets/studio-lineage.png)
+
 ## What you can put on the canvas
 
 | Node type | Purpose |
