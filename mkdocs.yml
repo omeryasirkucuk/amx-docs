@@ -185,6 +185,7 @@ nav:
       - Redshift: backends/redshift.md
       - ClickHouse: backends/clickhouse.md
       - DuckDB: backends/duckdb.md
+      - Trino / Presto: backends/trino.md
   - Guides:
       - SAP Discovery: guides/sap-discovery-walkthrough.md
       - Batch Large Schema: guides/batch-large-schema.md
