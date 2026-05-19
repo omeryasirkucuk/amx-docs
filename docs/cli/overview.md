@@ -28,7 +28,7 @@ You land in the AMX session:
            ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
            ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 
-  AMX 0.14.0 · LLM profile: openai-prod · 4 DB profiles configured
+  AMX 0.17.0 · LLM profile: openai-prod · 4 DB profiles configured
   Type /help for commands, /exit to quit.
 
 >
@@ -128,7 +128,7 @@ When something doesn't work, the order of escalation is:
 
 ```text
 > /doctor
-✓ AMX version — 0.14.0 (config schema v2)
+✓ AMX version — 0.17.0 (config schema v2)
 ✓ Python runtime — 3.11.5
 ✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 ✓ Active LLM profile — openai-prod [openai] gpt-4o

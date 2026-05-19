@@ -70,8 +70,9 @@ extra:
   # Single source of truth for the version shown on the site.
   # Bump this string for each release; the footer reads it via
   # {{ config.extra.version }}. Sample REPL/doctor outputs that quote
-  # a specific version stay hardcoded — they're frozen examples.
-  version: "0.15.0"
+  # a specific version are bumped alongside this string so the whole
+  # site reflects the current shipped release.
+  version: "0.17.0"
 
 markdown_extensions:
   - abbr

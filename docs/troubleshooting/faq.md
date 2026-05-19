@@ -153,8 +153,12 @@ Yes, but you'll lose run history, the search catalog, and all session memory. Th
 
 ### My teammate's runs aren't visible in `/history list`
 
-In v0.12, **reads still come from local SQLite**. Cross-machine read views are slated
-for a follow-up minor. Until then, query the shared backend directly with SQL.
+`/history list` reads from your local `~/.amx/history.db` only. To see the team's runs,
+both you and your teammate need to have run `/history-store enable` against the same
+shared backend (PostgreSQL / Snowflake / MySQL / MSSQL / Redshift / Databricks), and
+then `/history-store list-team` surfaces the cross-machine view from the shared schema.
+Plain `/history list` stays local on purpose so the per-user audit trail is always
+authoritative even when the team store is offline.
 
 ## Where to ask more
 
