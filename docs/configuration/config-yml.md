@@ -260,7 +260,7 @@ output AMX produces rather than which model runs:
 
 | Field | Backends | Required | Notes |
 |---|---|---|---|
-| `backend` | all | yes | One of `postgresql`, `snowflake`, `databricks`, `bigquery`, `mysql`, `oracle`, `mssql`, `redshift`, `clickhouse`, `duckdb`, `trino` |
+| `backend` | all | yes | One of `postgresql`, `snowflake`, `databricks`, `bigquery`, `mysql`, `oracle`, `mssql`, `redshift`, `clickhouse`, `duckdb`, `trino`, `hive` |
 | `host` / `port` | most | yes | Validated. Port must be a number |
 | `user` / `password` | most | yes | Password resolves `keyring://` URIs to OS-keychain values |
 | `database` | most | optional (0.11+) | Leave blank to defer choice to `/run` / `/sync` |
@@ -272,6 +272,7 @@ output AMX produces rather than which model runs:
 | `driver` / `encrypt` / `trust_server_certificate` | mssql | optional | Defaults: `ODBC Driver 18 for SQL Server`, `True`, `False` |
 | `cluster_identifier` / `secure` | redshift / clickhouse | optional | Redshift IAM auth, ClickHouse HTTPS toggle |
 | `jwt_token` / `http_scheme` / `verify` / `tls_trusted_ca_file` | trino | optional (`jwt_token` required when `auth_mode=jwt`) | See [Trino / Presto](../backends/trino.md). 3-level catalog hierarchy reuses `catalog` + `database` (for schema) |
+| `auth_mode` | hive | optional (default `PLAIN`) | One of `NOSASL`, `NONE`, `PLAIN`, `LDAP`, `KERBEROS`, `CUSTOM`. The wizard collects `NOSASL` / `PLAIN` / `LDAP`; `KERBEROS` is hand-edit only (Cloudera CDP). See [Hive](../backends/hive.md). |
 | `profiling_mode` / `profiling_max_rows` / `profiling_sample_size` | all | optional | See [Profiling modes](profiling-modes.md) |
 
 ## Verify
