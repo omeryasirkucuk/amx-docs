@@ -1,7 +1,7 @@
 # Settings
 
 `/settings` is the profile-management surface in Studio. It mirrors the
-CLI's `/add-…-profile` wizards in a five-tab tabbed interface.
+CLI's `/add-…-profile` wizards in a tabbed interface.
 
 ## Database {#database}
 
@@ -111,6 +111,22 @@ and chunk counts and a **Rebuild** button. The rebuild clears the
 affected vector store so the next ingest or query re-embeds with the
 active provider; document and code data themselves are untouched.
 
+## MCP {#mcp}
+
+The **MCP** tab connects AMX's catalog to IDE code agents (Cursor, Claude
+Desktop, VS Code Copilot) over the Model Context Protocol, so the editor's
+agent can read your schemas, descriptions, join keys, and lineage. See the
+[Connect your IDE (MCP)](../guides/mcp.md) guide for the full walkthrough.
+
+- **Status card per IDE** — a connection badge shows whether AMX is wired
+  in, and whether a stored entry needs repair after AMX moved environments.
+- **Connect** — pick an IDE and (optionally) a fixed profile scope, then
+  write the IDE's config in one click; the per-IDE next steps (restart,
+  agent mode) appear inline.
+- **Config snippet** — a copyable block for clients you wire up by hand.
+- **Exposed tools** — the read-only, cache-only catalog tools AMX surfaces;
+  no live-database access and no credentials are involved.
+
 ## Profile linking
 
 Both Docs and Code wizards expose a linked-DB-profiles multi-select.
@@ -127,3 +143,4 @@ doc profile linked to `prod-pg` is silent when `/ask` is running against
 | Docs tab | `/add-doc-profile`, `/doc-link`, `/scan`, `/ingest` |
 | Code tab | `/add-code-profile`, `/code-link`, `/code-scan` |
 | Embeddings tab | `/embeddings docs`, `/embeddings code` |
+| MCP tab | `/mcp connect`, `/mcp status`, `/mcp snippet`, `/mcp disconnect` |

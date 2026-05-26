@@ -189,6 +189,7 @@ nav:
       - Trino / Presto: backends/trino.md
       - Hive (HiveServer2): backends/hive.md
   - Guides:
+      - Connect your IDE (MCP): guides/mcp.md
       - SAP Discovery: guides/sap-discovery-walkthrough.md
       - Batch Large Schema: guides/batch-large-schema.md
       - Scheduled Runs: guides/scheduled-runs.md
