@@ -6,19 +6,19 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Where AMX stands on independent benchmarks for AI-generated database descriptions, and the evaluation protocol we plan to publish.">
+        <meta name="description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
       
       
         <meta name="author" content="Omer Yasir Kucuk">
       
       
-        <link rel="canonical" href="https://amxcli.com/evaluation/benchmarks/">
+        <link rel="canonical" href="https://amxcli.com/guides/mcp/">
       
       
-        <link rel="prev" href="../../collaboration/safety-guards/">
+        <link rel="prev" href="../../backends/hive/">
       
       
-        <link rel="next" href="../bulk-review/">
+        <link rel="next" href="../sap-discovery-walkthrough/">
       
       
         
@@ -31,7 +31,7 @@
   
     
       
-        <title>Benchmarks - AMX</title>
+        <title>Connect your IDE (MCP) - AMX</title>
       
     
   
@@ -75,17 +75,17 @@
   
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="AMX CLI">
-  <meta property="og:title" content="Benchmarks — AMX CLI">
-  <meta property="og:description" content="Where AMX stands on independent benchmarks for AI-generated database descriptions, and the evaluation protocol we plan to publish.">
-  <meta property="og:url" content="https://amxcli.com/evaluation/benchmarks/">
+  <meta property="og:title" content="Connect your IDE (MCP) — AMX CLI">
+  <meta property="og:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
+  <meta property="og:url" content="https://amxcli.com/guides/mcp/">
   <meta property="og:image" content="https://amxcli.com/assets/cli-hero.png">
   <meta property="og:image:alt" content="AMX CLI — Agentic Metadata Extractor">
   <meta property="og:locale" content="en_US">
 
   
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Benchmarks — AMX CLI">
-  <meta name="twitter:description" content="Where AMX stands on independent benchmarks for AI-generated database descriptions, and the evaluation protocol we plan to publish.">
+  <meta name="twitter:title" content="Connect your IDE (MCP) — AMX CLI">
+  <meta name="twitter:description" content="Agentic Metadata Extractor — AI-powered CLI to infer and manage database metadata.">
   <meta name="twitter:image" content="https://amxcli.com/assets/cli-hero.png">
 
   
@@ -151,7 +151,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#benchmarks" class="md-skip">
+        <a href="#connect-your-ide-mcp" class="md-skip">
           Skip to content
         </a>
       
@@ -242,7 +242,7 @@
           
           
           
-            <a href="../../guides/mcp/">Guides</a>
+            <a href="./" class="active">Guides</a>
             
           
         
@@ -620,14 +620,14 @@
         <span>Guides</span>
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-guides-body">
-        <a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/mcp/"
-         >Connect your IDE (MCP)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/sap-discovery-walkthrough/"
+        <a class="amx-sidebar__link amx-sidebar__link--depth-0 amx-sidebar__link--active"
+         href="./"
+         aria-current="page">Connect your IDE (MCP)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../sap-discovery-walkthrough/"
          >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/batch-large-schema/"
+         href="../batch-large-schema/"
          >Batch Large Schema</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
-         href="../../guides/scheduled-runs/"
+         href="../scheduled-runs/"
          >Scheduled Runs</a></div>
     </div>
           <div class="amx-sidebar__group amx-sidebar__group--depth-0">
@@ -751,14 +751,14 @@
         <span>Evaluation</span>
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-evaluation-body">
-        <a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
-         href="./"
-         aria-current="page">Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../bulk-review/"
+        <a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../evaluation/benchmarks/"
+         >Benchmarks</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../evaluation/bulk-review/"
          >Bulk review</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../comparisons/"
+         href="../../evaluation/comparisons/"
          >Comparisons</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
-         href="../retrieval-eval/"
+         href="../../evaluation/retrieval-eval/"
          >Retrieval eval harness</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-troubleshooting">
@@ -835,10 +835,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-state-of-the-field" class="md-nav__link">
+  <a href="#what-it-is" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The state of the field
+        What it is
       
     </span>
   </a>
@@ -846,10 +846,49 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#what-amx-does-report-internally" class="md-nav__link">
+  <a href="#connect-from-the-cli" class="md-nav__link">
     <span class="md-ellipsis">
       
-        What AMX does report internally
+        Connect from the CLI
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Connect from the CLI">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#profile-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Profile scope
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#power-user-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Power-user shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connect-from-studio" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Connect from Studio
       
     </span>
   </a>
@@ -857,10 +896,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#the-planned-evaluation" class="md-nav__link">
+  <a href="#set-up-once-not-every-time" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The planned evaluation
+        Set up once, not every time
       
     </span>
   </a>
@@ -868,10 +907,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#help-close-the-gap" class="md-nav__link">
+  <a href="#ide-notes" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Help close the gap
+        IDE notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#try-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Try it
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#troubleshooting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Troubleshooting
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-also" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See also
       
     </span>
   </a>
@@ -900,17 +972,12 @@
         
           <span class="amx-breadcrumb__sep">›</span>
           
-            <span>Reference</span>
-          
-        
-          <span class="amx-breadcrumb__sep">›</span>
-          
-            <span>Evaluation</span>
+            <span>Guides</span>
           
         
       
       <span class="amx-breadcrumb__sep">›</span>
-      <span>Benchmarks</span>
+      <span>Connect your IDE (MCP)</span>
     </div>
   </div>
 
@@ -919,114 +986,191 @@
 
 
 
-<h1 id="benchmarks">Benchmarks<a class="headerlink" href="#benchmarks" title="Permanent link">&para;</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Status — planned</p>
-<p>AMX has <strong>not yet</strong> published external benchmark numbers for AI-generated
-column descriptions. This page is here for transparency: it explains the
-evaluation gap honestly, names the protocol AMX will adopt, and lays out
-a contribution path so the community can help close it.</p>
+<h1 id="connect-your-ide-mcp">Connect your IDE (MCP)<a class="headerlink" href="#connect-your-ide-mcp" title="Permanent link">&para;</a></h1>
+<p>AMX already knows your data — schemas, descriptions, join keys, lineage,
+and the docs and code you linked to it. The code agents in your IDE
+(Cursor, Claude Desktop, VS Code Copilot) usually do not. AMX bridges
+that gap with a <strong>Model Context Protocol (MCP)</strong> server: once connected,
+your IDE's agent can read AMX's catalog and ground the data code it
+writes in your real schema instead of guessing.</p>
+<p>The connection is local, read-only, and set up once per machine.</p>
+<h2 id="what-it-is">What it is<a class="headerlink" href="#what-it-is" title="Permanent link">&para;</a></h2>
+<p>MCP is an open protocol that lets an application (here, your IDE) start a
+small server and call its tools. AMX ships such a server. Your IDE
+launches it on demand over standard input/output — there is no network
+service to host, no port to open, and no separate login.</p>
+<p>AMX exposes a <strong>read-only, cache-only</strong> slice of its catalog tools:</p>
+<ul>
+<li>Schema browsing — <code>list_schemas</code>, <code>list_tables_in_schema</code>,
+  <code>describe_table</code>, <code>describe_column</code>.</li>
+<li>Concept search — <code>search_tables_by_concept</code>,
+  <code>search_columns_by_concept</code>, <code>find_table_by_name</code>.</li>
+<li>Relationships — <code>get_join_candidates</code>, <code>find_joinable_tables</code>,
+  <code>lineage_for_table</code>, <code>lineage_for_column</code>.</li>
+<li>Linked knowledge — <code>search_docs</code>, <code>search_code</code>, and catalog coverage
+  summaries.</li>
+</ul>
+<p>The server answers entirely from AMX's local catalog cache
+(<code>~/.amx/history.db</code>). It never opens a live database connection and
+needs no database credentials, so connecting an IDE cannot read or change
+the data itself — only the metadata AMX has already collected.</p>
+<div class="admonition note">
+<p class="admonition-title">Supported IDEs</p>
+<p>Cursor, Claude Desktop, and VS Code (GitHub Copilot agent mode). Any
+other MCP-capable client can use the printed config snippet.</p>
 </div>
-<h2 id="the-state-of-the-field">The state of the field<a class="headerlink" href="#the-state-of-the-field" title="Permanent link">&para;</a></h2>
-<p>There is <strong>no widely-accepted public benchmark for AI-generated database
-descriptions</strong>. The two related academic benchmarks measure something else:</p>
+<h2 id="connect-from-the-cli">Connect from the CLI<a class="headerlink" href="#connect-from-the-cli" title="Permanent link">&para;</a></h2>
+<p>Open the REPL and run <code>/mcp</code>. With no arguments it walks a short wizard:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>amx
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>[ ROOT ] /mcp
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  Pick an operation:  Connect an IDE
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  Pick an IDE:        Cursor
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  Pick a profile scope: Active profiles (default)
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ✓ Connected AMX to Cursor (scope: active profiles).
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    Config written to: ~/.cursor/mcp.json
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    Next steps:
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>      • Fully quit and reopen Cursor so it picks up the new MCP server.
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>      • Open Cursor&#39;s chat in Agent mode and ask a data question.
+</span></code></pre></div>
+<p><code>/mcp</code> lives under the <code>/llm</code> tab but is callable from any namespace —
+typing it from another tab runs it and notes the canonical home. There is
+<strong>no <code>amx mcp …</code> shell-style invocation</strong>; like every AMX method it is
+typed inside the REPL.</p>
+<p>The wizard's operations:</p>
 <table>
 <thead>
 <tr>
-<th>Benchmark</th>
-<th>Measures</th>
-<th>Relevance to AMX</th>
+<th>Operation</th>
+<th>What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><a href="https://bird-bench.github.io/">BIRD</a></td>
-<td>Text-to-SQL execution accuracy across 12,751 questions / 95 databases</td>
-<td>Tests <em>querying</em> a documented schema, not <em>generating</em> the documentation</td>
+<td>Connect an IDE</td>
+<td>Writes AMX's server entry into the IDE's MCP config</td>
 </tr>
 <tr>
-<td><a href="https://yale-lily.github.io/spider">Spider</a></td>
-<td>Cross-domain text-to-SQL on 200 databases</td>
-<td>Same — assumes documentation already exists</td>
+<td>Show status</td>
+<td>Lists each IDE and whether AMX is wired in</td>
+</tr>
+<tr>
+<td>Show config snippet</td>
+<td>Prints the block to paste manually</td>
+</tr>
+<tr>
+<td>Disconnect an IDE</td>
+<td>Removes only AMX's entry from the IDE config</td>
 </tr>
 </tbody>
 </table>
-<p>Neither evaluates "is this generated description faithful to the column's
-real meaning?" — which is what AMX produces. The closest existing protocol
-is the one published by <strong>Databricks in their 2024 AI Comments preview</strong>:
-62 schemas drawn from production workloads, two human reviewers + an LLM
-judge, measuring human preference rate of generated descriptions vs. the
-prior baseline. We treat that paper as the de facto methodology.</p>
-<h2 id="what-amx-does-report-internally">What AMX <em>does</em> report internally<a class="headerlink" href="#what-amx-does-report-internally" title="Permanent link">&para;</a></h2>
-<p>Every <code>/run</code> already records a per-column <strong>logprob-derived confidence
-band</strong>:</p>
+<p>The first time you run <code>/mcp</code>, AMX installs the MCP SDK (a small,
+pure-Python dependency) so the IDE-launched server starts cleanly.</p>
+<h3 id="profile-scope">Profile scope<a class="headerlink" href="#profile-scope" title="Permanent link">&para;</a></h3>
+<p>A connect exposes your <strong>active</strong> database profiles by default. Choose
+<em>Pick specific profiles…</em> in the wizard to pin a fixed set instead — for
+example, exposing only <code>sales</code> and <code>hr</code> to a given editor.</p>
+<h3 id="power-user-shortcuts">Power-user shortcuts<a class="headerlink" href="#power-user-shortcuts" title="Permanent link">&para;</a></h3>
+<p>The wizard is the recommended path; flags are an optional shortcut:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/mcp connect cursor --profiles sales,hr
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/mcp status
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>/mcp snippet vscode
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/mcp disconnect cursor
+</span></code></pre></div>
+<h2 id="connect-from-studio">Connect from Studio<a class="headerlink" href="#connect-from-studio" title="Permanent link">&para;</a></h2>
+<p>Open <strong>Settings → MCP</strong>. The tab mirrors the CLI:</p>
+<ul>
+<li>A status card per IDE with a connection badge.</li>
+<li><strong>Connect</strong> — choose an IDE and (optionally) a profile scope, then
+  write the config in one click; the per-IDE next steps appear inline.</li>
+<li>A copyable config snippet and a list of the exact tools AMX exposes.</li>
+</ul>
+<h2 id="set-up-once-not-every-time">Set up once, not every time<a class="headerlink" href="#set-up-once-not-every-time" title="Permanent link">&para;</a></h2>
+<p>After a connect, AMX has written a small entry into the IDE's own config
+file (for Cursor, <code>~/.cursor/mcp.json</code>). That file is the durable record:
+the IDE re-launches the AMX server every time it starts, so you do not
+reconnect after closing the IDE, rebooting, or reopening AMX.</p>
+<p>The entry pins the absolute path of the Python interpreter AMX runs under,
+so it keeps working across restarts. If you later reinstall AMX into a
+different environment, <code>/mcp status</code> flags the entry as needing repair and
+a fresh <code>/mcp connect</code> rewrites it.</p>
+<p>Because the status is read back from the IDE config on demand, reopening
+AMX simply reports "connected" — there is nothing to redo.</p>
+<h2 id="ide-notes">IDE notes<a class="headerlink" href="#ide-notes" title="Permanent link">&para;</a></h2>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="cursor" name="__tabbed_1" type="radio" /><input id="claude-desktop" name="__tabbed_1" type="radio" /><input id="vs-code" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="cursor">Cursor</label><label for="claude-desktop">Claude Desktop</label><label for="vs-code">VS Code</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p>Config: <code>~/.cursor/mcp.json</code> (key <code>mcpServers</code>).</p>
+<p>After connecting, fully quit and reopen Cursor, then use its chat in
+<strong>Agent mode</strong>. AMX's tools are called automatically when the agent
+needs schema or lineage context.</p>
+</div>
+<div class="tabbed-block">
+<p>Config: the per-user <code>claude_desktop_config.json</code> (key <code>mcpServers</code>)
+under the platform's application-data directory.</p>
+<p>Restart Claude Desktop after connecting; AMX's tools appear under the
+tools (plug) icon in the message box.</p>
+</div>
+<div class="tabbed-block">
+<p>Config: the user <code>mcp.json</code> (key <code>servers</code>, with <code>"type": "stdio"</code>).
+AMX writes the VS Code-specific shape for you, so you never hand-edit
+the JSON.</p>
+<p>Two extra steps are specific to VS Code: restart the editor, then
+switch <strong>Copilot Chat to Agent mode</strong> — MCP tools are only available
+there, not in Ask/Edit mode. A recent VS Code with GitHub Copilot is
+required; accept the workspace-trust prompt if VS Code shows one.</p>
+</div>
+</div>
+</div>
+<h2 id="try-it">Try it<a class="headerlink" href="#try-it" title="Permanent link">&para;</a></h2>
+<p>With Cursor connected and restarted, ask its agent a data question:</p>
+<blockquote>
+<p>"I'm building a revenue-by-customer-segment report. Which tables do I
+join, and on what keys?"</p>
+</blockquote>
+<p>The agent calls <code>search_tables_by_concept</code> to find the revenue and
+customer tables, <code>get_join_candidates</code> to resolve the join key, and
+<code>describe_column</code> to confirm types — then writes SQL grounded in your
+actual catalog.</p>
+<h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
 <tr>
-<th>Band</th>
-<th>Definition</th>
+<th>Symptom</th>
+<th>Fix</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>verified</code></td>
-<td>Token-level confidence ≥ 0.95 across the entire description; cross-checked against profile + RAG + code evidence</td>
+<td>IDE shows no AMX tools</td>
+<td>Fully restart the IDE; MCP servers are discovered at launch.</td>
 </tr>
 <tr>
-<td><code>high_likelihood</code></td>
-<td>Confidence ≥ 0.85; majority of evidence sources agreed</td>
+<td>VS Code: tools missing in chat</td>
+<td>Switch Copilot Chat to <strong>Agent mode</strong>; MCP is unavailable in Ask/Edit mode.</td>
 </tr>
 <tr>
-<td><code>possible</code></td>
-<td>Confidence ≥ 0.50; at least one evidence source agreed</td>
+<td><code>/mcp status</code> says "needs repair"</td>
+<td>AMX moved environments — run <code>/mcp connect</code> again to rewrite the interpreter path.</td>
 </tr>
 <tr>
-<td><code>weak_hypothesis</code></td>
-<td>Below 0.50; surfaced for review with no auto-accept</td>
+<td>Want to see what is exposed</td>
+<td>Run <code>/mcp status</code>, or open <strong>Settings → MCP</strong> in Studio for the full tool list.</td>
 </tr>
 </tbody>
 </table>
-<p>These bands are <strong>internal calibration</strong>, not public benchmarks. They
-help the human reviewer triage what to read first; they don't tell an
-external buyer how AMX compares against, say, Snowflake Cortex on the
-same 62 schemas.</p>
-<h2 id="the-planned-evaluation">The planned evaluation<a class="headerlink" href="#the-planned-evaluation" title="Permanent link">&para;</a></h2>
-<p>The Databricks-style protocol AMX will publish:</p>
-<ol>
-<li><strong>Dataset</strong> — 50–80 production schemas, anonymised, drawn from at least
-   four backends (PostgreSQL, Snowflake, BigQuery, Databricks) and three
-   domains (e.g. e-commerce, healthcare, ERP-style enterprise). Open
-   release of the schema-and-ground-truth pairs as a benchmark dataset
-   in its own right.</li>
-<li><strong>Baselines</strong> — at minimum: AMX (with <code>gpt-4o</code>, <code>claude-sonnet-4</code>,
-   and <code>gemini-2.0-flash</code>), Snowflake Cortex <code>AI_GENERATE_TABLE_DESC</code>
-   on its supported subset, Databricks AI Comments via Catalog Explorer,
-   BigQuery Gemini Insights.</li>
-<li><strong>Reviewers</strong> — two domain experts per schema, blind to the source
-   tool. A third tie-break reviewer when the first two disagree.</li>
-<li><strong>LLM judge</strong> — a fixed <code>gpt-4o-2024-11-20</code> snapshot scoring each
-   description on a 5-point rubric (faithfulness, specificity, clarity,
-   actionability, no-hallucination).</li>
-<li><strong>Metrics</strong> — preference rate vs. the original <code>COMMENT ON</code> text
-   (where one exists) and pairwise win-rate against each baseline.</li>
-<li><strong>Reproducibility</strong> — full prompts, model versions, and reviewer
-   guidelines published alongside the numbers. Anyone with the dataset
-   should be able to re-run the protocol against their own tool.</li>
-</ol>
-<h2 id="help-close-the-gap">Help close the gap<a class="headerlink" href="#help-close-the-gap" title="Permanent link">&para;</a></h2>
-<p>If you'd like to contribute to AMX's first benchmark — schema donations,
-expert reviewers in a specific domain, or co-authoring the methodology
-paper — open a discussion at
-<a href="https://github.com/omeryasirkucuk/amx/discussions">github.com/omeryasirkucuk/amx/discussions</a>.</p>
+<h2 id="see-also">See also<a class="headerlink" href="#see-also" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="../../cli/overview/">CLI overview</a> — the <code>/mcp</code> command under the <code>/llm</code> tab.</li>
+<li><a href="../../studio/settings/">Studio settings</a> — the MCP tab.</li>
+<li><a href="../../concepts/catalog-cache/">Catalog cache (architecture)</a> — the
+  cache the MCP server reads from.</li>
+</ul>
 
 
 
 
 
 
-
-  
-  
 
 
 

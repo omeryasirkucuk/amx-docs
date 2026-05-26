@@ -242,7 +242,7 @@
           
           
           
-            <a href="../../guides/sap-discovery-walkthrough/">Guides</a>
+            <a href="../../guides/mcp/">Guides</a>
             
           
         
@@ -621,6 +621,8 @@
       </button>
       <div class="amx-sidebar__group-body" id="amx-grp-guides-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/mcp/"
+         >Connect your IDE (MCP)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/sap-discovery-walkthrough/"
          >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/batch-large-schema/"
@@ -888,6 +890,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MCP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#profile-linking" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -952,7 +965,7 @@
 
 <h1 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h1>
 <p><code>/settings</code> is the profile-management surface in Studio. It mirrors the
-CLI's <code>/add-…-profile</code> wizards in a five-tab tabbed interface.</p>
+CLI's <code>/add-…-profile</code> wizards in a tabbed interface.</p>
 <h2 id="database">Database<a class="headerlink" href="#database" title="Permanent link">&para;</a></h2>
 <p>Lists every configured DB profile. Each row shows the profile name,
 backend, host, and the database / catalog the profile pins.</p>
@@ -1049,6 +1062,21 @@ embedded with, a yellow banner appears with the concrete collection
 and chunk counts and a <strong>Rebuild</strong> button. The rebuild clears the
 affected vector store so the next ingest or query re-embeds with the
 active provider; document and code data themselves are untouched.</p>
+<h2 id="mcp">MCP<a class="headerlink" href="#mcp" title="Permanent link">&para;</a></h2>
+<p>The <strong>MCP</strong> tab connects AMX's catalog to IDE code agents (Cursor, Claude
+Desktop, VS Code Copilot) over the Model Context Protocol, so the editor's
+agent can read your schemas, descriptions, join keys, and lineage. See the
+<a href="../../guides/mcp/">Connect your IDE (MCP)</a> guide for the full walkthrough.</p>
+<ul>
+<li><strong>Status card per IDE</strong> — a connection badge shows whether AMX is wired
+  in, and whether a stored entry needs repair after AMX moved environments.</li>
+<li><strong>Connect</strong> — pick an IDE and (optionally) a fixed profile scope, then
+  write the IDE's config in one click; the per-IDE next steps (restart,
+  agent mode) appear inline.</li>
+<li><strong>Config snippet</strong> — a copyable block for clients you wire up by hand.</li>
+<li><strong>Exposed tools</strong> — the read-only, cache-only catalog tools AMX surfaces;
+  no live-database access and no credentials are involved.</li>
+</ul>
 <h2 id="profile-linking">Profile linking<a class="headerlink" href="#profile-linking" title="Permanent link">&para;</a></h2>
 <p>Both Docs and Code wizards expose a linked-DB-profiles multi-select.
 This controls which <code>/ask</code> invocations see the profile's contents — a
@@ -1082,6 +1110,10 @@ doc profile linked to <code>prod-pg</code> is silent when <code>/ask</code> is r
 <tr>
 <td>Embeddings tab</td>
 <td><code>/embeddings docs</code>, <code>/embeddings code</code></td>
+</tr>
+<tr>
+<td>MCP tab</td>
+<td><code>/mcp connect</code>, <code>/mcp status</code>, <code>/mcp snippet</code>, <code>/mcp disconnect</code></td>
 </tr>
 </tbody>
 </table>
