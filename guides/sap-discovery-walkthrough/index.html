@@ -1019,9 +1019,9 @@ no <code>COMMENT ON COLUMN</code>; all identifiers are SAP's German-rooted abbre
 </ul>
 <h2 id="ingest-documents-and-scan-the-codebase">Ingest documents and scan the codebase<a class="headerlink" href="#ingest-documents-and-scan-the-codebase" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>/docs
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/ingest --refresh
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>/index --refresh
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>/code
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/code-scan
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>/code-index
 </span></code></pre></div>
 <p>Total time: ~12 minutes for the PDFs (embedding via MiniLM) and ~4 minutes for the ETL
 repo. Sanity check:</p>
@@ -1040,16 +1040,20 @@ repo. Sanity check:</p>
    prioritise from <code>/ask</code>.</li>
 </ol>
 <h2 id="first-pass-the-50-etl-touched-tables">First pass — the 50 ETL-touched tables<a class="headerlink" href="#first-pass-the-50-etl-touched-tables" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/run-apply --schema sap_s6p t001 mara makt mvke mara_text vbak vbap likp lips bkpf bseg
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/run sap_s6p t001 mara makt mvke mara_text vbak vbap likp lips bkpf bseg
 </span></code></pre></div>
 <p>(plus the rest of the 50, listed)</p>
 <p>Wall clock: ~25 minutes.</p>
-<p>In the review wizard:</p>
+<p><code>/run</code> generates the descriptions and then walks the review: for each
+column you get a numbered list of candidate descriptions — type the
+number to pick one, <code>s</code> to skip, or <code>o</code> to write your own text. (When
+prompted at the start of the run you can choose the strategy:
+one-by-one, accept-all-high, accept-all, or reject-all.)</p>
 <ul>
 <li>~70% of columns: top suggestion is <code>high</code> confidence with all three agents agreeing.
-  Bulk-accept.</li>
-<li>~20%: <code>medium</code> with one or two agents agreeing. Read each one, accept or pick alternative.</li>
-<li>~10%: <code>low</code> or split alternatives. Skip for now or write our own.</li>
+  Accept the top pick (or run with accept-all-high so they go through automatically).</li>
+<li>~20%: <code>medium</code> with one or two agents agreeing. Read each one, pick the number you want.</li>
+<li>~10%: <code>low</code> or split alternatives. Skip (<code>s</code>) for now or write your own (<code>o</code>).</li>
 </ul>
 <p>Apply:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/apply
@@ -1082,7 +1086,7 @@ most for downstream consumers.</p>
 <p>Then walk the review wizard.</p>
 <h2 id="third-pass-the-long-tail">Third pass — the long tail<a class="headerlink" href="#third-pass-the-long-tail" title="Permanent link">&para;</a></h2>
 <p>For the remaining ~350 tables, switch to <code>metadata</code> mode:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/db profiling metadata
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/profiling metadata
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>/run sap_s6p --batch
 </span></code></pre></div>
 <p>The Profile Agent now sees only schema metadata (types, constraints, comments on

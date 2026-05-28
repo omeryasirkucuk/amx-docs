@@ -1100,7 +1100,7 @@ reads.</p>
 <li><strong>COMMENT write</strong> — when <code>/annotate</code>, <code>/sync</code>, or the Pending
    review apply a comment change, the affected <code>column_comments_cache</code>
    row is invalidated so the next read fetches the fresh value.</li>
-<li><strong>Manual clear</strong> — the per-row <strong>Clear</strong> button or <code>cache-clear</code>
+<li><strong>Manual clear</strong> — the per-row <strong>Clear</strong> button or <code>/cache-clear</code>
    CLI wipes the selected <code>(profile, database)</code> slice. The rows are
    deleted; the next sidebar expand repopulates lazily.</li>
 <li><strong>Sync</strong> — <code>sync_profile_skeleton</code> overwrites every row for the

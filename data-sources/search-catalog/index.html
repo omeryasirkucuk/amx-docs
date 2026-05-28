@@ -1068,12 +1068,12 @@ from corruption or model-mismatch errors.</p>
 <tr>
 <td><code>documents</code></td>
 <td>RAG doc profile</td>
-<td><code>/ingest</code></td>
+<td><code>/index</code></td>
 </tr>
 <tr>
 <td><code>code_refs</code></td>
 <td>Code agent profile</td>
-<td><code>/code-scan</code></td>
+<td><code>/code-index</code></td>
 </tr>
 </tbody>
 </table>
@@ -1120,13 +1120,13 @@ LLM was relying on the DB or the docs.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /search status
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Search catalog
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  db_catalog: 1,330 entries (last /sync 4 min ago)
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  documents:    412 chunks  (last /ingest 1 hour ago)
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  code_refs:    412 chunks  (last /code-scan 23 min ago)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  documents:    412 chunks  (last /index 1 hour ago)
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  code_refs:    412 chunks  (last /code-index 23 min ago)
 </span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>Embedding model: openai/text-embedding-3-small
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Index store: ~/.amx/chroma  (size: 18.4 MB)
 </span></code></pre></div>
 <p>If any of the three lines say <code>(never indexed)</code>, run the corresponding command:
-<code>/sync</code> for db_catalog, <code>/ingest</code> for documents, <code>/code-scan</code> for code_refs.</p>
+<code>/sync</code> for db_catalog, <code>/index</code> for documents, <code>/code-index</code> for code_refs.</p>
 <h3 id="5-full-rebuild">5. Full rebuild<a class="headerlink" href="#5-full-rebuild" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /search rebuild
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>About to wipe ~/.amx/chroma and re-embed:
@@ -1169,11 +1169,11 @@ LLM was relying on the DB or the docs.</p>
 </tr>
 <tr>
 <td>Edited <code>~/.amx/config.yml</code> to add a doc path</td>
-<td><code>/ingest</code></td>
+<td><code>/index</code></td>
 </tr>
 <tr>
 <td>Edited the codebase</td>
-<td><code>/code-scan</code></td>
+<td><code>/code-index</code></td>
 </tr>
 <tr>
 <td>Changed <code>embedding_model:</code> in YAML</td>

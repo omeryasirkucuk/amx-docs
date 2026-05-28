@@ -1066,7 +1066,7 @@ and <code>embedding_dim</code> in Chroma metadata on creation. Reopening with a
 different identity raises <code>EmbeddingProviderMismatch</code> (Document RAG),
 <code>CodeEmbeddingMismatch</code> (Code RAG), or <code>CollectionIdentityMismatch</code>
 (Catalog Search) — never silent re-embedding. Recovery commands per
-pipeline: <code>/docs reindex</code>, <code>/code-refresh</code>, <code>/search rebuild</code>.</p>
+pipeline: <code>/docs reindex</code>, <code>/code-index</code>, <code>/search rebuild</code>.</p>
 <h3 id="2-chunking">2. Chunking<a class="headerlink" href="#2-chunking" title="Permanent link">&para;</a></h3>
 <p>Document RAG dispatches by file extension via
 <code>amx.docs.splitters.get_splitter</code>:</p>
@@ -1333,7 +1333,7 @@ dispatcher seam for users with corpora that exercise them:</p>
   config changes.</li>
 <li><strong>Format-specific splitters for <code>.py</code> / <code>.csv</code> / <code>.pdf</code>.</strong> Reuse
   the existing AST chunker for <code>.py</code> files entering via
-  <code>/docs ingest</code>; row-group splitter for CSV; layout-aware PDF.</li>
+  <code>/docs index</code>; row-group splitter for CSV; layout-aware PDF.</li>
 </ul>
 <p>Two larger ideas were explicitly evaluated and dropped:</p>
 <ul>

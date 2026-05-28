@@ -995,37 +995,34 @@ per-column status.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/run t001 vbak
 </span></code></pre></div>
 <h2 id="5-review-and-apply">5. Review and apply<a class="headerlink" href="#5-review-and-apply" title="Permanent link">&para;</a></h2>
-<p>When the agents finish, AMX opens the review wizard. For each column you see:</p>
+<p>When the agents finish, <code>/run</code> opens its interactive review. First you choose a review
+strategy — one-by-one, accept-all-high, accept-all, or reject-all. For each column you see:</p>
 <ul>
 <li>The top suggestion with confidence band (<code>high</code> / <code>medium</code> / <code>low</code>) and logprob score.</li>
-<li>Up to N alternatives (default 3, tune with <code>/n-alternatives</code>).</li>
+<li>A few alternatives.</li>
 <li>The evidence sources behind each suggestion (DB profile, code references, doc snippets).</li>
 </ul>
-<p>Choose Accept, pick an alternative, write your own, or Skip. Bulk-accept high-confidence
-results when you trust them.</p>
+<p>When reviewing one-by-one, AMX presents a numbered picker: type a number to pick a
+description, <code>s</code> to skip, or <code>o</code> to write your own text.</p>
 <p>When you're done reviewing, write back to the database:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/apply
 </span></code></pre></div>
-<p>Or short-circuit the review-then-apply two-step in a single command:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/run-apply sap_s6p.t001
-</span></code></pre></div>
 <h2 id="6-inspect-what-happened">6. Inspect what happened<a class="headerlink" href="#6-inspect-what-happened" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>/history list
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>/history show &lt;run_id&gt;
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>/usage 7d
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>/history list
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>/history show &lt;run_id&gt;
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>/usage 7d
 </span></code></pre></div>
 <p><code>/history list</code> shows recent runs with duration and model. <code>/history show</code> dumps the full
 JSON payload (scope, metrics, tokens, results, errors). <code>/usage</code> summarises token usage
 over a window.</p>
 <h2 id="when-something-goes-wrong">When something goes wrong<a class="headerlink" href="#when-something-goes-wrong" title="Permanent link">&para;</a></h2>
 <p>Open AMX and run <code>/doctor</code>:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>amx
 </span></code></pre></div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>&gt; /doctor
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>&gt; /doctor
 </span></code></pre></div>
 <p><code>/doctor</code> diagnoses install / config / connectivity and prints actionable hints next to
-each ✗. If AMX itself won't start (so you can't reach the REPL), the same checks are
-also exposed as a shell fallback: <code>amx doctor</code>.</p>
+each ✗.</p>
 <p>For the full review experience and a real example, continue with the <a href="../first-run/">first run walkthrough</a>.</p>
 
 

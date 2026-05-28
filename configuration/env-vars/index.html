@@ -1154,7 +1154,7 @@ running CI tests that mustn't pollute the dev machine.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$DB_PASSWORD</span><span class="s2">&quot;</span><span class="w">           </span><span class="c1"># CI secret</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$OPENAI_API_KEY</span><span class="s2">&quot;</span><span class="w">         </span><span class="c1"># CI secret</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>sales<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>sales
 </span></code></pre></div>
 <p>With these env vars set, the YAML can ship <code>password: ""</code> and <code>api_key: ""</code> (no secrets
 on disk); AMX picks the values up from env at session start.</p>
@@ -1467,7 +1467,7 @@ on disk); AMX picks the values up from env at session start.</p>
 <h2 id="resolution-order">Resolution order<a class="headerlink" href="#resolution-order" title="Permanent link">&para;</a></h2>
 <p>For any field that has a YAML value, an env var, AND a CLI flag, the order is:</p>
 <ol>
-<li><strong>CLI flag</strong> (highest priority — <code>--db-profile</code>, <code>--profiling-mode</code>, etc.)</li>
+<li><strong>CLI flag</strong> (highest priority — <code>--db-profile</code>, etc.)</li>
 <li><strong>Env var</strong> (e.g. <code>AMX_DB_PASSWORD</code>)</li>
 <li><strong>YAML value</strong> (<code>db_profiles.&lt;active&gt;.password</code>)</li>
 <li><strong>Default</strong> (lowest)</li>
@@ -1493,7 +1493,7 @@ default.</p>
 </span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="nb">export</span><span class="w"> </span><span class="nv">AMX_DB_PASSWORD</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_DB_PASSWORD</span><span class="s2">&quot;</span>
 </span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OPENAI_API_KEY</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$CI_OPENAI_KEY</span><span class="s2">&quot;</span>
 </span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
-</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>&gt;<span class="w"> </span>/run<span class="w"> </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span>--auto-accept-high<span class="w"> </span>--apply
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>&gt;<span class="w"> </span>/run
 </span></code></pre></div>
 <h3 id="one-off-scratch-profile-in-a-temp-dir">One-off scratch profile in a temp dir<a class="headerlink" href="#one-off-scratch-profile-in-a-temp-dir" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">AMX_CONFIG_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span><span class="w"> </span>amx

@@ -1023,7 +1023,7 @@ and a service-account JSON, and applying your first batch of generated descripti
 without an unbounded byte scan.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>google-cloud-bigquery</code> and <code>sqlalchemy-bigquery</code> drivers are included by default.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>google-cloud-bigquery</code> and <code>sqlalchemy-bigquery</code> drivers are installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li>A GCP project with the BigQuery API enabled.</li>
 <li>One of:<ul>
 <li><strong>ADC (recommended for laptops / GKE / Cloud Run)</strong> — <code>gcloud auth application-default login</code> already run, OR a workload-identity binding in place.</li>
@@ -1084,17 +1084,16 @@ without an unbounded byte scan.</p>
 </span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>sales_curated   customer_address  TABLE   2,450,118    0.9       no
 </span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>sales_curated   inventory_daily   TABLE   45,318,234   28.2      yes
 </span></code></pre></div>
-<p><code>size_gb</code> is the on-disk billable size, not row count. AMX uses it to refuse <code>full</code>-mode
-profiling on tables that would scan more than your <code>max_bytes_billed</code> setting.</p>
+<p><code>size_gb</code> is the on-disk billable size, not row count. Use it to decide which tables are
+small enough for a <code>full</code>-mode scan and which should stay on <code>sampled</code> or <code>metadata</code>.</p>
 <h3 id="6-pick-a-profiling-mode-that-fits-your-byte-budget">6. Pick a profiling mode that fits your byte budget<a class="headerlink" href="#6-pick-a-profiling-mode-that-fits-your-byte-budget" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /db profiling-mode sampled
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /profiling sampled
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ Active mode → sampled (TABLESAMPLE SYSTEM, 5000 rows)
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&gt; /db inspect
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>&gt; /inspect
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>Active backend: bigquery (acme-analytics-prod / sales_curated)
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>Profiling mode: sampled
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>Estimated bytes per /run sweep: ~120 MB across 47 tables
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>Max bytes billed (configured): 10 GB
 </span></code></pre></div>
 <p>Recommended modes for BigQuery:</p>
 <ul>
@@ -1125,13 +1124,12 @@ profiling on tables that would scan more than your <code>max_bytes_billed</code>
 </span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nt">credentials_path</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w">           </span><span class="c1"># ADC; or &quot;/etc/gcp/sa.json&quot; for a key file</span>
 </span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span>
 </span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">    </span><span class="nt">max_bytes_billed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10737418240</span><span class="w">  </span><span class="c1"># 10 GB safety net</span>
-</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-bq</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="nt">active_db_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-bq</span>
 </span></code></pre></div>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — reports the active project and the resolved ADC source. If the line reads <code>ADC: none</code> you have neither user creds nor a key file; re-run <code>gcloud auth application-default login</code> or set <code>credentials_path:</code>.</li>
-<li><code>&gt; /db inspect</code> — shows the configured <code>max_bytes_billed</code> ceiling so you know the safety net is in place before the first <code>/run</code>.</li>
+<li><code>&gt; /inspect</code> — shows the active profiling mode and the estimated bytes per <code>/run</code> sweep so you know roughly how much will be scanned before the first <code>/run</code>.</li>
 <li><code>&gt; /doctor</code> — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
@@ -1170,9 +1168,9 @@ profiling on tables that would scan more than your <code>max_bytes_billed</code>
 <td>Run with <code>profiling_mode: metadata</code> first to confirm column lists per partition; then re-run on the latest partition explicitly</td>
 </tr>
 <tr>
-<td><code>Bytes billed exceeded the maximum (10737418240)</code></td>
-<td>A <code>full</code>-mode <code>/run</code> hit your <code>max_bytes_billed</code> ceiling</td>
-<td>Switch the table to <code>sampled</code> or raise the ceiling for the duration of the sweep</td>
+<td>A <code>full</code>-mode <code>/run</code> scans far more bytes than expected</td>
+<td>Large table profiled in <code>full</code> mode</td>
+<td>Switch the table to <code>sampled</code> or <code>metadata</code> with <code>/profiling</code> before the sweep</td>
 </tr>
 </tbody>
 </table>

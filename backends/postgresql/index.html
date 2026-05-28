@@ -1022,7 +1022,7 @@ page walks you through registering a PostgreSQL profile, testing the connection,
 applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>psycopg[binary]</code> driver is included by default — no extra extras required.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>psycopg[binary]</code> driver is installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li>A PostgreSQL 12+ server reachable from the machine running AMX.</li>
 <li>A database role with <code>CONNECT</code> on the database, <code>USAGE</code> on every target schema, <code>SELECT</code> on every target table, and <code>COMMENT</code> on the objects you intend to write back to. Read-only is enough for everything except <code>/apply</code>.</li>
 <li>An active LLM profile (or skip ahead and add one with <code>/add-llm-profile</code>).</li>
@@ -1127,7 +1127,7 @@ warehouse-cost-sensitive scans (no row scans at all).</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — reports server version + round-trip latency. Anything beyond a couple of seconds is usually a DNS or TLS handshake delay.</li>
-<li><code>&gt; /db inspect</code> — server-side counts (databases, schemas, tables, views, materialized views) plus which <code>COMMENT ON</code> rows already have text.</li>
+<li><code>&gt; /inspect</code> — server-side counts (databases, schemas, tables, views, materialized views) plus which <code>COMMENT ON</code> rows already have text.</li>
 <li><code>&gt; /doctor --skip-network</code> then re-run without the flag — confirms drivers loaded and the active profile reaches the server.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

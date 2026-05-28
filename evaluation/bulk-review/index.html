@@ -1065,9 +1065,7 @@ matched the filter. A confirmation modal prints the row count and
 the target DB before any mutation lands so a stray bulk Accept can
 not destroy a thousand rows by accident.</p>
 <h2 id="keyboard-navigation">Keyboard navigation<a class="headerlink" href="#keyboard-navigation" title="Permanent link">&para;</a></h2>
-<p>The Results tab is fully keyboard-drivable; the affordances mirror
-the REPL's <code>/analyze review</code> shortcuts so muscle memory carries
-across surfaces:</p>
+<p>The Studio Results tab is keyboard-drivable:</p>
 <table>
 <thead>
 <tr>
@@ -1120,6 +1118,9 @@ across surfaces:</p>
 </table>
 <p>The cheatsheet (<code>?</code>) is the canonical reference; the table above
 is a snapshot of the most-used shortcuts.</p>
+<p>In the REPL, <code>/analyze review</code> presents each row as a numbered picker:
+type a number to pick a candidate description, <code>s</code> to skip the row, or
+<code>o</code> to write your own text.</p>
 <h2 id="column-level-review">Column-level review<a class="headerlink" href="#column-level-review" title="Permanent link">&para;</a></h2>
 <p>Tables are reviewed in two layers:</p>
 <ol>
@@ -1155,17 +1156,16 @@ applies <em>everything that matches the current filters</em> (not just the visib
 page), with a confirmation modal that prints the row count and target DB
 before any COMMENT lands.</p>
 <h2 id="repl-parity">REPL parity<a class="headerlink" href="#repl-parity" title="Permanent link">&para;</a></h2>
-<p><code>/analyze review</code> paginates the same set with <strong>n / p</strong> keys, accepts the
-same status filters via <code>--status</code>, and surfaces the same alternatives
-carousel:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /analyze review --status pending --kind column --limit 50
+<p><code>/analyze review</code> walks the same set as a numbered picker, one row at a
+time, surfacing the same candidate alternatives:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /analyze review
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>1/2,148  public.users.email      [Low]   2 alt
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  AMX → Email address of the registered user used for transactional notifications.
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  alt 1) Email address of the user account, used for password reset and notifications.
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  alt 2) Contact email captured at sign-up.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>1/2,148  public.users.email      [Low]
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  1) Email address of the registered user used for transactional notifications.
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  2) Email address of the user account, used for password reset and notifications.
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  3) Contact email captured at sign-up.
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Keys: [a]ccept · [e]dit · [s]kip · [1/2/3] pick alt · [n]ext · [p]rev · [q]uit
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Type a number to pick a description, &quot;s&quot; to skip, or &quot;o&quot; to write your own.
 </span></code></pre></div>
 <p><code>/history review &lt;run_id&gt;</code> is the post-hoc equivalent — same UI, but
 re-opens an already-run pass for late edits. Edits there also write to

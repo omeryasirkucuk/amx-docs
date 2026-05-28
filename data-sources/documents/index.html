@@ -1046,18 +1046,18 @@ searching the index, and recovering when results come back empty.</p>
 <p>Folders are walked recursively for the supported extensions. Mix files and folders
 freely; AMX deduplicates internally.</p>
 <h3 id="2-ingest-the-files">2. Ingest the files<a class="headerlink" href="#2-ingest-the-files" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /ingest
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /index
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>[1/4] Walking sources ...........................  ok (3 paths, 47 files discovered)
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>[2/4] Extracting text ...........................  ok (1.4M chars across 47 files)
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>[3/4] Chunking ..................................  ok (412 chunks, 800-1200 tokens each)
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>[4/4] Embedding (openai/text-embedding-3-small)..  ok (412 chunks, $0.012, 6.2 s)
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>✓ /ingest finished. Profile &#39;data-handbook&#39; is ready for /ask and /run RAG.
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>✓ /index finished. Profile &#39;data-handbook&#39; is ready for /ask and /run RAG.
 </span></code></pre></div>
 <p>Chunks are stored in the same Chroma store as the database catalog (see
 <a href="../search-catalog/">Search catalog</a> for the full data flow). Each chunk keeps its
 source path + page number so citations resolve to the original file.</p>
 <h3 id="3-inspect-what-got-chunked">3. Inspect what got chunked<a class="headerlink" href="#3-inspect-what-got-chunked" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /scan
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /index
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Profile: data-handbook (active)
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>3 source paths · 47 files · 412 chunks · 1.2 MB embeddings
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
@@ -1131,22 +1131,19 @@ glossary entries jump straight to <code>high</code> confidence.</p>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>No results for &#39;retention policy&#39;.
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Possible reasons (in order of likelihood):
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  1. The phrase isn&#39;t in any indexed chunk. Try a broader query or check /scan.
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  2. The relevant file isn&#39;t indexed. /scan lists files; add the missing path with /add-doc-profile.
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  3. The chunk size is too small for the phrase to appear in one chunk. Tune /ingest --chunk-size.
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  4. Embedding-model mismatch since last /ingest. Run /ingest --rebuild.
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  1. The phrase isn&#39;t in any indexed chunk. Try a broader query or check /index.
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  2. The relevant file isn&#39;t indexed. /index lists files; add the missing path with /add-doc-profile.
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  3. Embedding-model mismatch since last /index. Re-run /index.
 </span></code></pre></div>
 <p>For each case:</p>
 <ul>
 <li><strong>Case 1</strong> — re-phrase. Embeddings match concepts, not exact strings, but a very
   abstract query still needs at least <em>some</em> lexical anchor.</li>
-<li><strong>Case 2</strong> — <code>/scan</code> lists every indexed file. If your retention policy lives in an
-  unincluded folder, <code>/add-doc-profile</code> extends the profile and <code>/ingest</code> picks up the
+<li><strong>Case 2</strong> — <code>/index</code> lists every indexed file. If your retention policy lives in an
+  unincluded folder, <code>/add-doc-profile</code> extends the profile and <code>/index</code> picks up the
   new files (only the new ones — incremental).</li>
-<li><strong>Case 3</strong> — by default chunks are 800–1200 tokens. For documents where one concept
-  spans many pages, raise <code>chunk_size</code> in YAML; for terse glossaries, lower it.</li>
-<li><strong>Case 4</strong> — when you change the embedding model, the existing index can't be queried
-  with the new model. <code>/ingest --rebuild</code> drops and re-embeds everything.</li>
+<li><strong>Case 3</strong> — when you change the embedding model, the existing index can't be queried
+  with the new model. Re-run <code>/index</code> to re-embed everything.</li>
 </ul>
 <h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">doc_profiles</span><span class="p">:</span>
@@ -1155,16 +1152,15 @@ glossary entries jump straight to <code>high</code> confidence.</p>
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/Users/me/Documents/data-platform-handbook.pdf</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/Users/me/Documents/data-warehouse-runbook.docx</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/Users/me/internal-docs/data-glossary/</span>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nt">chunk_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">          </span><span class="c1"># tokens</span>
-</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nt">chunk_overlap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w">        </span><span class="c1"># tokens overlap between adjacent chunks</span>
-</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="nt">extensions</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;.pdf&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;.docx&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;.md&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;.txt&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;.xlsx&quot;</span><span class="p p-Indicator">]</span>
-</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nt">active_doc_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-handbook</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nt">active_doc_profile</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data-handbook</span>
 </span></code></pre></div>
+<p>Chunking and file-extension handling are built in; there are no per-profile
+<code>chunk_size</code>, <code>chunk_overlap</code>, or <code>extensions</code> keys.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
-<li><code>&gt; /scan</code> — confirms files / chunks counts and top topics.</li>
+<li><code>&gt; /index</code> — confirms files / chunks counts and top topics.</li>
 <li><code>&gt; /search-docs "&lt;known phrase&gt;"</code> — confirms retrieval works for a phrase you definitely indexed.</li>
-<li><code>&gt; /run &lt;table&gt; --debug | grep RAG</code> — confirms the RAG agent ran and contributed evidence.</li>
+<li><code>&gt; /run &lt;table&gt;</code> — the <code>[RAG]</code> log lines confirm the RAG agent ran and contributed evidence.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
@@ -1177,14 +1173,14 @@ glossary entries jump straight to <code>high</code> confidence.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>/ingest</code> skips PDFs silently</td>
+<td><code>/index</code> skips PDFs silently</td>
 <td><code>pypdf</code> (or the chosen PDF lib) couldn't parse — encrypted / scanned-image PDF</td>
-<td>OCR the PDF first, OR <code>/ingest --debug</code> to see the per-file failures</td>
+<td>OCR the PDF first, then re-run <code>/index</code> to see the per-file results</td>
 </tr>
 <tr>
 <td><code>/search-docs</code> returns garbage on a specific phrase</td>
 <td>Embedding model is too small for technical terms</td>
-<td>Switch to <code>text-embedding-3-large</code> and <code>/ingest --rebuild</code></td>
+<td>Switch to <code>text-embedding-3-large</code> and re-run <code>/index</code></td>
 </tr>
 <tr>
 <td>Citations point to the wrong page in a PDF</td>
@@ -1192,14 +1188,14 @@ glossary entries jump straight to <code>high</code> confidence.</p>
 <td>Cosmetic — citations use the absolute page number; cross-check against the file's TOC</td>
 </tr>
 <tr>
-<td><code>/ingest</code> is slow on every run</td>
+<td><code>/index</code> is slow on every run</td>
 <td>Source folder is on a network mount with high stat() latency</td>
 <td>Move sources locally or to a faster mount; AMX touches every file's mtime to decide what to re-ingest</td>
 </tr>
 <tr>
 <td>Out-of-disk after several rebuilds</td>
 <td>Chroma index isn't garbage-collected on incremental rebuilds</td>
-<td><code>/ingest --rebuild</code> (drops the old index) or <code>rm -rf ~/.amx/chroma</code> and re-<code>/ingest</code></td>
+<td>Re-run <code>/index</code> (drops the old index) or <code>rm -rf ~/.amx/chroma</code> and re-run <code>/index</code></td>
 </tr>
 <tr>
 <td><code>/ask</code> answer doesn't use the docs even though they're indexed</td>

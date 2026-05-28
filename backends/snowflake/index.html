@@ -1022,7 +1022,7 @@ picking the right role and warehouse, choosing a profiling mode that won't surpr
 billing, and applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>snowflake-connector-python</code> driver is included by default — no extras required.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>snowflake-connector-python</code> driver is installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li>A Snowflake account with reachable network policy (typical: AMX runs from a workstation or CI runner; whitelist that egress IP).</li>
 <li>A role that can <code>USAGE</code> on the database, <code>USAGE</code> on every target schema, <code>SELECT</code> on the target tables/views, and <code>MODIFY</code> on the schema if you intend to write back comments.</li>
 <li>A warehouse the role can <code>USE</code>. Even tiny X-Small warehouses are enough for <code>metadata</code> and <code>sampled</code> profiling.</li>
@@ -1090,13 +1090,13 @@ billing, and applying your first batch of generated comments.</p>
 </span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>...
 </span></code></pre></div>
 <h3 id="6-pick-a-profiling-mode-that-fits-your-warehouse-cost">6. Pick a profiling mode that fits your warehouse cost<a class="headerlink" href="#6-pick-a-profiling-mode-that-fits-your-warehouse-cost" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /db profiling-mode
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /profiling
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Current mode: full
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  full      — read every row to compute exact null/distinct stats
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>  sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>  metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
-</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>&gt; /db profiling-mode sampled
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>&gt; /profiling sampled
 </span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>✓ Active mode → sampled (5000 rows per table)
 </span></code></pre></div>
 <p>For warehouse-cost-sensitive workflows the rule of thumb is:</p>
@@ -1138,7 +1138,7 @@ billing, and applying your first batch of generated comments.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — reports server version, active role, and active warehouse. Anything missing here is the most common reason <code>/run</code> later fails.</li>
-<li><code>&gt; /db inspect</code> — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".</li>
+<li><code>&gt; /inspect</code> — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".</li>
 <li><code>&gt; /doctor</code> — verifies the Snowflake driver is installed, the profile is active, and the connection round-trips.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

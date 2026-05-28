@@ -956,8 +956,15 @@ your own ETL process, then point AMX at that database.</p>
 <h2 id="install">Install<a class="headerlink" href="#install" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli
 </span></code></pre></div>
-<p>That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
-RAG / search / codebase machinery, and every supported database driver.</p>
+<p>That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, and the
+RAG / search / codebase machinery. Only the DuckDB driver ships by default; every other
+database backend installs its driver on first use, which requires network access at that
+moment.</p>
+<div class="admonition note">
+<p class="admonition-title">Air-gapped installs</p>
+<p>Because non-DuckDB drivers are fetched on first use, an offline or air-gapped host
+needs the driver for your backend pre-installed while you still have network access.</p>
+</div>
 <h2 id="install-from-source">Install from source<a class="headerlink" href="#install-from-source" title="Permanent link">&para;</a></h2>
 <p>For development or to track a feature branch:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/omeryasirkucuk/amx.git
@@ -971,9 +978,7 @@ RAG / search / codebase machinery, and every supported database driver.</p>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>&gt;<span class="w"> </span>/doctor
 </span></code></pre></div>
 <p><code>/doctor</code> reports every <code>amx</code> binary on <code>PATH</code> (catches the version-skew bug class), the
-Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use <code>/doctor --skip-network</code> for an
-offline quick check.</p>
+Python runtime, the config schema version, and active DB + LLM reachability.</p>
 <h2 id="where-amx-writes-files">Where AMX writes files<a class="headerlink" href="#where-amx-writes-files" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -997,7 +1002,7 @@ offline quick check.</p>
 </tr>
 <tr>
 <td><code>~/.amx/code_cache/&lt;slug&gt;/</code></td>
-<td>Cached code-scan results per profile</td>
+<td>Cached code index results per profile</td>
 </tr>
 </tbody>
 </table>

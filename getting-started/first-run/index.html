@@ -863,10 +863,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#scan-the-codebase" class="md-nav__link">
+  <a href="#index-the-codebase" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Scan the codebase
+        Index the codebase
       
     </span>
   </a>
@@ -993,24 +993,23 @@ configure both:</p>
 <code>prompt_detail: standard</code>).</p>
 <h2 id="ingest-documents">Ingest documents<a class="headerlink" href="#ingest-documents" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>/docs
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>/ingest --refresh
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>/index
 </span></code></pre></div>
-<p><code>/ingest</code> scans the active doc profile, splits each file into chunks, embeds them, and
-upserts into the local Chroma vector store. <code>--refresh</code> removes prior chunks for the same
-sources first — handy when files have moved or shrunk.</p>
+<p><code>/index</code> scans the active doc profile, splits each file into chunks, embeds them, and
+upserts into the local Chroma vector store.</p>
 <p>Check that the docs are searchable before running the agents:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>/search-docs primary key for company code
 </span></code></pre></div>
-<p>returns the top doc snippets. If this is empty, <code>/scan</code> will tell you what AMX
+<p>returns the top doc snippets. If this is empty, <code>/index</code> will tell you what AMX
 discovered (or didn't) on the configured paths.</p>
-<h2 id="scan-the-codebase">Scan the codebase<a class="headerlink" href="#scan-the-codebase" title="Permanent link">&para;</a></h2>
+<h2 id="index-the-codebase">Index the codebase<a class="headerlink" href="#index-the-codebase" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>/code
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/code-scan
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>/code-index
 </span></code></pre></div>
-<p>The first scan walks the entire repo, extracts function/class spans for Python and text
+<p>The first index walks the entire repo, extracts function/class spans for Python and text
 chunks for other languages, and builds the <code>amx_code</code> Chroma collection. Cached results
-land in <code>~/.amx/code_cache/etl_repo/</code>. Subsequent runs read the cache; pass <code>--code-refresh</code>
-or run <code>/code-refresh</code> to invalidate after the tree changes.</p>
+land in <code>~/.amx/code_cache/etl_repo/</code>. Subsequent runs read the cache; run <code>/code-index</code>
+again to refresh after the tree changes.</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>/code-results
 </span></code></pre></div>
 <p>shows what was indexed.</p>
@@ -1026,26 +1025,24 @@ usage so far, and elapsed time. The output is something like:</p>
 </span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>✓ Orchestrator        merged 17 column suggestions, 1 table summary
 </span></code></pre></div>
 <h2 id="review">Review<a class="headerlink" href="#review" title="Permanent link">&para;</a></h2>
-<p>The review wizard opens. For each column AMX shows:</p>
+<p><code>/run</code> first asks you to choose a review strategy: one-by-one, accept-all-high, accept-all,
+or reject-all. Reviewing one-by-one, AMX shows each column with a numbered picker:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>sap_s6p.t001.audat — column 7 of 17
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  ▶ Document date. Calendar date the source business event was recorded;
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    distinct from posting date (BUDAT) which controls the accounting period.
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  Alternatives:
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>    2. Audit date. Timestamp of the most recent audit run on this row.
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>       confidence: low · logprob: 0.42 · sources: profile only
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>    3. Document creation date. Same as ERFDAT in adjacent SAP tables.
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>       confidence: medium · logprob: 0.66 · sources: docs
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>  [A]ccept  [1-3] Pick alternative  [W]rite your own  [S]kip  [Q]uit
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  1. Document date. Calendar date the source business event was recorded;
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>     distinct from posting date (BUDAT) which controls the accounting period.
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>     confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>  2. Audit date. Timestamp of the most recent audit run on this row.
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>     confidence: low · logprob: 0.42 · sources: profile only
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  3. Document creation date. Same as ERFDAT in adjacent SAP tables.
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>     confidence: medium · logprob: 0.66 · sources: docs
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  Type a number to pick a description, &quot;s&quot; to skip, or &quot;o&quot; for your own text.
 </span></code></pre></div>
-<p>Accept the top suggestion, pick an alternative, write your own, or skip. AMX moves to the
-next column.</p>
-<p>For columns where the top suggestion is high-confidence and the evidence is unambiguous, use
-<strong>bulk accept</strong> — AMX prompts before each batch and only auto-accepts where logprob ≥ the
-configured <code>high</code> threshold.</p>
+<p>Type the number of the description you want, <code>s</code> to skip the column, or <code>o</code> to write your
+own text. AMX moves to the next column.</p>
+<p>To accept the high-confidence suggestions in bulk without stepping through each column,
+choose the <strong>accept-all-high</strong> strategy when <code>/run</code> prompts for it.</p>
 <h2 id="apply-to-the-database">Apply to the database<a class="headerlink" href="#apply-to-the-database" title="Permanent link">&para;</a></h2>
 <p>When the review is complete:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>/apply

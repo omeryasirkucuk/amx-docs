@@ -1028,7 +1028,7 @@ through registering a workspace profile, recovering from corporate-TLS issues, a
 applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>databricks-sql-connector</code> driver is included by default.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>databricks-sql-connector</code> driver is installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li>A Databricks workspace with Unity Catalog enabled. (Hive-metastore-only workspaces are listable but cannot accept comment write-back via the SQL connector.)</li>
 <li>A running SQL warehouse — Serverless or Pro both work. Note its <strong>HTTP path</strong> (visible under "Connection details" on the warehouse page).</li>
 <li>A personal access token (PAT) for the workspace user — User Settings → Developer → Access tokens. Service-principal tokens work too.</li>
@@ -1150,7 +1150,7 @@ endpoint and the workspace listing live behind different roles
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — reports the cluster runtime version (e.g. <code>14.3.x-photon</code>) and round-trip latency. Latency over ~1.5 s usually means the warehouse is cold-starting; subsequent calls drop to ~200–400 ms.</li>
-<li><code>&gt; /db inspect</code> — confirms catalog / schema counts and flags any Hive-metastore schemas as read-only.</li>
+<li><code>&gt; /inspect</code> — confirms catalog / schema counts and flags any Hive-metastore schemas as read-only.</li>
 <li><code>&gt; /doctor</code> — verifies driver, profile activation, and that the workspace token is still valid (rejected tokens are surfaced as <code>Access token rejected by /api/2.0/clusters/list</code>).</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

@@ -1028,7 +1028,7 @@ calls. This page walks through installing the ODBC driver per OS, registering a 
 and applying your first batch of generated descriptions.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>pyodbc</code> driver is included by default.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>pyodbc</code> driver is installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li><strong>ODBC Driver 18 for SQL Server</strong> installed at the OS level (driver 17 also works but is end-of-mainstream-support; driver 18 is the default the wizard suggests).</li>
 <li>A SQL Server 2017+ or Azure SQL database reachable from the machine running AMX.</li>
 <li>A login mapped to a user with <code>SELECT</code> on every target schema and <code>ALTER</code> on the schemas you intend to write back to. AMX uses extended properties, which require schema-level <code>ALTER</code>.</li>
@@ -1158,7 +1158,7 @@ exists".</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — server version + driver + latency. The driver line is essential when troubleshooting "driver not found" errors.</li>
-<li><code>&gt; /db inspect</code> — counts of tables, views, procedures (FN/TF/IF), triggers, sequences, synonyms, partitions.</li>
+<li><code>&gt; /inspect</code> — counts of tables, views, procedures (FN/TF/IF), triggers, sequences, synonyms, partitions.</li>
 <li><code>&gt; /doctor</code> — confirms <code>pyodbc</code> is loaded, the chosen ODBC driver is registered, and the profile reaches the server.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

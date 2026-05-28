@@ -1153,18 +1153,17 @@ says <code>none</code>, run <code>/setup</code> (first time) or <code>/use-llm &
 </span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  /code          Code-source management
 </span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>  /metadata      Inspect introspection output
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  /run           Run agents on a scope
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  /generate      Single-shot draft for one asset address
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /rerun         Re-execute one or many run_results rows with original context
-</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /apply         Write reviewed comments back to the DB
-</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /max-tokens    Show or set the per-call output budget on the active LLM profile
-</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /search        Catalog search, embedding rebuild, and chat sessions
-</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
-</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
-</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /history       Audit trail and run comparison
-</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  /doctor        Diagnostics
-</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  /config        Show or edit ~/.amx/config.yml
-</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  /restore-config  Recover ~/.amx/config.yml from a rotated backup
-</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>  /help, /exit, /clear, /back, /save
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  /rerun         Re-execute one or many run_results rows with original context
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>  /apply         Write reviewed comments back to the DB
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>  /max-tokens    Show or set the per-call output budget on the active LLM profile
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>  /search        Catalog search, embedding rebuild, and chat sessions
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>  /session       Manage /ask conversation sessions (list / resume / new / end / scope)
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>  /studio        Boot AMX Studio (local web UI) on 127.0.0.1
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>  /history       Audit trail and run comparison
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>  /doctor        Diagnostics
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>  /config        Show or edit ~/.amx/config.yml
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>  /restore-config  Recover ~/.amx/config.yml from a rotated backup
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>  /help, /exit, /clear, /back, /save
 </span></code></pre></div>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /db
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Database namespace:
@@ -1197,15 +1196,20 @@ where every command is implicitly under <code>/db</code>:</p>
 <p>Use this when you're doing a lot of DB-related work in a row and want shorter typing.
 <code>/back</code> (or <code>Ctrl-D</code>) returns to the root.</p>
 <h3 id="4-save-and-resume-sessions">4. Save and resume sessions<a class="headerlink" href="#4-save-and-resume-sessions" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /save
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>✓ Session saved: ~/.amx/sessions/2026-05-03_15-42.amxsession
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a># Later, in a new shell:
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>amx --resume 2026-05-03_15-42
+<p>Conversation sessions are managed with the <code>/session</code> group. List the sessions
+AMX has persisted, then resume one to continue where you left off:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>&gt; /session list
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ID    Started      Last active   State    Turns  Title             First question
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>→ 42  2026-05-03   2026-05-03    active   8      (auto)            which tables hold customer data?
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  41  2026-05-02   2026-05-02    closed   3      Pricing tables    list every pricing-related table
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>&gt; /session resume 42
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>✓ Resumed session 42 — prior turns flow back to the agent as context
 </span></code></pre></div>
-<p>Session save captures the active profiles, current scope (last <code>/run</code> table list), and
-the in-memory review queue — so you can step away from a half-reviewed run and pick up
-exactly where you left off.</p>
+<p>A resumed session restores the conversation history so follow-ups resolve
+against prior turns. Start a fresh one with <code>/session new</code> and close the
+active one with <code>/session end</code>. See <a href="../ask-and-search/#5-manage-chat-sessions"><code>/session</code></a>
+for the full lifecycle.</p>
 <h3 id="5-get-unstuck">5. Get unstuck<a class="headerlink" href="#5-get-unstuck" title="Permanent link">&para;</a></h3>
 <p>When something doesn't work, the order of escalation is:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /doctor
@@ -1454,12 +1458,8 @@ the root prompt.</p>
 <td>Copy files into <code>~/.amx/uploads/&lt;profile&gt;/</code></td>
 </tr>
 <tr>
-<td><code>/scan [--doc-profile NAME] [paths…]</code></td>
-<td>Scan documents into the index</td>
-</tr>
-<tr>
-<td><code>/ingest [--doc-profile NAME] [--refresh] [paths…]</code></td>
-<td>Ingest scanned documents (embed + persist)</td>
+<td><code>/index [--doc-profile NAME] [--refresh] [paths…]</code></td>
+<td>Ingest documents into the index (embed + persist)</td>
 </tr>
 <tr>
 <td><code>/search-docs &lt;text&gt;</code></td>
@@ -1505,28 +1505,20 @@ the root prompt.</p>
 <td>Link a code profile to one or more DB profiles</td>
 </tr>
 <tr>
-<td><code>/code-scan [path] [--code-profile NAME]</code></td>
-<td>Scan a codebase and persist the index</td>
+<td><code>/code-index [path] [--code-profile NAME] [--refresh]</code></td>
+<td>Index a codebase and persist the semantic index (<code>--refresh</code> clears the cache and rebuilds)</td>
 </tr>
 <tr>
 <td><code>/code-search &lt;text&gt; [--code-profile NAME]</code></td>
 <td>Similarity search over the code index</td>
 </tr>
 <tr>
-<td><code>/code-refresh</code></td>
-<td>Clear cache + rebuild the semantic code index</td>
-</tr>
-<tr>
-<td><code>/code-results</code></td>
-<td>Show last cached scan results</td>
-</tr>
-<tr>
-<td><code>/code-analyze [TABLE…]</code></td>
-<td>Run the Code Agent standalone</td>
+<td><code>/code-results [TABLE…]</code></td>
+<td>Show last cached index results / run the Code Agent standalone</td>
 </tr>
 <tr>
 <td><code>/export-code-report [FILE]</code></td>
-<td>Export the scan report to Markdown</td>
+<td>Export the index report to Markdown</td>
 </tr>
 </tbody>
 </table>
@@ -1574,10 +1566,6 @@ the root prompt.</p>
 <tr>
 <td><code>/apply</code></td>
 <td>Write pending comments to the database</td>
-</tr>
-<tr>
-<td><code>/generate &lt;address&gt;</code></td>
-<td>Single-shot draft for one asset address</td>
 </tr>
 <tr>
 <td><code>/rerun &lt;run_id&gt;[.schema.table.column]</code></td>

@@ -886,10 +886,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-review-with-the-wizard-keystrokes" class="md-nav__link">
+  <a href="#3-review-with-the-numbered-picker" class="md-nav__link">
     <span class="md-ellipsis">
       
-        3. Review with the wizard keystrokes
+        3. Review with the numbered picker
       
     </span>
   </a>
@@ -1041,7 +1041,7 @@
 agents, drafts column descriptions with the LLM, and queues the results for an
 interactive review. <code>/apply</code> writes the reviewed descriptions back to the database.
 <code>/run-apply</code> runs both back-to-back. This page walks through every prompt, the live
-progress display, the keystroke shortcuts in the review wizard, and how <code>/apply</code>
+progress display, the numbered review picker, and how <code>/apply</code>
 recovers from per-row errors.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1089,7 +1089,7 @@ recovers from per-row errors.</p>
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>✓ /run finished in 14.1 s. 36 columns drafted.
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>  Confidence: high 24 · medium 9 · low 3
 </span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>  Tokens: 15,844 in / 4,064 out · Cost: $0.0315 (frozen at run-time pricing)
-</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  Review with /run review (or /apply to write back).
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>  Review with /analyze review (or /apply to write back).
 </span></code></pre></div>
 <p>The <code>Confidence: high N · medium N · low N</code> line is bucketed from the
 per-alternative scorer set on the active LLM profile
@@ -1099,63 +1099,51 @@ other scorers and how to read each band. The character of the
 generated alternatives is in turn shaped by <code>alternatives_mode</code> —
 <a href="../../concepts/alternatives-mode/">paraphrases vs shared-vocabulary candidate meanings</a>.</p>
 <p>Per-batch token and USD cost are reported live for every LLM-using step
-(<code>/run</code>, <code>/run-apply</code>, <code>/generate</code>, <code>/ask</code>). Cost is computed against the
+(<code>/run</code>, <code>/run-apply</code>, <code>/ask</code>). Cost is computed against the
 versioned per-(provider, model) pricing table AMX caches on disk; see
 <a href="../../studio/pricing/">Costs and pricing</a> for the full story
 including how to pin a per-model override.</p>
-<h3 id="3-review-with-the-wizard-keystrokes">3. Review with the wizard keystrokes<a class="headerlink" href="#3-review-with-the-wizard-keystrokes" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /run review
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>36 columns drafted · high: 24 · medium: 9 · low: 3
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>Review row 1/3 (low confidence): sales.customer.x_legacy_status
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  current: (no comment)
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  draft 1: &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
-</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  draft 2: &quot;Internal numeric status code from the v3 system (deprecated 2018)...&quot;
-</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>  draft 3: &quot;Status flag — historical, retained for backward-compat with the v3 migration...&quot;
-</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>
-</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  [A]ccept-1   [1] [2] [3] pick alt   [E]dit   [S]kip   [R]edo   [B]ack   [Q]uit
-</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>&gt; 1
-</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>✓ Accepted draft 2 for sales.customer.x_legacy_status
+<h3 id="3-review-with-the-numbered-picker">3. Review with the numbered picker<a class="headerlink" href="#3-review-with-the-numbered-picker" title="Permanent link">&para;</a></h3>
+<p>When <code>/run</code> reaches the review step it opens an interactive picker per row.
+You <strong>type the number</strong> of the alternative you want, <code>s</code> to skip the row, or
+<code>o</code> to supply your own text:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>36 columns drafted · high: 24 · medium: 9 · low: 3
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Review row 1/3: sales.customer.x_legacy_status
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  current: (no comment)
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>  [1] &quot;Legacy status flag preserved during the 2018 migration; values 0–7 map to...&quot;
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  [2] &quot;Internal numeric status code from the v3 system (deprecated 2018)...&quot;
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  [3] &quot;Status flag — historical, retained for backward-compat with the v3 migration...&quot;
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>Pick a description (1-3), &quot;s&quot; to skip, &quot;o&quot; for your own text:
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>&gt; 2
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>✓ Accepted alternative 2 for sales.customer.x_legacy_status
 </span></code></pre></div>
 <table>
 <thead>
 <tr>
-<th>Key</th>
+<th>Input</th>
 <th>Action</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>A</code></td>
-<td>Accept draft 1 (the default — same as pressing <code>1</code>)</td>
-</tr>
-<tr>
 <td><code>1</code> / <code>2</code> / <code>3</code></td>
 <td>Accept that alternative</td>
 </tr>
 <tr>
-<td><code>E</code></td>
-<td>Open the draft in <code>$EDITOR</code> for hand editing; on save, it's accepted</td>
+<td><code>o</code></td>
+<td>Type your own text instead of any drafted alternative</td>
 </tr>
 <tr>
-<td><code>S</code></td>
-<td>Skip — leaves the row pending; you'll see it again next <code>/run review</code></td>
-</tr>
-<tr>
-<td><code>R</code></td>
-<td>Redo — re-asks the LLM with a higher temperature; quick way to break out of a stuck draft</td>
-</tr>
-<tr>
-<td><code>B</code></td>
-<td>Go back to the previous row</td>
-</tr>
-<tr>
-<td><code>Q</code></td>
-<td>Quit the review (stays pending)</td>
+<td><code>s</code></td>
+<td>Skip — leaves the row pending; you'll see it again on the next review</td>
 </tr>
 </tbody>
 </table>
-<p>By default the wizard walks <strong>only <code>low</code>-confidence rows</strong>; high and medium are
-auto-accepted. Pass <code>--review-all</code> to walk every row regardless of confidence.</p>
+<p>Before the picker opens, you choose a review strategy interactively:
+one-by-one, accept-all-high, accept-all, or reject-all. To defer review and
+come back to a run later, use <code>/analyze review</code> or
+<a href="../history/"><code>/history review</code></a>.</p>
 <h3 id="4-apply-with-apply">4. Apply with <code>/apply</code><a class="headerlink" href="#4-apply-with-apply" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /apply
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Pending in review queue:
@@ -1240,18 +1228,20 @@ the CLI doesn't expose a <code>/generate</code> REPL command. Use <code>/run</co
 narrow <code>--table</code> / <code>--columns</code> scope when you need single-asset
 generation from the terminal.</p>
 <h3 id="7-the-shortcut-run-apply">7. The shortcut: <code>/run-apply</code><a class="headerlink" href="#7-the-shortcut-run-apply" title="Permanent link">&para;</a></h3>
-<p>For one-shot warehouse sweeps where you've already validated the LLM profile:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /run-apply --filter &#39;^stg_&#39; --auto-accept-high --apply
+<p>For one-shot warehouse sweeps where you've already validated the LLM profile.
+At the review step pick the <strong>accept-all-high</strong> strategy interactively, so
+high-confidence drafts are accepted and the rest are queued:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>&gt; /run-apply --filter &#39;^stg_&#39; --apply
 </span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>[scope]  47 staging tables · 1,283 columns
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>[Profile] sampling 5,000 rows ... ok in 18 s
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>[LLM]    drafting 1,283 column descriptions in 64 batches ... ok in 102 s
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[Review] auto-accepted 1,021 high · 198 medium · skipped 64 low (review later)
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>[Review] accept-all-high: 1,021 high accepted · 198 medium · skipped 64 low (review later)
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>[Apply]  Write 1,219 comment(s) to db-prod/analytics?
 </span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>         (--apply was passed, skipping confirmation)
 </span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>[1219/1219] ok
 </span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>✓ /run-apply finished in 142 s. Audit trail: run_2026-05-03_15-44-002
 </span></code></pre></div>
-<p>Re-review the 64 skipped low-confidence rows later with <code>/run review</code>.</p>
+<p>Re-review the 64 skipped low-confidence rows later with <code>/analyze review</code>.</p>
 <h2 id="sample-config-defaults-that-act-on-run">Sample config — defaults that act on <code>/run</code><a class="headerlink" href="#sample-config-defaults-that-act-on-run" title="Permanent link">&para;</a></h2>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
@@ -1273,7 +1263,7 @@ generation from the terminal.</p>
 <ol>
 <li><code>&gt; /history list</code> — confirms the run landed in the audit trail.</li>
 <li><code>&gt; /history show &lt;run-id&gt;</code> — per-row results, including which alternative was picked.</li>
-<li><code>&gt; /db inspect</code> — <code>comment?</code> columns now show <code>yes</code> for the rows you applied.</li>
+<li><code>&gt; /inspect</code> — <code>comment?</code> columns now show <code>yes</code> for the rows you applied.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>
@@ -1296,9 +1286,9 @@ generation from the terminal.</p>
 <td>Switch to a chat model, OR loosen thresholds: <code>/logprob-thresholds 0.7 0.4</code></td>
 </tr>
 <tr>
-<td>Review wizard says <code>0 rows to review</code> after a run</td>
-<td>All rows were <code>high</code> confidence and auto-accepted</td>
-<td>Pass <code>--review-all</code> to force the wizard to walk every row anyway</td>
+<td>Review says <code>0 rows to review</code> after a run</td>
+<td>All rows were auto-accepted by the chosen review strategy</td>
+<td>Pick the one-by-one strategy at the review step to walk every row</td>
 </tr>
 <tr>
 <td><code>/apply</code> writes 0 of N rows, all "must be owner"</td>
@@ -1306,7 +1296,7 @@ generation from the terminal.</p>
 <td>See the per-backend page for the exact <code>GRANT</code> syntax</td>
 </tr>
 <tr>
-<td><code>/run-apply</code> finished but <code>/db inspect</code> still shows <code>comment?: no</code></td>
+<td><code>/run-apply</code> finished but <code>/inspect</code> still shows <code>comment?: no</code></td>
 <td>Catalog cache stale</td>
 <td><code>&gt; /sync</code> to refresh the introspection cache</td>
 </tr>

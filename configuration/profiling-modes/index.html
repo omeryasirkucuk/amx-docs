@@ -886,10 +886,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-override-per-command" class="md-nav__link">
+  <a href="#2-switch-the-mode-then-run" class="md-nav__link">
     <span class="md-ellipsis">
       
-        2. Override per command
+        2. Switch the mode, then run
       
     </span>
   </a>
@@ -1092,35 +1092,44 @@ scans instead of 300 — the single biggest speed-up for wide views.</p>
   the global default. The fallback message logs at DEBUG.</li>
 </ul>
 <p>Or interactively:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /db profiling-mode
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt; /profiling
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Current mode: full
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  full      — read every row to compute exact null/distinct stats
 </span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>&gt; /db profiling-mode sampled
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>&gt; /profiling sampled
 </span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>✓ Active mode → sampled (5000 rows per table)
 </span></code></pre></div>
-<h3 id="2-override-per-command">2. Override per command<a class="headerlink" href="#2-override-per-command" title="Permanent link">&para;</a></h3>
-<p>Every mode-aware command (<code>/run</code>, <code>/profile</code>, <code>/sync</code>) accepts <code>--profiling-mode</code>:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /run sales --profiling-mode metadata --auto-accept-high
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>[scope]   18 tables (sales)
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>[Profile] reading INFORMATION_SCHEMA for 18 tables ...  ok (0.4 s)
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>[LLM]     drafting 412 column descriptions in 21 batches ...  ok in 38 s
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>✓ /run finished. 412 columns drafted (no row scans on the warehouse).
+<h3 id="2-switch-the-mode-then-run">2. Switch the mode, then run<a class="headerlink" href="#2-switch-the-mode-then-run" title="Permanent link">&para;</a></h3>
+<p>Set the mode with <code>/profiling</code> (or hand-edit <code>profiling_mode</code> on the
+profile), then run. The mode in effect at the time of the run drives
+every mode-aware command (<code>/run</code>, <code>/db profile</code>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt; /profiling metadata
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>✓ Active mode → metadata
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>&gt; /run sales
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>[scope]   18 tables (sales)
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>[Profile] reading INFORMATION_SCHEMA for 18 tables ...  ok (0.4 s)
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>[LLM]     drafting 412 column descriptions in 21 batches ...  ok in 38 s
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>✓ /run finished. 412 columns drafted (no row scans on the warehouse).
 </span></code></pre></div>
 <p>This is the cheapest possible whole-warehouse sweep — no rows scanned.</p>
 <h3 id="3-verify-what-each-mode-actually-queries">3. Verify what each mode actually queries<a class="headerlink" href="#3-verify-what-each-mode-actually-queries" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /run sales.customer --profiling-mode full --debug | grep &quot;SQL&quot;
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>[SQL Profile] SELECT * FROM sales.customer
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[SQL Profile] SELECT COUNT(DISTINCT c_first_name), COUNT(DISTINCT c_last_name), ...
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>&gt; /run sales.customer --profiling-mode sampled --debug | grep &quot;SQL&quot;
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>[SQL Profile] SELECT * FROM sales.customer TABLESAMPLE BERNOULLI(5000) LIMIT 5000
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>&gt; /run sales.customer --profiling-mode metadata --debug | grep &quot;SQL&quot;
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>[SQL Profile] SELECT column_name, data_type, is_nullable FROM information_schema.columns
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>              WHERE table_schema = &#39;sales&#39; AND table_name = &#39;customer&#39;;
+<p>Switch to the mode you want with <code>/profiling</code>, then run with <code>--debug</code>:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /profiling full
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt; /run sales.customer --debug | grep &quot;SQL&quot;
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>[SQL Profile] SELECT * FROM sales.customer
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>[SQL Profile] SELECT COUNT(DISTINCT c_first_name), COUNT(DISTINCT c_last_name), ...
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>&gt; /profiling sampled
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>&gt; /run sales.customer --debug | grep &quot;SQL&quot;
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>[SQL Profile] SELECT * FROM sales.customer TABLESAMPLE BERNOULLI(5000) LIMIT 5000
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>&gt; /profiling metadata
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>&gt; /run sales.customer --debug | grep &quot;SQL&quot;
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>[SQL Profile] SELECT column_name, data_type, is_nullable FROM information_schema.columns
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>              WHERE table_schema = &#39;sales&#39; AND table_name = &#39;customer&#39;;
 </span></code></pre></div>
 <h2 id="per-backend-sampling-syntax">Per-backend sampling syntax<a class="headerlink" href="#per-backend-sampling-syntax" title="Permanent link">&para;</a></h2>
 <p>The <code>sampled</code> mode uses backend-native sampling where supported:</p>
@@ -1265,8 +1274,8 @@ matter. Always run <code>/profile &lt;one-table&gt;</code> first and check the t
 an unexpectedly huge table can't accidentally bill you for an hour-long warehouse scan.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
-<li><code>&gt; /db profiling-mode</code> — prints the current mode.</li>
-<li><code>&gt; /run --profiling-mode metadata --filter '^stg_'</code> — a metadata-only sweep over staging tables; should complete in a few seconds and cost nothing.</li>
+<li><code>&gt; /profiling</code> — prints the current mode.</li>
+<li><code>&gt; /profiling metadata</code> then <code>&gt; /run</code> — a metadata-only sweep should complete in a few seconds and cost nothing.</li>
 <li><code>&gt; /history show &lt;run-id&gt;</code> after a run — shows wall-clock time and (on warehouse backends) approximate scanned bytes.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
@@ -1302,7 +1311,7 @@ an unexpectedly huge table can't accidentally bill you for an hour-long warehous
 <tr>
 <td><code>profiling_max_rows</code> keeps tripping</td>
 <td>Cap is set too low for tables you actually need full stats on</td>
-<td>Raise the per-profile cap, or override per-run with <code>--profiling-max-rows</code></td>
+<td>Raise the per-profile <code>profiling_max_rows</code> value in <code>config.yml</code></td>
 </tr>
 </tbody>
 </table>

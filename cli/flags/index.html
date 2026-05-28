@@ -908,10 +908,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apply-without-the-review-wizard" class="md-nav__link">
+  <a href="#apply-high-confidence-drafts-in-one-shot" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Apply without the review wizard
+        Apply high-confidence drafts in one shot
       
     </span>
   </a>
@@ -1025,34 +1025,10 @@ have to memorise them per command. Each flag below works on <code>/run</code>, <
 <td>Force the scope picker level instead of inferring from positional args</td>
 </tr>
 <tr>
-<td><code>--profiling-mode &lt;mode&gt;</code></td>
-<td><code>full</code>/<code>sampled</code>/<code>metadata</code></td>
-<td>profile default</td>
-<td>Override the profiling mode for one run</td>
-</tr>
-<tr>
-<td><code>--profiling-sample-size &lt;n&gt;</code></td>
-<td>int</td>
-<td>profile default (5000)</td>
-<td>Override sample size when <code>--profiling-mode sampled</code></td>
-</tr>
-<tr>
-<td><code>--review-all</code></td>
-<td>flag</td>
-<td>off</td>
-<td>Force the review wizard to walk every row, not just <code>low</code>-confidence ones</td>
-</tr>
-<tr>
-<td><code>--auto-accept-high</code></td>
-<td>flag</td>
-<td>on</td>
-<td>Bulk-accept <code>high</code>-confidence drafts. Pair with <code>--review-all</code> to override</td>
-</tr>
-<tr>
 <td><code>--apply</code></td>
 <td>flag</td>
 <td>off</td>
-<td>Auto-<code>/apply</code> after <code>/run</code> finishes. Skips the review wizard for high+medium</td>
+<td>Auto-<code>/apply</code> after <code>/run</code> finishes, using the review strategy you pick</td>
 </tr>
 <tr>
 <td><code>--csv &lt;path&gt;</code></td>
@@ -1106,13 +1082,13 @@ have to memorise them per command. Each flag below works on <code>/run</code>, <
 <td><code>--n-alternatives &lt;n&gt;</code></td>
 <td>int (1-5)</td>
 <td>profile default</td>
-<td>On <code>/run</code> and <code>/generate</code>: number of drafts to surface per asset</td>
+<td>On <code>/run</code>: number of drafts to surface per asset</td>
 </tr>
 <tr>
 <td><code>--verbosity &lt;mode&gt;</code></td>
 <td><code>terse</code>/<code>balanced</code>/<code>verbose</code></td>
 <td><code>balanced</code></td>
-<td>On <code>/run</code> and <code>/generate</code>: target output length</td>
+<td>On <code>/run</code>: target output length</td>
 </tr>
 <tr>
 <td><code>--temperature &lt;f&gt;</code></td>
@@ -1154,20 +1130,25 @@ have to memorise them per command. Each flag below works on <code>/run</code>, <
 <td><code>/n-alternatives &lt;n&gt;</code></td>
 <td>Show or set the default number of drafts</td>
 </tr>
+<tr>
+<td><code>/profiling [full\|sampled\|metadata] [max_rows] [sample_size]</code></td>
+<td>Configure the profiling mode and guardrails per profile (there is no <code>--profiling-mode</code> flag)</td>
+</tr>
 </tbody>
 </table>
+<p>The review strategy (one-by-one, accept-all-high, accept-all, reject-all) is
+chosen <strong>interactively</strong> at the review step, not via a flag.</p>
 <h2 id="common-combinations">Common combinations<a class="headerlink" href="#common-combinations" title="Permanent link">&para;</a></h2>
 <h3 id="sweep-a-whole-warehouse-cheaply">Sweep a whole warehouse cheaply<a class="headerlink" href="#sweep-a-whole-warehouse-cheaply" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span>/run<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span>--profiling-mode<span class="w"> </span>metadata<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt;<span class="w"> </span>/profiling<span class="w"> </span>metadata<span class="w">          </span><span class="c1"># set the profile&#39;s mode first — no per-run flag</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>&gt;<span class="w"> </span>/run<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span>--llm-profile<span class="w"> </span>openai-mini<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>--auto-accept-high<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span>--csv<span class="w"> </span>~/amx-output/sweep-2026-05-03.csv
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span>--csv<span class="w"> </span>~/amx-output/sweep-2026-05-03.csv
 </span></code></pre></div>
-<p><code>metadata</code> mode skips row scans entirely (no warehouse cost), <code>--llm-profile openai-mini</code>
-uses the cheap model, <code>--auto-accept-high</code> lets the review wizard skip ahead through
-high-confidence rows, and the CSV gives you a portable record outside the AMX history
-store.</p>
+<p><code>metadata</code> mode skips row scans entirely (no warehouse cost) and <code>--llm-profile openai-mini</code>
+uses the cheap model; the CSV gives you a portable record outside the AMX history
+store. At the review step, pick the accept-all-high strategy to skip ahead through
+high-confidence rows.</p>
 <h3 id="re-run-only-the-tables-that-failed-last-time">Re-run only the tables that failed last time<a class="headerlink" href="#re-run-only-the-tables-that-failed-last-time" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>&gt;<span class="w"> </span>/run<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span>--filter<span class="w"> </span><span class="s1">&#39;^(stg_|fct_|dim_)&#39;</span><span class="w"> </span><span class="se">\</span>
@@ -1176,23 +1157,21 @@ store.</p>
 </span></code></pre></div>
 <p>The regex matches your dbt-style staging / fact / dimension tables; <code>--limit 50</code> keeps
 the run bounded; <code>--debug</code> surfaces the exact failure if it happens again.</p>
-<h3 id="apply-without-the-review-wizard">Apply without the review wizard<a class="headerlink" href="#apply-without-the-review-wizard" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt;<span class="w"> </span>/run-apply<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--auto-accept-high<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--review-all<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--apply
+<h3 id="apply-high-confidence-drafts-in-one-shot">Apply high-confidence drafts in one shot<a class="headerlink" href="#apply-high-confidence-drafts-in-one-shot" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>&gt;<span class="w"> </span>/run-apply<span class="w"> </span>--apply
 </span></code></pre></div>
-<p><code>/run-apply</code> is <code>/run</code> immediately followed by <code>/apply</code>. <code>--auto-accept-high</code> accepts
-high-confidence drafts; everything else is queued for later interactive review.</p>
+<p><code>/run-apply</code> is <code>/run</code> immediately followed by <code>/apply</code>. At the review step pick the
+accept-all-high strategy: high-confidence drafts are accepted and everything else is
+queued for later interactive review.</p>
 <div class="admonition warning">
-<p class="admonition-title">Do not pair <code>--apply</code> with a freshly-tuned LLM profile</p>
-<p><code>--apply</code> skips the review wizard for high+medium confidence drafts. Until you've
-confirmed the LLM profile produces good descriptions for <em>your</em> schema, leave the
-wizard interactive. Re-add <code>--apply</code> only after one or two successful manual sweeps.</p>
+<p class="admonition-title">Be careful with <code>--apply</code> on a freshly-tuned LLM profile</p>
+<p><code>--apply</code> writes back whatever the chosen review strategy accepts. Until you've
+confirmed the LLM profile produces good descriptions for <em>your</em> schema, review
+one-by-one. Re-add <code>--apply</code> only after one or two successful manual sweeps.</p>
 </div>
 <h3 id="test-profiling-cost-without-llm-calls">Test profiling cost without LLM calls<a class="headerlink" href="#test-profiling-cost-without-llm-calls" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;<span class="w"> </span>/profile<span class="w"> </span>sales.customer<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span>--profiling-mode<span class="w"> </span>full<span class="w"> </span><span class="se">\</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt;<span class="w"> </span>/profiling<span class="w"> </span>full<span class="w">              </span><span class="c1"># set the profile&#39;s mode first — no per-run flag</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>&gt;<span class="w"> </span>/profile<span class="w"> </span>sales.customer<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--skip-network
 </span></code></pre></div>
 <p><code>/profile</code> runs only the Profile agent — it samples the table and prints stats but
@@ -1204,8 +1183,8 @@ your warehouse before unleashing <code>/run</code>.</p>
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">prod-pg</span><span class="p">:</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nt">backend</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="c1"># ...</span>
-</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span><span class="w">            </span><span class="c1"># → --profiling-mode default</span>
-</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span><span class="w">        </span><span class="c1"># → --profiling-sample-size default</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">profiling_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sampled</span><span class="w">            </span><span class="c1"># set via /profiling</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="nt">profiling_sample_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span><span class="w">        </span><span class="c1"># set via /profiling</span>
 </span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
 </span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nt">llm_profiles</span><span class="p">:</span>
 </span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">openai-prod</span><span class="p">:</span>

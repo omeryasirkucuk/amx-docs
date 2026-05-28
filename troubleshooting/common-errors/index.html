@@ -874,17 +874,6 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#configschematooolderror" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        ConfigSchemaTooOldError
-      
-    </span>
-  </a>
-  
-</li>
-        
       </ul>
     </nav>
   
@@ -1293,15 +1282,12 @@
 <p><strong>Cause:</strong> A database driver isn't importable. This usually means a broken or partial
 install.</p>
 <p><strong>Fix:</strong> Reinstall AMX:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>--force-reinstall<span class="w"> </span>amx
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>--force-reinstall<span class="w"> </span>amx-cli
 </span></code></pre></div>
 <h3 id="configschematoonewerror-config-schema-v2-newer-than-this-amx-expects-v1"><code>ConfigSchemaTooNewError: config schema v2 newer than this AMX (expects v1)</code><a class="headerlink" href="#configschematoonewerror-config-schema-v2-newer-than-this-amx-expects-v1" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> <code>~/.amx/config.yml</code> was written by a newer AMX than the one currently
 running. AMX refuses to load it rather than risk silently mangling.</p>
 <p><strong>Fix:</strong> <code>pip install --upgrade amx-cli</code>.</p>
-<h3 id="configschematooolderror"><code>ConfigSchemaTooOldError</code><a class="headerlink" href="#configschematooolderror" title="Permanent link">&para;</a></h3>
-<p><strong>Cause:</strong> Very old <code>~/.amx/config.yml</code>. AMX should auto-migrate, but if migration fails:</p>
-<p><strong>Fix:</strong> Back up the file, delete it, run <code>/setup</code> to rebuild.</p>
 <h2 id="connection-errors">Connection errors<a class="headerlink" href="#connection-errors" title="Permanent link">&para;</a></h2>
 <h3 id="psycopg2operationalerror-could-not-connect-to-server"><code>psycopg2.OperationalError: could not connect to server</code><a class="headerlink" href="#psycopg2operationalerror-could-not-connect-to-server" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Postgres unreachable. Wrong host / port / firewall / not running.</p>
@@ -1331,7 +1317,7 @@ Oracle client locally.</p>
 the dataset.</p>
 <h2 id="llm-errors">LLM errors<a class="headerlink" href="#llm-errors" title="Permanent link">&para;</a></h2>
 <h3 id="llm-not-reachable-refusing-to-start-run"><code>LLM not reachable — refusing to start /run</code><a class="headerlink" href="#llm-not-reachable-refusing-to-start-run" title="Permanent link">&para;</a></h3>
-<p><strong>Cause:</strong> <code>/analyze /run</code> tests the active LLM <strong>before</strong> profiling any asset. The pre-flight
+<p><strong>Cause:</strong> <code>/run</code> tests the active LLM <strong>before</strong> profiling any asset. The pre-flight
 failed.</p>
 <p><strong>Fix:</strong> Run <code>/doctor</code>. Usually it's an invalid API key or a deactivated model.</p>
 <h3 id="model-returned-0-visible-characters-and-used-all-900-output-tokens"><code>Model returned 0 visible characters and used all 900 output tokens</code><a class="headerlink" href="#model-returned-0-visible-characters-and-used-all-900-output-tokens" title="Permanent link">&para;</a></h3>
@@ -1418,7 +1404,7 @@ matches as suggestions only. Either fix the question or accept one of the sugges
 <h3 id="disk-io-error-from-sqlite"><code>disk I/O error</code> from SQLite<a class="headerlink" href="#disk-io-error-from-sqlite" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> <code>~/.amx/history.db</code> is on a network filesystem with broken locking, or full
 disk.</p>
-<p><strong>Fix:</strong> Move <code>~/.amx/</code> to a local filesystem (set <code>AMX_HOME</code>). Check <code>df -h</code>.</p>
+<p><strong>Fix:</strong> Move <code>~/.amx/</code> to a local filesystem (set <code>AMX_CONFIG_DIR</code>). Check <code>df -h</code>.</p>
 <h3 id="pending_shared_writes-outbox-depth-142-shared-backend-has-been-unreachable"><code>pending_shared_writes outbox depth: 142 — shared backend has been unreachable</code><a class="headerlink" href="#pending_shared_writes-outbox-depth-142-shared-backend-has-been-unreachable" title="Permanent link">&para;</a></h3>
 <p><strong>Cause:</strong> Shared mode dual-writes failed because the shared backend was unreachable.
 Local writes still succeeded.</p>

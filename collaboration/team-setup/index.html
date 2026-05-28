@@ -1115,9 +1115,9 @@ team members see all runs.</p>
 <h3 id="5-recommended-division-of-work">5. Recommended division of work<a class="headerlink" href="#5-recommended-division-of-work" title="Permanent link">&para;</a></h3>
 <p>Once the history store is shared, here's the workflow that works:</p>
 <ul>
-<li><strong>Lead</strong> runs whole-warehouse <code>/run-apply --profiling-mode metadata</code> once a quarter to seed first-draft descriptions for every column.</li>
-<li><strong>Domain owners</strong> pick up specific schemas in their area and run <code>/run sales --review-all</code> to refine the descriptions interactively.</li>
-<li><strong>Reviewers</strong> spot-check via <code>/history show &lt;run-id&gt;</code> and edit via <code>/run review</code>.</li>
+<li><strong>Lead</strong> sets the profiling mode with <code>/profiling</code>, then runs a whole-warehouse <code>/run</code> once a quarter to seed first-draft descriptions for every column.</li>
+<li><strong>Domain owners</strong> pick up specific schemas in their area and run <code>/run sales</code> to refine the descriptions interactively (inside <code>/run</code>, choose the review strategy: one-by-one, accept-all-high, accept-all, or reject-all).</li>
+<li><strong>Reviewers</strong> spot-check via <code>/history show &lt;run-id&gt;</code> and edit via <code>/analyze review</code> (or <code>/history review</code>).</li>
 <li><strong>Anyone</strong> can <code>/ask</code> with confidence — the catalog has been built across everyone's contributions.</li>
 </ul>
 <p><code>/history compare</code> is invaluable in the multi-person case — when two people produced
@@ -1226,7 +1226,7 @@ shared store through a curiosity click.</p>
 <ol>
 <li><strong>Lead and member</strong>: <code>&gt; /history list</code> returns the same row count.</li>
 <li><strong>Lead and member</strong>: <code>&gt; /history show &lt;some-run-id&gt;</code> returns identical content (down to the SHA-256 of the <code>descriptions</code> blob — <code>/history show --hash</code>).</li>
-<li><strong>Member</strong>: <code>&gt; /db inspect</code> shows <code>AMX</code> as a schema with the two <code>amx_history_*</code> tables.</li>
+<li><strong>Member</strong>: <code>&gt; /inspect</code> shows <code>AMX</code> as a schema with the two <code>amx_history_*</code> tables.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>
 <table>

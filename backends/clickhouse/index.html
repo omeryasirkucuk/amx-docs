@@ -1011,7 +1011,7 @@ This page walks through registering a profile, picking the right port for HTTP v
 and applying your first batch of generated comments.</p>
 <h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
 <ul>
-<li>AMX installed (<code>pip install amx-cli</code>). The <code>clickhouse-connect</code> and <code>clickhouse-sqlalchemy</code> drivers are included by default.</li>
+<li>AMX installed (<code>pip install amx-cli</code>). The <code>clickhouse-connect</code> and <code>clickhouse-sqlalchemy</code> drivers are installed on first use (needs network); only DuckDB ships with the base install.</li>
 <li>A ClickHouse 22.8+ server reachable from the machine running AMX.</li>
 <li>A user with <code>SELECT</code> on the target databases (<code>information_schema</code> access is implicit) and <code>ALTER</code> on the tables you intend to write back to. ClickHouse comments are part of the table DDL, so write-back requires <code>ALTER</code>.</li>
 <li>An active LLM profile (or skip ahead with <code>/add-llm-profile</code>).</li>
@@ -1111,7 +1111,7 @@ and the port is <code>8443</code>.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /connect</code> — server version + latency. ClickHouse usually returns under ~100 ms; sustained higher values often mean the load balancer is in a different region from the client.</li>
-<li><code>&gt; /db inspect</code> — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.</li>
+<li><code>&gt; /inspect</code> — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.</li>
 <li><code>&gt; /doctor</code> — driver loaded, profile reachable, write-back grants confirmed.</li>
 </ol>
 <h2 id="troubleshooting">Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permanent link">&para;</a></h2>

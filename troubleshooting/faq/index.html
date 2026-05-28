@@ -1209,8 +1209,10 @@
 <h3 id="how-do-i-install-amx">How do I install AMX?<a class="headerlink" href="#how-do-i-install-amx" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>amx-cli
 </span></code></pre></div>
-<p>That's the only command. The install includes the CLI, the multi-agent runtime, every
-LLM SDK, and every supported database driver.</p>
+<p>That's the only command. The install includes the CLI, the multi-agent runtime, and the
+LLM SDKs. Only the DuckDB driver ships by default; every other backend installs its
+driver on first use, which needs network access. On an air-gapped machine, pre-install
+the driver for your backend while you still have connectivity.</p>
 <h3 id="multiple-amx-binaries-on-path">Multiple <code>amx</code> binaries on PATH<a class="headerlink" href="#multiple-amx-binaries-on-path" title="Permanent link">&para;</a></h3>
 <p><code>/doctor</code> reports every <code>amx</code> it finds. Usually this means one is in your global pip
 install and another is in a project venv. Pick one and uninstall the other, or use a
@@ -1235,7 +1237,7 @@ keychain don't travel with the YAML; each machine needs its own keychain entries
 falls back to inline secrets).</p>
 <h2 id="running">Running<a class="headerlink" href="#running" title="Permanent link">&para;</a></h2>
 <h3 id="run-failed-with-llm-unreachable"><code>/run</code> failed with "LLM unreachable"<a class="headerlink" href="#run-failed-with-llm-unreachable" title="Permanent link">&para;</a></h3>
-<p><code>/analyze /run</code> tests the active LLM before profiling any asset and stops if the
+<p><code>/run</code> tests the active LLM before profiling any asset and stops if the
 model/profile is unreachable or deactivated. Run <code>/doctor</code> — it'll tell you whether
 the API key is invalid, the endpoint is unreachable, or the model is deactivated.</p>
 <h3 id="run-returned-0-visible-characters-and-used-all-output-tokens"><code>/run</code> returned 0 visible characters and used all output tokens<a class="headerlink" href="#run-returned-0-visible-characters-and-used-all-output-tokens" title="Permanent link">&para;</a></h3>
@@ -1300,7 +1302,7 @@ which tables …</code>.</p>
 <h2 id="history-and-storage">History and storage<a class="headerlink" href="#history-and-storage" title="Permanent link">&para;</a></h2>
 <h3 id="where-is-amxhistorydb">Where is <code>~/.amx/history.db</code>?<a class="headerlink" href="#where-is-amxhistorydb" title="Permanent link">&para;</a></h3>
 <p>On macOS / Linux: <code>/Users/&lt;name&gt;/.amx/history.db</code>. On Windows: <code>C:\Users\&lt;name&gt;\.amx\history.db</code>.</p>
-<p>Override with <code>AMX_HOME=/some/other/path</code> (Linux/macOS) or by setting your home directory
+<p>Override with <code>AMX_CONFIG_DIR=/some/other/path</code> (Linux/macOS) or by setting your home directory
 explicitly.</p>
 <h3 id="can-i-delete-historydb-to-start-over">Can I delete <code>history.db</code> to start over?<a class="headerlink" href="#can-i-delete-historydb-to-start-over" title="Permanent link">&para;</a></h3>
 <p>Yes, but you'll lose run history, the search catalog, and all session memory. The next

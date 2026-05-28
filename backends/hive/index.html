@@ -1334,7 +1334,7 @@ users don't accidentally configure the wrong backend.</p>
 <li><code>&gt; /connect</code> — reports the HS2 server version (e.g. <code>4.0.0</code>) and
    round-trip latency. First connect on a cold cluster takes a few
    seconds; steady state is well under 500 ms.</li>
-<li><code>&gt; /db inspect</code> — confirms schema counts and which schemas have
+<li><code>&gt; /inspect</code> — confirms schema counts and which schemas have
    tables / views.</li>
 <li><code>&gt; /doctor</code> — verifies driver presence (<code>pyhive</code>, <code>pure-sasl</code>),
    profile activation, and that the configured auth mode is one of
@@ -1430,7 +1430,7 @@ users don't accidentally configure the wrong backend.</p>
 <tr>
 <td><code>DESCRIBE FORMATTED</code> shows the table-level comment but <code>bulk_schema_metadata</code> returns <code>None</code></td>
 <td>Hive 2.x cluster lacks an initialised <code>information_schema</code> — fallback parser is correct but cached entry was filled before the writeback</td>
-<td><code>&gt; /db cache clear</code>, then re-list — the per-table parser will pick up the new comment</td>
+<td><code>&gt; /cache-clear</code>, then re-list — the per-table parser will pick up the new comment</td>
 </tr>
 </tbody>
 </table>

@@ -1114,7 +1114,7 @@ column-level stats query fails — the run keeps making progress.</p>
 <p>Reads the active document profile, retrieves relevant snippets per column from the local
 Chroma store, and generates suggestions backed by those snippets.</p>
 <h3 id="document-ingestion">Document ingestion<a class="headerlink" href="#document-ingestion" title="Permanent link">&para;</a></h3>
-<p><code>/ingest</code> walks each configured root, splits files into chunks (<code>langchain-text-splitters</code>),
+<p><code>/index</code> walks each configured root, splits files into chunks (<code>langchain-text-splitters</code>),
 embeds them, and upserts into Chroma. Default embeddings are MiniLM (offline). Switch to
 OpenAI-compatible or local sentence-transformers via <code>/embeddings docs &lt;kind&gt;</code>. The
 code-agent side is independent — change it with <code>/embeddings code &lt;kind&gt;</code>.</p>
@@ -1156,10 +1156,10 @@ profile</strong> so a multi-repo machine doesn't bleed snippets from one project
 ETL repo). The agent labels them as such so the merge step can weight them appropriately.</p>
 <h3 id="cache">Cache<a class="headerlink" href="#cache" title="Permanent link">&para;</a></h3>
 <p><code>~/.amx/code_cache/&lt;slug&gt;/</code> stores a manifest plus serialised scan results so <code>/run</code> does
-not re-walk the repo every time. Use <code>--code-refresh</code> or <code>/code-refresh</code> after the tree
+not re-walk the repo every time. Use <code>/code-index</code> after the tree
 changes; refresh clears the active profile's cache <strong>and</strong> semantic chunks.</p>
 <p>GitHub document and codebase sources are cloned into temporary directories only for the
-active scan/ingest operation, then removed.</p>
+active index operation, then removed.</p>
 <h2 id="orchestrator">Orchestrator<a class="headerlink" href="#orchestrator" title="Permanent link">&para;</a></h2>
 <p>The orchestrator (<code>amx.agents.orchestrator</code>) merges per-column candidate sets from all three
 agents into a final ranked list. The merge prompt:</p>

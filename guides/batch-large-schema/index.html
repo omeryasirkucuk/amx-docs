@@ -1023,10 +1023,10 @@ on the next <code>/run</code> (or you can open it directly via <code>/history re
 <h2 id="mixed-strategies">Mixed strategies<a class="headerlink" href="#mixed-strategies" title="Permanent link">&para;</a></h2>
 <p>A common pattern for very large schemas:</p>
 <ol>
-<li><strong>Inventory first.</strong> <code>/db profiling metadata; /run sap_s6p --batch</code> — overnight,
+<li><strong>Inventory first.</strong> <code>/profiling metadata; /run sap_s6p --batch</code> — overnight,
    minimum impact on the warehouse. Get a description for every table that has a useful
    name.</li>
-<li><strong>Targeted high-quality.</strong> Switch to <code>/db profiling sampled</code> and <code>/use-llm openai_main</code>
+<li><strong>Targeted high-quality.</strong> Switch to <code>/profiling sampled</code> and <code>/use-llm openai_main</code>
    (full-size model). <code>/run sap_s6p.&lt;critical_tables&gt; --batch</code> — overnight again, this
    time with proper profiling and the better model.</li>
 <li><strong>Manual cleanup.</strong> Synchronous <code>/run sap_s6p.&lt;one_table&gt;</code> for the dozen tables that
@@ -1036,9 +1036,9 @@ on the next <code>/run</code> (or you can open it directly via <code>/history re
 <h2 id="during-the-batch-window">During the batch window<a class="headerlink" href="#during-the-batch-window" title="Permanent link">&para;</a></h2>
 <p>While the batch is running, you can:</p>
 <ul>
-<li>Ingest new documents (<code>/ingest</code>) — they'll be in the catalog by the time the review
+<li>Ingest new documents (<code>/index</code>) — they'll be in the catalog by the time the review
   opens.</li>
-<li>Scan a fresh code repo (<code>/code-scan</code>) — same.</li>
+<li>Scan a fresh code repo (<code>/code-index</code>) — same.</li>
 <li>Run <code>/ask</code> queries — they hit the catalog, not the LLM dispatch path.</li>
 <li>Submit another batch to a different LLM profile — they run in parallel.</li>
 </ul>

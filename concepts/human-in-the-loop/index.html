@@ -964,7 +964,7 @@ is permanent — once <code>COMMENT ON COLUMN</code> lands, it propagates to eve
 syncs from your information schema.</p>
 <p>The review wizard makes the hand-off explicit:</p>
 <ul>
-<li><strong>Per-column decision</strong> — accept, pick alternative, write your own, skip.</li>
+<li><strong>Per-column decision</strong> — type a number to pick a description, write your own, or skip.</li>
 <li><strong>Provenance visible</strong> — every suggestion shows the evidence behind it (DB profile, code
   references, doc snippets).</li>
 <li><strong>Confidence calibrated</strong> — logprob-driven <code>high</code> / <code>medium</code> / <code>low</code> bands so you can scan
@@ -976,26 +976,22 @@ syncs from your information schema.</p>
 <p>For each column AMX shows:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>sap_s6p.t001.audat — column 7 of 17
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ▶ Document date. Calendar date the source business event was recorded;
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    distinct from posting date (BUDAT) which controls the accounting period.
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Alternatives:
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    2. Audit date. Timestamp of the most recent audit run on this row.
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>       confidence: low · logprob: 0.42 · sources: profile only
-</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    3. Document creation date. Same as ERFDAT in adjacent SAP tables.
-</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>       confidence: medium · logprob: 0.66 · sources: docs
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>  [A]ccept  [1-3] Pick alternative  [W]rite your own  [S]kip  [Q]uit
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  1. Document date. Calendar date the source business event was recorded;
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>     distinct from posting date (BUDAT) which controls the accounting period.
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>     confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  2. Audit date. Timestamp of the most recent audit run on this row.
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>     confidence: low · logprob: 0.42 · sources: profile only
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  3. Document creation date. Same as ERFDAT in adjacent SAP tables.
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>     confidence: medium · logprob: 0.66 · sources: docs
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  Pick a description [1-3], &quot;o&quot; to write your own, &quot;s&quot; to skip:
 </span></code></pre></div>
 <p>Decisions:</p>
 <ul>
-<li><strong>Accept</strong> writes the top suggestion to the staging area for <code>/apply</code>.</li>
-<li><strong>Pick alternative</strong> swaps in alternative N as the staged description.</li>
-<li><strong>Write your own</strong> drops you into a multi-line editor; whatever you type is staged.</li>
-<li><strong>Skip</strong> records that you reviewed this column and chose not to comment it. AMX will not
-  re-suggest unless you explicitly re-run the column.</li>
-<li><strong>Quit</strong> ends the review without losing what you've already accepted.</li>
+<li><strong>Pick a number</strong> stages that description.</li>
+<li><strong><code>o</code> (your own)</strong> drops you into a multi-line editor; whatever you type is staged.</li>
+<li><strong><code>s</code> (skip)</strong> records that you reviewed this column and chose not to comment it. AMX will
+  not re-suggest unless you explicitly re-run the column.</li>
 </ul>
 <h2 id="bulk-accept">Bulk accept<a class="headerlink" href="#bulk-accept" title="Permanent link">&para;</a></h2>
 <p>For schemas with hundreds of columns, manual review per column is impractical. Bulk accept:</p>

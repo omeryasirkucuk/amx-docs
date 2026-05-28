@@ -1222,7 +1222,7 @@ example and a cross-link block after it.
 <a href="../studio/settings/">Studio Settings</a> cross-link into the new pages.</p>
 <h3 id="0140-live-cost-everywhere-re-run-studio-landing">0.14.0 — Live cost everywhere, Re-Run, Studio Landing<a class="headerlink" href="#0140-live-cost-everywhere-re-run-studio-landing" title="Permanent link">&para;</a></h3>
 <p>Every LLM call AMX makes now reports tokens <strong>and USD cost</strong> at every
-surface — <code>/ask</code>, <code>/generate</code>, the run progress header, the Tokens &amp;
+surface — <code>/ask</code>, <code>/run</code>, the run progress header, the Tokens &amp;
 cost card on the run detail page, the lifetime card on the Studio
 Overview, and a top-bar pricing-cache freshness badge with a one-click
 refresh button. Pricing is fetched live from a versioned per-(provider,
@@ -1260,7 +1260,7 @@ a glance. Filters by run id and DB profile still apply on top.</p>
 extended thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x), the
 reasoning trace is rendered alongside the answer on the Run detail
 page rather than thrown away.</p>
-<p><strong><code>/generate</code> parity.</strong> Single-shot <code>/generate</code> now respects
+<p><strong><code>/run</code> parity.</strong> Single-shot <code>/run</code> now respects
 <code>n_alternatives</code>, <code>verbosity</code>, <code>temperature</code>, and <code>prompt_detail</code> the
 same way the full <code>/run</code> path does. The run row captures the target
 database / catalog so a re-run can reproduce the original scope.
@@ -1311,8 +1311,8 @@ visual surface and vice versa.</p>
 <code>Settings → Code</code> mirrors the docs search (no LLM, just embedding
 similarity over <code>amx_code</code>). Each code-profile row gains an
 <strong>Analyze</strong> button that runs the Code Agent against the cached
-<code>/code-scan</code> and streams per-table progress; the on-disk JSON cache
-shape is byte-identical to what <code>/code-analyze</code> writes from the CLI,
+<code>/code-index</code> and streams per-table progress; the on-disk JSON cache
+shape is byte-identical to what <code>/code-results</code> writes from the CLI,
 since both call into the new shared <code>amx/codebase/agent_service.py</code>.
 The CLI gains <code>/code-search</code> for the keyboard-only equivalent.</p>
 <p><strong>Live progress on numeric run-detail pages.</strong> A run still being
