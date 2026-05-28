@@ -140,7 +140,7 @@ doc profile linked to `prod-pg` is silent when `/ask` is running against
 |---|---|
 | DB tab | `/add-db-profile`, `/edit-db-profile`, `/remove-db-profile`, `/connect` |
 | LLM tab | `/add-llm-profile`, `/use-llm`, `/temperature`, `/max-tokens`, `/n-alternatives`, `/cost` |
-| Docs tab | `/add-doc-profile`, `/doc-link`, `/scan`, `/ingest` |
-| Code tab | `/add-code-profile`, `/code-link`, `/code-scan` |
+| Docs tab | `/add-doc-profile`, `/doc-link`, `/index` |
+| Code tab | `/add-code-profile`, `/code-link`, `/code-index` |
 | Embeddings tab | `/embeddings docs`, `/embeddings code` |
 | MCP tab | `/mcp connect`, `/mcp status`, `/mcp snippet`, `/mcp disconnect` |

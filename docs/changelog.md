@@ -342,7 +342,7 @@ example and a cross-link block after it.
 ### 0.14.0 — Live cost everywhere, Re-Run, Studio Landing
 
 Every LLM call AMX makes now reports tokens **and USD cost** at every
-surface — `/ask`, `/generate`, the run progress header, the Tokens &
+surface — `/ask`, `/run`, the run progress header, the Tokens &
 cost card on the run detail page, the lifetime card on the Studio
 Overview, and a top-bar pricing-cache freshness badge with a one-click
 refresh button. Pricing is fetched live from a versioned per-(provider,
@@ -387,7 +387,7 @@ extended thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x), the
 reasoning trace is rendered alongside the answer on the Run detail
 page rather than thrown away.
 
-**`/generate` parity.** Single-shot `/generate` now respects
+**`/run` parity.** Single-shot `/run` now respects
 `n_alternatives`, `verbosity`, `temperature`, and `prompt_detail` the
 same way the full `/run` path does. The run row captures the target
 database / catalog so a re-run can reproduce the original scope.
@@ -446,8 +446,8 @@ visual surface and vice versa.
 `Settings → Code` mirrors the docs search (no LLM, just embedding
 similarity over `amx_code`). Each code-profile row gains an
 **Analyze** button that runs the Code Agent against the cached
-`/code-scan` and streams per-table progress; the on-disk JSON cache
-shape is byte-identical to what `/code-analyze` writes from the CLI,
+`/code-index` and streams per-table progress; the on-disk JSON cache
+shape is byte-identical to what `/code-results` writes from the CLI,
 since both call into the new shared `amx/codebase/agent_service.py`.
 The CLI gains `/code-search` for the keyboard-only equivalent.
 

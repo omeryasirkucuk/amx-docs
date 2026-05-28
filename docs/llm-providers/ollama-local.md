@@ -90,7 +90,7 @@ For fully-offline AMX, also configure local embeddings on both sides
 ```
 
 This uses local sentence-transformers. Run `/search rebuild` after the docs
-switch and `/code refresh` after the code switch to re-embed the
+switch and `/code-index` after the code switch to re-embed the
 respective collections.
 
 ## Known gotchas

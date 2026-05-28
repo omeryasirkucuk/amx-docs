@@ -106,9 +106,9 @@ team members see all runs.
 
 Once the history store is shared, here's the workflow that works:
 
-- **Lead** runs whole-warehouse `/run-apply --profiling-mode metadata` once a quarter to seed first-draft descriptions for every column.
-- **Domain owners** pick up specific schemas in their area and run `/run sales --review-all` to refine the descriptions interactively.
-- **Reviewers** spot-check via `/history show <run-id>` and edit via `/run review`.
+- **Lead** sets the profiling mode with `/profiling`, then runs a whole-warehouse `/run` once a quarter to seed first-draft descriptions for every column.
+- **Domain owners** pick up specific schemas in their area and run `/run sales` to refine the descriptions interactively (inside `/run`, choose the review strategy: one-by-one, accept-all-high, accept-all, or reject-all).
+- **Reviewers** spot-check via `/history show <run-id>` and edit via `/analyze review` (or `/history review`).
 - **Anyone** can `/ask` with confidence — the catalog has been built across everyone's contributions.
 
 `/history compare` is invaluable in the multi-person case — when two people produced
@@ -213,7 +213,7 @@ history_store_schema: AMX
 
 1. **Lead and member**: `> /history list` returns the same row count.
 2. **Lead and member**: `> /history show <some-run-id>` returns identical content (down to the SHA-256 of the `descriptions` blob — `/history show --hash`).
-3. **Member**: `> /db inspect` shows `AMX` as a schema with the two `amx_history_*` tables.
+3. **Member**: `> /inspect` shows `AMX` as a schema with the two `amx_history_*` tables.
 
 ## Troubleshooting
 

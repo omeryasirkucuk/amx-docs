@@ -39,8 +39,8 @@ Three collections live inside `~/.amx/chroma/`:
 | Collection | Source | Refreshed by |
 |---|---|---|
 | `db_catalog` | DB tables, columns, existing comments | `/sync` |
-| `documents` | RAG doc profile | `/ingest` |
-| `code_refs` | Code agent profile | `/code-scan` |
+| `documents` | RAG doc profile | `/index` |
+| `code_refs` | Code agent profile | `/code-index` |
 
 `/ask` searches across all three and merges results.
 
@@ -102,14 +102,14 @@ LLM was relying on the DB or the docs.
 > /search status
 Search catalog
   db_catalog: 1,330 entries (last /sync 4 min ago)
-  documents:    412 chunks  (last /ingest 1 hour ago)
-  code_refs:    412 chunks  (last /code-scan 23 min ago)
+  documents:    412 chunks  (last /index 1 hour ago)
+  code_refs:    412 chunks  (last /code-index 23 min ago)
 Embedding model: openai/text-embedding-3-small
 Index store: ~/.amx/chroma  (size: 18.4 MB)
 ```
 
 If any of the three lines say `(never indexed)`, run the corresponding command:
-`/sync` for db_catalog, `/ingest` for documents, `/code-scan` for code_refs.
+`/sync` for db_catalog, `/index` for documents, `/code-index` for code_refs.
 
 ### 5. Full rebuild
 
@@ -143,8 +143,8 @@ Proceed? [y/N]: y
 |---|---|
 | `/apply` (wrote descriptions back to the DB) | `/sync` |
 | Added a new column / table on the DB | `/sync` |
-| Edited `~/.amx/config.yml` to add a doc path | `/ingest` |
-| Edited the codebase | `/code-scan` |
+| Edited `~/.amx/config.yml` to add a doc path | `/index` |
+| Edited the codebase | `/code-index` |
 | Changed `embedding_model:` in YAML | `/search rebuild` |
 | `~/.amx/chroma/` got deleted / corrupted | `/search rebuild` |
 | Switched to a different DB profile | `/sync` (catalog is per-profile) |

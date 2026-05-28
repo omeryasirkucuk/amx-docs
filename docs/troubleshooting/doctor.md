@@ -19,13 +19,6 @@ amx
 > /doctor --debug               # verbose, every probe traced
 ```
 
-If the REPL itself won't start, the same diagnostic also runs as a shell command:
-
-```bash
-amx doctor
-amx doctor --skip-network
-```
-
 ## What each line means
 
 `doctor` streams the same `[Stage]` progress lines that `/run` uses, so each check is
@@ -53,8 +46,7 @@ Python version + path. Warns on < 3.10.
 ```
 
 The schema version of `~/.amx/config.yml` vs what this binary expects. `Config schema too
-new` means the binary is older than the config — upgrade. `Config schema too old` means
-the opposite — AMX migrates on next save.
+new` means the binary is older than the config — upgrade.
 
 ```text
 [FS]       checking permissions on ~/.amx/ ............  ok (0.0 s)
@@ -115,7 +107,7 @@ check failed (exit `1`) so CI can react.
 ### `Multiple amx binaries on PATH`
 
 Use a venv consistently. `which -a amx` shows you every binary; uninstall the ones you
-don't want with `pip uninstall amx` from the offending Python.
+don't want with `pip uninstall amx-cli` from the offending Python.
 
 ### `Config schema too new`
 
@@ -158,12 +150,12 @@ writes — when the backend is back, run `/db history-store` → **Flush pending
 Doctor only tests the **active** DB and LLM profile. To diagnose all profiles individually:
 
 ```text
-/db inspect prod_pg
-/db inspect snow_prod
-/db inspect databricks-prod
+/inspect prod_pg
+/inspect snow_prod
+/inspect databricks-prod
 ```
 
-`/db inspect` reports the backend, capabilities, connection test, visible schemas, and
+`/inspect` reports the backend, capabilities, connection test, visible schemas, and
 table counts — without running any LLM agents.
 
 For LLM profiles:

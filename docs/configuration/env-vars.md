@@ -31,7 +31,7 @@ running CI tests that mustn't pollute the dev machine.
 export AMX_DB_PASSWORD="$DB_PASSWORD"           # CI secret
 export OPENAI_API_KEY="$OPENAI_API_KEY"         # CI secret
 
-> /run sales --profiling-mode metadata --auto-accept-high --apply
+> /run sales
 ```
 
 With these env vars set, the YAML can ship `password: ""` and `api_key: ""` (no secrets
@@ -148,7 +148,7 @@ Equivalent to passing `--debug` to every command in the session.
 
 For any field that has a YAML value, an env var, AND a CLI flag, the order is:
 
-1. **CLI flag** (highest priority — `--db-profile`, `--profiling-mode`, etc.)
+1. **CLI flag** (highest priority — `--db-profile`, etc.)
 2. **Env var** (e.g. `AMX_DB_PASSWORD`)
 3. **YAML value** (`db_profiles.<active>.password`)
 4. **Default** (lowest)
@@ -178,7 +178,7 @@ export AMX_DB_USER="$CI_DB_USER"
 export AMX_DB_PASSWORD="$CI_DB_PASSWORD"
 export OPENAI_API_KEY="$CI_OPENAI_KEY"
 
-> /run --profiling-mode metadata --auto-accept-high --apply
+> /run
 ```
 
 ### One-off scratch profile in a temp dir

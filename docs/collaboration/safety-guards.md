@@ -36,7 +36,7 @@ The `/db` → `/history-store` picker confirms before doing anything destructive
 
 The picker default is always **Status** — the safest, read-only action.
 
-The corresponding direct subcommands (`amx db history-store disable`, `… flush-pending`,
+The corresponding direct subcommands (`/db history-store disable`, `… flush-pending`,
 `… dump-ddl`) skip the confirm — they're for scripts and intentional power-user use.
 
 ## Guard 3 — Every shared row carries attribution

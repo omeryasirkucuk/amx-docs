@@ -52,7 +52,7 @@ If you need to share Studio with a teammate, use SSH port-forwarding —
 |---|---|---|
 | [Overview](overview.md) | `/` and `/overview` | Landing card + dashboard with lifetime tokens, USD cost, success rate, recent runs |
 | [Browse](browse.md) | `/db/:profile/…` or `/cat/:profile/…` | Database → schema → table → column with inline edits and per-asset Generate |
-| [Runs](runs.md) | `/runs` | Filterable list of every `/run`, `/run-apply`, `/generate`, `/ask`, scheduled run |
+| [Runs](runs.md) | `/runs` | Filterable list of every `/run`, `/run-apply`, `/ask`, scheduled run |
 | [Run detail](run-detail.md) | `/runs/:id` | Summary / Results / Scope / Settings tabs, live progress, ReRun, pinned cells |
 | [Compare](compare.md) | `/runs/compare` | Pick 2–4 runs, side-by-side aggregate metrics, per-column grid, winner rings |
 | [Ask](ask.md) | `/ask` | Multi-profile chat agent with sessions, scope dropdown, focus detection, tool-call trace |

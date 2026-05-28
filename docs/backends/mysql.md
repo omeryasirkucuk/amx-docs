@@ -8,7 +8,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `pymysql` and `cryptography` (for `caching_sha2_password`) drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `pymysql` and `cryptography` (for `caching_sha2_password`) drivers are installed on first use (needs network); only DuckDB ships with the base install.
 - A MySQL 8.0+ or MariaDB 10.5+ server reachable from the machine running AMX.
 - A user with `SELECT` on every target schema (`information_schema` access is implicit) and `ALTER` on the schemas you intend to write back to. `PROCESS` is helpful for `SHOW FULL PROCESSLIST` diagnostics but not required.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).
@@ -135,7 +135,7 @@ active_db_profile: prod-mysql
 ## Verify
 
 1. `> /connect` — server version + round-trip latency.
-2. `> /db inspect` — counts of tables, views, procedures, functions, triggers, and events. Distinctive MySQL/MariaDB object types (events, partitions, storage engines) are listed in the inspect output.
+2. `> /inspect` — counts of tables, views, procedures, functions, triggers, and events. Distinctive MySQL/MariaDB object types (events, partitions, storage engines) are listed in the inspect output.
 3. `> /doctor` — driver loaded, profile reachable, comment write-back privilege confirmed.
 
 ## Troubleshooting

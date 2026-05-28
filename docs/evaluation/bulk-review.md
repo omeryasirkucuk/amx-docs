@@ -68,9 +68,7 @@ not destroy a thousand rows by accident.
 
 ## Keyboard navigation
 
-The Results tab is fully keyboard-drivable; the affordances mirror
-the REPL's `/analyze review` shortcuts so muscle memory carries
-across surfaces:
+The Studio Results tab is keyboard-drivable:
 
 | Key | Action |
 |---|---|
@@ -87,6 +85,10 @@ across surfaces:
 
 The cheatsheet (`?`) is the canonical reference; the table above
 is a snapshot of the most-used shortcuts.
+
+In the REPL, `/analyze review` presents each row as a numbered picker:
+type a number to pick a candidate description, `s` to skip the row, or
+`o` to write your own text.
 
 ## Column-level review
 
@@ -132,19 +134,18 @@ before any COMMENT lands.
 
 ## REPL parity
 
-`/analyze review` paginates the same set with **n / p** keys, accepts the
-same status filters via `--status`, and surfaces the same alternatives
-carousel:
+`/analyze review` walks the same set as a numbered picker, one row at a
+time, surfacing the same candidate alternatives:
 
 ```text
-> /analyze review --status pending --kind column --limit 50
+> /analyze review
 
-1/2,148  public.users.email      [Low]   2 alt
-  AMX → Email address of the registered user used for transactional notifications.
-  alt 1) Email address of the user account, used for password reset and notifications.
-  alt 2) Contact email captured at sign-up.
+1/2,148  public.users.email      [Low]
+  1) Email address of the registered user used for transactional notifications.
+  2) Email address of the user account, used for password reset and notifications.
+  3) Contact email captured at sign-up.
 
-Keys: [a]ccept · [e]dit · [s]kip · [1/2/3] pick alt · [n]ext · [p]rev · [q]uit
+Type a number to pick a description, "s" to skip, or "o" to write your own.
 ```
 
 `/history review <run_id>` is the post-hoc equivalent — same UI, but

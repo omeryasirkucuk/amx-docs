@@ -86,7 +86,7 @@ AMX runs entirely in your environment. **No SaaS account, no data leaves your ne
 
 -   [**Human-in-the-loop review**](../concepts/human-in-the-loop.md)
 
-    The review wizard, bulk-accept, write-back, and the full audit trail.
+    The interactive review strategies, write-back, and the full audit trail.
 
 </div>
 
@@ -146,7 +146,7 @@ AMX runs entirely in your environment. **No SaaS account, no data leaves your ne
 
 -   [**BigQuery**](../backends/bigquery.md)
 
-    Project + dataset, byte-scan controls for large tables.
+    Project + dataset; native column descriptions for large tables.
 
 -   [**MySQL · Oracle · SQL Server · Redshift · ClickHouse · DuckDB**](../backends/index.md)
 

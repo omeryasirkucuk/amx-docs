@@ -1,6 +1,6 @@
 # Multi-profile scoping
 
-Every AMX command that mutates metadata — `/analyze run`, `/generate`,
+Every AMX command that mutates metadata — `/analyze run`, `/run`,
 `/analyze schedule add`, `/ask` retrieval, the Studio Browse and `/runs/new`
 pages — narrows its work to a **scope**. A scope is a sequence of picks:
 which DB profile, which database / catalog, which schema, which table, which

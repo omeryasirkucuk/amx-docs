@@ -1,7 +1,7 @@
 # Pending
 
 `/pending` is Studio's review queue — the staging surface for
-descriptions that have been drafted (by `/run`, `/generate`,
+descriptions that have been drafted (by `/run`,
 `/rerun`, or hand-edits from [Browse](browse.md)) but not yet written
 back to the database.
 

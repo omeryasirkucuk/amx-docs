@@ -57,7 +57,7 @@ Chroma store, and generates suggestions backed by those snippets.
 
 ### Document ingestion
 
-`/ingest` walks each configured root, splits files into chunks (`langchain-text-splitters`),
+`/index` walks each configured root, splits files into chunks (`langchain-text-splitters`),
 embeds them, and upserts into Chroma. Default embeddings are MiniLM (offline). Switch to
 OpenAI-compatible or local sentence-transformers via `/embeddings docs <kind>`. The
 code-agent side is independent — change it with `/embeddings code <kind>`.
@@ -109,11 +109,11 @@ ETL repo). The agent labels them as such so the merge step can weight them appro
 ### Cache
 
 `~/.amx/code_cache/<slug>/` stores a manifest plus serialised scan results so `/run` does
-not re-walk the repo every time. Use `--code-refresh` or `/code-refresh` after the tree
+not re-walk the repo every time. Use `/code-index` after the tree
 changes; refresh clears the active profile's cache **and** semantic chunks.
 
 GitHub document and codebase sources are cloned into temporary directories only for the
-active scan/ingest operation, then removed.
+active index operation, then removed.
 
 ## Orchestrator
 

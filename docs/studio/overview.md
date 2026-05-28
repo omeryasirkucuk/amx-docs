@@ -18,7 +18,7 @@ browser. It is intentionally low-density:
   Each card greys out with a reason text when its preconditions aren't
   met (e.g. "No DB profile configured" on Browse and New run).
 - **Recent activity** — a five-row excerpt of the most recent runs across
-  every command (run, run-apply, generate, ask, schedule), each row
+  every command (run, run-apply, ask, schedule), each row
   navigable to its [Run detail](run-detail.md) page.
 - **Footer link** to the [Overview dashboard](#overview-dashboard) for
   token + cost detail.

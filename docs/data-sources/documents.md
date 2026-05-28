@@ -34,12 +34,12 @@ freely; AMX deduplicates internally.
 ### 2. Ingest the files
 
 ```text
-> /ingest
+> /index
 [1/4] Walking sources ...........................  ok (3 paths, 47 files discovered)
 [2/4] Extracting text ...........................  ok (1.4M chars across 47 files)
 [3/4] Chunking ..................................  ok (412 chunks, 800-1200 tokens each)
 [4/4] Embedding (openai/text-embedding-3-small)..  ok (412 chunks, $0.012, 6.2 s)
-✓ /ingest finished. Profile 'data-handbook' is ready for /ask and /run RAG.
+✓ /index finished. Profile 'data-handbook' is ready for /ask and /run RAG.
 ```
 
 Chunks are stored in the same Chroma store as the database catalog (see
@@ -49,7 +49,7 @@ source path + page number so citations resolve to the original file.
 ### 3. Inspect what got chunked
 
 ```text
-> /scan
+> /index
 Profile: data-handbook (active)
 3 source paths · 47 files · 412 chunks · 1.2 MB embeddings
 
@@ -137,23 +137,20 @@ glossary entries jump straight to `high` confidence.
 No results for 'retention policy'.
 
 Possible reasons (in order of likelihood):
-  1. The phrase isn't in any indexed chunk. Try a broader query or check /scan.
-  2. The relevant file isn't indexed. /scan lists files; add the missing path with /add-doc-profile.
-  3. The chunk size is too small for the phrase to appear in one chunk. Tune /ingest --chunk-size.
-  4. Embedding-model mismatch since last /ingest. Run /ingest --rebuild.
+  1. The phrase isn't in any indexed chunk. Try a broader query or check /index.
+  2. The relevant file isn't indexed. /index lists files; add the missing path with /add-doc-profile.
+  3. Embedding-model mismatch since last /index. Re-run /index.
 ```
 
 For each case:
 
 - **Case 1** — re-phrase. Embeddings match concepts, not exact strings, but a very
   abstract query still needs at least *some* lexical anchor.
-- **Case 2** — `/scan` lists every indexed file. If your retention policy lives in an
-  unincluded folder, `/add-doc-profile` extends the profile and `/ingest` picks up the
+- **Case 2** — `/index` lists every indexed file. If your retention policy lives in an
+  unincluded folder, `/add-doc-profile` extends the profile and `/index` picks up the
   new files (only the new ones — incremental).
-- **Case 3** — by default chunks are 800–1200 tokens. For documents where one concept
-  spans many pages, raise `chunk_size` in YAML; for terse glossaries, lower it.
-- **Case 4** — when you change the embedding model, the existing index can't be queried
-  with the new model. `/ingest --rebuild` drops and re-embeds everything.
+- **Case 3** — when you change the embedding model, the existing index can't be queried
+  with the new model. Re-run `/index` to re-embed everything.
 
 ## Sample config
 
@@ -164,25 +161,25 @@ doc_profiles:
       - /Users/me/Documents/data-platform-handbook.pdf
       - /Users/me/Documents/data-warehouse-runbook.docx
       - /Users/me/internal-docs/data-glossary/
-    chunk_size: 1000          # tokens
-    chunk_overlap: 100        # tokens overlap between adjacent chunks
-    extensions: [".pdf", ".docx", ".md", ".txt", ".xlsx"]
 active_doc_profile: data-handbook
 ```
 
+Chunking and file-extension handling are built in; there are no per-profile
+`chunk_size`, `chunk_overlap`, or `extensions` keys.
+
 ## Verify
 
-1. `> /scan` — confirms files / chunks counts and top topics.
+1. `> /index` — confirms files / chunks counts and top topics.
 2. `> /search-docs "<known phrase>"` — confirms retrieval works for a phrase you definitely indexed.
-3. `> /run <table> --debug | grep RAG` — confirms the RAG agent ran and contributed evidence.
+3. `> /run <table>` — the `[RAG]` log lines confirm the RAG agent ran and contributed evidence.
 
 ## Troubleshooting
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `/ingest` skips PDFs silently | `pypdf` (or the chosen PDF lib) couldn't parse — encrypted / scanned-image PDF | OCR the PDF first, OR `/ingest --debug` to see the per-file failures |
-| `/search-docs` returns garbage on a specific phrase | Embedding model is too small for technical terms | Switch to `text-embedding-3-large` and `/ingest --rebuild` |
+| `/index` skips PDFs silently | `pypdf` (or the chosen PDF lib) couldn't parse — encrypted / scanned-image PDF | OCR the PDF first, then re-run `/index` to see the per-file results |
+| `/search-docs` returns garbage on a specific phrase | Embedding model is too small for technical terms | Switch to `text-embedding-3-large` and re-run `/index` |
 | Citations point to the wrong page in a PDF | PDF has unusual page numbering (front matter unnumbered) | Cosmetic — citations use the absolute page number; cross-check against the file's TOC |
-| `/ingest` is slow on every run | Source folder is on a network mount with high stat() latency | Move sources locally or to a faster mount; AMX touches every file's mtime to decide what to re-ingest |
-| Out-of-disk after several rebuilds | Chroma index isn't garbage-collected on incremental rebuilds | `/ingest --rebuild` (drops the old index) or `rm -rf ~/.amx/chroma` and re-`/ingest` |
+| `/index` is slow on every run | Source folder is on a network mount with high stat() latency | Move sources locally or to a faster mount; AMX touches every file's mtime to decide what to re-ingest |
+| Out-of-disk after several rebuilds | Chroma index isn't garbage-collected on incremental rebuilds | Re-run `/index` (drops the old index) or `rm -rf ~/.amx/chroma` and re-run `/index` |
 | `/ask` answer doesn't use the docs even though they're indexed | Active doc profile isn't the one ingested | `> /use-doc data-handbook` then `> /ask …` |

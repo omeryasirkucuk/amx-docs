@@ -56,7 +56,6 @@ Top-level commands:
   /code          Code-source management
   /metadata      Inspect introspection output
   /run           Run agents on a scope
-  /generate      Single-shot draft for one asset address
   /rerun         Re-execute one or many run_results rows with original context
   /apply         Write reviewed comments back to the DB
   /max-tokens    Show or set the per-call output budget on the active LLM profile
@@ -110,17 +109,23 @@ Use this when you're doing a lot of DB-related work in a row and want shorter ty
 
 ### 4. Save and resume sessions
 
-```text
-> /save
-✓ Session saved: ~/.amx/sessions/2026-05-03_15-42.amxsession
+Conversation sessions are managed with the `/session` group. List the sessions
+AMX has persisted, then resume one to continue where you left off:
 
-# Later, in a new shell:
-amx --resume 2026-05-03_15-42
+```text
+> /session list
+ID    Started      Last active   State    Turns  Title             First question
+→ 42  2026-05-03   2026-05-03    active   8      (auto)            which tables hold customer data?
+  41  2026-05-02   2026-05-02    closed   3      Pricing tables    list every pricing-related table
+
+> /session resume 42
+✓ Resumed session 42 — prior turns flow back to the agent as context
 ```
 
-Session save captures the active profiles, current scope (last `/run` table list), and
-the in-memory review queue — so you can step away from a half-reviewed run and pick up
-exactly where you left off.
+A resumed session restores the conversation history so follow-ups resolve
+against prior turns. Start a fresh one with `/session new` and close the
+active one with `/session end`. See [`/session`](ask-and-search.md#5-manage-chat-sessions)
+for the full lifecycle.
 
 ### 5. Get unstuck
 
@@ -212,8 +217,7 @@ the root prompt.
 | `/remove-doc-profile <name>` | Delete a doc profile |
 | `/doc-link <doc-profile> [--db NAME…] [--clear]` | Link a doc profile to one or more DB profiles |
 | `/doc-add <profile> <file>… [--no-ingest]` | Copy files into `~/.amx/uploads/<profile>/` |
-| `/scan [--doc-profile NAME] [paths…]` | Scan documents into the index |
-| `/ingest [--doc-profile NAME] [--refresh] [paths…]` | Ingest scanned documents (embed + persist) |
+| `/index [--doc-profile NAME] [--refresh] [paths…]` | Ingest documents into the index (embed + persist) |
 | `/search-docs <text>` | Similarity search over the doc index (no LLM, embedding-only) |
 | `/doc-analyze [TABLE…]` | Run the RAG agent standalone |
 | `/export-doc-report [FILE]` | Export a doc-RAG summary to Markdown |
@@ -227,12 +231,10 @@ the root prompt.
 | `/add-code-profile` | Create / update a code profile |
 | `/remove-code-profile <name>` | Delete a code profile |
 | `/code-link <code-profile> [--db NAME…] [--clear]` | Link a code profile to one or more DB profiles |
-| `/code-scan [path] [--code-profile NAME]` | Scan a codebase and persist the index |
+| `/code-index [path] [--code-profile NAME] [--refresh]` | Index a codebase and persist the semantic index (`--refresh` clears the cache and rebuilds) |
 | `/code-search <text> [--code-profile NAME]` | Similarity search over the code index |
-| `/code-refresh` | Clear cache + rebuild the semantic code index |
-| `/code-results` | Show last cached scan results |
-| `/code-analyze [TABLE…]` | Run the Code Agent standalone |
-| `/export-code-report [FILE]` | Export the scan report to Markdown |
+| `/code-results [TABLE…]` | Show last cached index results / run the Code Agent standalone |
+| `/export-code-report [FILE]` | Export the index report to Markdown |
 
 ### `/metadata` — universal metadata editing
 
@@ -251,7 +253,6 @@ the root prompt.
 | `/run [ASSET…] [--schema…] [--apply] [--db-profile NAME…]` | Run agents over a scope (database / schema / asset / column) |
 | `/run-apply [ASSET…] [--schema…] [--table…]` | Run + apply in one shot |
 | `/apply` | Write pending comments to the database |
-| `/generate <address>` | Single-shot draft for one asset address |
 | `/rerun <run_id>[.schema.table.column]` | Re-execute a result row with original scope, profile cache, and prompt detail preserved |
 | `/review [<run_id>] [--filter REGEX] [--sort KEY] [--group-by schema\|table] [--only-unreviewed] [--only-low-conf]` | Review suggestions with filtering / sorting |
 | `/schedule add\|list\|show\|pause\|resume\|rm\|run-now\|tick\|status\|install-daemon\|uninstall-daemon` | Scheduled-run management |

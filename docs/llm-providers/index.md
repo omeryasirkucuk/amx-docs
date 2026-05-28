@@ -90,7 +90,7 @@ length, and the provider's per-token rate at the time.
 
 AMX no longer makes you guess. Every LLM call reports both **tokens
 and USD** at every surface that triggered it — `/run`, `/run-apply`,
-`/generate`, `/ask`, the Studio run progress header, and the lifetime
+`/ask`, the Studio run progress header, and the lifetime
 cost card on the Studio Overview. Cost comes from a versioned
 per-(provider, model) pricing table that AMX caches on disk with a
 freshness timestamp; the Studio top bar shows a pricing-cache

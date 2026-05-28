@@ -8,7 +8,7 @@ that fits the cluster, and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `redshift_connector` and `sqlalchemy-redshift` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `redshift_connector` and `sqlalchemy-redshift` drivers are installed on first use (needs network); only DuckDB ships with the base install.
 - A Redshift cluster (Provisioned) or workgroup (Serverless), reachable from the machine running AMX.
 - A user (or IAM principal mapped to a Redshift user) with `USAGE` on the target schema, `SELECT` on its tables, and `COMMENT` on the objects you intend to write back to. `pg_user` style ownership transfers are not required — just `COMMENT` privileges.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).
@@ -142,7 +142,7 @@ cluster.
 ## Verify
 
 1. `> /connect` — server version + latency. Latency over a couple of seconds usually means the leader node is busy or your client IP is going through a NAT gateway over a Direct Connect link.
-2. `> /db inspect` — table / view / matview counts plus distinctive types (datashares, external tables). Spectrum schemas are listed but flagged as read-only.
+2. `> /inspect` — table / view / matview counts plus distinctive types (datashares, external tables). Spectrum schemas are listed but flagged as read-only.
 3. `> /doctor` — confirms drivers loaded, profile reachable, and (for IAM auth) that AWS credentials resolve.
 
 ## Troubleshooting

@@ -77,18 +77,23 @@ batch_abc123def456 [openai/gpt-4o-mini]
   state: completed
   duration: 9 min 12 s
   requests: 64 total · 64 finished · 0 failed
-  → results merged into review queue: /run review
+  → results merged into the review queue
 ```
 
 ### 4. Review and apply
 
+When the batch results land, `/run` enters its interactive review the same way a
+live run does — you pick a review strategy (one-by-one / accept-all-high /
+accept-all / reject-all) at the prompt:
+
 ```text
-> /run review
 1,283 columns drafted · high: 1,021 · medium: 198 · low: 64
 Review row 1/64 (low confidence): sales.customer.x_legacy_status
-  draft: "Legacy status flag preserved during the 2018 migration; values 0–7 map to..."
-  [A]ccept   [E]dit   [1]–[3] alternatives   [S]kip   [B]ack
-> A
+  1) "Legacy status flag preserved during the 2018 migration; values 0–7 map to..."
+  2) "..."
+  3) "..."
+Pick a description by number, "s" to skip, or "o" to type your own:
+> 1
 ...
 
 > /apply
@@ -97,8 +102,8 @@ Write 1,283 comment(s) to db-prod/sales? [y/N]: y
 ✓ /apply finished. Audit trail: /history show <run-id>
 ```
 
-By default AMX walks you through low-confidence rows first; medium and high are
-bulk-accepted unless you pass `--review-all`.
+If you closed the session before reviewing, pick the drafts back up later with
+`/analyze review` or `/history review` instead of re-running the batch.
 
 ## Cost / time trade-offs
 

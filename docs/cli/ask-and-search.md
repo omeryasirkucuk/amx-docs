@@ -116,7 +116,7 @@ Cited: (7 column entries elided)
 counted separately: 1).
 
 Cited:
-  - /db inspect output (sales schema summary)
+  - /inspect output (sales schema summary)
 ```
 
 #### Shape 5 — Pathfinding (joins)

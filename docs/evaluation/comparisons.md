@@ -120,7 +120,7 @@ ten major analytical and OLTP databases from a single CLI.**
 | Dimension | AMX | Snowflake Cortex | BigQuery Gemini | Databricks AI Comments | Atlan / Collibra / DataHub Cloud | OpenMetadata |
 |---|---|---|---|---|---|---|
 | Tables per single run | 1000+ | 5000+ (one SQL) | per-table | 1 (UI click-through) | per-asset | 1 (manual) |
-| Cost control | per-token tracking + `--profiling-mode metadata` | warehouse credits | BQ slot usage | UC compute | per-asset subscription | self-hosted |
+| Cost control | per-token tracking + `/profiling` (metadata-only mode) | warehouse credits | BQ slot usage | UC compute | per-asset subscription | self-hosted |
 | Cache / re-run optimisation | `~/.amx/history.db` (skips already-documented) | none | none | none | none | none |
 | Batch API support (parallel cheap mode) | ✓ (OpenAI / Anthropic batch) | partial | partial | partial | — | — |
 | Resume on failure | ✓ | manual | manual | manual | n/a | manual |

@@ -1,7 +1,7 @@
 # Runs
 
 `/runs` lists every recorded run across every command kind — `/run`,
-`/run-apply`, `/generate`, `/rerun`, `/ask`, and scheduled invocations.
+`/run-apply`, `/rerun`, `/ask`, and scheduled invocations.
 It is the entry point for inspecting a finished run, picking runs to
 [Compare](compare.md), or cancelling a run that's still in flight.
 
@@ -13,7 +13,7 @@ A row of chips above the table filters by command kind:
 |---|---|
 | **Analyze** | `/run` and `/run-apply` |
 | **Re-run** | `/rerun` invocations |
-| **Generate** | `/generate` single-shot drafts |
+| **Generate** | `/run` single-shot drafts |
 | **Ask** | `/ask` chat turns persisted as runs |
 | **Schedule** | Daemon-fired scheduled runs |
 | **All activity** | Everything (no filter) |

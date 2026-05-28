@@ -172,7 +172,7 @@ dialect-translated for the active DB profile's backend.
 | Action on machine A | Visible on machine B after |
 |---|---|
 | `/run` (creates run row) | Immediately (next `/history list` call) |
-| Review wizard (updates rows) | After `/history sync` on B (or B's next `/history list`) |
+| Review (the numbered picker, updates rows) | After `/history sync` on B (or B's next `/history list`) |
 | `/apply` (sets `applied=1`) | Immediately on B |
 | Local edit to `~/.amx/history.db` | Never — the local file is no longer authoritative |
 

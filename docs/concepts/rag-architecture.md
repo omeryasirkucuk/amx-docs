@@ -70,7 +70,7 @@ and `embedding_dim` in Chroma metadata on creation. Reopening with a
 different identity raises `EmbeddingProviderMismatch` (Document RAG),
 `CodeEmbeddingMismatch` (Code RAG), or `CollectionIdentityMismatch`
 (Catalog Search) — never silent re-embedding. Recovery commands per
-pipeline: `/docs reindex`, `/code-refresh`, `/search rebuild`.
+pipeline: `/docs reindex`, `/code-index`, `/search rebuild`.
 
 ### 2. Chunking
 
@@ -240,7 +240,7 @@ dispatcher seam for users with corpora that exercise them:
   config changes.
 - **Format-specific splitters for `.py` / `.csv` / `.pdf`.** Reuse
   the existing AST chunker for `.py` files entering via
-  `/docs ingest`; row-group splitter for CSV; layout-aware PDF.
+  `/docs index`; row-group splitter for CSV; layout-aware PDF.
 
 Two larger ideas were explicitly evaluated and dropped:
 

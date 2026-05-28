@@ -8,7 +8,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `psycopg[binary]` driver is included by default — no extra extras required.
+- AMX installed (`pip install amx-cli`). The `psycopg[binary]` driver is installed on first use (needs network); only DuckDB ships with the base install.
 - A PostgreSQL 12+ server reachable from the machine running AMX.
 - A database role with `CONNECT` on the database, `USAGE` on every target schema, `SELECT` on every target table, and `COMMENT` on the objects you intend to write back to. Read-only is enough for everything except `/apply`.
 - An active LLM profile (or skip ahead and add one with `/add-llm-profile`).
@@ -147,7 +147,7 @@ warehouse-cost-sensitive scans (no row scans at all).
 ## Verify
 
 1. `> /connect` — reports server version + round-trip latency. Anything beyond a couple of seconds is usually a DNS or TLS handshake delay.
-2. `> /db inspect` — server-side counts (databases, schemas, tables, views, materialized views) plus which `COMMENT ON` rows already have text.
+2. `> /inspect` — server-side counts (databases, schemas, tables, views, materialized views) plus which `COMMENT ON` rows already have text.
 3. `> /doctor --skip-network` then re-run without the flag — confirms drivers loaded and the active profile reaches the server.
 
 ## Troubleshooting

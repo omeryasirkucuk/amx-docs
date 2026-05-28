@@ -8,7 +8,7 @@ and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `clickhouse-connect` and `clickhouse-sqlalchemy` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `clickhouse-connect` and `clickhouse-sqlalchemy` drivers are installed on first use (needs network); only DuckDB ships with the base install.
 - A ClickHouse 22.8+ server reachable from the machine running AMX.
 - A user with `SELECT` on the target databases (`information_schema` access is implicit) and `ALTER` on the tables you intend to write back to. ClickHouse comments are part of the table DDL, so write-back requires `ALTER`.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).
@@ -137,7 +137,7 @@ and the port is `8443`.
 ## Verify
 
 1. `> /connect` — server version + latency. ClickHouse usually returns under ~100 ms; sustained higher values often mean the load balancer is in a different region from the client.
-2. `> /db inspect` — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.
+2. `> /inspect` — counts of tables, materialized views, dictionaries, and UDFs. Engine breakdown (MergeTree variants) is included.
 3. `> /doctor` — driver loaded, profile reachable, write-back grants confirmed.
 
 ## Troubleshooting

@@ -1,0 +1,20 @@
+name: docs-lint
+
+# Fail fast when documentation reintroduces a renamed / nonexistent AMX
+# command (the scan/ingest/refresh -> /index, /db inspect -> /inspect drift
+# class). Pure-stdlib check, no dependencies.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  doc-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check docs for renamed/nonexistent commands
+        run: python3 scripts/check_doc_commands.py

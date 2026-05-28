@@ -72,10 +72,10 @@ on the next `/run` (or you can open it directly via `/history review <run_id>`).
 
 A common pattern for very large schemas:
 
-1. **Inventory first.** `/db profiling metadata; /run sap_s6p --batch` — overnight,
+1. **Inventory first.** `/profiling metadata; /run sap_s6p --batch` — overnight,
    minimum impact on the warehouse. Get a description for every table that has a useful
    name.
-2. **Targeted high-quality.** Switch to `/db profiling sampled` and `/use-llm openai_main`
+2. **Targeted high-quality.** Switch to `/profiling sampled` and `/use-llm openai_main`
    (full-size model). `/run sap_s6p.<critical_tables> --batch` — overnight again, this
    time with proper profiling and the better model.
 3. **Manual cleanup.** Synchronous `/run sap_s6p.<one_table>` for the dozen tables that
@@ -87,9 +87,9 @@ This pattern lets you cover a huge schema while keeping high-stakes review work 
 
 While the batch is running, you can:
 
-- Ingest new documents (`/ingest`) — they'll be in the catalog by the time the review
+- Ingest new documents (`/index`) — they'll be in the catalog by the time the review
   opens.
-- Scan a fresh code repo (`/code-scan`) — same.
+- Scan a fresh code repo (`/code-index`) — same.
 - Run `/ask` queries — they hit the catalog, not the LLM dispatch path.
 - Submit another batch to a different LLM profile — they run in parallel.
 

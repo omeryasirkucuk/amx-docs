@@ -9,7 +9,7 @@ without an unbounded byte scan.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `google-cloud-bigquery` and `sqlalchemy-bigquery` drivers are included by default.
+- AMX installed (`pip install amx-cli`). The `google-cloud-bigquery` and `sqlalchemy-bigquery` drivers are installed on first use (needs network); only DuckDB ships with the base install.
 - A GCP project with the BigQuery API enabled.
 - One of:
     - **ADC (recommended for laptops / GKE / Cloud Run)** — `gcloud auth application-default login` already run, OR a workload-identity binding in place.
@@ -88,20 +88,19 @@ sales_curated   customer_address  TABLE   2,450,118    0.9       no
 sales_curated   inventory_daily   TABLE   45,318,234   28.2      yes
 ```
 
-`size_gb` is the on-disk billable size, not row count. AMX uses it to refuse `full`-mode
-profiling on tables that would scan more than your `max_bytes_billed` setting.
+`size_gb` is the on-disk billable size, not row count. Use it to decide which tables are
+small enough for a `full`-mode scan and which should stay on `sampled` or `metadata`.
 
 ### 6. Pick a profiling mode that fits your byte budget
 
 ```text
-> /db profiling-mode sampled
+> /profiling sampled
 ✓ Active mode → sampled (TABLESAMPLE SYSTEM, 5000 rows)
 
-> /db inspect
+> /inspect
 Active backend: bigquery (acme-analytics-prod / sales_curated)
 Profiling mode: sampled
 Estimated bytes per /run sweep: ~120 MB across 47 tables
-Max bytes billed (configured): 10 GB
 ```
 
 Recommended modes for BigQuery:
@@ -138,14 +137,13 @@ db_profiles:
     credentials_path: ""           # ADC; or "/etc/gcp/sa.json" for a key file
     profiling_mode: sampled
     profiling_sample_size: 5000
-    max_bytes_billed: 10737418240  # 10 GB safety net
 active_db_profile: prod-bq
 ```
 
 ## Verify
 
 1. `> /connect` — reports the active project and the resolved ADC source. If the line reads `ADC: none` you have neither user creds nor a key file; re-run `gcloud auth application-default login` or set `credentials_path:`.
-2. `> /db inspect` — shows the configured `max_bytes_billed` ceiling so you know the safety net is in place before the first `/run`.
+2. `> /inspect` — shows the active profiling mode and the estimated bytes per `/run` sweep so you know roughly how much will be scanned before the first `/run`.
 3. `> /doctor` — checks the BigQuery driver loaded and the profile is reachable (a 401/403 there usually means the IAM grants are missing).
 
 ## Troubleshooting
@@ -157,4 +155,4 @@ active_db_profile: prod-bq
 | `403 Access Denied: Table … User does not have bigquery.tables.update` | Account/SA can read but not write descriptions | Grant `roles/bigquery.metadataEditor` on the dataset |
 | `Quota exceeded: Your project exceeded quota for free query bytes scanned` | Default project has the free-tier ceiling | Switch to a billed project, or set `profiling_mode: metadata` for the discovery sweep |
 | `400 Cannot read non-existent column …` mid-run | Sampled rows from a partition with a different schema | Run with `profiling_mode: metadata` first to confirm column lists per partition; then re-run on the latest partition explicitly |
-| `Bytes billed exceeded the maximum (10737418240)` | A `full`-mode `/run` hit your `max_bytes_billed` ceiling | Switch the table to `sampled` or raise the ceiling for the duration of the sweep |
+| A `full`-mode `/run` scans far more bytes than expected | Large table profiled in `full` mode | Switch the table to `sampled` or `metadata` with `/profiling` before the sweep |

@@ -9,7 +9,7 @@ applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `oracledb` driver (modern replacement for `cx_Oracle`) is included by default. AMX uses **thin mode** by default — no Oracle Instant Client install required.
+- AMX installed (`pip install amx-cli`). The `oracledb` driver (modern replacement for `cx_Oracle`) is installed on first use (needs network); only DuckDB ships with the base install. AMX uses **thin mode** by default — no Oracle Instant Client install required.
 - An Oracle 12c+ database reachable from the machine running AMX.
 - A user with `CREATE SESSION` and read access to the catalog views (`SELECT_CATALOG_ROLE` or explicit grants on `ALL_TABLES`, `ALL_TAB_COLUMNS`, etc.) and `COMMENT ANY TABLE` on the schemas you intend to write back to. Read-only is enough for everything except `/apply`.
 - An active LLM profile (or skip ahead with `/add-llm-profile`).
@@ -157,7 +157,7 @@ db_profiles:
 ## Verify
 
 1. `> /connect` — server version, mode (thin / thick), and latency.
-2. `> /db inspect` — counts of tables, views, materialized views, packages, procedures, triggers, sequences, synonyms, and UDTs. Materialized views and packages are first-class on Oracle.
+2. `> /inspect` — counts of tables, views, materialized views, packages, procedures, triggers, sequences, synonyms, and UDTs. Materialized views and packages are first-class on Oracle.
 3. `> /doctor` — driver loaded, profile reachable, write-back grants confirmed.
 
 ## Troubleshooting

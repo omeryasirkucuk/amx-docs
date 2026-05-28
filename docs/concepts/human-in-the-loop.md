@@ -13,7 +13,7 @@ syncs from your information schema.
 
 The review wizard makes the hand-off explicit:
 
-- **Per-column decision** — accept, pick alternative, write your own, skip.
+- **Per-column decision** — type a number to pick a description, write your own, or skip.
 - **Provenance visible** — every suggestion shows the evidence behind it (DB profile, code
   references, doc snippets).
 - **Confidence calibrated** — logprob-driven `high` / `medium` / `low` bands so you can scan
@@ -28,27 +28,23 @@ For each column AMX shows:
 ```text
 sap_s6p.t001.audat — column 7 of 17
 
-  ▶ Document date. Calendar date the source business event was recorded;
-    distinct from posting date (BUDAT) which controls the accounting period.
-    confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+  1. Document date. Calendar date the source business event was recorded;
+     distinct from posting date (BUDAT) which controls the accounting period.
+     confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+  2. Audit date. Timestamp of the most recent audit run on this row.
+     confidence: low · logprob: 0.42 · sources: profile only
+  3. Document creation date. Same as ERFDAT in adjacent SAP tables.
+     confidence: medium · logprob: 0.66 · sources: docs
 
-  Alternatives:
-    2. Audit date. Timestamp of the most recent audit run on this row.
-       confidence: low · logprob: 0.42 · sources: profile only
-    3. Document creation date. Same as ERFDAT in adjacent SAP tables.
-       confidence: medium · logprob: 0.66 · sources: docs
-
-  [A]ccept  [1-3] Pick alternative  [W]rite your own  [S]kip  [Q]uit
+  Pick a description [1-3], "o" to write your own, "s" to skip:
 ```
 
 Decisions:
 
-- **Accept** writes the top suggestion to the staging area for `/apply`.
-- **Pick alternative** swaps in alternative N as the staged description.
-- **Write your own** drops you into a multi-line editor; whatever you type is staged.
-- **Skip** records that you reviewed this column and chose not to comment it. AMX will not
-  re-suggest unless you explicitly re-run the column.
-- **Quit** ends the review without losing what you've already accepted.
+- **Pick a number** stages that description.
+- **`o` (your own)** drops you into a multi-line editor; whatever you type is staged.
+- **`s` (skip)** records that you reviewed this column and chose not to comment it. AMX will
+  not re-suggest unless you explicitly re-run the column.
 
 ## Bulk accept
 

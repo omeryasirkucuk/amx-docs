@@ -111,7 +111,7 @@ def infer_metadata(
 ```
 
 One-call programmatic metadata inference for a single table. Skips the interactive
-review wizard — returns one `InferenceResult` per produced suggestion (table-level + per
+review step — returns one `InferenceResult` per produced suggestion (table-level + per
 column).
 
 ```python
