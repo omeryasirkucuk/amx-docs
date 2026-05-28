@@ -287,6 +287,33 @@ the root prompt.
 | `/rollback <run_id>` | Undo an `/apply`, restoring the prior comment text |
 | `/compare [--last N] [run_ids…] [--schema SCHEMA] [--table TABLE] [--by DIMENSION]` | Compare past runs side-by-side |
 
+### `/pages` — composed documentation pages
+
+| Command | Purpose |
+|---|---|
+| `/pages new [--title …] [--intent …] [--intent-template SLUG] [--asset KIND:REF …] [--source PATH …] [--no-generate]` | Create a new documentation page; wizard when flags omitted. See [Pages](pages.md). |
+| `/pages list` | List active pages with status and last update. |
+| `/pages show <page_id>` | Print the markdown body to stdout. |
+| `/pages edit <page_id> [--note …]` | Open in `$EDITOR`, save as new revision. |
+| `/pages export <page_id> --format md\|pdf [--out PATH]` | Render the current revision as Markdown or PDF. |
+| `/pages delete <page_id> [--purge]` | Soft-delete (`--purge` to hard-delete). |
+| `/pages assign-profile [slug] [--profile NAME]` | Scope a page to a DB profile for team-scoped filtering. |
+
+### `/admin` — workspace administration (shared mode)
+
+`/admin` only operates on workspaces with a shared history store
+enabled. See [Workspace admin](admin.md).
+
+| Command | Purpose |
+|---|---|
+| `/admin members` | List all members with role, last-seen, revocation status, and version. |
+| `/admin promote [USERNAME]` | Promote a member to admin (wizard when bare). |
+| `/admin demote [USERNAME]` | Demote an admin to viewer (last-admin invariant enforced). |
+| `/admin revoke [USERNAME]` | Block a member from future connections. |
+| `/admin unrevoke [USERNAME]` | Reinstate a revoked member. |
+| `/admin audit [-n LIMIT] [--actor USER] [--action NAME]` | Show recent admin audit events. |
+| `/admin sessions [--since ISO] [-n LIMIT]` | Show recent session-connection events. |
+
 ## Verify
 
 1. `> /help` — full command list, grouped by namespace.

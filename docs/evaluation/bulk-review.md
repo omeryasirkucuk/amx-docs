@@ -44,6 +44,50 @@ Every filter / sort / group decision is encoded in the URL on the Studio
 side, so a teammate can paste a link to "the Low-confidence rows on
 sales.orders, sorted by description length" and land on the same view.
 
+## Multi-select + bulk actions
+
+Each row has a checkbox in the leftmost column; a header checkbox
+toggles every visible row. Once at least one row is selected, the
+header surfaces a **Selected: N** chip and a bulk-action menu:
+
+- **Accept selected** — applies the AMX candidate as-is to every
+  selected row.
+- **Skip selected** — marks every selected row as skipped without
+  touching the candidate.
+- **Re-run selected** — fires a fresh draft for the selected rows
+  (opens the same Re-Run modal documented on
+  [Studio → Run detail](../studio/run-detail.md#rerun)).
+- **Clear edits on selected** — drops any inline edits the reviewer
+  made and reverts to the AMX candidate.
+
+Selections are bound to the filtered set: pick "Pending + Low", check
+the header box, and the action applies only to the rows that
+matched the filter. A confirmation modal prints the row count and
+the target DB before any mutation lands so a stray bulk Accept can
+not destroy a thousand rows by accident.
+
+## Keyboard navigation
+
+The Results tab is fully keyboard-drivable; the affordances mirror
+the REPL's `/analyze review` shortcuts so muscle memory carries
+across surfaces:
+
+| Key | Action |
+|---|---|
+| `j` / `k` (or arrows) | Move row cursor down / up |
+| `Enter` | Open the focused row's inline editor |
+| `a` | Accept the focused row |
+| `s` | Skip the focused row |
+| `e` | Edit (open inline editor; same as `Enter`) |
+| `1` / `2` / `3` | Pick alternative 1 / 2 / 3 for the focused row |
+| `x` | Toggle multi-select on the focused row |
+| `Shift + x` | Range-select between the cursor and the last toggled row |
+| `n` / `p` | Next / previous page |
+| `?` | Open shortcut cheatsheet |
+
+The cheatsheet (`?`) is the canonical reference; the table above
+is a snapshot of the most-used shortcuts.
+
 ## Column-level review
 
 Tables are reviewed in two layers:
@@ -106,6 +150,33 @@ Keys: [a]ccept · [e]dit · [s]kip · [1/2/3] pick alt · [n]ext · [p]rev · [q
 `/history review <run_id>` is the post-hoc equivalent — same UI, but
 re-opens an already-run pass for late edits. Edits there also write to
 `column_overrides` so the row is durable across re-runs.
+
+## Column-level compare
+
+For a column reviewed across more than one run — a Pending row
+from today next to the accepted description from a month ago, or
+two Variations of the same column from a single run — the
+**Compare** affordance opens a side-by-side dialog scoped to that
+column. Each side shows:
+
+- The candidate description (or accepted comment, depending on the
+  source run's outcome).
+- The confidence label and the alternative carousel for that run.
+- The diff between the two texts, inlined with insertions and
+  deletions highlighted.
+
+Compare is reachable two ways:
+
+- From the Results tab, multi-select two rows that share the same
+  qualified column path; the bulk-action menu surfaces **Compare
+  selected**.
+- From the [Compare page](../studio/compare.md) header, narrow the
+  scope to one column to land in the same view.
+
+The diff respects the alternatives carousel — flipping between
+alt 1 and alt 2 on either side updates the diff live, so the
+reviewer can compare alternatives across runs without leaving the
+dialog.
 
 ## Verify
 
