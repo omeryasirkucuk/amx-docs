@@ -156,8 +156,8 @@ code profile path). Searches across `/ask` and Studio Ask reach
 both — there is no separate "remote code" namespace at retrieval
 time. The default embedding model is
 `jina-embeddings-v2-base-code` with a MiniLM fallback; see
-[RAG architecture](../concepts/rag-architecture.md#code-rag) for
-the model fallback chain.
+[RAG architecture](../concepts/rag-architecture.md) for the model
+fallback chain (see the **Defaults per pipeline** subsection).
 
 ## See also
 
