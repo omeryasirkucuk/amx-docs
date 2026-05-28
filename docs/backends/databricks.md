@@ -119,6 +119,7 @@ db_profiles:
     host: adb-1234567890123456.7.azuredatabricks.net
     http_path: /sql/1.0/warehouses/abc1234567890
     access_token: keyring://amx/prod-dbx/access_token
+    # workspace_token: keyring://amx/prod-dbx/workspace_token   # optional, see below
     catalog: main
     database: sales
     tls_trusted_ca_file: ""        # set on TLS-intercepting networks
@@ -127,6 +128,32 @@ db_profiles:
     profiling_sample_size: 5000
 active_db_profile: prod-dbx
 ```
+
+### Two tokens: `access_token` vs `workspace_token`
+
+`access_token` is the SQL-warehouse token AMX uses for metadata
+DDL: `SELECT` against `information_schema`, `ALTER TABLE …
+SET TBLPROPERTIES`, comment writeback. A standard PAT scoped to
+the warehouse is enough.
+
+`workspace_token` is optional and only consulted by the
+**native Databricks lineage** path (the
+[Lineage canvas](../studio/lineage.md#native-databricks-lineage)
+picker and the click-to-ingest endpoint). The token AMX hands the
+Databricks WorkspaceClient needs:
+
+- `workspace.list` and `workspace.export` permission, so the
+  notebook path index can be built and individual notebooks can be
+  fetched.
+- Lineage REST scope (`/api/2.0/lineage-tracking/...`), to fetch
+  lineage neighbours without going through `system.access.*`.
+
+If `workspace_token` is set, AMX uses it for the WorkspaceClient
+and falls back to `access_token` when it isn't present. In most
+setups a single PAT can do both jobs and you can omit
+`workspace_token` entirely; split tokens are useful when the SQL
+endpoint and the workspace listing live behind different roles
+(typical in workspaces with hardened service-principal policies).
 
 ## Verify
 

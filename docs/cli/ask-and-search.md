@@ -181,6 +181,42 @@ Cited:
 
 This shape is the most important — `/ask` must say "I don't know" rather than fabricate.
 
+#### Lineage neighbours appendix
+
+When the question is anchored on a specific table or column, the
+answer can carry a **canvas-free lineage neighbours appendix** —
+the one-hop upstream and downstream neighbours the catalog already
+knows about, listed by qualified name with their descriptions. The
+same one-hop neighbour query core feeds Studio's Ask, so CLI and
+Studio reach the same neighbour list for the same question.
+
+```text
+> /ask describe sales.customer_address
+
+…answer body…
+
+Lineage neighbours (1 hop):
+  upstream:
+    - sales.customer (Customer master keyed by c_customer_sk)
+    - ref.country    (Country master, joined via ca_country_id)
+  downstream:
+    - sales.order_address              (Per-order snapshot of the address)
+    - events.address_change_audit      (Append-only history of edits)
+```
+
+The appendix uses an explicit `artifact_filter` so it pulls
+neighbours from native (database-side) lineage when available and
+falls back to the canvas's manually-authored / AI-suggested edges
+otherwise. When no neighbours exist in either source, the appendix
+is omitted — the answer doesn't pad with "(no lineage known)"
+noise.
+
+`/run` reports the same neighbours under each table's analysis
+block, so the description the agent is about to write is anchored
+in the same lineage context Studio shows on the canvas — no extra
+flag, no extra tool dispatch. See
+[Run & Apply](run-and-apply.md) for the run-side surface.
+
 ### 4. Ask across multiple DB profiles
 
 `/ask` operates over the **multi-profile scope** the SearchAgent collects at

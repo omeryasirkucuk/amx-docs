@@ -122,6 +122,65 @@ sales.customer.c_last_name       "Surname of …"           "Surname of …"    
 sales.customer.x_legacy_status   "Legacy status flag …"   (no description)         alice added
 ```
 
+## Beyond the audit tables — shared catalog, lineage, and pages
+
+`/history-store enable` does more than wire up the audit pair. It
+also brings up a small cluster of **shared** tables that pool
+team-wide context into the same host database:
+
+| Table | What it shares |
+|---|---|
+| `catalog_entities` | The local catalog search index that AMX builds during `/sync` — schemas, tables, columns, their comments. |
+| `shared_catalog_entities` | The merged view across every member's catalog contributions. Auto-backfills local rows into this table so every member sees every other member's synced asset. |
+| `shared_lineage_artifacts` + `shared_lineage_edges` | Saved Lineage canvases and their nodes / edges. Open a canvas a teammate saved without an export step. |
+| `shared_documentation_pages` (+ related sources/assets/versions) | Pages composed via [`/pages`](../cli/pages.md) and their full revision history. |
+| `_amx_users`, `_amx_admin_audit`, `_amx_sessions` | The member registry and admin audit trail used by [`/admin`](../cli/admin.md). |
+
+A background backfill task moves local rows from
+`catalog_entities`, the local lineage store, and
+`documentation_pages` into their `shared_*` counterparts on every
+sync — there is no explicit "push to shared" step. The reverse
+(reading shared rows on a member's machine) is automatic too:
+Studio's Browse → Pages, the Lineage canvas's `Open saved` tile,
+and `/ask` retrieval all merge local and shared sources without
+the user having to pick.
+
+## Concurrent-edit safeguards
+
+A shared catalog means two members can land in the same edit
+dialog at the same time. AMX uses **optimistic concurrency
+control** to keep one member's draft from silently overwriting
+another's. The shared lineage and pages tables carry a `version`
+column and an `updated_at` timestamp:
+
+- Every read returns the row plus its current version.
+- Every save sends `version` back; the write succeeds only if the
+  stored row still carries the same version.
+- A losing save returns a 409 Conflict with the current row, so
+  Studio can present a side-by-side diff and let the second
+  editor merge or overwrite explicitly.
+
+This is the same shape as standard `If-Match` HTTP semantics and
+the same mechanism the Studio admin panel relies on for member
+role edits.
+
+## Membership and roles
+
+Each member's first connection registers a `(username, hostname)`
+row in `_amx_users` with the default **viewer** role. The very
+first connection on a fresh workspace promotes to **admin**
+automatically so the workspace always has at least one admin.
+After that, `/admin promote` is the only way to add more — see
+[`/admin`](../cli/admin.md) for the full surface (members
+listing, promote / demote / revoke, audit log, session events).
+
+The "writer" role gates write-side endpoints that mutate the
+shared catalog — for example the
+`POST /api/lineage/asset/ingest` endpoint that
+[Native Databricks lineage](../studio/lineage.md#native-databricks-lineage)
+calls on click-to-ingest. View-only members cannot mutate the
+shared store through a curiosity click.
+
 ## Sample config
 
 Lead's config (the one that creates the tables):

@@ -65,7 +65,7 @@ the first remediation:
 ```text
 > /doctor
 [Binary]   scanning PATH for amx ......................  ok (0.0 s)
-           /Users/jane/.venvs/amx/bin/amx (version 0.17.0)
+           /Users/jane/.venvs/amx/bin/amx (version 0.18.0)
 [Python]   detecting interpreter ......................  ok (0.0 s)
            3.12.2 (/Users/jane/.venvs/amx/bin/python)
 [Schema]   reading ~/.amx/config.yml ..................  ok (0.1 s)

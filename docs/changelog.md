@@ -8,6 +8,51 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.18.0 — MCP for IDE agents + native Databricks lineage + lineage in RUN/ASK
+
+AMX now exposes its catalog to the code agents inside your IDE over the
+**Model Context Protocol**. Once the local stdio server is registered in
+Cursor, Claude Desktop, or VS Code Copilot, the agent can `list_schemas`,
+`describe_table`, `lineage_for_table`, `search_docs`, `search_code`, and
+the rest of the read-only catalog surface against AMX's local cache —
+without a database password, without a network service, and without
+exposing the underlying data. See the new
+[Connect your IDE (MCP)](guides/mcp.md) guide for setup snippets per
+client and the full tool list.
+
+**Native Databricks lineage** lands as a first-class surface on the
+Lineage canvas. The picker hits Databricks' lineage REST endpoints
+(rather than `system.access.*`) and renders neighbours as **privilege-
+tiered name-only ghost nodes** when the caller has only directory-level
+visibility — names without column counts, so the canvas is honest about
+what AMX actually saw. Clicking a ghost **lazy-ingests** that single
+asset into AMX: notebooks resolve through a persisted workspace path
+index (no 40-second workspace scan, no broken `object_id` round-trips),
+and queries / jobs / pipelines ingest by id. After ingest, assets open
+**inside AMX** by default with an explicit "open in Databricks" link
+for power users — the previous deep-link plumbing that shipped to
+Databricks UI on every click has been removed in favour of this
+in-AMX-first flow. The asset-ingest endpoint requires the `writer` role
+so view-only members cannot mutate the shared catalog.
+
+**Lineage neighbours in RUN and ASK.** A shared one-hop neighbour
+query core now feeds both `/run` and `/ask` so CLI and Studio reach
+parity on canvas-free lineage context. RUN's analysis blocks for a
+table carry the named neighbours plus their descriptions (no canvas
+required); ASK's retrieval surfaces the same neighbour appendix at the
+bottom of the answer with explicit `artifact_filter` semantics so it's
+clear which assets contributed. Performance is bounded with a sanity
+test so the new join cannot regress hot-path latency.
+
+This release also rolls in **the docs catch-up itself**: the
+`/pages` and `/admin` CLI namespaces, the remote code-asset ingestion
+flow for Snowflake notebooks and Databricks notebooks / jobs /
+pipelines / queries, the Browse-page per-asset chunking override, and
+the shared catalog / lineage / pages collaboration tables all gain
+dedicated documentation. Previously these surfaces only appeared as
+one-liners in earlier changelog entries; the topic-specific pages are
+now caught up to the shipped behaviour.
+
 ### 0.17.0 — Trino / Presto + Hive (HiveServer2) backends
 
 Two new first-class adapters land, taking the supported-backend count

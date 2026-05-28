@@ -71,7 +71,7 @@ search results" below.
 
 ```text
 > /search-docs "what does x_legacy_status mean"
-Top-5 results (cosine distance):
+Top-5 results (hybrid score · vector + lexical, reranker + MMR applied):
   0.184  data-platform-handbook.pdf:p.34   "Legacy status mapping"
          "Status values 1–7 map to the v3 system's customer state machine. 1=active,
           2=pending, 3=frozen, 4=dormant, 5=closed, 6=fraud, 7=migration-pending. The
@@ -85,6 +85,36 @@ Top-5 results (cosine distance):
 
 `/search-docs` is the lower-level command — `/ask` runs the same retrieval and then
 asks the LLM to answer using only the retrieved chunks.
+
+### Hybrid retrieval pipeline
+
+Document retrieval is four stages rather than a pure vector search:
+
+1. **Lexical recall.** An FTS5 sidecar maintained next to the
+   Chroma index returns the top-K matches for the raw query string.
+   This catches exact-string hits — model names, error codes,
+   identifiers — that an embedding can miss.
+2. **Vector recall.** The same query is embedded and the top-K
+   semantic matches come back from Chroma. This catches concept
+   hits — synonyms, paraphrases.
+3. **RRF fusion.** Reciprocal Rank Fusion merges the two ranked
+   lists into one. RRF is rank-only — it doesn't care about the
+   underlying scores, so the FTS5 and vector scales never need to
+   be reconciled.
+4. **Cross-encoder rerank (opt-in).** A small cross-encoder model
+   re-scores the top of the fused list using query + chunk
+   together. Slower but materially more accurate; enable it in
+   config with `rerank: cross-encoder`. The reranker output then
+   passes through **MMR diversity reordering** so the final list
+   does not return five chunks of the same paragraph from the
+   same file.
+
+The chunker itself is format-dispatching: Markdown is split on
+header boundaries so chunks fall on natural sections rather than
+arbitrary character offsets; PDFs and DOCX fall back to a
+token-window chunker. A gold-set evaluation runs on every
+retrieval-config change and a CI gate blocks regressions on
+recall@5 and rerank quality.
 
 ### 5. Run with doc evidence
 
