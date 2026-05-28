@@ -429,7 +429,9 @@
          href="../schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -1028,6 +1034,28 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#pages-composed-documentation-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /pages — composed documentation pages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#admin-workspace-administration-shared-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        /admin — workspace administration (shared mode)
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1102,7 +1130,7 @@ shortcuts that make day-to-day use fast.</p>
 </span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>           ██║  ██║██║ ╚═╝ ██║██╔╝ ██╗
 </span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>           ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 </span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  AMX 0.17.0 · LLM profile: openai-prod · 4 DB profiles configured
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  AMX 0.18.0 · LLM profile: openai-prod · 4 DB profiles configured
 </span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  Type /help for commands, /exit to quit.
 </span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
 </span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>&gt;
@@ -1181,7 +1209,7 @@ exactly where you left off.</p>
 <h3 id="5-get-unstuck">5. Get unstuck<a class="headerlink" href="#5-get-unstuck" title="Permanent link">&para;</a></h3>
 <p>When something doesn't work, the order of escalation is:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>&gt; /doctor
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.17.0 (config schema v2)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>✓ AMX version — 0.18.0 (config schema v2)
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>✓ Python runtime — 3.11.5
 </span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>✓ DB profiles — 4 configured (prod-pg, dev-snowflake, reporting, sandbox)
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>✓ Active LLM profile — openai-prod [openai] gpt-4o
@@ -1671,6 +1699,86 @@ the root prompt.</p>
 </tr>
 </tbody>
 </table>
+<h3 id="pages-composed-documentation-pages"><code>/pages</code> — composed documentation pages<a class="headerlink" href="#pages-composed-documentation-pages" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/pages new [--title …] [--intent …] [--intent-template SLUG] [--asset KIND:REF …] [--source PATH …] [--no-generate]</code></td>
+<td>Create a new documentation page; wizard when flags omitted. See <a href="../pages/">Pages</a>.</td>
+</tr>
+<tr>
+<td><code>/pages list</code></td>
+<td>List active pages with status and last update.</td>
+</tr>
+<tr>
+<td><code>/pages show &lt;page_id&gt;</code></td>
+<td>Print the markdown body to stdout.</td>
+</tr>
+<tr>
+<td><code>/pages edit &lt;page_id&gt; [--note …]</code></td>
+<td>Open in <code>$EDITOR</code>, save as new revision.</td>
+</tr>
+<tr>
+<td><code>/pages export &lt;page_id&gt; --format md\|pdf [--out PATH]</code></td>
+<td>Render the current revision as Markdown or PDF.</td>
+</tr>
+<tr>
+<td><code>/pages delete &lt;page_id&gt; [--purge]</code></td>
+<td>Soft-delete (<code>--purge</code> to hard-delete).</td>
+</tr>
+<tr>
+<td><code>/pages assign-profile [slug] [--profile NAME]</code></td>
+<td>Scope a page to a DB profile for team-scoped filtering.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="admin-workspace-administration-shared-mode"><code>/admin</code> — workspace administration (shared mode)<a class="headerlink" href="#admin-workspace-administration-shared-mode" title="Permanent link">&para;</a></h3>
+<p><code>/admin</code> only operates on workspaces with a shared history store
+enabled. See <a href="../admin/">Workspace admin</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/admin members</code></td>
+<td>List all members with role, last-seen, revocation status, and version.</td>
+</tr>
+<tr>
+<td><code>/admin promote [USERNAME]</code></td>
+<td>Promote a member to admin (wizard when bare).</td>
+</tr>
+<tr>
+<td><code>/admin demote [USERNAME]</code></td>
+<td>Demote an admin to viewer (last-admin invariant enforced).</td>
+</tr>
+<tr>
+<td><code>/admin revoke [USERNAME]</code></td>
+<td>Block a member from future connections.</td>
+</tr>
+<tr>
+<td><code>/admin unrevoke [USERNAME]</code></td>
+<td>Reinstate a revoked member.</td>
+</tr>
+<tr>
+<td><code>/admin audit [-n LIMIT] [--actor USER] [--action NAME]</code></td>
+<td>Show recent admin audit events.</td>
+</tr>
+<tr>
+<td><code>/admin sessions [--since ISO] [-n LIMIT]</code></td>
+<td>Show recent session-connection events.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li><code>&gt; /help</code> — full command list, grouped by namespace.</li>
@@ -1713,7 +1821,7 @@ the root prompt.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1733,7 +1841,7 @@ the root prompt.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

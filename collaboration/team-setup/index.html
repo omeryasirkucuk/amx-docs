@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -918,6 +924,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#beyond-the-audit-tables-shared-catalog-lineage-and-pages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beyond the audit tables — shared catalog, lineage, and pages
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrent-edit-safeguards" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrent-edit safeguards
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#membership-and-roles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Membership and roles
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#sample-config" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1089,6 +1128,79 @@ different descriptions for the same column, compare runs side-by-side:</p>
 </span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>sales.customer.c_last_name       &quot;Surname of …&quot;           &quot;Surname of …&quot;           same
 </span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>sales.customer.x_legacy_status   &quot;Legacy status flag …&quot;   (no description)         alice added
 </span></code></pre></div>
+<h2 id="beyond-the-audit-tables-shared-catalog-lineage-and-pages">Beyond the audit tables — shared catalog, lineage, and pages<a class="headerlink" href="#beyond-the-audit-tables-shared-catalog-lineage-and-pages" title="Permanent link">&para;</a></h2>
+<p><code>/history-store enable</code> does more than wire up the audit pair. It
+also brings up a small cluster of <strong>shared</strong> tables that pool
+team-wide context into the same host database:</p>
+<table>
+<thead>
+<tr>
+<th>Table</th>
+<th>What it shares</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>catalog_entities</code></td>
+<td>The local catalog search index that AMX builds during <code>/sync</code> — schemas, tables, columns, their comments.</td>
+</tr>
+<tr>
+<td><code>shared_catalog_entities</code></td>
+<td>The merged view across every member's catalog contributions. Auto-backfills local rows into this table so every member sees every other member's synced asset.</td>
+</tr>
+<tr>
+<td><code>shared_lineage_artifacts</code> + <code>shared_lineage_edges</code></td>
+<td>Saved Lineage canvases and their nodes / edges. Open a canvas a teammate saved without an export step.</td>
+</tr>
+<tr>
+<td><code>shared_documentation_pages</code> (+ related sources/assets/versions)</td>
+<td>Pages composed via <a href="../../cli/pages/"><code>/pages</code></a> and their full revision history.</td>
+</tr>
+<tr>
+<td><code>_amx_users</code>, <code>_amx_admin_audit</code>, <code>_amx_sessions</code></td>
+<td>The member registry and admin audit trail used by <a href="../../cli/admin/"><code>/admin</code></a>.</td>
+</tr>
+</tbody>
+</table>
+<p>A background backfill task moves local rows from
+<code>catalog_entities</code>, the local lineage store, and
+<code>documentation_pages</code> into their <code>shared_*</code> counterparts on every
+sync — there is no explicit "push to shared" step. The reverse
+(reading shared rows on a member's machine) is automatic too:
+Studio's Browse → Pages, the Lineage canvas's <code>Open saved</code> tile,
+and <code>/ask</code> retrieval all merge local and shared sources without
+the user having to pick.</p>
+<h2 id="concurrent-edit-safeguards">Concurrent-edit safeguards<a class="headerlink" href="#concurrent-edit-safeguards" title="Permanent link">&para;</a></h2>
+<p>A shared catalog means two members can land in the same edit
+dialog at the same time. AMX uses <strong>optimistic concurrency
+control</strong> to keep one member's draft from silently overwriting
+another's. The shared lineage and pages tables carry a <code>version</code>
+column and an <code>updated_at</code> timestamp:</p>
+<ul>
+<li>Every read returns the row plus its current version.</li>
+<li>Every save sends <code>version</code> back; the write succeeds only if the
+  stored row still carries the same version.</li>
+<li>A losing save returns a 409 Conflict with the current row, so
+  Studio can present a side-by-side diff and let the second
+  editor merge or overwrite explicitly.</li>
+</ul>
+<p>This is the same shape as standard <code>If-Match</code> HTTP semantics and
+the same mechanism the Studio admin panel relies on for member
+role edits.</p>
+<h2 id="membership-and-roles">Membership and roles<a class="headerlink" href="#membership-and-roles" title="Permanent link">&para;</a></h2>
+<p>Each member's first connection registers a <code>(username, hostname)</code>
+row in <code>_amx_users</code> with the default <strong>viewer</strong> role. The very
+first connection on a fresh workspace promotes to <strong>admin</strong>
+automatically so the workspace always has at least one admin.
+After that, <code>/admin promote</code> is the only way to add more — see
+<a href="../../cli/admin/"><code>/admin</code></a> for the full surface (members
+listing, promote / demote / revoke, audit log, session events).</p>
+<p>The "writer" role gates write-side endpoints that mutate the
+shared catalog — for example the
+<code>POST /api/lineage/asset/ingest</code> endpoint that
+<a href="../../studio/lineage/#native-databricks-lineage">Native Databricks lineage</a>
+calls on click-to-ingest. View-only members cannot mutate the
+shared store through a curiosity click.</p>
 <h2 id="sample-config">Sample config<a class="headerlink" href="#sample-config" title="Permanent link">&para;</a></h2>
 <p>Lead's config (the one that creates the tables):</p>
 <div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">db_profiles</span><span class="p">:</span>
@@ -1189,7 +1301,7 @@ different descriptions for the same column, compare runs side-by-side:</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1209,7 +1321,7 @@ different descriptions for the same column, compare runs side-by-side:</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

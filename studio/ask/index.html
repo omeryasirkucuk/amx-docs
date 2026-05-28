@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -850,6 +856,17 @@
     <span class="md-ellipsis">
       
         Scope dropdown
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cache-only-by-default-live-refresh-on-demand" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cache-only by default · Live refresh on demand
       
     </span>
   </a>
@@ -1005,6 +1022,26 @@ queries:</p>
 doc / code profiles are in scope for the active DB selection — useful
 when <code>/ask</code> answers seem under-grounded and you're not sure whether the
 right RAG profiles are linked.</p>
+<h2 id="cache-only-by-default-live-refresh-on-demand">Cache-only by default · Live refresh on demand<a class="headerlink" href="#cache-only-by-default-live-refresh-on-demand" title="Permanent link">&para;</a></h2>
+<p>Every new session starts in <strong>cache-only</strong> mode. The agent answers
+from the local catalog cache, the doc RAG index, and the code RAG
+index without opening a live database connection — fast, free of
+warehouse cost, and safe to run anywhere even when the production
+DB isn't reachable.</p>
+<p>When a question genuinely needs fresh data (recent inserts, a
+schema change, row-level numbers), the agent does not silently dial
+out. It returns a structured <code>needs_live_refresh</code> envelope and the
+UI surfaces a one-click <strong>"Enable Live refresh &amp; retry"</strong> affordance
+under the assistant turn. Click it once to:</p>
+<ol>
+<li>Flip the current session to allow live tool dispatches.</li>
+<li>Replay the question with live retrieval enabled.</li>
+</ol>
+<p>The toggle is per-session, so a different session in the same Ask
+tab stays cache-only. The composer also exposes a <strong>Live refresh</strong>
+switch you can flip preemptively if you know the next question
+needs fresh data; this becomes the new default for that session
+until you switch it back off.</p>
 <h2 id="chat-bubbles">Chat bubbles<a class="headerlink" href="#chat-bubbles" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>User turn</strong> — left-aligned bubble, light background.</li>
@@ -1013,15 +1050,108 @@ right RAG profiles are linked.</p>
 <li><strong>Cancelled</strong> — thin pill marker on the turn the user interrupted.</li>
 </ul>
 <h3 id="tool-call-trace">Tool-call trace<a class="headerlink" href="#tool-call-trace" title="Permanent link">&para;</a></h3>
-<p>Every assistant turn that called tools (<code>search_docs</code>, <code>search_catalog</code>,
-<code>list_schemas</code>, <code>list_volumes</code>, <code>find_joinable_across_profiles</code>,
-<code>compare_runs</code>, …) renders an expandable trace under the bubble:</p>
+<p>Every assistant turn that called tools renders an expandable trace
+under the bubble:</p>
 <ul>
 <li>Tool name + collapsed JSON arguments</li>
 <li>Tool-call latency in milliseconds</li>
 <li>Result preview (truncated to a few lines)</li>
 <li>Citations, when present, as a collapsible block</li>
 </ul>
+<p>While the agent is still streaming, the trace doubles as a
+<strong>real-time activity feed</strong> — each tool dispatch lights up the
+moment it fires, the per-tool timer starts ticking immediately, and
+a one-second LLM heartbeat shows up while the agent is between
+tool calls. A long tool round no longer looks like a hang.</p>
+<p>The tool surface is split into two tiers:</p>
+<p><strong>Cache-only tools</strong> (run on every question without hitting the
+live DB):</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list_schemas</code></td>
+<td>Schema list for one or more profiles.</td>
+</tr>
+<tr>
+<td><code>list_tables_in_schema</code></td>
+<td>Tables in a given schema.</td>
+</tr>
+<tr>
+<td><code>describe_table</code></td>
+<td>Cached column list + comments for a table.</td>
+</tr>
+<tr>
+<td><code>describe_column</code></td>
+<td>One column's full cached metadata — type, comment, profiling stats.</td>
+</tr>
+<tr>
+<td><code>find_table_by_name</code></td>
+<td>Resolve a short name to a fully-qualified address.</td>
+</tr>
+<tr>
+<td><code>search_tables_by_concept</code> / <code>search_columns_by_concept</code></td>
+<td>Semantic search over the catalog embeddings.</td>
+</tr>
+<tr>
+<td><code>search_docs</code> / <code>search_code</code></td>
+<td>Hybrid RAG retrieval over linked doc and code profiles.</td>
+</tr>
+<tr>
+<td><code>get_join_candidates</code> / <code>find_joinable_tables</code> / <code>find_joinable_across_profiles</code></td>
+<td>Suggest joins from FKs, view DDL, query-log co-occurrence, and column-name overlap.</td>
+</tr>
+<tr>
+<td><code>lineage_for_table</code> / <code>lineage_for_column</code></td>
+<td>Cached lineage neighbours, both manual and AI-generated.</td>
+</tr>
+<tr>
+<td><code>catalog_coverage_summary</code></td>
+<td>Per-profile description coverage % across tables and columns.</td>
+</tr>
+<tr>
+<td><code>catalog_inventory</code></td>
+<td>Counts of profiles, schemas, tables, columns, lineage artifacts, ingested code assets.</td>
+</tr>
+<tr>
+<td><code>catalog_sync_status</code></td>
+<td>One-call freshness report across every profile — answers "are my tables fresh?" with zero DB queries.</td>
+</tr>
+<tr>
+<td><code>compare_runs</code> / <code>describe_run</code></td>
+<td>History-store reads for <code>/run</code> audit questions.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Live tools</strong> (only available when Live refresh is on, surfaced
+through the <code>needs_live_refresh</code> envelope when needed):</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>list_volumes</code></td>
+<td>Live volume listing (Databricks Unity Catalog).</td>
+</tr>
+<tr>
+<td><code>run_count_query</code> / <code>run_sample_query</code></td>
+<td>Row-count or sample preview against the live DB.</td>
+</tr>
+<tr>
+<td><code>refresh_schema_cache</code></td>
+<td>Probe the live catalog and update AMX's cache row.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="asking-about-variations-and-mode">Asking about variations and mode<a class="headerlink" href="#asking-about-variations-and-mode" title="Permanent link">&para;</a></h3>
 <p><code>describe_run</code> returns each result row with <code>alternatives_mode</code> at
 the top level and a <code>variations[]</code> array of v2 / v3+ descendants
@@ -1137,7 +1267,7 @@ auto-submits.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1157,7 +1287,7 @@ auto-submits.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

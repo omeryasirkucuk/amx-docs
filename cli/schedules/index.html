@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://amxcli.com/cli/schedules/">
       
       
-        <link rel="prev" href="../ask-and-search/">
+        <link rel="prev" href="../pages/">
       
       
         <link rel="next" href="../studio/">
@@ -429,7 +429,9 @@
          href="./"
          aria-current="page">Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -976,7 +982,7 @@ is REPL-only by design, so tab completion and history pick up every subcommand.<
 <tbody>
 <tr>
 <td><code>/analyze schedule add</code></td>
-<td>Guided wizard. Picks DB profile, LLM profile, scope (all / schemas / tables / columns), and a fire time. Stores the row in <code>~/.amx/history.db</code>.</td>
+<td>Guided wizard. Picks DB profile, LLM profile, scope (all / schemas / tables / columns), and a fire time. Stores the row in <code>~/.amx/history.db</code>. Pass <code>--kind cache_refresh</code> (with optional <code>--deep</code>) to schedule a catalog cache sync instead of an LLM analyze run — see <a href="../../studio/db-cache/#scheduled-refreshes">Catalog cache → Scheduled refreshes</a> for the cache-side semantics. The <code>--cron</code> flag promotes a one-shot schedule into a recurring one (<code>'0 */6 * * *'</code>); the <code>--missing-only</code> flag (analyze only) limits the run to columns that lack a description.</td>
 </tr>
 <tr>
 <td><code>/analyze schedule list</code></td>
@@ -1054,13 +1060,34 @@ so you usually don't type the spec by hand — see <a href="../../concepts/scopi
 <h2 id="daemon-vs-manual-tick">Daemon vs manual tick<a class="headerlink" href="#daemon-vs-manual-tick" title="Permanent link">&para;</a></h2>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&gt; /analyze schedule install-daemon
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>✓ launchd plist installed at ~/Library/LaunchAgents/com.amxcli.scheduler.plist
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>✓ Daemon loaded. Next tick in &lt;60s.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>✓ Daemon loaded (bootstrap + enable + kickstart). Next tick in &lt;60s.
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>&gt; /analyze schedule status
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>Daemon: loaded (launchd, last tick 14s ago)
-</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Schedules: 4 active, 0 paused, 1 failed (id 7 — see /analyze schedule show 7)
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Missed fires (closed AMX): 0
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  log: ~/Library/Logs/amx-scheduler.log
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>       size 12,432 bytes · mtime 2026-05-28 09:14:11
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>Schedules: 4 active, 0 paused, 1 failed (id 7 — see /analyze schedule show 7)
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Missed fires (closed AMX): 0
 </span></code></pre></div>
+<p><code>install-daemon</code> on <strong>macOS Big Sur and later</strong> uses the modern
+<code>launchctl bootout</code> (to wipe any stale registration) followed by
+<code>bootstrap</code> / <code>enable</code> / <code>kickstart</code>. The deprecated <code>launchctl load</code>
+path silently no-ops on these OS versions, so AMX no longer uses
+it — the daemon ends up actually loaded instead of
+installed-but-dormant.</p>
+<p><code>status</code> distinguishes two states that previously looked the same:</p>
+<ul>
+<li><strong>Installed</strong> — the plist / unit file exists on disk but the OS
+  scheduler does not know about it. Schedules will not fire. Most
+  often happens after a manual file edit or an interrupted
+  install; re-run <code>install-daemon</code> to repair.</li>
+<li><strong>Loaded</strong> — the plist / unit is registered with <code>launchctl</code> (or
+  the platform equivalent) and the next tick is scheduled.</li>
+</ul>
+<p>The status output also surfaces <code>log_size_bytes</code> and <code>log_mtime</code>
+from the daemon log so you can tell at a glance whether the
+daemon has been writing — a stale <code>log_mtime</code> paired with a small
+size usually means installed-but-not-loaded.</p>
 <p>Without the daemon, every <code>tick</code> is your responsibility — either invoke
 <code>/analyze schedule tick</code> manually inside the REPL or wire your own cron.
 The engine is <strong>stateless</strong> between ticks: persistence lives in <code>~/.amx/history.db</code>,
@@ -1148,7 +1175,7 @@ buttons, and a live status ticker.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1168,7 +1195,7 @@ buttons, and a live status ticker.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

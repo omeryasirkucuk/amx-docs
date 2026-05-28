@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -943,13 +949,29 @@ covers <code>kind='analyze'</code> runs only — the LLM-annotated metadata pass
 <p>The top of the page shows whether the schedule daemon is installed.
 <strong>Install daemon</strong> sets up the per-OS scheduler:</p>
 <ul>
-<li><strong>macOS</strong> — <code>launchd</code> plist under <code>~/Library/LaunchAgents/</code></li>
+<li><strong>macOS</strong> — <code>launchd</code> plist under <code>~/Library/LaunchAgents/</code>. On
+  modern macOS (Big Sur and later), AMX uses the
+  <code>launchctl bootstrap</code> / <code>enable</code> / <code>kickstart</code> sequence rather
+  than the deprecated <code>launchctl load</code>, so the daemon actually
+  ends up loaded instead of installed-but-dormant.</li>
 <li><strong>Linux</strong> — <code>systemd --user</code> unit</li>
 <li><strong>Windows</strong> — Task Scheduler entry</li>
 </ul>
-<p>Once installed, the status badge shows the next fire window. <strong>Uninstall
-daemon</strong> removes the OS hook (existing schedules remain queued; they
-just won't fire until the daemon is back).</p>
+<p>The status badge has two states that look similar but are not:</p>
+<ul>
+<li><strong>Installed</strong> — the plist / unit file exists on disk but
+  <code>launchctl</code> (or the platform equivalent) does not know about it.
+  Schedules will not fire.</li>
+<li><strong>Loaded</strong> — the plist / unit is registered with the OS scheduler.
+  Schedules fire at their next tick.</li>
+</ul>
+<p>The badge also surfaces <code>log_size_bytes</code> and <code>log_mtime</code> from the
+daemon log file so you can tell at a glance whether the daemon has
+been writing recently — a stale <code>log_mtime</code> with a small
+<code>log_size_bytes</code> usually means the daemon was installed but never
+loaded; reinstall to repair.</p>
+<p><strong>Uninstall daemon</strong> removes the OS hook (existing schedules
+remain queued; they just won't fire until the daemon is back).</p>
 <h2 id="schedule-list">Schedule list<a class="headerlink" href="#schedule-list" title="Permanent link">&para;</a></h2>
 <p>The body is a DataTable of every queued schedule.</p>
 <table>
@@ -994,8 +1016,17 @@ just won't fire until the daemon is back).</p>
 <h2 id="new-edit-schedule-dialog">New / edit schedule dialog<a class="headerlink" href="#new-edit-schedule-dialog" title="Permanent link">&para;</a></h2>
 <p>The same dialog covers both create and edit.</p>
 <ul>
+<li><strong>Trigger</strong> — Cron-based (default) or <strong>Change-triggered</strong>.
+  Cron-based schedules fire at the picked datetime + cadence.
+  Change-triggered schedules fire when the catalog cache detects a
+  schema change on the selected scope — useful for "re-analyse only
+  when the upstream table actually moves" workflows. Pick the
+  trigger first; the rest of the form adapts.</li>
 <li><strong>Name</strong></li>
-<li><strong>Fire at (local)</strong> — datetime picker; must be in the future</li>
+<li><strong>Fire at (local)</strong> <em>(cron triggers)</em> — datetime picker; must be
+  in the future. Change-triggered schedules show a cadence cap
+  here instead ("run at most every N hours") to debounce noisy
+  catalogs.</li>
 <li><strong>Timezone</strong> — auto-detected from the browser; can be overridden</li>
 <li><strong>DB profile</strong> dropdown</li>
 <li><strong>Database / catalog</strong> — cascades from the profile, auto-picks when
@@ -1005,7 +1036,8 @@ just won't fire until the daemon is back).</p>
   additive: ticking deeper narrows the scope; unticking widens back to
   "everything below"</li>
 <li><strong>LLM profile</strong> dropdown</li>
-<li><strong>Review strategy</strong> — Auto / Manual radio</li>
+<li><strong>Review strategy</strong> — Auto (apply immediately) / Manual (queue
+  for review)</li>
 </ul>
 <p>Server-side validation rejects past fire-at times.</p>
 <h2 id="tick-model">Tick model<a class="headerlink" href="#tick-model" title="Permanent link">&para;</a></h2>
@@ -1096,7 +1128,7 @@ status; you can decide whether to <strong>Run now</strong> or skip.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1116,7 +1148,7 @@ status; you can decide whether to <strong>Run now</strong> or skip.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -857,6 +863,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#multi-select-bulk-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-select + bulk actions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keyboard-navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keyboard navigation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#column-level-review" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -894,6 +922,17 @@
     <span class="md-ellipsis">
       
         REPL parity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#column-level-compare" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Column-level compare
       
     </span>
   </a>
@@ -1005,6 +1044,82 @@ choices durable across re-runs.</p>
 <p>Every filter / sort / group decision is encoded in the URL on the Studio
 side, so a teammate can paste a link to "the Low-confidence rows on
 sales.orders, sorted by description length" and land on the same view.</p>
+<h2 id="multi-select-bulk-actions">Multi-select + bulk actions<a class="headerlink" href="#multi-select-bulk-actions" title="Permanent link">&para;</a></h2>
+<p>Each row has a checkbox in the leftmost column; a header checkbox
+toggles every visible row. Once at least one row is selected, the
+header surfaces a <strong>Selected: N</strong> chip and a bulk-action menu:</p>
+<ul>
+<li><strong>Accept selected</strong> — applies the AMX candidate as-is to every
+  selected row.</li>
+<li><strong>Skip selected</strong> — marks every selected row as skipped without
+  touching the candidate.</li>
+<li><strong>Re-run selected</strong> — fires a fresh draft for the selected rows
+  (opens the same Re-Run modal documented on
+  <a href="../../studio/run-detail/#rerun">Studio → Run detail</a>).</li>
+<li><strong>Clear edits on selected</strong> — drops any inline edits the reviewer
+  made and reverts to the AMX candidate.</li>
+</ul>
+<p>Selections are bound to the filtered set: pick "Pending + Low", check
+the header box, and the action applies only to the rows that
+matched the filter. A confirmation modal prints the row count and
+the target DB before any mutation lands so a stray bulk Accept can
+not destroy a thousand rows by accident.</p>
+<h2 id="keyboard-navigation">Keyboard navigation<a class="headerlink" href="#keyboard-navigation" title="Permanent link">&para;</a></h2>
+<p>The Results tab is fully keyboard-drivable; the affordances mirror
+the REPL's <code>/analyze review</code> shortcuts so muscle memory carries
+across surfaces:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>j</code> / <code>k</code> (or arrows)</td>
+<td>Move row cursor down / up</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Open the focused row's inline editor</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>Accept the focused row</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>Skip the focused row</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td>Edit (open inline editor; same as <code>Enter</code>)</td>
+</tr>
+<tr>
+<td><code>1</code> / <code>2</code> / <code>3</code></td>
+<td>Pick alternative 1 / 2 / 3 for the focused row</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td>Toggle multi-select on the focused row</td>
+</tr>
+<tr>
+<td><code>Shift + x</code></td>
+<td>Range-select between the cursor and the last toggled row</td>
+</tr>
+<tr>
+<td><code>n</code> / <code>p</code></td>
+<td>Next / previous page</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>Open shortcut cheatsheet</td>
+</tr>
+</tbody>
+</table>
+<p>The cheatsheet (<code>?</code>) is the canonical reference; the table above
+is a snapshot of the most-used shortcuts.</p>
 <h2 id="column-level-review">Column-level review<a class="headerlink" href="#column-level-review" title="Permanent link">&para;</a></h2>
 <p>Tables are reviewed in two layers:</p>
 <ol>
@@ -1055,6 +1170,31 @@ carousel:</p>
 <p><code>/history review &lt;run_id&gt;</code> is the post-hoc equivalent — same UI, but
 re-opens an already-run pass for late edits. Edits there also write to
 <code>column_overrides</code> so the row is durable across re-runs.</p>
+<h2 id="column-level-compare">Column-level compare<a class="headerlink" href="#column-level-compare" title="Permanent link">&para;</a></h2>
+<p>For a column reviewed across more than one run — a Pending row
+from today next to the accepted description from a month ago, or
+two Variations of the same column from a single run — the
+<strong>Compare</strong> affordance opens a side-by-side dialog scoped to that
+column. Each side shows:</p>
+<ul>
+<li>The candidate description (or accepted comment, depending on the
+  source run's outcome).</li>
+<li>The confidence label and the alternative carousel for that run.</li>
+<li>The diff between the two texts, inlined with insertions and
+  deletions highlighted.</li>
+</ul>
+<p>Compare is reachable two ways:</p>
+<ul>
+<li>From the Results tab, multi-select two rows that share the same
+  qualified column path; the bulk-action menu surfaces <strong>Compare
+  selected</strong>.</li>
+<li>From the <a href="../../studio/compare/">Compare page</a> header, narrow the
+  scope to one column to land in the same view.</li>
+</ul>
+<p>The diff respects the alternatives carousel — flipping between
+alt 1 and alt 2 on either side updates the diff live, so the
+reviewer can compare alternatives across runs without leaving the
+dialog.</p>
 <h2 id="verify">Verify<a class="headerlink" href="#verify" title="Permanent link">&para;</a></h2>
 <ol>
 <li>In Studio Results, click <strong>Filter → Pending + Low</strong>, <strong>Group by table</strong> —
@@ -1102,7 +1242,7 @@ re-opens an already-run pass for late edits. Edits there also write to
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1122,7 +1262,7 @@ re-opens an already-run pass for late edits. Edits there also write to
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

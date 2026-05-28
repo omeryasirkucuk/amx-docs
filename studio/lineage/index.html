@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -884,6 +890,56 @@
     <span class="md-ellipsis">
       
         Streaming UX
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#native-databricks-lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Native Databricks lineage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Native Databricks lineage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#privilege-tiered-ghost-nodes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privilege-tiered ghost nodes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#click-to-ingest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Click-to-ingest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-assets-open" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where assets open
       
     </span>
   </a>
@@ -1067,6 +1123,51 @@ orders.customer_id</code>", not just "<code>customers → orders</code>").</p>
   scanner can't resolve to a real table) are filtered before they
   reach the canvas.</li>
 </ul>
+<h2 id="native-databricks-lineage">Native Databricks lineage<a class="headerlink" href="#native-databricks-lineage" title="Permanent link">&para;</a></h2>
+<p>The canvas can pull <strong>real</strong> lineage out of Databricks instead of
+inferring it. On a Unity Catalog-connected profile, the
+<strong>Native lineage</strong> picker hits Databricks' lineage REST endpoints
+(not <code>system.access.*</code>) and renders every neighbour the caller has
+permission to see. The picker supports full-tree search across
+catalog → schema → table → column so you can land on a specific
+asset without scrolling.</p>
+<h3 id="privilege-tiered-ghost-nodes">Privilege-tiered ghost nodes<a class="headerlink" href="#privilege-tiered-ghost-nodes" title="Permanent link">&para;</a></h3>
+<p>Databricks returns lineage edges even when the caller only has
+directory-level visibility on the neighbour. AMX renders those
+neighbours as <strong>name-only ghost nodes</strong>: the canvas shows the
+qualified name, but no column count and no column-row handles —
+because AMX has not seen the columns. Ghost nodes carry a faint
+dashed border so it's obvious you are looking at a privilege-
+gated edge, not a fully-cached table. Click a ghost to ingest the
+asset (next section); after ingest, the ghost becomes a normal
+table node with column rows.</p>
+<h3 id="click-to-ingest">Click-to-ingest<a class="headerlink" href="#click-to-ingest" title="Permanent link">&para;</a></h3>
+<p>Click any native artifact node — notebook, query, job, pipeline,
+or table — and AMX lazy-ingests just that asset on demand:</p>
+<ul>
+<li><strong>Notebooks</strong> resolve through a <strong>persisted workspace path index</strong>.
+  AMX maintains an <code>object_id → (name, path)</code> map in the
+  background and reads from it on click; there is no 40-second
+  workspace scan and no broken <code>get-status object_id</code> round-trip.
+  Single-notebook ingest hits the workspace path directly.</li>
+<li><strong>Queries, jobs, pipelines</strong> ingest by Databricks id — one round
+  trip, one row inserted into the matching <code>remote_*</code> table.</li>
+</ul>
+<p>The ingest endpoint (<code>POST /api/lineage/asset/ingest</code>) requires the
+<strong>writer</strong> role on the shared store, so view-only members cannot
+mutate the shared catalog through a curiosity click.</p>
+<h3 id="where-assets-open">Where assets open<a class="headerlink" href="#where-assets-open" title="Permanent link">&para;</a></h3>
+<p>After ingest, clicking a node <strong>opens the asset inside AMX</strong> by
+default — the notebook source view, the query playbook, or the
+pipeline detail page, depending on the kind. The previous
+behaviour of deep-linking to the Databricks UI on every click is
+gone (it was noisy and broke whenever the workspace host changed).
+A separate "open in Databricks" link is available on each asset's
+detail panel for power users who want to jump back to the
+Databricks workspace.</p>
+<p>Tables on the canvas still expose their backend logo, so the
+provenance of every node is visible at a glance even when the
+column-row handles are collapsed.</p>
 <h2 id="saving-re-opening">Saving + re-opening<a class="headerlink" href="#saving-re-opening" title="Permanent link">&para;</a></h2>
 <p><strong>Save canvas</strong> persists every node, edge, comment, text label,
 and logo as a single artifact under its display name. Re-open
@@ -1188,7 +1289,7 @@ text label never spawns a modal.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1208,7 +1309,7 @@ text label never spawns a modal.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

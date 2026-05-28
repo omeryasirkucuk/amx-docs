@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -716,6 +720,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/codebase/"
          >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../data-sources/remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/documents/"
          >Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../data-sources/search-catalog/"
@@ -901,6 +907,56 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#assets-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Assets panel
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Assets panel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#asset-list" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Asset list
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#per-asset-chunking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Per-asset chunking
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selective-ingestion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Selective ingestion
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#cli-equivalents" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1065,6 +1121,54 @@ page. Two options:</p>
 <p>Optional doc / code profile chips below the two options let you pick the
 RAG context the agent should consult. Empty = use the linked profiles
 configured for the active DB scope.</p>
+<h2 id="assets-panel">Assets panel<a class="headerlink" href="#assets-panel" title="Permanent link">&para;</a></h2>
+<p>Profiles that ship executable assets (Databricks notebooks / jobs /
+pipelines, Snowflake notebooks / Streamlit apps / streams, query
+history on either platform) surface a second tab next to the
+schema tree: <strong>Assets</strong>. See
+<a href="../../data-sources/remote-code/">Remote code-asset ingestion</a> for
+the per-backend support matrix and the underlying <code>remote_*</code>
+storage tables.</p>
+<h3 id="asset-list">Asset list<a class="headerlink" href="#asset-list" title="Permanent link">&para;</a></h3>
+<p>The asset list is a paginated DataTable per kind. Filters along the
+top: kind picker (notebooks / jobs / pipelines / streamlit apps /
+streams / queries), substring search, and a result-count chip.
+Sorting on every column. The <code>hideOnMobile</code> flag suppresses the
+noisiest columns on small viewports so the list stays scannable
+on a phone — see <a href="../../guides/responsive-studio/">Responsive Studio</a>.</p>
+<p>Each row links to the asset detail page (source preview, lineage
+links, last modification timestamp). The detail page itself uses
+the <a href="../lineage/">Lineage canvas</a>'s logo node for the host platform
+so the asset's provenance is obvious at a glance.</p>
+<h3 id="per-asset-chunking">Per-asset chunking<a class="headerlink" href="#per-asset-chunking" title="Permanent link">&para;</a></h3>
+<p>Every row carries a <strong>Chunk</strong> button. Click it to override the
+profile-wide chunking strategy for <strong>this single asset</strong>. Useful
+when one notebook is a literate-programming write-up that benefits
+from <code>cell</code>-level chunking while the rest of the profile keeps the
+<code>whole</code>-notebook default.</p>
+<p>The dialog shows the active per-kind default, the available
+strategies for that asset kind, and a save button that writes the
+override to <code>cfg.assets_chunking.overrides</code> keyed by asset id.
+Re-ingesting the asset picks up the override automatically; for
+already-ingested assets, click <strong>Reindex this asset</strong> in the same
+dialog to re-embed under the new chunking.</p>
+<p>The profile-wide default lives in <code>cfg.assets_chunking</code>. Per-kind
+strategies and their defaults are documented under
+<a href="../../data-sources/remote-code/#per-kind-chunking-strategy">Remote code-asset ingestion → Per-kind chunking strategy</a>.</p>
+<h3 id="selective-ingestion">Selective ingestion<a class="headerlink" href="#selective-ingestion" title="Permanent link">&para;</a></h3>
+<p>The <strong>+ Ingest</strong> button on the Assets header opens a picker rather
+than launching a blanket "ingest everything" run. The picker fans
+out into per-kind sections; for each kind you can:</p>
+<ul>
+<li>Pick <strong>all</strong> (mirror everything on the remote platform), or</li>
+<li>Pick <strong>specific assets</strong> by checkbox from the live list.</li>
+</ul>
+<p>The picked ids land as <code>--include-id KIND:EXTERNAL_ID</code> on the
+underlying <code>/db ingest-assets</code> call, so a partial mirror lands in
+seconds instead of pulling the entire workspace tree.</p>
+<p>The same Assets header has the <strong>Deep sync</strong> button covered on
+the <a href="../db-cache/#per-table-deep-sync">DB cache</a> page when the
+profile's catalog tier is what needs the deeper refresh.</p>
 <h2 id="cli-equivalents">CLI equivalents<a class="headerlink" href="#cli-equivalents" title="Permanent link">&para;</a></h2>
 <table>
 <thead>
@@ -1128,7 +1232,7 @@ configured for the active DB scope.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1148,7 +1252,7 @@ configured for the active DB scope.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>

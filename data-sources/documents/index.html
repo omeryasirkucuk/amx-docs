@@ -15,7 +15,7 @@
         <link rel="canonical" href="https://amxcli.com/data-sources/documents/">
       
       
-        <link rel="prev" href="../codebase/">
+        <link rel="prev" href="../remote-code/">
       
       
         <link rel="next" href="../search-catalog/">
@@ -429,7 +429,9 @@
          href="../../cli/schedules/"
          >Schedules (CLI)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../cli/studio/"
-         >Studio launcher</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
+         >Studio launcher</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../cli/admin/"
+         >Workspace admin</a><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-core-workflow">
       <button type="button"
               class="amx-sidebar__group-title"
@@ -449,7 +451,9 @@
          href="../../cli/metadata/"
          >Metadata</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../../cli/ask-and-search/"
-         >Ask & Search</a></div>
+         >Ask & Search</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../../cli/pages/"
+         >Pages</a></div>
     </div><div class="amx-sidebar__group amx-sidebar__group--depth-1"
          data-amx-group-key="amx-grp-utilities">
       <button type="button"
@@ -715,7 +719,9 @@
       <div class="amx-sidebar__group-body" id="amx-grp-data-sources-body">
         <a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../codebase/"
-         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
+         >Codebase</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
+         href="../remote-code/"
+         >Remote code-asset ingestion</a><a class="amx-sidebar__link amx-sidebar__link--depth-1 amx-sidebar__link--active"
          href="./"
          aria-current="page">Documents</a><a class="amx-sidebar__link amx-sidebar__link--depth-1"
          href="../search-catalog/"
@@ -902,6 +908,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#hybrid-retrieval-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hybrid retrieval pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#5-run-with-doc-evidence" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1058,7 +1075,7 @@ source path + page number so citations resolve to the original file.</p>
 search results" below.</p>
 <h3 id="4-search-the-index-directly">4. Search the index directly<a class="headerlink" href="#4-search-the-index-directly" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>&gt; /search-docs &quot;what does x_legacy_status mean&quot;
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Top-5 results (cosine distance):
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>Top-5 results (hybrid score · vector + lexical, reranker + MMR applied):
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  0.184  data-platform-handbook.pdf:p.34   &quot;Legacy status mapping&quot;
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>         &quot;Status values 1–7 map to the v3 system&#39;s customer state machine. 1=active,
 </span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>          2=pending, 3=frozen, 4=dormant, 5=closed, 6=fraud, 7=migration-pending. The
@@ -1071,6 +1088,34 @@ search results" below.</p>
 </span></code></pre></div>
 <p><code>/search-docs</code> is the lower-level command — <code>/ask</code> runs the same retrieval and then
 asks the LLM to answer using only the retrieved chunks.</p>
+<h3 id="hybrid-retrieval-pipeline">Hybrid retrieval pipeline<a class="headerlink" href="#hybrid-retrieval-pipeline" title="Permanent link">&para;</a></h3>
+<p>Document retrieval is four stages rather than a pure vector search:</p>
+<ol>
+<li><strong>Lexical recall.</strong> An FTS5 sidecar maintained next to the
+   Chroma index returns the top-K matches for the raw query string.
+   This catches exact-string hits — model names, error codes,
+   identifiers — that an embedding can miss.</li>
+<li><strong>Vector recall.</strong> The same query is embedded and the top-K
+   semantic matches come back from Chroma. This catches concept
+   hits — synonyms, paraphrases.</li>
+<li><strong>RRF fusion.</strong> Reciprocal Rank Fusion merges the two ranked
+   lists into one. RRF is rank-only — it doesn't care about the
+   underlying scores, so the FTS5 and vector scales never need to
+   be reconciled.</li>
+<li><strong>Cross-encoder rerank (opt-in).</strong> A small cross-encoder model
+   re-scores the top of the fused list using query + chunk
+   together. Slower but materially more accurate; enable it in
+   config with <code>rerank: cross-encoder</code>. The reranker output then
+   passes through <strong>MMR diversity reordering</strong> so the final list
+   does not return five chunks of the same paragraph from the
+   same file.</li>
+</ol>
+<p>The chunker itself is format-dispatching: Markdown is split on
+header boundaries so chunks fall on natural sections rather than
+arbitrary character offsets; PDFs and DOCX fall back to a
+token-window chunker. A gold-set evaluation runs on every
+retrieval-config change and a CI gate blocks regressions on
+recall@5 and rerank quality.</p>
 <h3 id="5-run-with-doc-evidence">5. Run with doc evidence<a class="headerlink" href="#5-run-with-doc-evidence" title="Permanent link">&para;</a></h3>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>&gt; /run sales.customer
 </span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>[Profile] sampled scan on sales.customer ... ok
@@ -1199,7 +1244,7 @@ glossary entries jump straight to <code>high</code> confidence.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.17.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1219,7 +1264,7 @@ glossary entries jump straight to <code>high</code> confidence.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.17.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
