@@ -39,6 +39,29 @@ doc / code profiles are in scope for the active DB selection — useful
 when `/ask` answers seem under-grounded and you're not sure whether the
 right RAG profiles are linked.
 
+## Cache-only by default · Live refresh on demand
+
+Every new session starts in **cache-only** mode. The agent answers
+from the local catalog cache, the doc RAG index, and the code RAG
+index without opening a live database connection — fast, free of
+warehouse cost, and safe to run anywhere even when the production
+DB isn't reachable.
+
+When a question genuinely needs fresh data (recent inserts, a
+schema change, row-level numbers), the agent does not silently dial
+out. It returns a structured `needs_live_refresh` envelope and the
+UI surfaces a one-click **"Enable Live refresh & retry"** affordance
+under the assistant turn. Click it once to:
+
+1. Flip the current session to allow live tool dispatches.
+2. Replay the question with live retrieval enabled.
+
+The toggle is per-session, so a different session in the same Ask
+tab stays cache-only. The composer also exposes a **Live refresh**
+switch you can flip preemptively if you know the next question
+needs fresh data; this becomes the new default for that session
+until you switch it back off.
+
 ## Chat bubbles
 
 - **User turn** — left-aligned bubble, light background.
@@ -48,14 +71,49 @@ right RAG profiles are linked.
 
 ### Tool-call trace
 
-Every assistant turn that called tools (`search_docs`, `search_catalog`,
-`list_schemas`, `list_volumes`, `find_joinable_across_profiles`,
-`compare_runs`, …) renders an expandable trace under the bubble:
+Every assistant turn that called tools renders an expandable trace
+under the bubble:
 
 - Tool name + collapsed JSON arguments
 - Tool-call latency in milliseconds
 - Result preview (truncated to a few lines)
 - Citations, when present, as a collapsible block
+
+While the agent is still streaming, the trace doubles as a
+**real-time activity feed** — each tool dispatch lights up the
+moment it fires, the per-tool timer starts ticking immediately, and
+a one-second LLM heartbeat shows up while the agent is between
+tool calls. A long tool round no longer looks like a hang.
+
+The tool surface is split into two tiers:
+
+**Cache-only tools** (run on every question without hitting the
+live DB):
+
+| Tool | Purpose |
+|---|---|
+| `list_schemas` | Schema list for one or more profiles. |
+| `list_tables_in_schema` | Tables in a given schema. |
+| `describe_table` | Cached column list + comments for a table. |
+| `describe_column` | One column's full cached metadata — type, comment, profiling stats. |
+| `find_table_by_name` | Resolve a short name to a fully-qualified address. |
+| `search_tables_by_concept` / `search_columns_by_concept` | Semantic search over the catalog embeddings. |
+| `search_docs` / `search_code` | Hybrid RAG retrieval over linked doc and code profiles. |
+| `get_join_candidates` / `find_joinable_tables` / `find_joinable_across_profiles` | Suggest joins from FKs, view DDL, query-log co-occurrence, and column-name overlap. |
+| `lineage_for_table` / `lineage_for_column` | Cached lineage neighbours, both manual and AI-generated. |
+| `catalog_coverage_summary` | Per-profile description coverage % across tables and columns. |
+| `catalog_inventory` | Counts of profiles, schemas, tables, columns, lineage artifacts, ingested code assets. |
+| `catalog_sync_status` | One-call freshness report across every profile — answers "are my tables fresh?" with zero DB queries. |
+| `compare_runs` / `describe_run` | History-store reads for `/run` audit questions. |
+
+**Live tools** (only available when Live refresh is on, surfaced
+through the `needs_live_refresh` envelope when needed):
+
+| Tool | Purpose |
+|---|---|
+| `list_volumes` | Live volume listing (Databricks Unity Catalog). |
+| `run_count_query` / `run_sample_query` | Row-count or sample preview against the live DB. |
+| `refresh_schema_cache` | Probe the live catalog and update AMX's cache row. |
 
 ### Asking about variations and mode
 

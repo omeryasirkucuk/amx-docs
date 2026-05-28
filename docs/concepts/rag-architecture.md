@@ -100,6 +100,31 @@ Catalog Search does not chunk in the document sense — each catalog
 entity (a table or column) is its own "chunk" with structured
 metadata.
 
+**Per-kind chunking for ingested remote code assets.** Notebooks,
+queries, pipelines, jobs, streams, and Streamlit apps from
+Databricks and Snowflake (see
+[Remote code-asset ingestion](../data-sources/remote-code.md))
+each have their own strategy registry under `cfg.assets_chunking`:
+
+| Asset kind | Available strategies | Default |
+|---|---|---|
+| Notebooks | `whole`, `cell`, `char_window` | `whole` |
+| Queries | `whole`, `statement`, `char_window` | `whole` |
+| Pipelines | `whole`, `char_window` | `whole` |
+| Jobs, Streams, Streamlit | metadata-only (one chunk) | n/a |
+
+`whole` produces one chunk per asset — coarse but predictable and
+the safest default for assets that lean on global context (a
+pipeline's whole-DAG semantics, a notebook's narrative). `cell`
+slices a notebook by Jupyter cell. `statement` slices a SQL
+query by `;` boundary. `char_window` is the pure character-window
+fallback for cases where neither structural strategy makes sense.
+
+Per-asset overrides land on the same registry keyed by asset id —
+the Studio Browse → Assets row-level **Chunk** button writes the
+override and triggers a re-embed (see
+[Studio Browse → Per-asset chunking](../studio/browse.md#per-asset-chunking)).
+
 ### 3. Retrieval + rerank
 
 | Pipeline | Vector | Lexical | Fusion | Rerank | Diversity |
