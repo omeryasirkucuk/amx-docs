@@ -72,7 +72,7 @@ extra:
   # {{ config.extra.version }}. Sample REPL/doctor outputs that quote
   # a specific version are bumped alongside this string so the whole
   # site reflects the current shipped release.
-  version: "0.17.0"
+  version: "0.18.0"
 
 markdown_extensions:
   - abbr
