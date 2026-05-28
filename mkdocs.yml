@@ -146,8 +146,10 @@ nav:
           - Run & Apply: cli/run-and-apply.md
           - Metadata: cli/metadata.md
           - Ask & Search: cli/ask-and-search.md
+          - Pages: cli/pages.md
       - Schedules (CLI): cli/schedules.md
       - Studio launcher: cli/studio.md
+      - Workspace admin: cli/admin.md
       - Utilities:
           - History: cli/history.md
           - Doctor: cli/doctor.md
@@ -213,6 +215,7 @@ nav:
           - Batch mode: llm-providers/batch-mode.md
       - Data Sources:
           - Codebase: data-sources/codebase.md
+          - Remote code-asset ingestion: data-sources/remote-code.md
           - Documents: data-sources/documents.md
           - Search catalog: data-sources/search-catalog.md
       - Collaboration:
