@@ -132,6 +132,7 @@ db_profiles:
     host: adb-1234567890123456.7.azuredatabricks.net
     http_path: /sql/1.0/warehouses/abc1234567890
     access_token: keyring://amx/prod-dbx/access_token
+    # workspace_token: keyring://amx/prod-dbx/workspace_token   # optional
     catalog: main
     database: sales
     tls_trusted_ca_file: ""
@@ -266,7 +267,7 @@ output AMX produces rather than which model runs:
 | `database` | most | optional (0.11+) | Leave blank to defer choice to `/run` / `/sync` |
 | `account` | snowflake | yes | The bare account identifier (no `.snowflakecomputing.com`) |
 | `warehouse` / `role` | snowflake | optional | Left blank → user defaults |
-| `http_path` / `access_token` / `catalog` / `tls_trusted_ca_file` / `tls_no_verify` | databricks | yes (`http_path`, `access_token`) | See [Databricks](../backends/databricks.md) |
+| `http_path` / `access_token` / `workspace_token` / `catalog` / `tls_trusted_ca_file` / `tls_no_verify` | databricks | yes (`http_path`, `access_token`); `workspace_token` optional | See [Databricks](../backends/databricks.md). `workspace_token` is consulted ahead of `access_token` for native lineage REST calls — useful when the SQL-warehouse token doesn't have workspace-list privileges. |
 | `project` / `dataset` / `credentials_path` / `max_bytes_billed` | bigquery | yes (`project`) | Empty `credentials_path` = ADC |
 | `service_name` | oracle | optional | Preferred over `database` (=SID) for modern Oracle |
 | `driver` / `encrypt` / `trust_server_certificate` | mssql | optional | Defaults: `ODBC Driver 18 for SQL Server`, `True`, `False` |

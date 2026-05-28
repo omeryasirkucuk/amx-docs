@@ -23,7 +23,7 @@ is REPL-only by design, so tab completion and history pick up every subcommand.
 
 | Subcommand | Purpose |
 |---|---|
-| `/analyze schedule add` | Guided wizard. Picks DB profile, LLM profile, scope (all / schemas / tables / columns), and a fire time. Stores the row in `~/.amx/history.db`. |
+| `/analyze schedule add` | Guided wizard. Picks DB profile, LLM profile, scope (all / schemas / tables / columns), and a fire time. Stores the row in `~/.amx/history.db`. Pass `--kind cache_refresh` (with optional `--deep`) to schedule a catalog cache sync instead of an LLM analyze run — see [Catalog cache → Scheduled refreshes](../studio/db-cache.md#scheduled-refreshes) for the cache-side semantics. The `--cron` flag promotes a one-shot schedule into a recurring one (`'0 */6 * * *'`); the `--missing-only` flag (analyze only) limits the run to columns that lack a description. |
 | `/analyze schedule list` | Table listing. Status filters: `--status pending|fired|paused|failed`. Each row carries `id`, scope, next-fire timestamp, and last-fire result. |
 | `/analyze schedule show <id>` | Full record: scope spec, profile pins, prompt detail, alternatives count, last `analyze.run` row id. |
 | `/analyze schedule pause <id>` | Mark the schedule as paused. The next `tick` skips it without dropping the row. |
@@ -55,13 +55,36 @@ so you usually don't type the spec by hand — see [Multi-profile scoping](../co
 ```text
 > /analyze schedule install-daemon
 ✓ launchd plist installed at ~/Library/LaunchAgents/com.amxcli.scheduler.plist
-✓ Daemon loaded. Next tick in <60s.
+✓ Daemon loaded (bootstrap + enable + kickstart). Next tick in <60s.
 
 > /analyze schedule status
 Daemon: loaded (launchd, last tick 14s ago)
+  log: ~/Library/Logs/amx-scheduler.log
+       size 12,432 bytes · mtime 2026-05-28 09:14:11
 Schedules: 4 active, 0 paused, 1 failed (id 7 — see /analyze schedule show 7)
 Missed fires (closed AMX): 0
 ```
+
+`install-daemon` on **macOS Big Sur and later** uses the modern
+`launchctl bootout` (to wipe any stale registration) followed by
+`bootstrap` / `enable` / `kickstart`. The deprecated `launchctl load`
+path silently no-ops on these OS versions, so AMX no longer uses
+it — the daemon ends up actually loaded instead of
+installed-but-dormant.
+
+`status` distinguishes two states that previously looked the same:
+
+- **Installed** — the plist / unit file exists on disk but the OS
+  scheduler does not know about it. Schedules will not fire. Most
+  often happens after a manual file edit or an interrupted
+  install; re-run `install-daemon` to repair.
+- **Loaded** — the plist / unit is registered with `launchctl` (or
+  the platform equivalent) and the next tick is scheduled.
+
+The status output also surfaces `log_size_bytes` and `log_mtime`
+from the daemon log so you can tell at a glance whether the
+daemon has been writing — a stale `log_mtime` paired with a small
+size usually means installed-but-not-loaded.
 
 Without the daemon, every `tick` is your responsibility — either invoke
 `/analyze schedule tick` manually inside the REPL or wire your own cron.

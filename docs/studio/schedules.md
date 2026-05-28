@@ -13,13 +13,30 @@ background daemon that fires them.
 The top of the page shows whether the schedule daemon is installed.
 **Install daemon** sets up the per-OS scheduler:
 
-- **macOS** — `launchd` plist under `~/Library/LaunchAgents/`
+- **macOS** — `launchd` plist under `~/Library/LaunchAgents/`. On
+  modern macOS (Big Sur and later), AMX uses the
+  `launchctl bootstrap` / `enable` / `kickstart` sequence rather
+  than the deprecated `launchctl load`, so the daemon actually
+  ends up loaded instead of installed-but-dormant.
 - **Linux** — `systemd --user` unit
 - **Windows** — Task Scheduler entry
 
-Once installed, the status badge shows the next fire window. **Uninstall
-daemon** removes the OS hook (existing schedules remain queued; they
-just won't fire until the daemon is back).
+The status badge has two states that look similar but are not:
+
+- **Installed** — the plist / unit file exists on disk but
+  `launchctl` (or the platform equivalent) does not know about it.
+  Schedules will not fire.
+- **Loaded** — the plist / unit is registered with the OS scheduler.
+  Schedules fire at their next tick.
+
+The badge also surfaces `log_size_bytes` and `log_mtime` from the
+daemon log file so you can tell at a glance whether the daemon has
+been writing recently — a stale `log_mtime` with a small
+`log_size_bytes` usually means the daemon was installed but never
+loaded; reinstall to repair.
+
+**Uninstall daemon** removes the OS hook (existing schedules
+remain queued; they just won't fire until the daemon is back).
 
 ## Schedule list
 
@@ -41,8 +58,17 @@ Filter chips above the table: Pending / Paused / Failed.
 
 The same dialog covers both create and edit.
 
+- **Trigger** — Cron-based (default) or **Change-triggered**.
+  Cron-based schedules fire at the picked datetime + cadence.
+  Change-triggered schedules fire when the catalog cache detects a
+  schema change on the selected scope — useful for "re-analyse only
+  when the upstream table actually moves" workflows. Pick the
+  trigger first; the rest of the form adapts.
 - **Name**
-- **Fire at (local)** — datetime picker; must be in the future
+- **Fire at (local)** *(cron triggers)* — datetime picker; must be
+  in the future. Change-triggered schedules show a cadence cap
+  here instead ("run at most every N hours") to debounce noisy
+  catalogs.
 - **Timezone** — auto-detected from the browser; can be overridden
 - **DB profile** dropdown
 - **Database / catalog** — cascades from the profile, auto-picks when
@@ -52,7 +78,8 @@ The same dialog covers both create and edit.
   additive: ticking deeper narrows the scope; unticking widens back to
   "everything below"
 - **LLM profile** dropdown
-- **Review strategy** — Auto / Manual radio
+- **Review strategy** — Auto (apply immediately) / Manual (queue
+  for review)
 
 Server-side validation rejects past fire-at times.
 

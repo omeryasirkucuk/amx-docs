@@ -143,12 +143,35 @@ Opened from **New schedule** in the Scheduled refreshes section.
   `custom`
 - **Show cron syntax** — toggle to reveal the cron expression the
   dialog computed for the recurrence above
+- **Deep sync** — checkbox. **Off** is the default: each fire
+  warms the inventory and the column comments cache (a shallow
+  sync). **On** flips the run into a deep sync that profiles
+  every column and reads exact row counts for each table in scope
+  — slower and more expensive, but it surfaces newly added
+  columns and refreshes profiling statistics. The flag persists
+  on the schedule row as `--deep`; the same flag is available on
+  the CLI via `/analyze schedule add --kind cache_refresh --deep`.
 
 The dialog persists the schedule as a `kind='cache_refresh'` row in
 `scheduled_runs` with `cron_expr` set for recurring choices and
 `NULL` for one-shot. After every fire — success or failure —
 recurring schedules re-arm to `status='pending'` with a fresh
 `fire_at_utc` computed by `croniter`.
+
+## Per-table Deep sync
+
+Tables on the **Table** detail page (`/db/:profile/:database/:schema/:table`)
+expose a **Deep sync** button in the header. It runs a one-off
+deep sync (column profiling + exact row count) for just that
+table — useful for a quick "what does this column look like now?"
+without scheduling a recurring refresh of the entire database.
+
+Per-table deep sync writes its result back into the same
+`column_comments_cache` row that the scheduled refresh updates, so
+the next time Browse opens the table the cached row count and
+profiling stats are current. The table detail panel also surfaces
+the row count next to the column-count header, populated from
+this deep sync.
 
 ## CLI parity
 

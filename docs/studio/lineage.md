@@ -82,6 +82,60 @@ orders.customer_id`", not just "`customers → orders`").
   scanner can't resolve to a real table) are filtered before they
   reach the canvas.
 
+## Native Databricks lineage
+
+The canvas can pull **real** lineage out of Databricks instead of
+inferring it. On a Unity Catalog-connected profile, the
+**Native lineage** picker hits Databricks' lineage REST endpoints
+(not `system.access.*`) and renders every neighbour the caller has
+permission to see. The picker supports full-tree search across
+catalog → schema → table → column so you can land on a specific
+asset without scrolling.
+
+### Privilege-tiered ghost nodes
+
+Databricks returns lineage edges even when the caller only has
+directory-level visibility on the neighbour. AMX renders those
+neighbours as **name-only ghost nodes**: the canvas shows the
+qualified name, but no column count and no column-row handles —
+because AMX has not seen the columns. Ghost nodes carry a faint
+dashed border so it's obvious you are looking at a privilege-
+gated edge, not a fully-cached table. Click a ghost to ingest the
+asset (next section); after ingest, the ghost becomes a normal
+table node with column rows.
+
+### Click-to-ingest
+
+Click any native artifact node — notebook, query, job, pipeline,
+or table — and AMX lazy-ingests just that asset on demand:
+
+- **Notebooks** resolve through a **persisted workspace path index**.
+  AMX maintains an `object_id → (name, path)` map in the
+  background and reads from it on click; there is no 40-second
+  workspace scan and no broken `get-status object_id` round-trip.
+  Single-notebook ingest hits the workspace path directly.
+- **Queries, jobs, pipelines** ingest by Databricks id — one round
+  trip, one row inserted into the matching `remote_*` table.
+
+The ingest endpoint (`POST /api/lineage/asset/ingest`) requires the
+**writer** role on the shared store, so view-only members cannot
+mutate the shared catalog through a curiosity click.
+
+### Where assets open
+
+After ingest, clicking a node **opens the asset inside AMX** by
+default — the notebook source view, the query playbook, or the
+pipeline detail page, depending on the kind. The previous
+behaviour of deep-linking to the Databricks UI on every click is
+gone (it was noisy and broke whenever the workspace host changed).
+A separate "open in Databricks" link is available on each asset's
+detail panel for power users who want to jump back to the
+Databricks workspace.
+
+Tables on the canvas still expose their backend logo, so the
+provenance of every node is visible at a glance even when the
+column-row handles are collapsed.
+
 ## Saving + re-opening
 
 **Save canvas** persists every node, edge, comment, text label,
