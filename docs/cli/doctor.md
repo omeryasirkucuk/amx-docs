@@ -121,5 +121,5 @@ Each ✗ comes with a one-line remediation:
 - It does not fix anything automatically. Every remediation is a printed command for you
   to run.
 - It does not list every DB profile — only the **active** one is connection-tested. Use
-  `/db inspect <profile>` for per-profile diagnosis.
+  `/inspect <profile>` for per-profile diagnosis.
 - It does not modify `config.yml`. All checks are read-only.

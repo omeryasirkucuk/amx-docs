@@ -296,7 +296,7 @@ users don't accidentally configure the wrong backend.
 1. `> /connect` — reports the HS2 server version (e.g. `4.0.0`) and
    round-trip latency. First connect on a cold cluster takes a few
    seconds; steady state is well under 500 ms.
-2. `> /db inspect` — confirms schema counts and which schemas have
+2. `> /inspect` — confirms schema counts and which schemas have
    tables / views.
 3. `> /doctor` — verifies driver presence (`pyhive`, `pure-sasl`),
    profile activation, and that the configured auth mode is one of
@@ -324,7 +324,7 @@ users don't accidentally configure the wrong backend.
 | `Hive SASL / Kerberos handshake failed` | Missing or expired Kerberos ticket | `kinit <principal>`; verify the keytab path and KRB5 config |
 | `AuthorizationException: Permission denied` on `/apply` | Principal lacks `ALTER` on the target database | Grant via Ranger / Sentry / Lake Formation (or `GRANT ALTER ON DATABASE …` directly on simpler deployments) |
 | `/apply` reports "column write-back is disabled on Hive" | Capability gap by design — see warning above | Apply column comments via dbt / Atlas, or migrate the table to a backend with native column-comment DDL |
-| `DESCRIBE FORMATTED` shows the table-level comment but `bulk_schema_metadata` returns `None` | Hive 2.x cluster lacks an initialised `information_schema` — fallback parser is correct but cached entry was filled before the writeback | `> /db cache clear`, then re-list — the per-table parser will pick up the new comment |
+| `DESCRIBE FORMATTED` shows the table-level comment but `bulk_schema_metadata` returns `None` | Hive 2.x cluster lacks an initialised `information_schema` — fallback parser is correct but cached entry was filled before the writeback | `> /cache-clear`, then re-list — the per-table parser will pick up the new comment |
 
 ## See also
 

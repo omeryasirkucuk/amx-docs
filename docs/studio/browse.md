@@ -155,6 +155,6 @@ profile's catalog tier is what needs the deeper refresh.
 | Studio | CLI |
 |---|---|
 | Inline-edit description | `/edit <db>.<schema>.<table>.<column>` |
-| Per-asset **Gen** | `/generate <db>.<schema>.<table>.<column>` |
+| Per-asset **Gen** | `/run <db>.<schema>.<table>.<column>` |
 | Generate description (bulk) | `/run <scope>` |
 | Refresh sidebar tier | `/sync --db-profile <name>` |

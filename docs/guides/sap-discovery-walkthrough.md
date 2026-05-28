@@ -40,9 +40,9 @@ Three profiles:
 
 ```text
 /docs
-/ingest --refresh
+/index --refresh
 /code
-/code-scan
+/code-index
 ```
 
 Total time: ~12 minutes for the PDFs (embedding via MiniLM) and ~4 minutes for the ETL
@@ -69,19 +69,23 @@ The schema is huge. We won't try to do everything at once. Instead:
 ## First pass — the 50 ETL-touched tables
 
 ```text
-/run-apply --schema sap_s6p t001 mara makt mvke mara_text vbak vbap likp lips bkpf bseg
+/run sap_s6p t001 mara makt mvke mara_text vbak vbap likp lips bkpf bseg
 ```
 
 (plus the rest of the 50, listed)
 
 Wall clock: ~25 minutes.
 
-In the review wizard:
+`/run` generates the descriptions and then walks the review: for each
+column you get a numbered list of candidate descriptions — type the
+number to pick one, `s` to skip, or `o` to write your own text. (When
+prompted at the start of the run you can choose the strategy:
+one-by-one, accept-all-high, accept-all, or reject-all.)
 
 - ~70% of columns: top suggestion is `high` confidence with all three agents agreeing.
-  Bulk-accept.
-- ~20%: `medium` with one or two agents agreeing. Read each one, accept or pick alternative.
-- ~10%: `low` or split alternatives. Skip for now or write our own.
+  Accept the top pick (or run with accept-all-high so they go through automatically).
+- ~20%: `medium` with one or two agents agreeing. Read each one, pick the number you want.
+- ~10%: `low` or split alternatives. Skip (`s`) for now or write your own (`o`).
 
 Apply:
 
@@ -135,7 +139,7 @@ Then walk the review wizard.
 For the remaining ~350 tables, switch to `metadata` mode:
 
 ```text
-/db profiling metadata
+/profiling metadata
 /run sap_s6p --batch
 ```
 

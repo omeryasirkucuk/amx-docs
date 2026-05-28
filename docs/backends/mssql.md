@@ -8,7 +8,7 @@ and applying your first batch of generated descriptions.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `pyodbc` driver is included by default.
+- AMX installed (`pip install amx-cli`). The `pyodbc` driver is installed on first use (needs network); only DuckDB ships with the base install.
 - **ODBC Driver 18 for SQL Server** installed at the OS level (driver 17 also works but is end-of-mainstream-support; driver 18 is the default the wizard suggests).
 - A SQL Server 2017+ or Azure SQL database reachable from the machine running AMX.
 - A login mapped to a user with `SELECT` on every target schema and `ALTER` on the schemas you intend to write back to. AMX uses extended properties, which require schema-level `ALTER`.
@@ -166,7 +166,7 @@ active_db_profile: prod-mssql
 ## Verify
 
 1. `> /connect` — server version + driver + latency. The driver line is essential when troubleshooting "driver not found" errors.
-2. `> /db inspect` — counts of tables, views, procedures (FN/TF/IF), triggers, sequences, synonyms, partitions.
+2. `> /inspect` — counts of tables, views, procedures (FN/TF/IF), triggers, sequences, synonyms, partitions.
 3. `> /doctor` — confirms `pyodbc` is loaded, the chosen ODBC driver is registered, and the profile reaches the server.
 
 ## Troubleshooting

@@ -12,7 +12,7 @@ install.
 **Fix:** Reinstall AMX:
 
 ```bash
-pip install --upgrade --force-reinstall amx
+pip install --upgrade --force-reinstall amx-cli
 ```
 
 ### `ConfigSchemaTooNewError: config schema v2 newer than this AMX (expects v1)`
@@ -21,12 +21,6 @@ pip install --upgrade --force-reinstall amx
 running. AMX refuses to load it rather than risk silently mangling.
 
 **Fix:** `pip install --upgrade amx-cli`.
-
-### `ConfigSchemaTooOldError`
-
-**Cause:** Very old `~/.amx/config.yml`. AMX should auto-migrate, but if migration fails:
-
-**Fix:** Back up the file, delete it, run `/setup` to rebuild.
 
 ## Connection errors
 
@@ -78,7 +72,7 @@ the dataset.
 
 ### `LLM not reachable — refusing to start /run`
 
-**Cause:** `/analyze /run` tests the active LLM **before** profiling any asset. The pre-flight
+**Cause:** `/run` tests the active LLM **before** profiling any asset. The pre-flight
 failed.
 
 **Fix:** Run `/doctor`. Usually it's an invalid API key or a deactivated model.
@@ -217,7 +211,7 @@ matches as suggestions only. Either fix the question or accept one of the sugges
 **Cause:** `~/.amx/history.db` is on a network filesystem with broken locking, or full
 disk.
 
-**Fix:** Move `~/.amx/` to a local filesystem (set `AMX_HOME`). Check `df -h`.
+**Fix:** Move `~/.amx/` to a local filesystem (set `AMX_CONFIG_DIR`). Check `df -h`.
 
 ### `pending_shared_writes outbox depth: 142 — shared backend has been unreachable`
 

@@ -199,7 +199,7 @@ active_db_profile: galaxy
 1. `> /connect` — reports the Trino server version (e.g. `481`) and round-trip
    latency. First connect against a cold coordinator may take ~1–2 s; steady
    state is well under 500 ms.
-2. `> /db inspect` — confirms the catalog tree and which schemas have tables /
+2. `> /inspect` — confirms the catalog tree and which schemas have tables /
    views / materialized views.
 3. `> /doctor` — verifies driver presence, profile activation, and that the
    coordinator's `/v1/info` endpoint reports `"starting":false`.

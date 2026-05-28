@@ -58,22 +58,27 @@ Tune it:
 Or interactively:
 
 ```text
-> /db profiling-mode
+> /profiling
 Current mode: full
   full      — read every row to compute exact null/distinct stats
   sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
   metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
 
-> /db profiling-mode sampled
+> /profiling sampled
 ✓ Active mode → sampled (5000 rows per table)
 ```
 
-### 2. Override per command
+### 2. Switch the mode, then run
 
-Every mode-aware command (`/run`, `/profile`, `/sync`) accepts `--profiling-mode`:
+Set the mode with `/profiling` (or hand-edit `profiling_mode` on the
+profile), then run. The mode in effect at the time of the run drives
+every mode-aware command (`/run`, `/db profile`):
 
 ```text
-> /run sales --profiling-mode metadata --auto-accept-high
+> /profiling metadata
+✓ Active mode → metadata
+
+> /run sales
 [scope]   18 tables (sales)
 [Profile] reading INFORMATION_SCHEMA for 18 tables ...  ok (0.4 s)
 [LLM]     drafting 412 column descriptions in 21 batches ...  ok in 38 s
@@ -84,15 +89,20 @@ This is the cheapest possible whole-warehouse sweep — no rows scanned.
 
 ### 3. Verify what each mode actually queries
 
+Switch to the mode you want with `/profiling`, then run with `--debug`:
+
 ```text
-> /run sales.customer --profiling-mode full --debug | grep "SQL"
+> /profiling full
+> /run sales.customer --debug | grep "SQL"
 [SQL Profile] SELECT * FROM sales.customer
 [SQL Profile] SELECT COUNT(DISTINCT c_first_name), COUNT(DISTINCT c_last_name), ...
 
-> /run sales.customer --profiling-mode sampled --debug | grep "SQL"
+> /profiling sampled
+> /run sales.customer --debug | grep "SQL"
 [SQL Profile] SELECT * FROM sales.customer TABLESAMPLE BERNOULLI(5000) LIMIT 5000
 
-> /run sales.customer --profiling-mode metadata --debug | grep "SQL"
+> /profiling metadata
+> /run sales.customer --debug | grep "SQL"
 [SQL Profile] SELECT column_name, data_type, is_nullable FROM information_schema.columns
               WHERE table_schema = 'sales' AND table_name = 'customer';
 ```
@@ -165,8 +175,8 @@ an unexpectedly huge table can't accidentally bill you for an hour-long warehous
 
 ## Verify
 
-1. `> /db profiling-mode` — prints the current mode.
-2. `> /run --profiling-mode metadata --filter '^stg_'` — a metadata-only sweep over staging tables; should complete in a few seconds and cost nothing.
+1. `> /profiling` — prints the current mode.
+2. `> /profiling metadata` then `> /run` — a metadata-only sweep should complete in a few seconds and cost nothing.
 3. `> /history show <run-id>` after a run — shows wall-clock time and (on warehouse backends) approximate scanned bytes.
 
 ## Troubleshooting
@@ -177,4 +187,4 @@ an unexpectedly huge table can't accidentally bill you for an hour-long warehous
 | Costs higher than expected on Snowflake | `full` mode wakes the warehouse for the duration of every column-stats query | Switch to `sampled`; or set the warehouse to a smaller size |
 | All sampled output looks identical for a clustered column | Table is range-partitioned and the sample landed in one partition | Increase `profiling_sample_size`, or use `TABLESAMPLE SYSTEM` for block sampling |
 | `metadata` mode skipped a column | The column was added after the catalog stats were last refreshed | `> /sync` to refresh; or run `ANALYZE` on the table |
-| `profiling_max_rows` keeps tripping | Cap is set too low for tables you actually need full stats on | Raise the per-profile cap, or override per-run with `--profiling-max-rows` |
+| `profiling_max_rows` keeps tripping | Cap is set too low for tables you actually need full stats on | Raise the per-profile `profiling_max_rows` value in `config.yml` |

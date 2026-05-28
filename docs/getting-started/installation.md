@@ -18,8 +18,14 @@ your own ETL process, then point AMX at that database.
 pip install amx-cli
 ```
 
-That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, the
-RAG / search / codebase machinery, and every supported database driver.
+That's it. The install includes the CLI, the multi-agent runtime, all LLM SDKs, and the
+RAG / search / codebase machinery. Only the DuckDB driver ships by default; every other
+database backend installs its driver on first use, which requires network access at that
+moment.
+
+!!! note "Air-gapped installs"
+    Because non-DuckDB drivers are fetched on first use, an offline or air-gapped host
+    needs the driver for your backend pre-installed while you still have network access.
 
 ## Install from source
 
@@ -42,9 +48,7 @@ amx --version
 ```
 
 `/doctor` reports every `amx` binary on `PATH` (catches the version-skew bug class), the
-Python runtime, the config schema version, and active DB + LLM reachability. It runs from
-a broken state — no interactive session required. Use `/doctor --skip-network` for an
-offline quick check.
+Python runtime, the config schema version, and active DB + LLM reachability.
 
 ## Where AMX writes files
 
@@ -53,7 +57,7 @@ offline quick check.
 | `~/.amx/config.yml` | Profiles, settings (mode `0o600`) |
 | `~/.amx/history.db` | Local SQLite: runs, results, app events, search catalog |
 | `~/.amx/logs/amx.log` | Structured logs |
-| `~/.amx/code_cache/<slug>/` | Cached code-scan results per profile |
+| `~/.amx/code_cache/<slug>/` | Cached code index results per profile |
 
 Secrets are stored in the OS keychain (macOS Keychain, Windows Credential Manager, Linux
 Secret Service) when available; the YAML stores a reference rather than the secret itself.

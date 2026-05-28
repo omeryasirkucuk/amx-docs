@@ -70,7 +70,7 @@ The wizard offers to configure document and codebase profiles. You can skip and 
 
 Document profiles can mix local paths, GitHub URLs, S3 buckets, Google Drive links, and
 SharePoint links. AMX checks reachability only at add time; full discovery happens at
-`/scan` or `/ingest`. See [Documents](../data-sources/documents.md) and
+`/index`. See [Documents](../data-sources/documents.md) and
 [Codebase](../data-sources/codebase.md).
 
 ## Viewing configuration

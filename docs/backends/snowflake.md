@@ -8,7 +8,7 @@ billing, and applying your first batch of generated comments.
 
 ## Prerequisites
 
-- AMX installed (`pip install amx-cli`). The `snowflake-connector-python` driver is included by default — no extras required.
+- AMX installed (`pip install amx-cli`). The `snowflake-connector-python` driver is installed on first use (needs network); only DuckDB ships with the base install.
 - A Snowflake account with reachable network policy (typical: AMX runs from a workstation or CI runner; whitelist that egress IP).
 - A role that can `USAGE` on the database, `USAGE` on every target schema, `SELECT` on the target tables/views, and `MODIFY` on the schema if you intend to write back comments.
 - A warehouse the role can `USE`. Even tiny X-Small warehouses are enough for `metadata` and `sampled` profiling.
@@ -95,13 +95,13 @@ SALES    INVENTORY_DAILY   TABLE   45,318,234     yes
 ### 6. Pick a profiling mode that fits your warehouse cost
 
 ```text
-> /db profiling-mode
+> /profiling
 Current mode: full
   full      — read every row to compute exact null/distinct stats
   sampled   — TABLESAMPLE BERNOULLI(N) — fast, cheap, good enough for description drafting
   metadata  — only read SHOW / INFORMATION_SCHEMA — no row scans at all
 
-> /db profiling-mode sampled
+> /profiling sampled
 ✓ Active mode → sampled (5000 rows per table)
 ```
 
@@ -152,7 +152,7 @@ For key-pair auth swap `password:` for `private_key_path:`. For SSO, set
 ## Verify
 
 1. `> /connect` — reports server version, active role, and active warehouse. Anything missing here is the most common reason `/run` later fails.
-2. `> /db inspect` — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".
+2. `> /inspect` — counts of tables / views / procedures / tasks / stages. Snowflake-specific object types (tasks, stages, shares) are listed under "Distinctive types".
 3. `> /doctor` — verifies the Snowflake driver is installed, the profile is active, and the connection round-trips.
 
 ## Troubleshooting

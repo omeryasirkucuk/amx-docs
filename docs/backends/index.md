@@ -35,15 +35,21 @@ Use this short decision tree before you reach for any specific page:
 | [Trino / Presto](trino.md) | `trino` | `pip install 'amx-cli[trino]'` | `COMMENT ON TABLE / COLUMN / VIEW / SCHEMA` | ✗ (writeback is connector-dependent) |
 | [Hive (HiveServer2)](hive.md) | `hive` | `pip install 'amx-cli[hive]'` | `ALTER TABLE / VIEW … SET TBLPROPERTIES` + `ALTER DATABASE … SET DBPROPERTIES` (no columns) | ✗ (row UPDATE is partition-/transactional-only) |
 
-`pip install amx-cli` pulls every supported driver except Trino and Hive — both live in
-optional `[trino]` / `[hive]` extras so users on classic warehouses don't pay the install
-cost. The Hive extra uses `pure-sasl` (pure Python) instead of the legacy `sasl` C
-extension so it wheels cleanly on macOS / Linux / Windows.
+`pip install amx-cli` ships only the DuckDB driver in the base install. Every other
+backend's driver is installed on first use (this needs network access). Trino and Hive
+additionally live in optional `[trino]` / `[hive]` extras. The Hive extra uses `pure-sasl`
+(pure Python) instead of the legacy `sasl` C extension so it wheels cleanly on macOS /
+Linux / Windows.
+
+!!! note "Air-gapped installs"
+    Because non-DuckDB drivers are fetched on first use, a machine with no outbound
+    network access must have the relevant driver(s) pre-installed (e.g. vendored into the
+    environment ahead of time). Plan for this when running AMX in an isolated network.
 
 ## Distinctive object types per backend
 
 Beyond tables and views, each adapter exposes the object types that are first-class on
-its backend. These are listable via `/metadata` (and counted by `/db inspect`); the
+its backend. These are listable via `/metadata` (and counted by `/inspect`); the
 inference loop currently focuses on tables, views, and materialized views.
 
 | Backend | Distinctive types |
@@ -93,7 +99,7 @@ troubleshooting table → what to read next.
 - [PostgreSQL](postgresql.md) — the reference adapter.
 - [Snowflake](snowflake.md) — warehouse / role selection, key-pair / SSO auth.
 - [Databricks](databricks.md) — Unity Catalog, corporate-TLS recovery.
-- [BigQuery](bigquery.md) — ADC vs service-account JSON, byte-budget profiling.
+- [BigQuery](bigquery.md) — ADC vs service-account JSON, profiling-mode selection.
 - [MySQL / MariaDB](mysql.md) — privilege grants, charset notes.
 - [Oracle](oracle.md) — service name vs SID, thin-mode default.
 - [SQL Server](mssql.md) — ODBC Driver 18 install per OS, Azure SQL specifics.

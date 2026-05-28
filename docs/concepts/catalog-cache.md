@@ -71,7 +71,7 @@ Rows are invalidated (deleted or overwritten) in four situations:
 1. **COMMENT write** — when `/annotate`, `/sync`, or the Pending
    review apply a comment change, the affected `column_comments_cache`
    row is invalidated so the next read fetches the fresh value.
-2. **Manual clear** — the per-row **Clear** button or `cache-clear`
+2. **Manual clear** — the per-row **Clear** button or `/cache-clear`
    CLI wipes the selected `(profile, database)` slice. The rows are
    deleted; the next sidebar expand repopulates lazily.
 3. **Sync** — `sync_profile_skeleton` overwrites every row for the

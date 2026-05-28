@@ -138,7 +138,7 @@ db_profiles:
 ## Verify
 
 1. `> /connect` — server version + file size (or `(ephemeral)` for `:memory:`).
-2. `> /db inspect` — counts of tables, views, sequences, functions, macros, and attached databases.
+2. `> /inspect` — counts of tables, views, sequences, functions, macros, and attached databases.
 3. `> /doctor` — confirms the DuckDB driver is loaded and the file is readable.
 
 ## Troubleshooting

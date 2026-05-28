@@ -61,18 +61,17 @@ active_llm_profile: default
 
 ### 3. Hand-edit for non-wizard fields
 
-Some settings (e.g. `max_bytes_billed` for BigQuery, `thinking_budget_tokens` for
-Anthropic, `tls_trusted_ca_file` for Databricks) aren't asked for by the wizard.
+Some settings (e.g. `thinking_budget_tokens` for Anthropic,
+`tls_trusted_ca_file` for Databricks) aren't asked for by the wizard.
 Add them by hand under the relevant profile.
 
 ```yaml
-db_profiles:
-  prod-bq:
-    backend: bigquery
-    project: acme-analytics-prod
-    dataset: sales_curated
-    credentials_path: ""
-    max_bytes_billed: 10737418240   # ← hand-added: 10 GB safety net
+llm_profiles:
+  anthropic-deep:
+    provider: anthropic
+    model: claude-sonnet-4-20250514
+    api_key: keyring://amx/anthropic-deep/api_key
+    thinking_budget_tokens: 4000   # ← hand-added: extended thinking budget
 ```
 
 ### 4. Reload without restarting AMX
@@ -143,7 +142,6 @@ db_profiles:
     project: acme-analytics-prod
     dataset: sales_curated
     credentials_path: ""           # blank → ADC
-    max_bytes_billed: 10737418240
 
 # Single active DB (back-compat for tools still reading the legacy scalar).
 # Tracks the first entry of active_db_profiles below.
@@ -268,7 +266,7 @@ output AMX produces rather than which model runs:
 | `account` | snowflake | yes | The bare account identifier (no `.snowflakecomputing.com`) |
 | `warehouse` / `role` | snowflake | optional | Left blank → user defaults |
 | `http_path` / `access_token` / `workspace_token` / `catalog` / `tls_trusted_ca_file` / `tls_no_verify` | databricks | yes (`http_path`, `access_token`); `workspace_token` optional | See [Databricks](../backends/databricks.md). `workspace_token` is consulted ahead of `access_token` for native lineage REST calls — useful when the SQL-warehouse token doesn't have workspace-list privileges. |
-| `project` / `dataset` / `credentials_path` / `max_bytes_billed` | bigquery | yes (`project`) | Empty `credentials_path` = ADC |
+| `project` / `dataset` / `credentials_path` | bigquery | yes (`project`) | Empty `credentials_path` = ADC |
 | `service_name` | oracle | optional | Preferred over `database` (=SID) for modern Oracle |
 | `driver` / `encrypt` / `trust_server_certificate` | mssql | optional | Defaults: `ODBC Driver 18 for SQL Server`, `True`, `False` |
 | `cluster_identifier` / `secure` | redshift / clickhouse | optional | Redshift IAM auth, ClickHouse HTTPS toggle |

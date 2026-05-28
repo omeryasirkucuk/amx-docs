@@ -42,12 +42,11 @@ shows the active profiles and confirms guardrails (`profiling_mode: full`, `lang
 
 ```text
 /docs
-/ingest --refresh
+/index
 ```
 
-`/ingest` scans the active doc profile, splits each file into chunks, embeds them, and
-upserts into the local Chroma vector store. `--refresh` removes prior chunks for the same
-sources first — handy when files have moved or shrunk.
+`/index` scans the active doc profile, splits each file into chunks, embeds them, and
+upserts into the local Chroma vector store.
 
 Check that the docs are searchable before running the agents:
 
@@ -55,20 +54,20 @@ Check that the docs are searchable before running the agents:
 /search-docs primary key for company code
 ```
 
-returns the top doc snippets. If this is empty, `/scan` will tell you what AMX
+returns the top doc snippets. If this is empty, `/index` will tell you what AMX
 discovered (or didn't) on the configured paths.
 
-## Scan the codebase
+## Index the codebase
 
 ```text
 /code
-/code-scan
+/code-index
 ```
 
-The first scan walks the entire repo, extracts function/class spans for Python and text
+The first index walks the entire repo, extracts function/class spans for Python and text
 chunks for other languages, and builds the `amx_code` Chroma collection. Cached results
-land in `~/.amx/code_cache/etl_repo/`. Subsequent runs read the cache; pass `--code-refresh`
-or run `/code-refresh` to invalidate after the tree changes.
+land in `~/.amx/code_cache/etl_repo/`. Subsequent runs read the cache; run `/code-index`
+again to refresh after the tree changes.
 
 ```text
 /code-results
@@ -96,30 +95,28 @@ usage so far, and elapsed time. The output is something like:
 
 ## Review
 
-The review wizard opens. For each column AMX shows:
+`/run` first asks you to choose a review strategy: one-by-one, accept-all-high, accept-all,
+or reject-all. Reviewing one-by-one, AMX shows each column with a numbered picker:
 
 ```text
 sap_s6p.t001.audat — column 7 of 17
 
-  ▶ Document date. Calendar date the source business event was recorded;
-    distinct from posting date (BUDAT) which controls the accounting period.
-    confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+  1. Document date. Calendar date the source business event was recorded;
+     distinct from posting date (BUDAT) which controls the accounting period.
+     confidence: high · logprob: 0.91 · sources: code (3 refs), docs, profile
+  2. Audit date. Timestamp of the most recent audit run on this row.
+     confidence: low · logprob: 0.42 · sources: profile only
+  3. Document creation date. Same as ERFDAT in adjacent SAP tables.
+     confidence: medium · logprob: 0.66 · sources: docs
 
-  Alternatives:
-    2. Audit date. Timestamp of the most recent audit run on this row.
-       confidence: low · logprob: 0.42 · sources: profile only
-    3. Document creation date. Same as ERFDAT in adjacent SAP tables.
-       confidence: medium · logprob: 0.66 · sources: docs
-
-  [A]ccept  [1-3] Pick alternative  [W]rite your own  [S]kip  [Q]uit
+  Type a number to pick a description, "s" to skip, or "o" for your own text.
 ```
 
-Accept the top suggestion, pick an alternative, write your own, or skip. AMX moves to the
-next column.
+Type the number of the description you want, `s` to skip the column, or `o` to write your
+own text. AMX moves to the next column.
 
-For columns where the top suggestion is high-confidence and the evidence is unambiguous, use
-**bulk accept** — AMX prompts before each batch and only auto-accepts where logprob ≥ the
-configured `high` threshold.
+To accept the high-confidence suggestions in bulk without stepping through each column,
+choose the **accept-all-high** strategy when `/run` prompts for it.
 
 ## Apply to the database
 

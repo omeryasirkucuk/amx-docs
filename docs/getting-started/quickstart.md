@@ -68,25 +68,20 @@ For multiple tables:
 
 ## 5. Review and apply
 
-When the agents finish, AMX opens the review wizard. For each column you see:
+When the agents finish, `/run` opens its interactive review. First you choose a review
+strategy — one-by-one, accept-all-high, accept-all, or reject-all. For each column you see:
 
 - The top suggestion with confidence band (`high` / `medium` / `low`) and logprob score.
-- Up to N alternatives (default 3, tune with `/n-alternatives`).
+- A few alternatives.
 - The evidence sources behind each suggestion (DB profile, code references, doc snippets).
 
-Choose Accept, pick an alternative, write your own, or Skip. Bulk-accept high-confidence
-results when you trust them.
+When reviewing one-by-one, AMX presents a numbered picker: type a number to pick a
+description, `s` to skip, or `o` to write your own text.
 
 When you're done reviewing, write back to the database:
 
 ```text
 /apply
-```
-
-Or short-circuit the review-then-apply two-step in a single command:
-
-```text
-/run-apply sap_s6p.t001
 ```
 
 ## 6. Inspect what happened
@@ -114,7 +109,6 @@ amx
 ```
 
 `/doctor` diagnoses install / config / connectivity and prints actionable hints next to
-each ✗. If AMX itself won't start (so you can't reach the REPL), the same checks are
-also exposed as a shell fallback: `amx doctor`.
+each ✗.
 
 For the full review experience and a real example, continue with the [first run walkthrough](first-run.md).

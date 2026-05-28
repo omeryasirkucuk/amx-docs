@@ -10,8 +10,10 @@ The most-asked questions, in roughly the order new users hit them.
 pip install amx-cli
 ```
 
-That's the only command. The install includes the CLI, the multi-agent runtime, every
-LLM SDK, and every supported database driver.
+That's the only command. The install includes the CLI, the multi-agent runtime, and the
+LLM SDKs. Only the DuckDB driver ships by default; every other backend installs its
+driver on first use, which needs network access. On an air-gapped machine, pre-install
+the driver for your backend while you still have connectivity.
 
 ### Multiple `amx` binaries on PATH
 
@@ -51,7 +53,7 @@ falls back to inline secrets).
 
 ### `/run` failed with "LLM unreachable"
 
-`/analyze /run` tests the active LLM before profiling any asset and stops if the
+`/run` tests the active LLM before profiling any asset and stops if the
 model/profile is unreachable or deactivated. Run `/doctor` — it'll tell you whether
 the API key is invalid, the endpoint is unreachable, or the model is deactivated.
 
@@ -143,7 +145,7 @@ which tables …`.
 
 On macOS / Linux: `/Users/<name>/.amx/history.db`. On Windows: `C:\Users\<name>\.amx\history.db`.
 
-Override with `AMX_HOME=/some/other/path` (Linux/macOS) or by setting your home directory
+Override with `AMX_CONFIG_DIR=/some/other/path` (Linux/macOS) or by setting your home directory
 explicitly.
 
 ### Can I delete `history.db` to start over?

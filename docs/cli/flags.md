@@ -16,11 +16,7 @@ have to memorise them per command. Each flag below works on `/run`, `/apply`,
 | `--db-profile <name>` | string | active profile | Override the active DB profile for this command only |
 | `--llm-profile <name>` | string | active profile | Override the active LLM profile for this command only |
 | `--scope <kind>` | `database`/`schema`/`table`/`column` | inferred | Force the scope picker level instead of inferring from positional args |
-| `--profiling-mode <mode>` | `full`/`sampled`/`metadata` | profile default | Override the profiling mode for one run |
-| `--profiling-sample-size <n>` | int | profile default (5000) | Override sample size when `--profiling-mode sampled` |
-| `--review-all` | flag | off | Force the review wizard to walk every row, not just `low`-confidence ones |
-| `--auto-accept-high` | flag | on | Bulk-accept `high`-confidence drafts. Pair with `--review-all` to override |
-| `--apply` | flag | off | Auto-`/apply` after `/run` finishes. Skips the review wizard for high+medium |
+| `--apply` | flag | off | Auto-`/apply` after `/run` finishes, using the review strategy you pick |
 | `--csv <path>` | string | — | Write the run's review queue to a CSV file in addition to (or instead of) the in-memory store |
 | `--csv-only` | flag | off | Skip the in-memory store; writes only to the `--csv` path |
 | `--debug` | flag | off | Verbose logging — every SQL statement, every LLM call, every retry |
@@ -29,8 +25,8 @@ have to memorise them per command. Each flag below works on `/run`, `/apply`,
 | `--limit <n>` | int | — | On `/run`: limit to the first N tables in scope. Useful for incremental runs |
 | `--filter <expr>` | string | — | On `/run`: restrict to tables whose name matches the regex |
 | `--llm-batch-size <n>` | int | profile default (10) | Override `column_batch_size` for one run |
-| `--n-alternatives <n>` | int (1-5) | profile default | On `/run` and `/generate`: number of drafts to surface per asset |
-| `--verbosity <mode>` | `terse`/`balanced`/`verbose` | `balanced` | On `/run` and `/generate`: target output length |
+| `--n-alternatives <n>` | int (1-5) | profile default | On `/run`: number of drafts to surface per asset |
+| `--verbosity <mode>` | `terse`/`balanced`/`verbose` | `balanced` | On `/run`: target output length |
 | `--temperature <f>` | float [0.0, 2.0] | profile default | Sampling temperature for this command only |
 | `--prompt-detail <mode>` | `low`/`auto`/`high` | `auto` | How much profile/RAG context to feed the LLM |
 
@@ -44,23 +40,26 @@ A few slash commands are not flags but they shape the same dimensions:
 | `/max-tokens <n>` | Set the budget. Reasoning models (Claude extended-thinking, GPT-5 / o-series, DeepSeek-reasoner, Kimi K2.x) automatically get an additional 32 k reasoning floor on top |
 | `/temperature <f>` | Show or set the active LLM profile's default temperature |
 | `/n-alternatives <n>` | Show or set the default number of drafts |
+| `/profiling [full\|sampled\|metadata] [max_rows] [sample_size]` | Configure the profiling mode and guardrails per profile (there is no `--profiling-mode` flag) |
+
+The review strategy (one-by-one, accept-all-high, accept-all, reject-all) is
+chosen **interactively** at the review step, not via a flag.
 
 ## Common combinations
 
 ### Sweep a whole warehouse cheaply
 
 ```bash
+> /profiling metadata          # set the profile's mode first — no per-run flag
 > /run \
-  --profiling-mode metadata \
   --llm-profile openai-mini \
-  --auto-accept-high \
   --csv ~/amx-output/sweep-2026-05-03.csv
 ```
 
-`metadata` mode skips row scans entirely (no warehouse cost), `--llm-profile openai-mini`
-uses the cheap model, `--auto-accept-high` lets the review wizard skip ahead through
-high-confidence rows, and the CSV gives you a portable record outside the AMX history
-store.
+`metadata` mode skips row scans entirely (no warehouse cost) and `--llm-profile openai-mini`
+uses the cheap model; the CSV gives you a portable record outside the AMX history
+store. At the review step, pick the accept-all-high strategy to skip ahead through
+high-confidence rows.
 
 ### Re-run only the tables that failed last time
 
@@ -74,28 +73,26 @@ store.
 The regex matches your dbt-style staging / fact / dimension tables; `--limit 50` keeps
 the run bounded; `--debug` surfaces the exact failure if it happens again.
 
-### Apply without the review wizard
+### Apply high-confidence drafts in one shot
 
 ```bash
-> /run-apply \
-  --auto-accept-high \
-  --review-all=false \
-  --apply
+> /run-apply --apply
 ```
 
-`/run-apply` is `/run` immediately followed by `/apply`. `--auto-accept-high` accepts
-high-confidence drafts; everything else is queued for later interactive review.
+`/run-apply` is `/run` immediately followed by `/apply`. At the review step pick the
+accept-all-high strategy: high-confidence drafts are accepted and everything else is
+queued for later interactive review.
 
-!!! warning "Do not pair `--apply` with a freshly-tuned LLM profile"
-    `--apply` skips the review wizard for high+medium confidence drafts. Until you've
-    confirmed the LLM profile produces good descriptions for *your* schema, leave the
-    wizard interactive. Re-add `--apply` only after one or two successful manual sweeps.
+!!! warning "Be careful with `--apply` on a freshly-tuned LLM profile"
+    `--apply` writes back whatever the chosen review strategy accepts. Until you've
+    confirmed the LLM profile produces good descriptions for *your* schema, review
+    one-by-one. Re-add `--apply` only after one or two successful manual sweeps.
 
 ### Test profiling cost without LLM calls
 
 ```bash
+> /profiling full              # set the profile's mode first — no per-run flag
 > /profile sales.customer \
-  --profiling-mode full \
   --skip-network
 ```
 
@@ -112,8 +109,8 @@ db_profiles:
   prod-pg:
     backend: postgresql
     # ...
-    profiling_mode: sampled            # → --profiling-mode default
-    profiling_sample_size: 5000        # → --profiling-sample-size default
+    profiling_mode: sampled            # set via /profiling
+    profiling_sample_size: 5000        # set via /profiling
 
 llm_profiles:
   openai-prod:

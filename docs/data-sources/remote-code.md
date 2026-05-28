@@ -151,7 +151,7 @@ care about instead of mirroring the entire workspace.
 ## Interaction with code RAG
 
 Once ingested, notebook / query / pipeline source text flows into
-the same code RAG index as files indexed by `/code-scan` (the local
+the same code RAG index as files indexed by `/code-index` (the local
 code profile path). Searches across `/ask` and Studio Ask reach
 both — there is no separate "remote code" namespace at retrieval
 time. The default embedding model is
