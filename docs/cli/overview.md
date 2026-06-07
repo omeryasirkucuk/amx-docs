@@ -189,6 +189,7 @@ the root prompt.
 | Command | Purpose |
 |---|---|
 | `/mcp [connect\|status\|snippet\|disconnect]` | Connect AMX's catalog to IDE code agents via MCP ([guide](../guides/mcp.md)) |
+| `/vscode [install\|status\|uninstall]` | Install / manage the bundled AMX editor extension in VS Code-family editors ([guide](../guides/vscode-extension.md)) |
 | `/llm-profiles` | List configured LLM profiles |
 | `/use-llm <name>` | Switch the active LLM profile |
 | `/use-rag-llm [<name>\|none]` | Pin a different LLM profile to the RAG agent (or clear the override) |

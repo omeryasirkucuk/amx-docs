@@ -127,6 +127,23 @@ agent can read your schemas, descriptions, join keys, and lineage. See the
 - **Exposed tools** — the read-only, cache-only catalog tools AMX surfaces;
   no live-database access and no credentials are involved.
 
+## VS Code {#vscode}
+
+The **VS Code** tab installs and manages the bundled AMX editor
+extension for VS Code-family editors (VS Code, VS Code Insiders,
+Cursor, Windsurf, VSCodium). The extension ships inside the `amx-cli`
+wheel — not the Marketplace — so its version always matches the
+running AMX. See the
+[AMX in VS Code (extension)](../guides/vscode-extension.md) guide for
+the full walkthrough.
+
+- **Card per detected editor** — installed extension version next to
+  the bundled one, with an **update available** badge when they differ.
+- **Install / Reinstall / Uninstall** — one-click management through
+  the editor's own CLI.
+- **Download .vsix** — a link for manual installs (Extensions →
+  Install from VSIX…) when no editor CLI is reachable.
+
 ## Profile linking
 
 Both Docs and Code wizards expose a linked-DB-profiles multi-select.
@@ -144,3 +161,4 @@ doc profile linked to `prod-pg` is silent when `/ask` is running against
 | Code tab | `/add-code-profile`, `/code-link`, `/code-index` |
 | Embeddings tab | `/embeddings docs`, `/embeddings code` |
 | MCP tab | `/mcp connect`, `/mcp status`, `/mcp snippet`, `/mcp disconnect` |
+| VS Code tab | `/vscode install`, `/vscode status`, `/vscode uninstall` |

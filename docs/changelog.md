@@ -8,6 +8,43 @@ by [`python-semantic-release`](https://python-semantic-release.readthedocs.io/).
 
 ## Latest highlights
 
+### 0.19.0 — VS Code extension + native management from the editor
+
+AMX now ships a **full VS Code extension** — Activity Bar trees for
+Profiles, Catalog, History, and Schedules; the Studio surfaces (Ask
+chat, run launch with live SSE progress, Run detail, the Lineage
+canvas, Pages, Settings) rendered as webview panels inside the editor;
+catalog-backed **SQL intelligence** in `.sql` files (hover
+descriptions, completion, CodeLens, optional coverage diagnostics
+across every configured profile); and a granularity-aware **selection
+lookup** that resolves a table reference selected in *any* file — even
+inside a Python `spark.sql("""…""")` string — to its Studio page. The
+extension works in VS Code, VS Code Insiders, Cursor, Windsurf, and
+VSCodium. See the new
+[AMX in VS Code (extension)](guides/vscode-extension.md) guide for the
+full tour.
+
+The distribution model is deliberately **in-product, not Marketplace**:
+the extension is bundled inside the `amx-cli` wheel, so its version
+always equals the AMX that shipped it and the editor surface can never
+drift from the server API. Installation is one command — the new
+`/vscode` REPL wizard detects installed editors across macOS, Windows,
+and Linux and installs through each editor's own CLI, with
+`/vscode status` reporting installed-vs-bundled versions and a manual
+`.vsix` fallback when no editor CLI is on PATH. Studio gains a matching
+**Settings → VS Code** tab with per-editor cards, an update-available
+badge, Install / Reinstall / Uninstall buttons, and a Download .vsix
+link.
+
+Under the hood the server learned to host this: an **embedded Studio
+mode** serves the SPA into editor webviews against the local API, and
+the extension either adopts a Studio server already running from the
+REPL or starts its own headless one on `127.0.0.1` behind a
+per-session bearer token. If no AMX install is found at all, the
+extension offers to install `amx-cli` into a managed environment.
+Updating stays in lockstep too: after `pip install -U amx-cli`, run
+`/vscode install` again (or click Reinstall in Studio).
+
 ### 0.18.0 — MCP for IDE agents + native Databricks lineage + lineage in RUN/ASK
 
 AMX now exposes its catalog to the code agents inside your IDE over the
