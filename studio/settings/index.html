@@ -627,6 +627,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/mcp/"
          >Connect your IDE (MCP)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../../guides/vscode-extension/"
+         >VS Code Extension</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/sap-discovery-walkthrough/"
          >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../../guides/batch-large-schema/"
@@ -907,6 +909,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#vscode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VS Code
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#profile-linking" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1083,6 +1096,22 @@ agent can read your schemas, descriptions, join keys, and lineage. See the
 <li><strong>Exposed tools</strong> — the read-only, cache-only catalog tools AMX surfaces;
   no live-database access and no credentials are involved.</li>
 </ul>
+<h2 id="vscode">VS Code<a class="headerlink" href="#vscode" title="Permanent link">&para;</a></h2>
+<p>The <strong>VS Code</strong> tab installs and manages the bundled AMX editor
+extension for VS Code-family editors (VS Code, VS Code Insiders,
+Cursor, Windsurf, VSCodium). The extension ships inside the <code>amx-cli</code>
+wheel — not the Marketplace — so its version always matches the
+running AMX. See the
+<a href="../../guides/vscode-extension/">AMX in VS Code (extension)</a> guide for
+the full walkthrough.</p>
+<ul>
+<li><strong>Card per detected editor</strong> — installed extension version next to
+  the bundled one, with an <strong>update available</strong> badge when they differ.</li>
+<li><strong>Install / Reinstall / Uninstall</strong> — one-click management through
+  the editor's own CLI.</li>
+<li><strong>Download .vsix</strong> — a link for manual installs (Extensions →
+  Install from VSIX…) when no editor CLI is reachable.</li>
+</ul>
 <h2 id="profile-linking">Profile linking<a class="headerlink" href="#profile-linking" title="Permanent link">&para;</a></h2>
 <p>Both Docs and Code wizards expose a linked-DB-profiles multi-select.
 This controls which <code>/ask</code> invocations see the profile's contents — a
@@ -1120,6 +1149,10 @@ doc profile linked to <code>prod-pg</code> is silent when <code>/ask</code> is r
 <tr>
 <td>MCP tab</td>
 <td><code>/mcp connect</code>, <code>/mcp status</code>, <code>/mcp snippet</code>, <code>/mcp disconnect</code></td>
+</tr>
+<tr>
+<td>VS Code tab</td>
+<td><code>/vscode install</code>, <code>/vscode status</code>, <code>/vscode uninstall</code></td>
 </tr>
 </tbody>
 </table>

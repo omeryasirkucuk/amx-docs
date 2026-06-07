@@ -625,6 +625,8 @@
         <a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/mcp/"
          >Connect your IDE (MCP)</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
+         href="../guides/vscode-extension/"
+         >VS Code Extension</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/sap-discovery-walkthrough/"
          >SAP Discovery</a><a class="amx-sidebar__link amx-sidebar__link--depth-0"
          href="../guides/batch-large-schema/"
@@ -851,6 +853,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#0190-vs-code-extension-native-management-from-the-editor" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        0.19.0 — VS Code extension + native management from the editor
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#0180-mcp-for-ide-agents-native-databricks-lineage-lineage-in-runask" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -924,6 +937,39 @@ or the <a href="https://github.com/omeryasirkucuk/amx/releases">GitHub Releases 
 <p>The repo's CHANGELOG is generated from <a href="https://www.conventionalcommits.org/">Conventional Commits</a>
 by <a href="https://python-semantic-release.readthedocs.io/"><code>python-semantic-release</code></a>.</p>
 <h2 id="latest-highlights">Latest highlights<a class="headerlink" href="#latest-highlights" title="Permanent link">&para;</a></h2>
+<h3 id="0190-vs-code-extension-native-management-from-the-editor">0.19.0 — VS Code extension + native management from the editor<a class="headerlink" href="#0190-vs-code-extension-native-management-from-the-editor" title="Permanent link">&para;</a></h3>
+<p>AMX now ships a <strong>full VS Code extension</strong> — Activity Bar trees for
+Profiles, Catalog, History, and Schedules; the Studio surfaces (Ask
+chat, run launch with live SSE progress, Run detail, the Lineage
+canvas, Pages, Settings) rendered as webview panels inside the editor;
+catalog-backed <strong>SQL intelligence</strong> in <code>.sql</code> files (hover
+descriptions, completion, CodeLens, optional coverage diagnostics
+across every configured profile); and a granularity-aware <strong>selection
+lookup</strong> that resolves a table reference selected in <em>any</em> file — even
+inside a Python <code>spark.sql("""…""")</code> string — to its Studio page. The
+extension works in VS Code, VS Code Insiders, Cursor, Windsurf, and
+VSCodium. See the new
+<a href="../guides/vscode-extension/">AMX in VS Code (extension)</a> guide for the
+full tour.</p>
+<p>The distribution model is deliberately <strong>in-product, not Marketplace</strong>:
+the extension is bundled inside the <code>amx-cli</code> wheel, so its version
+always equals the AMX that shipped it and the editor surface can never
+drift from the server API. Installation is one command — the new
+<code>/vscode</code> REPL wizard detects installed editors across macOS, Windows,
+and Linux and installs through each editor's own CLI, with
+<code>/vscode status</code> reporting installed-vs-bundled versions and a manual
+<code>.vsix</code> fallback when no editor CLI is on PATH. Studio gains a matching
+<strong>Settings → VS Code</strong> tab with per-editor cards, an update-available
+badge, Install / Reinstall / Uninstall buttons, and a Download .vsix
+link.</p>
+<p>Under the hood the server learned to host this: an <strong>embedded Studio
+mode</strong> serves the SPA into editor webviews against the local API, and
+the extension either adopts a Studio server already running from the
+REPL or starts its own headless one on <code>127.0.0.1</code> behind a
+per-session bearer token. If no AMX install is found at all, the
+extension offers to install <code>amx-cli</code> into a managed environment.
+Updating stays in lockstep too: after <code>pip install -U amx-cli</code>, run
+<code>/vscode install</code> again (or click Reinstall in Studio).</p>
 <h3 id="0180-mcp-for-ide-agents-native-databricks-lineage-lineage-in-runask">0.18.0 — MCP for IDE agents + native Databricks lineage + lineage in RUN/ASK<a class="headerlink" href="#0180-mcp-for-ide-agents-native-databricks-lineage-lineage-in-runask" title="Permanent link">&para;</a></h3>
 <p>AMX now exposes its catalog to the code agents inside your IDE over the
 <strong>Model Context Protocol</strong>. Once the local stdio server is registered in
