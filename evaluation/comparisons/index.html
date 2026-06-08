@@ -1092,7 +1092,7 @@ head-to-head benchmark yet.</p>
 <td><strong>Snowflake Cortex</strong> (<code>AI_GENERATE_TABLE_DESC</code>) — single SQL call</td>
 </tr>
 <tr>
-<td>All-in on Databricks, OK with per-object click-through</td>
+<td>All-in on Databricks, OK with per-table generation in one vendor</td>
 <td><strong>Databricks AI Comments</strong> — native to Catalog Explorer</td>
 </tr>
 <tr>
@@ -1235,9 +1235,13 @@ head-to-head benchmark yet.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>The big gaps in commercial competitors.</strong> Databricks AI Comments has
-no native bulk capability — generation happens per-object via Catalog
-Explorer UI and each suggestion must be accepted with a check-mark.
+<p><strong>The big gaps in commercial competitors.</strong> Databricks AI Comments now
+generates descriptions for every column of a table in one click — a real
+improvement over its earlier column-by-column flow — but it stays
+table-scoped inside Unity Catalog: there is no single-command sweep
+across a whole schema or warehouse, no cross-source context (your docs
+and codebase), and no per-suggestion confidence band; review still
+happens table by table in the Catalog Explorer UI, Databricks-only.
 Snowflake's <code>AI_GENERATE_TABLE_DESC</code> is a single-table stored procedure;
 schema-wide automation requires user-written loops. BigQuery Insights
 is per-table with a 350-column-per-table cap. DataHub Cloud has AI
@@ -1551,7 +1555,7 @@ ten major analytical and OLTP databases from a single CLI.</strong></p>
 <td>1000+</td>
 <td>5000+ (one SQL)</td>
 <td>per-table</td>
-<td>1 (UI click-through)</td>
+<td>1 table (all columns, one click)</td>
 <td>per-asset</td>
 <td>1 (manual)</td>
 </tr>
@@ -1732,11 +1736,12 @@ references on day one, the commercial alternatives are further along.</p>
 <h3 id="vs-databricks-ai-comments-catalog-explorer">vs Databricks AI Comments (Catalog Explorer)<a class="headerlink" href="#vs-databricks-ai-comments-catalog-explorer" title="Permanent link">&para;</a></h3>
 <ul>
 <li><strong>Pick Databricks AI Comments if</strong> — you're 100% on Databricks Unity
-  Catalog and have a small enough schema that per-object UI clicks
-  scale.</li>
-<li><strong>Pick AMX if</strong> — your schema is wider than ~50 tables (UI click-
-  through becomes infeasible), you need confidence scores on each
-  suggestion, or you want the same tool for non-Databricks backends.</li>
+  Catalog and table-at-a-time generation (one click per table, all its
+  columns) fits your workflow.</li>
+<li><strong>Pick AMX if</strong> — you want a single command to sweep a whole schema or
+  warehouse instead of opening each table, you need confidence scores on
+  each suggestion, you want cross-source context (docs + codebase), or
+  you want the same tool for non-Databricks backends.</li>
 <li><strong>Together</strong> — AMX writes via <code>COMMENT ON COLUMN</code> (Unity Catalog
   syntax) so Databricks AI Comments can pick AMX's output up as the
   starting point and the human reviewer iterates from there.</li>
@@ -1826,7 +1831,7 @@ references on day one, the commercial alternatives are further along.</p>
     </a>
     
     <span class="amx-footer__sep">·</span>
-    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.18.0</a>
+    <a href="/changelog/" class="amx-footer__version" title="Release notes">v0.19.0</a>
     
     <span class="amx-footer__sep">·</span>
     <a href="/security/">Privacy</a>
@@ -1846,7 +1851,7 @@ references on day one, the commercial alternatives are further along.</p>
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.18.0"}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tracking", "navigation.sections", "navigation.indexes", "navigation.expand", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": "0.19.0"}</script>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
