@@ -27,7 +27,7 @@ whether AMX fits your environment.
 | You are… | Best fit |
 |---|---|
 | All-in on Snowflake, want zero-config AI | **Snowflake Cortex** (`AI_GENERATE_TABLE_DESC`) — single SQL call |
-| All-in on Databricks, OK with per-object click-through | **Databricks AI Comments** — native to Catalog Explorer |
+| All-in on Databricks, OK with per-table generation in one vendor | **Databricks AI Comments** — native to Catalog Explorer |
 | All-in on BigQuery, willing to accept 350-column-per-table cap | **BigQuery Gemini Insights** |
 | Multi-warehouse, OK with vendor LLM, big budget | **Atlan / Collibra** — full-featured commercial catalog |
 | OSS catalog needed for inventory + lineage, no AI required | **OpenMetadata / DataHub** (OSS) |
@@ -50,9 +50,13 @@ whether AMX fits your environment.
 | Sample-data analysis (not just metadata) | ✓ | ✓ | ✓ | partial | partial | partial | partial | partial |
 | Human-in-the-loop review wizard | ✓ | partial | partial | ✓ | ✓ | ✓ | ✓ | partial |
 
-**The big gaps in commercial competitors.** Databricks AI Comments has
-no native bulk capability — generation happens per-object via Catalog
-Explorer UI and each suggestion must be accepted with a check-mark.
+**The big gaps in commercial competitors.** Databricks AI Comments now
+generates descriptions for every column of a table in one click — a real
+improvement over its earlier column-by-column flow — but it stays
+table-scoped inside Unity Catalog: there is no single-command sweep
+across a whole schema or warehouse, no cross-source context (your docs
+and codebase), and no per-suggestion confidence band; review still
+happens table by table in the Catalog Explorer UI, Databricks-only.
 Snowflake's `AI_GENERATE_TABLE_DESC` is a single-table stored procedure;
 schema-wide automation requires user-written loops. BigQuery Insights
 is per-table with a 350-column-per-table cap. DataHub Cloud has AI
@@ -119,7 +123,7 @@ ten major analytical and OLTP databases from a single CLI.**
 
 | Dimension | AMX | Snowflake Cortex | BigQuery Gemini | Databricks AI Comments | Atlan / Collibra / DataHub Cloud | OpenMetadata |
 |---|---|---|---|---|---|---|
-| Tables per single run | 1000+ | 5000+ (one SQL) | per-table | 1 (UI click-through) | per-asset | 1 (manual) |
+| Tables per single run | 1000+ | 5000+ (one SQL) | per-table | 1 table (all columns, one click) | per-asset | 1 (manual) |
 | Cost control | per-token tracking + `/profiling` (metadata-only mode) | warehouse credits | BQ slot usage | UC compute | per-asset subscription | self-hosted |
 | Cache / re-run optimisation | `~/.amx/history.db` (skips already-documented) | none | none | none | none | none |
 | Batch API support (parallel cheap mode) | ✓ (OpenAI / Anthropic batch) | partial | partial | partial | — | — |
@@ -178,11 +182,12 @@ references on day one, the commercial alternatives are further along.
 ### vs Databricks AI Comments (Catalog Explorer)
 
 - **Pick Databricks AI Comments if** — you're 100% on Databricks Unity
-  Catalog and have a small enough schema that per-object UI clicks
-  scale.
-- **Pick AMX if** — your schema is wider than ~50 tables (UI click-
-  through becomes infeasible), you need confidence scores on each
-  suggestion, or you want the same tool for non-Databricks backends.
+  Catalog and table-at-a-time generation (one click per table, all its
+  columns) fits your workflow.
+- **Pick AMX if** — you want a single command to sweep a whole schema or
+  warehouse instead of opening each table, you need confidence scores on
+  each suggestion, you want cross-source context (docs + codebase), or
+  you want the same tool for non-Databricks backends.
 - **Together** — AMX writes via `COMMENT ON COLUMN` (Unity Catalog
   syntax) so Databricks AI Comments can pick AMX's output up as the
   starting point and the human reviewer iterates from there.
