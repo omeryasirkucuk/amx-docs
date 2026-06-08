@@ -27,7 +27,7 @@ much longer than the others rather than looking like a hang.
 
 ```text
 [Binary]   scanning PATH for amx ......................  ok (0.0 s)
-           /Users/jane/.venvs/amx/bin/amx (version 0.18.0)
+           /Users/jane/.venvs/amx/bin/amx (version 0.19.0)
 ```
 
 The path of the `amx` you're running, plus version. **A second indented line under

@@ -32,9 +32,9 @@ receives security fixes; older releases are best-effort.
 
 | Version | Supported |
 |---|---|
-| 0.17.x | :white_check_mark: |
-| 0.16.x | :warning: best-effort |
-| < 0.16 | :x: (upgrade) |
+| 0.19.x | :white_check_mark: |
+| 0.18.x | :warning: best-effort |
+| < 0.18 | :x: (upgrade) |
 
 The exact supported-versions table on the AMX repo is the canonical source — this page can
 lag behind a release.
